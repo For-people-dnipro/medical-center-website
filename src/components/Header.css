@@ -1,0 +1,57 @@
+.header {
+    background: white;
+    padding: 10px 0;
+    border-bottom: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo img {
+    height: 80px; /* підкоригуємо під твій логотип */
+}
+
+.header-nav {
+    display: flex;
+    gap: 30px;
+}
+
+.header-nav a {
+    font-size: 16px;
+    color: #222;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Кнопки */
+.outline-btn {
+    background: none;
+    padding: 8px 22px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.outline-btn.purple {
+    border: 2px solid #7a3889;
+    color: #222;
+}
+
+.outline-btn.teal {
+    border: 2px solid #1d9ba6;
+    color: #222;
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "home_sliders",
+  "info": {
+    "singularName": "home-slider",
+    "pluralName": "home-sliders",
+    "displayName": "Home Slider"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "showButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "buttonText": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "buttonLink": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "required": false,
+      "default": 1
+    }
+  }
+}

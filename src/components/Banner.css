@@ -1,0 +1,60 @@
+.banner-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-container .swiper-slide {
+    width: 100%;
+    aspect-ratio: 1920 / 900;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.banner-button {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 26px;
+    background: #00a5a5;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: 0.25s;
+    z-index: 5;
+}
+
+.banner-button:hover {
+    background: #008888;
+}
+
+@media (max-width: 1440px) {
+    .banner-container .swiper-slide {
+        aspect-ratio: 16 / 7;
+    }
+}
+
+@media (max-width: 1024px) {
+    .banner-container .swiper-slide {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-container .swiper-slide {
+        aspect-ratio: 1 / 1;
+    }
+}
