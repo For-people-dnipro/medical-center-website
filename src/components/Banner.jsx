@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay, Keyboard } from "swiper/modules";
+
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import "./Banner.css";
 
 export default function Banner() {
@@ -21,11 +25,26 @@ export default function Banner() {
     return (
         <div className="banner-container">
             <Swiper
-                loop
-                autoplay={{ delay: 3000 }}
-                spaceBetween={0}
+                modules={[Navigation, Pagination, Autoplay, Keyboard]}
+                loop={true}
+                autoplay={{ delay: 4000 }}
+                speed={900}
+                navigation={{
+                    nextEl: ".banner-arrow-right",
+                    prevEl: ".banner-arrow-left",
+                }}
+                pagination={{ clickable: true }}
+                keyboard={{ enabled: true }}
                 slidesPerView={1}
             >
+                <button className="banner-arrow banner-arrow-left">
+                    <img src="/icons/arrow-left.svg" alt="prev" />
+                </button>
+
+                <button className="banner-arrow banner-arrow-right">
+                    <img src="/icons/arrow-right.svg" alt="next" />
+                </button>
+
                 {slides.map((slide) => {
                     const imageUrl = slide.photo?.url
                         ? `http://localhost:1337${slide.photo.url}`
@@ -41,17 +60,6 @@ export default function Banner() {
                                         className="banner-image"
                                     />
                                 )}
-
-                                {slide.showButton &&
-                                    slide.buttonText &&
-                                    slide.buttonLink && (
-                                        <a
-                                            href={slide.buttonLink}
-                                            className="banner-button"
-                                        >
-                                            {slide.buttonText}
-                                        </a>
-                                    )}
                             </div>
                         </SwiperSlide>
                     );

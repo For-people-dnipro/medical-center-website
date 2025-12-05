@@ -21,26 +21,6 @@
     display: block;
 }
 
-.banner-button {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 26px;
-    background: #00a5a5;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    border-radius: 40px;
-    text-decoration: none;
-    transition: 0.25s;
-    z-index: 5;
-}
-
-.banner-button:hover {
-    background: #008888;
-}
-
 @media (max-width: 1440px) {
     .banner-container .swiper-slide {
         aspect-ratio: 16 / 7;
@@ -57,4 +37,65 @@
     .banner-container .swiper-slide {
         aspect-ratio: 1 / 1;
     }
+}
+
+.swiper-pagination {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 40px;
+    width: auto !important;
+    display: inline-flex !important;
+    gap: 6px;
+    position: absolute;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+}
+
+.swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #b6dfe3;
+    opacity: 1 !important;
+    border-radius: 50%;
+}
+
+.swiper-pagination-bullet-active {
+    background: #238f9c !important;
+}
+.banner-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 20;
+}
+
+.banner-arrow img {
+    width: 45px;
+    height: 45px;
+}
+
+/* Left & right positions */
+.banner-arrow-left {
+    left: 20px;
+}
+
+.banner-arrow-right {
+    right: 20px;
+}
+
+/* Optional hover */
+.banner-arrow:hover img {
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+/* Hide default navigation */
+.swiper-button-next,
+.swiper-button-prev {
+    display: none !important;
 }
