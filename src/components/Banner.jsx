@@ -27,7 +27,11 @@ export default function Banner() {
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, Keyboard]}
                 loop={true}
-                autoplay={{ delay: 4000 }}
+                autoplay={{
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: false,
+                }}
                 speed={900}
                 navigation={{
                     nextEl: ".banner-arrow-right",
@@ -36,6 +40,7 @@ export default function Banner() {
                 pagination={{ clickable: true }}
                 keyboard={{ enabled: true }}
                 slidesPerView={1}
+                allowTouchMove={true}
             >
                 <button className="banner-arrow banner-arrow-left">
                     <img src="/icons/arrow-left.svg" alt="prev" />

@@ -1,0 +1,134 @@
+.header {
+    background: white;
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo img {
+    height: 80px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 35px;
+}
+
+.header-nav a {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+
+.outline-btn {
+    background: none;
+    padding: 8px 22px;
+    border-radius: 24px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    width: max-content;
+    width: 220px;
+}
+
+.outline-btn.purple {
+    border: 2px solid #7a3889;
+    color: #000;
+}
+
+.outline-btn.teal {
+    border: 2px solid #1d9ba6;
+    color: #000;
+}
+/* --------------------------- */
+/* Анімації для навігації */
+/* --------------------------- */
+
+.header-nav a {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.header-nav a:hover {
+    color: #1d9ba6;
+    transform: translateY(-2px);
+}
+
+.outline-btn {
+    background: none;
+    padding: 8px 22px;
+    border-radius: 24px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    width: 220px;
+    transition: background-color 0.25s ease, border-color 0.25s ease,
+        color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.outline-btn.purple {
+    border: 2px solid #7a3889;
+    color: #000;
+}
+
+.outline-btn.teal {
+    border: 2px solid #1d9ba6;
+    color: #000;
+}
+.outline-btn.purple {
+    border: 2px solid #7a3889;
+}
+.outline-btn {
+    background: none;
+    padding: 8px 22px;
+    border-radius: 24px;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    width: 220px;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.outline-btn.purple {
+    border: 2px solid #7a3889;
+}
+
+.outline-btn.purple:hover {
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+.outline-btn.teal {
+    border: 2px solid #1d9ba6;
+}
+
+.outline-btn.teal:hover {
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}

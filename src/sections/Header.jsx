@@ -1,5 +1,5 @@
 import "./Header.css";
-import Container from "./Container";
+import Container from "../components/Container";
 import logo from "../assets/logo_main.svg";
 
 export default function Header() {
@@ -7,7 +7,12 @@ export default function Header() {
         <header className="header">
             <Container>
                 <div className="header-inner">
-                    <div className="header-logo">
+                    <div
+                        className="header-logo"
+                        onClick={() =>
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                        }
+                    >
                         <img src={logo} alt="Для людей" />
                     </div>
 
