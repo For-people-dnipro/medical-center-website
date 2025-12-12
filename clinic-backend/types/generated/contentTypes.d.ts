@@ -430,6 +430,44 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
+  collectionName: 'doctors';
+  info: {
+    displayName: 'Doctor';
+    pluralName: 'doctors';
+    singularName: 'doctor';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    experience: Schema.Attribute.Integer & Schema.Attribute.Required;
+    homepage_priority: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::doctor.doctor'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer & Schema.Attribute.Required;
+    photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
+    place: Schema.Attribute.String;
+    position: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    show_on_homepage: Schema.Attribute.Boolean;
+    slug: Schema.Attribute.UID & Schema.Attribute.Required;
+    surname: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomeSliderHomeSlider extends Struct.CollectionTypeSchema {
   collectionName: 'home_sliders';
   info: {
@@ -460,6 +498,37 @@ export interface ApiHomeSliderHomeSlider extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     showButton: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
+  collectionName: 'homepages';
+  info: {
+    displayName: 'Homepage';
+    pluralName: 'homepages';
+    singularName: 'homepage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    featured_doctors: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::doctor.doctor'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::homepage.homepage'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -976,7 +1045,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::doctor.doctor': ApiDoctorDoctor;
       'api::home-slider.home-slider': ApiHomeSliderHomeSlider;
+      'api::homepage.homepage': ApiHomepageHomepage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
