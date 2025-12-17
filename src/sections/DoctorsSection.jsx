@@ -15,12 +15,66 @@ export default function DoctorsSection({ doctors = [] }) {
                     <p className="subtitle">
                         Команда, яка щодня дбає про ваше самопочуття
                     </p>
-                    <p style={{ textAlign: "center", padding: 40 }}>
+                    <p
+                        className="no-data-message"
+                        style={{ textAlign: "center", padding: 40 }}
+                    >
                         Дані лікарів відсутні.
                     </p>
                 </div>
             </section>
         );
+    }
+
+    function pluralizeYears(n) {
+        const abs = Math.abs(Number(n) || 0);
+        const rem10 = abs % 10;
+        const rem100 = abs % 100;
+        if (rem10 === 1 && rem100 !== 11) return "рік";
+        if (rem10 >= 2 && rem10 <= 4 && !(rem100 >= 12 && rem100 <= 14))
+            return "роки";
+        return "років";
+    }
+
+    function computeExperience(attrs = {}, raw = {}) {
+        const now = new Date();
+        const yearNow = now.getFullYear();
+
+        // 1) Start year field
+        const startYear =
+            attrs.startYear ||
+            attrs.workStartYear ||
+            attrs.experienceStartYear ||
+            attrs.start_of_career ||
+            attrs.start_year;
+        if (startYear && !isNaN(Number(startYear))) {
+            return Math.max(0, yearNow - Number(startYear));
+        }
+
+        // 2) Start date field
+        const startDate =
+            attrs.startDate ||
+            attrs.experienceStartDate ||
+            attrs.startedAt ||
+            attrs.start_date;
+        if (startDate) {
+            const sd = new Date(startDate);
+            if (!isNaN(sd)) {
+                let years = yearNow - sd.getFullYear();
+                const hasAnniversary =
+                    now.getMonth() > sd.getMonth() ||
+                    (now.getMonth() === sd.getMonth() &&
+                        now.getDate() >= sd.getDate());
+                if (!hasAnniversary) years--;
+                return Math.max(0, years);
+            }
+        }
+
+        // 3) Numeric experience field (already years)
+        const exp = Number(attrs.experience ?? attrs.years ?? attrs.experiance);
+        if (!isNaN(exp) && exp !== 0) return Math.max(0, Math.floor(exp));
+
+        return 0;
     }
 
     return (
@@ -54,6 +108,8 @@ export default function DoctorsSection({ doctors = [] }) {
                             d.company ||
                             "";
 
+                        const years = computeExperience(d, doc);
+
                         return (
                             <div key={doc.id} className="card">
                                 <div className="imageWrapper">
@@ -62,10 +118,19 @@ export default function DoctorsSection({ doctors = [] }) {
                                         alt={d.name || "doctor"}
                                         className="image"
                                     />
-                                    {d.experience && (
-                                        <span className="experience">
-                                            {d.experience} років
-                                        </span>
+
+                                    {years > 0 && (
+                                        <div className="experience">
+                                            <div className="exp-number">
+                                                {years}
+                                            </div>
+                                            <div className="exp-line"></div>
+                                            <div className="exp-text">
+                                                {pluralizeYears(years)}
+                                                <br />
+                                                досвіду
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
 
@@ -91,8 +156,12 @@ export default function DoctorsSection({ doctors = [] }) {
                 </div>
 
                 <div className="buttonWrapper">
-                    <a href="/doctors" className="button">
-                        Наша команда →
+                    <a href="#" className="button">
+                        Наша команда
+                        <img
+                            src="/icons/arrow-right.svg"
+                            className="btn-arrow"
+                        />
                     </a>
                 </div>
             </div>

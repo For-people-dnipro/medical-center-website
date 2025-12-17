@@ -49,7 +49,7 @@ export default function DeclarationSection() {
 
                         <div className="decl-actions">
                             <a href="#" className="decl-btn">
-                                Підписати онлайн
+                                Підписати декларацію
                                 <img
                                     src="/icons/arrow-right.svg"
                                     className="btn-arrow"

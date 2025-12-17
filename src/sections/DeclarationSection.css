@@ -3,7 +3,7 @@
 }
 
 .decl-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -28,7 +28,6 @@
     font-size: 26px;
 }
 
-/* BOLD WORD in h3 */
 .decl-title h3 span {
     font-weight: 600;
 }

@@ -19,11 +19,11 @@
 
 /* GRID */
 .services-grid {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
 }
 
@@ -31,11 +31,9 @@
     background: #fff;
     border-radius: 22px;
     padding: 18px 24px;
-
     display: flex;
     align-items: center;
-    gap: 16px;
-
+    gap: 25px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -50,9 +48,8 @@
     font-size: 16px;
     font-weight: 600;
     white-space: nowrap;
-
-    min-width: 130px; /* магія 💫 */
-    text-align: left; /* текст залишається вирівняний всередині */
+    min-width: 130px;
+    text-align: left;
     display: inline-block;
 }
 
@@ -76,6 +73,7 @@
 .more-btn {
     justify-content: space-between;
 }
+
 .more-btn span {
     padding-left: 10px;
 }
@@ -84,6 +82,7 @@
     width: 42px;
     height: 42px;
 }
+
 .card-analizy span {
     font-size: 16px;
     font-weight: 600;
