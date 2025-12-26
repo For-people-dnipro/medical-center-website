@@ -37,7 +37,7 @@ export default function DoctorsSection({ doctors = [] }) {
         return "років";
     }
 
-    function computeExperience(attrs = {}, raw = {}) {
+    function computeExperience(attrs = {}) {
         const now = new Date();
         const yearNow = now.getFullYear();
 
