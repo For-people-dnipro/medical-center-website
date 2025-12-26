@@ -104,36 +104,6 @@
     gap: 25px;
 }
 
-.decl-btn {
-    padding: 0px 22px;
-    border-radius: 26px;
-    font-weight: 500;
-    text-decoration: none;
-    font-size: 16px;
-    margin-top: 15px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-    border: 2px solid #1d9ba6;
-    color: #000;
-    padding-right: 8px;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        background-color 0.25s ease;
-}
-.decl-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(29, 155, 166, 0.18),
-        0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-.btn-arrow {
-    width: 40px;
-    height: 40px;
-}
-
 @media (max-width: 900px) {
     .decl-container {
         flex-direction: column;

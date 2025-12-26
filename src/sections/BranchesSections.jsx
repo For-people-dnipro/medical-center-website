@@ -1,4 +1,5 @@
 import "./BranchesSection.css";
+import Button from "../components/Button/Button";
 
 const branches = [
     {
@@ -52,9 +53,7 @@ export default function BranchesSection() {
                     </ul>
 
                     <div className="branches-button-wrapper">
-                        <a href="/branches" className="branches-button">
-                            Детальніше →
-                        </a>
+                        <Button href="/doctors"> Дізнатися більше</Button>
                     </div>
                 </div>
 

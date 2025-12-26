@@ -1,6 +1,7 @@
 import "./DeclarationSection.css";
 import check from "../../public/icons/check.svg";
 import nszulogo from "../assets/nszu.png";
+import Button from "../components/Button/Button";
 
 export default function DeclarationSection() {
     return (
@@ -48,21 +49,10 @@ export default function DeclarationSection() {
                         </ul>
 
                         <div className="decl-actions">
-                            <a href="#" className="decl-btn">
+                            <Button href="/doctors">
                                 Підписати декларацію
-                                <img
-                                    src="/icons/arrow-right.svg"
-                                    className="btn-arrow"
-                                />
-                            </a>
-
-                            <a href="#" className="decl-btn">
-                                Дізнатися більше
-                                <img
-                                    src="/icons/arrow-right.svg"
-                                    className="btn-arrow"
-                                />
-                            </a>
+                            </Button>
+                            <Button href="/doctors"> Дізнатися більше</Button>
                         </div>
                     </div>
 
