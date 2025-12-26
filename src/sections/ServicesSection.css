@@ -30,7 +30,7 @@
 .service-card {
     background: #fff;
     border-radius: 22px;
-    padding: 18px 24px;
+    padding: 25px 24px;
     display: flex;
     align-items: center;
     gap: 25px;
@@ -72,6 +72,9 @@
 
 .more-btn {
     justify-content: space-between;
+    gap: 20px;
+    border: 2px solid #1d9ba6;
+    box-shadow: none;
 }
 
 .more-btn span {
@@ -102,4 +105,17 @@
     font-weight: 600;
     white-space: nowrap;
     padding-left: 15px;
+}
+
+.arrow-circle {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-cosmetology span {
+    white-space: nowrap;
+    margin-left: -2px;
 }

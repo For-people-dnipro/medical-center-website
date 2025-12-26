@@ -10,6 +10,7 @@ export default function ServicesSection() {
         { icon: "/icons/service-manipulation.svg", label: "МАНІПУЛЯЦІЇ" },
         { icon: "/icons/service-packages.svg", label: "ПАКЕТНІ ПОСЛУГИ" },
         { icon: "/icons/service-checkup.svg", label: "CHECK-UP" },
+        { icon: "/icons/service-cosmetology.svg", label: "КОСМЕТОЛОГІЯ" },
     ];
 
     return (
@@ -27,6 +28,8 @@ export default function ServicesSection() {
                     if (item.label === "ПАКЕТНІ ПОСЛУГИ")
                         extraClass = "card-packages";
                     if (item.label === "CHECK-UP") extraClass = "card-checkup";
+                    if (item.label === "КОСМЕТОЛОГІЯ")
+                        extraClass = "card-cosmetology";
 
                     return (
                         <div className={`service-card ${extraClass}`} key={i}>
@@ -43,11 +46,13 @@ export default function ServicesSection() {
                 {/* LAST BUTTON */}
                 <div className="service-card more-btn">
                     <span>ВСІ ПОСЛУГИ</span>
-                    <img
-                        src="/icons/arrow-right.svg"
-                        alt=""
-                        className="service-arrow"
-                    />
+                    <div className="arrow-circle">
+                        <img
+                            src="/icons/arrow-right.svg"
+                            alt=""
+                            className="service-arrow"
+                        />
+                    </div>
                 </div>
             </div>
         </section>
