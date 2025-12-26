@@ -1,4 +1,5 @@
 import "./DoctorsSection.css";
+import Button from "../components/Button/Button";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
@@ -156,13 +157,7 @@ export default function DoctorsSection({ doctors = [] }) {
                 </div>
 
                 <div className="buttonWrapper">
-                    <a href="#" className="button">
-                        Наша команда
-                        <img
-                            src="/icons/arrow-right.svg"
-                            className="btn-arrow"
-                        />
-                    </a>
+                    <Button href="/doctors">Наша команда</Button>
                 </div>
             </div>
         </section>
