@@ -5,6 +5,7 @@ import Ticket from "../components/Ticket";
 import ServicesSection from "../sections/ServicesSection";
 import DoctorsSection from "../sections/DoctorsSection";
 import BranchesSection from "../sections/BranchesSections";
+import WhyChooseUsSection from "../sections/WhyChooseUsSection";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
@@ -58,6 +59,7 @@ export default function Home() {
             {/* можна показати loader, якщо потрібно */}
             {loading ? null : <DoctorsSection doctors={doctors} />}
             <BranchesSection />
+            <WhyChooseUsSection />
         </div>
     );
 }

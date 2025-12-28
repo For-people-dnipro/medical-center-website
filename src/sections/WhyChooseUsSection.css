@@ -1,0 +1,132 @@
+.why-section {
+    padding: 6rem 0rem 3rem 0rem;
+    background: #fff;
+}
+
+.why-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.why-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.why-description {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    font-size: 16px;
+    line-height: 1.7;
+    text-align: justify;
+    color: #222;
+}
+
+.why-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 56px;
+    font-weight: 500;
+    color: #000;
+}
+.stat-number {
+    display: inline-block;
+}
+.stat-text-wrap {
+    max-width: 130px;
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.stat-number-shift {
+    transform: translateX(8px);
+}
+
+.stat-line {
+    display: block;
+    width: 140px;
+    height: 2px;
+    background: #0c8a87;
+    margin: 12px auto;
+}
+
+.stat-text {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.why-features {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 250px;
+    margin-bottom: 50px;
+    justify-content: center;
+
+    max-width: 1200px; /* 👈 ключ */
+    margin: 0 auto 30px; /* 👈 ключ */
+}
+
+.why-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.why-features li {
+    margin-bottom: 30px;
+    font-size: 16px;
+    position: relative;
+    padding-left: 50px;
+}
+
+.why-features li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+
+    width: 28px;
+    height: 28px;
+
+    background-image: url("../../public/icons/check.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.why-features-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* BUTTON */
+.why-button {
+    text-align: center;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .why-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .why-features {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .stat-number {
+        font-size: 44px;
+    }
+}
