@@ -70,7 +70,7 @@
 .why-features {
     display: grid;
     grid-template-columns: auto auto;
-    gap: 250px;
+    gap: 210px;
     margin-bottom: 50px;
     justify-content: center;
 
