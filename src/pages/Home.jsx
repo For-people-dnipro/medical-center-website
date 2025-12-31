@@ -6,6 +6,8 @@ import ServicesSection from "../sections/ServicesSection";
 import DoctorsSection from "../sections/DoctorsSection";
 import BranchesSection from "../sections/BranchesSections";
 import WhyChooseUsSection from "../sections/WhyChooseUsSection";
+import FAQSection from "../sections/FaqSection";
+import ContactForm from "../components/ContactForm/ContactForm";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
@@ -60,6 +62,8 @@ export default function Home() {
             {loading ? null : <DoctorsSection doctors={doctors} />}
             <BranchesSection />
             <WhyChooseUsSection />
+            <FAQSection />
+            <ContactForm />
         </div>
     );
 }
