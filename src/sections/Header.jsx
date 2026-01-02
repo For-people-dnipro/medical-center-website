@@ -1,5 +1,5 @@
 import "./Header.css";
-import Container from "../components/Container";
+import Container from "../components/Container/Container";
 import logo from "../assets/logo_main.svg";
 
 export default function Header() {

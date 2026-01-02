@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Banner from "../components/Banner";
+import Banner from "../components/Banner/Banner";
 import DeclarationSection from "../sections/DeclarationSection";
-import Ticket from "../components/Ticket";
+import Ticket from "../components/Ticket/Ticket";
 import ServicesSection from "../sections/ServicesSection";
 import DoctorsSection from "../sections/DoctorsSection";
 import BranchesSection from "../sections/BranchesSections";
