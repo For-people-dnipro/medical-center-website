@@ -198,14 +198,66 @@
     height: 40px;
 }
 
-/* =========================
-   STATES
-========================= */
-.form-success {
-    color: #2e7d32;
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
-.form-error {
-    color: #c62828;
+
+.popup {
+    position: relative;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 420px;
+    width: calc(100% - 32px);
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: popupFade 0.25s ease;
+}
+
+.popup h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.popup p {
+    font-size: 15px;
+    color: #444;
+}
+
+/* ❌ CLOSE BUTTON */
+.popup-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    color: #888;
+}
+
+.popup-close:hover {
+    color: #000;
+}
+
+@keyframes popupFade {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* =========================
@@ -224,6 +276,10 @@
 
 .form-group select:has(option[value=""]:checked) {
     color: #b9bec7;
+}
+.form-message textarea:focus {
+    outline: none;
+    border-color: #1d9ba6;
 }
 
 @media (max-width: 900px) {
