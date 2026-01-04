@@ -74,18 +74,25 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* ===== BOTTOM ===== */}
             <div className="footer-bottom">
-                <span>© 2025 Для людей. Всі права захищені</span>
+                <span className="footer-copy">
+                    © 2025 Для людей. Всі права захищені
+                </span>
+
+                <a href="/rules" className="footer-rules">
+                    Правила внутрішнього розпорядку
+                </a>
 
                 <div className="footer-socials">
-                    <a href="#" aria-label="Instagram">
+                    <a href="#" className="social-link instagram">
                         <img src="/icons/icon-instagram.svg" alt="Instagram" />
                     </a>
-                    <a href="#" aria-label="Facebook">
+
+                    <a href="#" className="social-link facebook">
                         <img src="/icons/icon-facebook.svg" alt="Facebook" />
                     </a>
-                    <a href="#" aria-label="Telegram">
+
+                    <a href="#" className="social-link telegram">
                         <img src="/icons/icon-telegram.svg" alt="Telegram" />
                     </a>
                 </div>
