@@ -1,60 +1,103 @@
 import "./Footer.css";
+import logofooter from "../../assets/logo_footer.svg";
 
 export default function Footer() {
     return (
         <footer className="footer">
             <div className="footer-container">
-                {/* ЛОГО + КОНТАКТИ */}
-                <div className="footer-col footer-main">
-                    <div className="footer-logo">{/* ТУТ БУДЕ ЛОГО */}</div>
+                {/* ===== TOP ===== */}
+                <div className="footer-top">
+                    {/* LOGO */}
+                    <div className="footer-logo">
+                        <img src={logofooter} alt="Для людей" />
+                    </div>
 
-                    <div className="footer-contact">
-                        <p>вул. Д. Галицького 34, Дніпро</p>
-                        <p>ПН–ПТ з 9:00 до 17:00</p>
-                        <p>+380991367595</p>
+                    {/* CONTACT BLOCKS */}
+                    <div className="footer-contacts">
+                        {[1, 2, 3].map((_, i) => (
+                            <div className="footer-contact-block" key={i}>
+                                <p>
+                                    <img
+                                        src="/icons/icon-location.svg"
+                                        alt=""
+                                    />
+                                    вул. Д. Галицького 34, Дніпро
+                                </p>
+                                <p>
+                                    <img src="/icons/icon-clock.svg" alt="" />
+                                    ПН–ПТ з 9:00 до 17:00
+                                </p>
+                                <p>
+                                    <img src="/icons/icon-phone.svg" alt="" />
+                                    +380991367595
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* НАВІГАЦІЯ */}
-                <div className="footer-col">
-                    <a href="/about">Про клініку</a>
-                    <a href="/departments">Відділення</a>
-                    <a href="/doctors">Лікарі</a>
-                    <a href="/services">Послуги</a>
-                    <a href="/vacancies">Вакансії</a>
-                    <a href="/news">Новини</a>
-                </div>
+                {/* ===== NAVIGATION ===== */}
+                <div className="footer-nav">
+                    <div className="footer-col">
+                        <a href="/about">Про клініку</a>
+                        <a href="/doctors">Лікарі</a>
+                        <a href="/services">Послуги</a>
+                    </div>
 
-                {/* СЕРВІСИ */}
-                <div className="footer-col">
-                    <a href="/contacts">Контакти</a>
-                    <a href="/results">Результати аналізів</a>
-                    <a href="/declaration">Підписати декларацію</a>
-                </div>
+                    <div className="footer-col">
+                        <a href="/departments">Відділення</a>
+                        <a href="/vacancies">Вакансії</a>
+                        <a href="/news">Новини</a>
+                    </div>
 
-                {/* ДОКУМЕНТИ */}
-                <div className="footer-col">
-                    <a href="/documents">Документи</a>
-                    <a href="/privacy">Політика конфіденційності</a>
-                    <a href="/data-protection">Захист персональних даних</a>
-                    <a href="/rules">Правила внутрішнього розпорядку</a>
-                </div>
+                    <div className="footer-col">
+                        <a href="/contacts">Контакти</a>
+                        <a href="/results">Результати аналізів</a>
+                        <a href="/declaration">Підписати декларацію</a>
+                    </div>
 
-                {/* ПРАВОВА ІНФА */}
-                <div className="footer-col">
-                    <a href="/offer">Публічна оферта</a>
-                    <a href="/free-services">
-                        Перелік безкоштовних послуг (ПМГ)
-                    </a>
-                    <a href="/air-alert">Правила під час повітряної тривоги</a>
+                    <div className="footer-col">
+                        <a href="/documents">Документи</a>
+                        <a href="/privacy">Політика конфіденційності</a>
+                        <a href="/data-protection">Захист персональних даних</a>
+                    </div>
+
+                    <div className="footer-col">
+                        <a href="/offer">Публічна оферта</a>
+                        <a href="/free-services">
+                            Перелік безкоштовних послуг (ПМГ)
+                        </a>
+                        <a href="/air-alert">
+                            Правила під час повітряної тривоги
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            {/* НИЖНЯ ПАНЕЛЬ */}
+            {/* ===== BOTTOM ===== */}
             <div className="footer-bottom">
                 <span>© 2025 Для людей. Всі права захищені</span>
 
-                <div className="footer-socials">{/* ІКОНКИ СОЦМЕРЕЖ */}</div>
+                <div className="footer-socials">
+                    <a href="#" aria-label="Instagram">
+                        <img src="/icons/icon-instagram.svg" alt="Instagram" />
+                    </a>
+                    <a href="#" aria-label="Facebook">
+                        <img src="/icons/icon-facebook.svg" alt="Facebook" />
+                    </a>
+                    <a href="#" aria-label="Telegram">
+                        <img src="/icons/icon-telegram.svg" alt="Telegram" />
+                    </a>
+                </div>
+
+                <a
+                    href="https://dashly.studio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-dev"
+                >
+                    DASHLY STUDIO
+                </a>
             </div>
         </footer>
     );
