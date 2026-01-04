@@ -114,9 +114,9 @@ export default function BranchesSection() {
                     <iframe
                         title="Dnipro map"
                         src={`https://www.google.com/maps?ll=${center.lat},${center.lng}&z=${zoom}&hl=uk&output=embed`}
+                        loading="lazy"
                         width="100%"
                         height="100%"
-                        loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                     />
 
