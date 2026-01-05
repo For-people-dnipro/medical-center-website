@@ -14,12 +14,16 @@ export default function Banner() {
         fetch("http://localhost:1337/api/home-sliders?populate=*")
             .then((res) => res.json())
             .then((data) => {
-                const sorted = data.data.sort(
-                    (a, b) => (a.order || 0) - (b.order || 0)
-                );
+                const items = Array.isArray(data?.data) ? data.data : [];
+                const sorted = items
+                    .slice()
+                    .sort((a, b) => (a.order || 0) - (b.order || 0));
                 setSlides(sorted);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                console.error("Failed to load home-sliders:", err);
+                setSlides([]);
+            });
     }, []);
 
     return (
