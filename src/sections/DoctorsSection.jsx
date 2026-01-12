@@ -80,7 +80,7 @@ export default function DoctorsSection({ doctors = [] }) {
 
     return (
         <section className="section">
-            <div className="container">
+            <div className="doctors-container">
                 <h2 className="title">ЛІКАРІ</h2>
                 <p className="subtitle">
                     Команда, яка щодня дбає про ваше самопочуття
