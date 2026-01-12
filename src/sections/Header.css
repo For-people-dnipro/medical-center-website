@@ -125,7 +125,8 @@
     height: 3px;
     background: #1d9ba6; /* lighter/brand color */
     border-radius: 3px;
-    transition: transform 0.28s ease, opacity 0.2s ease, background-color 0.2s ease;
+    transition: transform 0.28s ease, opacity 0.2s ease,
+        background-color 0.2s ease;
 }
 .burger-icon span:nth-child(1) {
     top: 0;
@@ -258,5 +259,11 @@
     }
     .arrow.open {
         transform: rotate(180deg);
+    }
+    .burger.open {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 300; /* вище ніж menu (150) і overlay (140) */
     }
 }

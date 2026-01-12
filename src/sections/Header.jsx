@@ -53,7 +53,6 @@ export default function Header() {
                             alt="Договір з НСЗУ"
                             className="ncsu-icon"
                         />
-
                         <button
                             className={`burger ${menuOpen ? "open" : ""}`}
                             onClick={() => setMenuOpen((v) => !v)}
@@ -80,13 +79,6 @@ export default function Header() {
                     ref={menuRef}
                     className={`mobile-menu ${menuOpen ? "open" : ""}`}
                 >
-                    <button
-                        className="mobile-close"
-                        onClick={closeMenu}
-                        aria-label="Close menu"
-                    >
-                        ✕
-                    </button>
                     <div className="mobile-nav">
                         <a href="/about" onClick={closeMenu}>
                             Про нас
