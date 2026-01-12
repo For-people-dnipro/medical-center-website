@@ -85,9 +85,6 @@ export default function Header() {
             {menuOpen &&
                 createPortal(
                     <div className="mobile-menu open">
-                        {/* 🔥 BURGER ВСЕРЕДИНІ МЕНЮ */}
-                        <div className="mobile-menu-header">{BurgerButton}</div>
-
                         <nav className="mobile-nav">
                             <a href="/about">Про нас</a>
                             <a href="/doctors">Лікарі</a>
