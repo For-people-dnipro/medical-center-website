@@ -95,7 +95,8 @@
 }
 
 .ncsu-icon {
-    height: 48px;
+    height: 100px;
+    padding-right: 60px;
 }
 
 /* ================= OVERLAY ================= */
@@ -105,7 +106,7 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(4px);
-    z-index: 900;
+    z-index: 1200;
 }
 /* ================= BURGER (GLOBAL) ================= */
 
@@ -119,7 +120,7 @@
     justify-content: center;
     cursor: pointer;
     position: relative;
-    z-index: 1200;
+    z-index: 1400;
 }
 
 .burger-icon {
@@ -171,7 +172,7 @@
     top: 0;
     right: 0;
 
-    width: 80%;
+    width: 50%;
     max-width: 420px;
     height: 100vh;
 
@@ -180,7 +181,7 @@
 
     transform: translateX(100%);
     transition: transform 0.35s ease;
-    z-index: 1000;
+    z-index: 1300;
 
     display: flex;
     flex-direction: column;
@@ -196,7 +197,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 2;
+    z-index: 1100;
 }
 
 /* ================= MOBILE NAV ================= */
@@ -250,8 +251,9 @@
 .mobile-actions .outline-btn {
     width: 100%;
 }
-
-/* ================= RESPONSIVE ================= */
+.global-burger {
+    display: none;
+}
 
 @media (max-width: 768px) {
     .header-right {
@@ -260,5 +262,12 @@
 
     .header-mobile-icons {
         display: flex;
+    }
+    .global-burger {
+        position: fixed;
+        display: flex;
+        top: 35px;
+        right: 16px;
+        z-index: 1500;
     }
 }
