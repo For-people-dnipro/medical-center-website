@@ -68,6 +68,10 @@
     border-radius: 24px;
     font-size: 15px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     font-weight: 500;
     white-space: nowrap;
     width: 220px;
@@ -218,23 +222,43 @@
 .mobile-dropdown-toggle {
     background: none;
     border: 0;
+    all: unset;
     font-size: 18px;
     font-weight: 500;
     display: flex;
+    padding: 0;
     justify-content: space-between;
     cursor: pointer;
 }
-
-.arrow {
-    transition: transform 0.2s ease;
+.mobile-submenu a {
+    position: relative;
+    padding-left: 16px;
 }
 
-.arrow.open {
+.mobile-submenu a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: #1d9ba6; /* твій зелений */
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+.arrow-icon {
+    width: 25px;
+    padding-right: 11px;
+    height: 25px;
+    transition: transform 0.25s ease;
+}
+
+.arrow-icon.open {
     transform: rotate(180deg);
 }
 
 .mobile-submenu {
-    padding-left: 15px;
+    padding-left: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;

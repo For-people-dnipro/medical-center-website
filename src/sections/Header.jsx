@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
+import arrowIcon from "../../public/icons/arrow-down.svg";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -50,7 +51,6 @@ export default function Header() {
                     </div>
                 </div>
             </header>{" "}
-            {/* 🔥 ОДИН BURGER */}
             <button
                 className={`burger global-burger ${menuOpen ? "open" : ""}`}
                 onClick={() => setMenuOpen((v) => !v)}
@@ -79,10 +79,15 @@ export default function Header() {
                         className="mobile-dropdown-toggle"
                         onClick={() => setServicesOpen((v) => !v)}
                     >
-                        Послуги
-                        <span className={`arrow ${servicesOpen ? "open" : ""}`}>
-                            ▾
-                        </span>
+                        <span>Послуги</span>
+
+                        <img
+                            src={arrowIcon}
+                            alt=""
+                            className={`arrow-icon ${
+                                servicesOpen ? "open" : ""
+                            }`}
+                        />
                     </button>
 
                     {servicesOpen && (
