@@ -8,6 +8,7 @@ body {
 
 body {
     background-color: #fdfdfd;
+    padding-top: 104px; /* ≈ реальна висота header */
 }
 .h1,
 .h2,
