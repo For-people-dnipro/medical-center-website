@@ -143,14 +143,9 @@ export default function DoctorsSection({ doctors = [] }) {
                                     <p className="position">{d.position}</p>
                                 )}
 
-                                {/* Покажемо місце роботи якщо є */}
                                 {workplace ? (
                                     <p className="workplace">{workplace}</p>
-                                ) : (
-                                    <p className="address">
-                                        Дніпро — вул. Б.Хмельницького 4
-                                    </p>
-                                )}
+                                ) : null}
                             </div>
                         );
                     })}

@@ -124,7 +124,11 @@ export default function ServicesSection() {
                     </div>
 
                     {/* CONTENT */}
-                    <div className="services-scroll-wrapper">
+                    <div
+                        className={`services-scroll-wrapper ${
+                            filteredServices.length > 0 ? "has-results" : ""
+                        }`}
+                    >
                         {filteredServices.length > 0 ? (
                             <>
                                 <div className="services-scroll">
