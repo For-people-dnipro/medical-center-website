@@ -1,12 +1,13 @@
 .decl-section {
-    padding: 6rem 0rem 3rem 0rem;
+    padding: 6rem 0 3rem;
 }
 
 .decl-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 25px;
 }
+
 .decl-title {
     text-align: center;
     margin-bottom: 35px;
@@ -14,117 +15,185 @@
 
 .decl-title h2 {
     margin: 0;
-    font-weight: 400;
     font-size: 28px;
-}
-
-.decl-title h2 span {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .decl-title h3 {
     margin: 0;
-    font-weight: 400;
     font-size: 26px;
+    font-weight: 400;
 }
 
-.decl-title h3 span {
+.decl-title span {
     font-weight: 600;
+}
+
+.title-mobile {
+    display: none;
 }
 
 .decl-content {
     display: flex;
-    justify-content: space-between;
+    gap: 40px;
     align-items: flex-start;
-    gap: 50px;
 }
 
 .decl-text {
-    flex: 2;
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.decl-image {
+    flex: 0 0 clamp(170px, 18vw, 220px);
 }
 
 .decl-image img {
-    width: 250px;
-    max-width: 100%;
+    width: 100%;
     height: auto;
-    object-fit: contain;
-    margin-top: -40px;
 }
 
-.decl-text h2 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 0px;
+.decl-description {
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
-.decl-text h2 span {
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.decl-text h3 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 0px;
-}
-
-.decl-text h3 span {
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.decl-description,
 .decl-subtitle {
     font-size: 16px;
-    margin-bottom: 25px;
-    text-align: left;
-    margin-top: 0px;
+    margin-bottom: 16px;
 }
 
 .decl-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 0px;
+    margin: 0;
 }
 
 .decl-list li {
     display: flex;
-    align-items: center;
     gap: 12px;
     font-size: 16px;
     margin-bottom: 16px;
+    line-height: 1.5;
 }
 
 .decl-list img {
     width: 28px;
+    flex-shrink: 0;
+}
+
+.decl-list-mobile {
+    display: none;
 }
 
 .decl-actions {
     display: flex;
     gap: 25px;
+    margin-top: 30px;
 }
 
-@media (max-width: 900px) {
-    .decl-container {
-        flex-direction: column;
+.decl-actions-mobile {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .decl-content {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 833px) {
+    .decl-image {
+        display: none;
+    }
+    .decl-actions {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 673px) {
+    .decl-section {
+        padding: 3rem 0 2.5rem;
+    }
+
+    /* titles */
+    .decl-title {
+        display: none;
+    }
+
+    .title-mobile {
+        display: block;
         text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .title-mobile h2 {
+        line-height: 1.3;
+        font-weight: 400;
+        font-size: clamp(20px, 3.2vw, 26px);
+    }
+
+    .title-mobile span {
+        font-weight: 600;
+    }
+
+    /* layout */
+    .decl-content {
+        flex-direction: column;
         gap: 30px;
     }
 
-    .decl-text {
-        align-items: center; /* вирівнювання тексту по центру */
+    .decl-description {
+        display: none;
+    }
+
+    /* lists */
+    .decl-list {
+        display: none;
+    }
+
+    .decl-list-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .decl-list-mobile li {
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px 15px;
+        display: flex;
+        gap: 16px;
+        font-size: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .decl-list-mobile img {
+        width: 26px;
+        flex-shrink: 0;
     }
 
     .decl-actions {
-        flex-direction: column;
+        display: none;
+    }
+
+    .decl-actions-mobile {
+        display: flex;
+        justify-content: center;
+    }
+    .decl-actions-mobile {
+        width: 100%;
+        display: flex !important;
+        justify-content: center !important;
         align-items: center;
     }
 
-    .decl-list li {
-        justify-content: center;
-    }
-
-    .decl-image img {
-        width: 280px;
+    .decl-actions-mobile a,
+    .decl-actions-mobile button {
+        width: auto;
     }
 }
