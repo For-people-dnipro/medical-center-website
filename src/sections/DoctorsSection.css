@@ -48,12 +48,6 @@
     }
 }
 
-@media (max-width: 576px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 .card {
     background: white;
     border-radius: 24px;
@@ -134,7 +128,7 @@
     padding-left: 2px;
 }
 
-.address {
+.workplace {
     font-size: 14px;
     text-align: left;
     margin-top: 0px;
@@ -145,4 +139,49 @@
 
 .buttonWrapper {
     margin-top: 40px;
+}
+/* DESKTOP */
+.doctors-mobile {
+    display: none;
+}
+
+@media (max-width: 576px) {
+    .image {
+        height: 240px;
+    }
+
+    .name {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .position,
+    .workplace {
+        font-size: 13px;
+    }
+    .section {
+        padding: 0 16px;
+    }
+    .grid {
+        display: none;
+    }
+
+    .doctors-mobile {
+        display: block;
+        margin: 0 -16px; /* щоб було видно крайні картки */
+    }
+
+    .swiper {
+        padding: 0 16px;
+    }
+
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 300px;
+    }
 }

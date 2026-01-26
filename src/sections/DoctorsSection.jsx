@@ -85,70 +85,57 @@ export default function DoctorsSection({ doctors = [] }) {
                 <p className="subtitle">
                     Команда, яка щодня дбає про ваше самопочуття
                 </p>
+                <div className="doctors-scroll">
+                    <div className="grid">
+                        {limitedDoctors.map((doc) => {
+                            const d = doc.attributes || doc || {};
 
-                <div className="grid">
-                    {limitedDoctors.map((doc) => {
-                        const d = doc.attributes || doc || {};
+                            const photoUrl = d.photo?.url;
+                            const imgSrc = `${API_URL}${photoUrl}`;
 
-                        // Безпечне отримання зображення (підтримує кілька можливих шляхів)
-                        const photoUrl =
-                            d.photo?.data?.attributes?.formats?.medium?.url ||
-                            d.photo?.data?.attributes?.url ||
-                            d.photo?.url ||
-                            d.image?.data?.attributes?.url ||
-                            null;
-                        const imgSrc = photoUrl
-                            ? `${API_URL}${photoUrl}`
-                            : "/placeholder-doctor.png";
+                            const workplace = d.place;
 
-                        // Нове поле: підтримка різних імен (workplace, place_of_work, employer)
-                        const workplace =
-                            d.workplace ||
-                            d.place_of_work ||
-                            d.employer ||
-                            d.company ||
-                            "";
+                            const years = computeExperience(d, doc);
 
-                        const years = computeExperience(d, doc);
+                            return (
+                                <div key={doc.id} className="card">
+                                    <div className="imageWrapper">
+                                        <img
+                                            src={imgSrc}
+                                            alt={d.name || "doctor"}
+                                            className="image"
+                                        />
 
-                        return (
-                            <div key={doc.id} className="card">
-                                <div className="imageWrapper">
-                                    <img
-                                        src={imgSrc}
-                                        alt={d.name || "doctor"}
-                                        className="image"
-                                    />
-
-                                    {years > 0 && (
-                                        <div className="experience">
-                                            <div className="exp-number">
-                                                {years}
+                                        {years > 0 && (
+                                            <div className="experience">
+                                                <div className="exp-number">
+                                                    {years}
+                                                </div>
+                                                <div className="exp-line"></div>
+                                                <div className="exp-text">
+                                                    {pluralizeYears(years)}
+                                                    <br />
+                                                    досвіду
+                                                </div>
                                             </div>
-                                            <div className="exp-line"></div>
-                                            <div className="exp-text">
-                                                {pluralizeYears(years)}
-                                                <br />
-                                                досвіду
-                                            </div>
-                                        </div>
+                                        )}
+                                    </div>
+
+                                    <h3 className="name">
+                                        {d.surname} <br /> {d.name}
+                                    </h3>
+
+                                    {d.position && (
+                                        <p className="position">{d.position}</p>
                                     )}
+
+                                    {workplace ? (
+                                        <p className="workplace">{workplace}</p>
+                                    ) : null}
                                 </div>
-
-                                <h3 className="name">
-                                    {d.surname} <br /> {d.name}
-                                </h3>
-
-                                {d.position && (
-                                    <p className="position">{d.position}</p>
-                                )}
-
-                                {workplace ? (
-                                    <p className="workplace">{workplace}</p>
-                                ) : null}
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
 
                 <div className="buttonWrapper">

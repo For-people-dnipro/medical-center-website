@@ -10,22 +10,21 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@react-google-maps/api": "^2.20.8",
-        "axios": "^1.13.2",
-        "emailjs-com": "^3.2.0",
-        "react": "~18.3.1",
-        "react-dom": "~18.3.1",
-        "swiper": "^12.0.3"
+        "@react-google-maps/api": "2.20.8",
+        "axios": "1.13.2",
+        "emailjs-com": "3.2.0",
+        "react": "18.3.1",
+        "react-dom": "18.3.1",
+        "swiper": "11.1.15"
     },
     "devDependencies": {
-        "@eslint/js": "^9.39.1",
+        "@vitejs/plugin-react": "4.3.4",
+        "vite": "5.4.8",
         "@types/react": "~18.3.12",
         "@types/react-dom": "~18.3.1",
-        "@vitejs/plugin-react": "^5.1.1",
         "eslint": "^9.39.1",
         "eslint-plugin-react-hooks": "^7.0.1",
         "eslint-plugin-react-refresh": "^0.4.24",
-        "globals": "^16.5.0",
-        "vite": "^7.2.4"
+        "globals": "^16.5.0"
     }
 }
