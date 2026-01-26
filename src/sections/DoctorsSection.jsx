@@ -4,9 +4,9 @@ import Button from "../components/Button/Button";
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
 export default function DoctorsSection({ doctors = [] }) {
-    console.log("DoctorsSection doctors prop:", doctors);
-
     const limitedDoctors = Array.isArray(doctors) ? doctors.slice(0, 4) : [];
+
+    if (!limitedDoctors.length) return null;
 
     function pluralizeYears(n) {
         const abs = Math.abs(Number(n) || 0);
@@ -33,25 +33,6 @@ export default function DoctorsSection({ doctors = [] }) {
             return Math.max(0, yearNow - Number(startYear));
         }
 
-        const startDate =
-            attrs.startDate ||
-            attrs.experienceStartDate ||
-            attrs.startedAt ||
-            attrs.start_date;
-
-        if (startDate) {
-            const sd = new Date(startDate);
-            if (!isNaN(sd)) {
-                let years = yearNow - sd.getFullYear();
-                const hasAnniversary =
-                    now.getMonth() > sd.getMonth() ||
-                    (now.getMonth() === sd.getMonth() &&
-                        now.getDate() >= sd.getDate());
-                if (!hasAnniversary) years--;
-                return Math.max(0, years);
-            }
-        }
-
         const exp = Number(attrs.experience ?? attrs.years ?? attrs.experiance);
         if (!isNaN(exp) && exp !== 0) return Math.max(0, Math.floor(exp));
 
@@ -66,17 +47,15 @@ export default function DoctorsSection({ doctors = [] }) {
                     Команда, яка щодня дбає про ваше самопочуття
                 </p>
 
+                {/* ===== DESKTOP GRID ===== */}
                 <div className="doctors-scroll">
                     <div className="grid">
                         {limitedDoctors.map((doc) => {
                             const d = doc.attributes || doc || {};
-
                             const photoUrl = d.photo?.url;
                             const imgSrc = photoUrl
                                 ? `${API_URL}${photoUrl}`
                                 : "";
-
-                            const workplace = d.place;
                             const years = computeExperience(d);
 
                             return (
@@ -112,9 +91,40 @@ export default function DoctorsSection({ doctors = [] }) {
                                     {d.position && (
                                         <p className="position">{d.position}</p>
                                     )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
 
-                                    {workplace && (
-                                        <p className="workplace">{workplace}</p>
+                {/* ===== MOBILE SLIDER ===== */}
+                <div className="doctors-mobile">
+                    <div className="mobile-track">
+                        {limitedDoctors.map((doc) => {
+                            const d = doc.attributes || doc || {};
+                            const photoUrl = d.photo?.url;
+                            const imgSrc = photoUrl
+                                ? `${API_URL}${photoUrl}`
+                                : "";
+
+                            return (
+                                <div key={doc.id} className="mobile-card">
+                                    {imgSrc && (
+                                        <img
+                                            src={imgSrc}
+                                            alt={d.name || "doctor"}
+                                            className="mobile-image"
+                                        />
+                                    )}
+
+                                    <h3 className="mobile-name">
+                                        {d.surname} {d.name}
+                                    </h3>
+
+                                    {d.position && (
+                                        <p className="mobile-position">
+                                            {d.position}
+                                        </p>
                                     )}
                                 </div>
                             );
