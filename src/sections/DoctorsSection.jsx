@@ -8,25 +8,6 @@ export default function DoctorsSection({ doctors = [] }) {
 
     const limitedDoctors = Array.isArray(doctors) ? doctors.slice(0, 4) : [];
 
-    if (!limitedDoctors.length) {
-        return (
-            <section className="section">
-                <div className="container">
-                    <h2 className="title">ЛІКАРІ</h2>
-                    <p className="subtitle">
-                        Команда, яка щодня дбає про ваше самопочуття
-                    </p>
-                    <p
-                        className="no-data-message"
-                        style={{ textAlign: "center", padding: 40 }}
-                    >
-                        Дані лікарів відсутні.
-                    </p>
-                </div>
-            </section>
-        );
-    }
-
     function pluralizeYears(n) {
         const abs = Math.abs(Number(n) || 0);
         const rem10 = abs % 10;
@@ -41,23 +22,23 @@ export default function DoctorsSection({ doctors = [] }) {
         const now = new Date();
         const yearNow = now.getFullYear();
 
-        // 1) Start year field
         const startYear =
             attrs.startYear ||
             attrs.workStartYear ||
             attrs.experienceStartYear ||
             attrs.start_of_career ||
             attrs.start_year;
+
         if (startYear && !isNaN(Number(startYear))) {
             return Math.max(0, yearNow - Number(startYear));
         }
 
-        // 2) Start date field
         const startDate =
             attrs.startDate ||
             attrs.experienceStartDate ||
             attrs.startedAt ||
             attrs.start_date;
+
         if (startDate) {
             const sd = new Date(startDate);
             if (!isNaN(sd)) {
@@ -71,7 +52,6 @@ export default function DoctorsSection({ doctors = [] }) {
             }
         }
 
-        // 3) Numeric experience field (already years)
         const exp = Number(attrs.experience ?? attrs.years ?? attrs.experiance);
         if (!isNaN(exp) && exp !== 0) return Math.max(0, Math.floor(exp));
 
@@ -85,26 +65,30 @@ export default function DoctorsSection({ doctors = [] }) {
                 <p className="subtitle">
                     Команда, яка щодня дбає про ваше самопочуття
                 </p>
+
                 <div className="doctors-scroll">
                     <div className="grid">
                         {limitedDoctors.map((doc) => {
                             const d = doc.attributes || doc || {};
 
                             const photoUrl = d.photo?.url;
-                            const imgSrc = `${API_URL}${photoUrl}`;
+                            const imgSrc = photoUrl
+                                ? `${API_URL}${photoUrl}`
+                                : "";
 
                             const workplace = d.place;
-
-                            const years = computeExperience(d, doc);
+                            const years = computeExperience(d);
 
                             return (
                                 <div key={doc.id} className="card">
                                     <div className="imageWrapper">
-                                        <img
-                                            src={imgSrc}
-                                            alt={d.name || "doctor"}
-                                            className="image"
-                                        />
+                                        {imgSrc && (
+                                            <img
+                                                src={imgSrc}
+                                                alt={d.name || "doctor"}
+                                                className="image"
+                                            />
+                                        )}
 
                                         {years > 0 && (
                                             <div className="experience">
@@ -129,9 +113,9 @@ export default function DoctorsSection({ doctors = [] }) {
                                         <p className="position">{d.position}</p>
                                     )}
 
-                                    {workplace ? (
+                                    {workplace && (
                                         <p className="workplace">{workplace}</p>
-                                    ) : null}
+                                    )}
                                 </div>
                             );
                         })}
