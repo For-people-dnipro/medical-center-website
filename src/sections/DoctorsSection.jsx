@@ -1,5 +1,9 @@
 import "./DoctorsSection.css";
 import Button from "../components/Button/Button";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+
+import "swiper/css";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 

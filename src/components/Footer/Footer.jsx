@@ -2,6 +2,24 @@ import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 
 export default function Footer() {
+    const branches = [
+        {
+            address: "м. Дніпро, вул. Данила Галицького, 34",
+            hours: "ПН–ПТ з 9:00 до 18:00",
+            phone: "+050-067-13-88",
+        },
+        {
+            address: "м. Дніпро, просп. Б. Хмельницького, 127",
+            hours: "ПН–ПТ з 9:00 до 18:00",
+            phone: "+050-067-22-35",
+        },
+        {
+            address: "м. Дніпро, бульвар Слави, 8",
+            hours: "ПН–ПТ з 9:00 до 18:00",
+            phone: "+066-067-00-37",
+        },
+    ];
+
     return (
         <footer className="footer">
             <div className="footer-container">
@@ -14,28 +32,31 @@ export default function Footer() {
 
                     {/* CONTACT BLOCKS */}
                     <div className="footer-contacts">
-                        {[1, 2, 3].map((_, i) => (
+                        {branches.map((branch, i) => (
                             <div className="footer-contact-block" key={i}>
                                 <p>
                                     <img
                                         src="/icons/icon-location.svg"
                                         alt=""
                                     />
-                                    вул. Д. Галицького 34, Дніпро
+                                    {branch.address}
                                 </p>
+
                                 <p>
                                     <img src="/icons/icon-clock.svg" alt="" />
-                                    ПН–ПТ з 9:00 до 17:00
+                                    {branch.hours}
                                 </p>
+
                                 <p>
                                     <img src="/icons/icon-phone.svg" alt="" />
-                                    +380991367595
+                                    <a href={`tel:${branch.phone}`}>
+                                        {branch.phone}
+                                    </a>
                                 </p>
                             </div>
                         ))}
                     </div>
                 </div>
-
                 {/* ===== NAVIGATION ===== */}
                 <div className="footer-nav">
                     <div className="footer-col">
@@ -84,16 +105,24 @@ export default function Footer() {
                 </a>
 
                 <div className="footer-socials">
-                    <a href="#" className="social-link instagram">
+                    <a
+                        href="https://www.instagram.com/medcentr_dl/
+"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-link instagram"
+                    >
                         <img src="/icons/icon-instagram.svg" alt="Instagram" />
                     </a>
 
-                    <a href="#" className="social-link facebook">
+                    <a
+                        href="https://www.facebook.com/f3.peremogi
+"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-link facebook"
+                    >
                         <img src="/icons/icon-facebook.svg" alt="Facebook" />
-                    </a>
-
-                    <a href="#" className="social-link telegram">
-                        <img src="/icons/icon-telegram.svg" alt="Telegram" />
                     </a>
                 </div>
 
