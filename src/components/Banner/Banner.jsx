@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, Keyboard } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, Keyboard } from "swiper";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -15,7 +15,7 @@ export default function Banner() {
             .then((res) => res.json())
             .then((data) => {
                 const sortedSlides = data.data.sort(
-                    (a, b) => (a.order || 0) - (b.order || 0)
+                    (a, b) => (a.order || 0) - (b.order || 0),
                 );
                 setSlides(sortedSlides);
             })
