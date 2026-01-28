@@ -62,7 +62,7 @@ export default function BranchesMap() {
                             fillColor: "#0c8a87",
                             fillOpacity: 1,
                             strokeWeight: 0,
-                            scale: hoveredIndex === i ? 1.05 : 1,
+                            scale: hoveredIndex === i ? 1.0 : 0.9,
                         }}
                         zIndex={10}
                         onMouseOver={() => setHoveredIndex(i)}
@@ -74,7 +74,7 @@ export default function BranchesMap() {
                     <Marker
                         position={{ lat: b.lat, lng: b.lng }}
                         icon={{
-                            path: "M0,-6.5 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0",
+                            path: "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0",
 
                             fillColor: "#ffffff",
                             fillOpacity: 1,

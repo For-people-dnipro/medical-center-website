@@ -13,7 +13,7 @@
 }
 .section {
     margin: 0 auto;
-    padding: 0 25px;
+    padding: 0px;
 }
 
 .doctors-container {
@@ -149,8 +149,8 @@
     .grid {
         display: none;
     }
-    .title {
-        font-size: 20px;
+    .section {
+        padding: 25px 0px;
     }
     .subtitle-desktop {
         display: none;

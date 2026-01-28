@@ -1,20 +1,17 @@
-export default function MapPin({ size = 28 }) {
+export default function MapPin({ size = 22, color = "#0c8a87" }) {
     return (
         <svg
             width={size}
-            height={size * 1.3}
-            viewBox="0 0 28 36"
-            className="branches-pin-svg"
+            height={size}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
         >
             <path
-                d="M14 2 
-                   C10 2, 2 8, 2 14 
-                   C2 22, 14 34, 14 34 
-                   C14 34, 26 22, 26 14 
-                   C26 8, 18 2, 14 2 Z"
-                fill="#0c8a87"
+                d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7z"
+                fill={color}
             />
-            <circle cx="14" cy="14" r="5" fill="white" />
+            <circle cx="12" cy="8.5" r="2.8" fill="#fff" />
         </svg>
     );
 }

@@ -9,7 +9,7 @@ const branches = [
         link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
     },
     {
-        name: "просп. Богдана Хмельницького, 127",
+        name: "просп. Б. Хмельницького, 127",
         link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
     },
     {
@@ -28,14 +28,16 @@ export default function BranchesSection() {
 
                     <p className="branches-description">
                         Наші філії розташовані у зручних районах міста, щоб
-                        якісна медична допомога була поруч із вами.
+                        якісна медична допомога була поруч із вами. Обирайте
+                        найближчий медичний центр і отримуйте повний комплекс
+                        медичних послуг
                     </p>
 
                     <ul className="branches-list">
                         {branches.map((b, i) => (
                             <li key={i} className="branches-item">
                                 <span className="icon">
-                                    <MapPin size={22} />
+                                    <MapPin size={30} /> {/* ⬅ компактний */}
                                 </span>
                                 <a
                                     href={b.link}
@@ -47,8 +49,8 @@ export default function BranchesSection() {
                             </li>
                         ))}
                     </ul>
-
-                    <div className="branches-button-wrapper">
+                    {/* ✅ DESKTOP BUTTON */}
+                    <div className="branches-button-wrapper desktop-only">
                         <Button href="/doctors">Детальніше</Button>
                     </div>
                 </div>
@@ -56,6 +58,11 @@ export default function BranchesSection() {
                 {/* MAP */}
                 <div className="branches-map">
                     <BranchesMap />
+                </div>
+
+                {/* ✅ MOBILE BUTTON */}
+                <div className="branches-button-wrapper mobile-only">
+                    <Button href="/doctors">Детальніше</Button>
                 </div>
             </div>
         </section>
