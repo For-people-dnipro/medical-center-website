@@ -241,3 +241,13 @@
         gap: 32px;
     }
 }
+@media (max-width: 358px) {
+    .branches-item a {
+        font-size: 15px;
+    }
+}
+@media (max-width: 321px) {
+    .branches-item a {
+        font-size: 14px;
+    }
+}

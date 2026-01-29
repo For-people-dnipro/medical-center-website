@@ -12,15 +12,11 @@ const faqs = [
     },
     {
         question:
-            "У мене вже підписана декларація в іншому закладі, як перепідписати у вас?",
+            "Як перепідписати декларацію, якщо вона вже укладена в іншому закладі?",
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
         question: "Що таке річна програма медичного супроводу?",
-        answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
-    {
-        question: "Хто такий сімейний лікар?",
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
@@ -73,6 +69,7 @@ export default function FAQSection() {
         <section className="faq-section">
             <div className="faq-container" ref={containerRef}>
                 <h2 className="faq-title">НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ</h2>
+                <h2 className="faq-title-mobile"> ПОШИРЕНІ ЗАПИТАННЯ</h2>
 
                 <div className="faq-list">
                     {faqs.map((item, i) => (

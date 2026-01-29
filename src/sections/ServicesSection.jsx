@@ -44,11 +44,11 @@ export default function ServicesSection() {
             iconMobile: "/icons/service-checkup-mobile.svg",
             label: "Check-up",
         },
-        {
-            icon: "/icons/service-cosmetology.svg",
-            iconMobile: "/icons/service-cosmetology-mobile.svg",
-            label: "Косметологія",
-        },
+        // {
+        //     icon: "/icons/service-cosmetology.svg",
+        //     iconMobile: "/icons/service-cosmetology-mobile.svg",
+        //     label: "Косметологія",
+        // },
     ];
     const getExtraClass = (label) => {
         if (label === "Аналізи") return "card-analizy";
