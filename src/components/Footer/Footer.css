@@ -98,12 +98,9 @@
 .footer-col a:hover {
     color: #008b96;
 }
-.footer a,
-.footer a:visited,
-.footer a:active,
-.footer a:focus {
-    color: #000000 !important;
-    text-decoration: none !important;
+.footer a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .footer-bottom {
@@ -150,10 +147,12 @@
     margin-left: 24px;
     text-decoration: none;
     color: #000000;
-    transition: opacity 0.25s ease;
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
 }
 .footer-rules:hover {
-    color: #008b96;
+    color: #1d9ba6;
 }
 
 .footer-contact {
@@ -220,6 +219,24 @@
 .footer-mobile-addresses {
     display: none;
 }
+
+/* === SAME AS HEADER === */
+.footer-nav a,
+.footer-mobile-col a {
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.footer-nav a:hover,
+.footer-mobile-col a:hover {
+    color: #1d9ba6;
+}
+
 @media (max-width: 1243px) {
     .desktop-menu {
         grid-template-rows: repeat(4, auto);
