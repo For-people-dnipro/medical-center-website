@@ -1,5 +1,5 @@
 .branches-section {
-    padding: 100px 25px;
+    padding: 70px 25px;
 }
 
 .branches-container {
@@ -212,6 +212,10 @@
         display: none;
     }
 
+    .branches-button-wrapper.desktop-only {
+        display: none;
+    }
+
     .mobile-only {
         display: flex;
         justify-content: center;
@@ -226,6 +230,9 @@
 }
 
 @media (max-width: 576px) {
+    .branches-section {
+        padding: 70px 16px;
+    }
     .branches-container {
         display: flex;
         flex-direction: column;
