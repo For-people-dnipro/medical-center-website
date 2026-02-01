@@ -17,9 +17,9 @@
 }
 
 .doctors-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 25px;
+    padding: 0px;
     text-align: center;
 }
 
@@ -140,9 +140,18 @@
 .subtitle-mobile {
     display: none;
 }
+@media (max-width: 1306px) {
+    .doctors-container {
+        padding: 0px 25px;
+    }
+}
+
 @media (max-width: 992px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .doctors-container {
+        padding: 0px 25px;
     }
 }
 @media (max-width: 576px) {

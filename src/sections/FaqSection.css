@@ -91,6 +91,9 @@
     .faq-title {
         display: none;
     }
+    .faq-section {
+        padding: 80px 16px;
+    }
     .faq-title-mobile {
         text-align: center;
         font-size: 20px;

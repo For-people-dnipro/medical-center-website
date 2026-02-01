@@ -114,9 +114,11 @@
 
 @media (max-width: 673px) {
     .decl-section {
-        padding: 3rem 0 2.5rem;
+        padding: 48px 0 40px;
     }
-
+    .decl-container {
+        padding: 0 16px;
+    }
     /* titles */
     .decl-title {
         display: none;
