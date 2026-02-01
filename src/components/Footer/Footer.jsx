@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Instagram, Facebook } from "lucide-react";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 import MapPin from "../MapPin";
@@ -158,9 +159,9 @@ export default function Footer() {
                     Правила внутрішнього розпорядку
                 </a>
 
-                <div className="footer-socials">
-                    <img src="/icons/icon-instagram.svg" alt="Instagram" />
-                    <img src="/icons/icon-facebook.svg" alt="Facebook" />
+                <div className="footer-socials" aria-label="Соцмережі">
+                    <Instagram aria-label="Instagram" className="footer-icon" />
+                    <Facebook aria-label="Facebook" className="footer-icon" />
                 </div>
 
                 <a
