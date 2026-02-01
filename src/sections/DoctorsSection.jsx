@@ -1,7 +1,7 @@
 import "./DoctorsSection.css";
 import Button from "../components/Button/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useLayoutEffect, useRef, useState } from "react";
 

@@ -13,6 +13,7 @@
         "@react-google-maps/api": "2.20.8",
         "axios": "1.13.2",
         "emailjs-com": "3.2.0",
+        "lucide-react": "0.563.0",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "swiper": "10.3.1"
