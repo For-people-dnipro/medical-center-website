@@ -379,7 +379,7 @@
         padding-bottom: 40px;
     }
 }
-@media (max-width: 679px) {
+@media (max-width: 715px) {
     .desktop-menu {
         display: none;
     }
@@ -445,12 +445,12 @@
 @media (max-width: 569px) {
     .footer {
         font-size: 14px;
-        padding: 55px 25px 0px 25px;
+        padding: 55px 20px 0px 20px;
     }
 
     .footer-nav {
         column-gap: 20px;
-        row-gap: 14px;
+        row-gap: 8px;
     }
     .footer-rules {
         display: none;
@@ -473,6 +473,15 @@
     }
     .footer-socials {
         gap: 5px;
+    }
+    .footer-mobile-addresses {
+        font-size: 15px;
+    }
+    .footer-mobile-col a {
+        font-size: 14px;
+    }
+    .footer-bottom {
+        font-size: 15px;
     }
 }
 @media (max-width: 420px) {
