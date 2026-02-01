@@ -1,7 +1,23 @@
+import { useEffect, useState } from "react";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
+import MapPin from "../MapPin";
 
 export default function Footer() {
+    const [isRulesInMenu, setIsRulesInMenu] = useState(false);
+
+    useEffect(() => {
+        const checkWidth = () => {
+            setIsRulesInMenu(
+                window.innerWidth <= 1244 && window.innerWidth > 900,
+            );
+        };
+
+        checkWidth();
+        window.addEventListener("resize", checkWidth);
+        return () => window.removeEventListener("resize", checkWidth);
+    }, []);
+
     const branches = [
         {
             address: "м. Дніпро, вул. Данила Галицького, 34",
@@ -20,77 +36,114 @@ export default function Footer() {
         },
     ];
 
+    const mobileLeft = [
+        "Про клініку",
+        "Лікарі",
+        "Послуги",
+        "Відділення",
+        "Вакансії",
+        "Новини",
+        "Контакти",
+    ];
+
+    const mobileRight = [
+        "Документи",
+        "Публічна оферта",
+        "Політика конфіденційності",
+        "Захист персональних даних",
+        "Перелік безкоштовних послуг (ПМГ)",
+        "Правила під час повітряної тривоги",
+        "Правила внутрішнього розпорядку",
+    ];
+
+    const desktopMenu = [
+        { label: "Про клініку", href: "/about" },
+        { label: "Лікарі", href: "/doctors" },
+        { label: "Послуги", href: "/services" },
+        { label: "Відділення", href: "/departments" },
+        { label: "Вакансії", href: "/vacancies" },
+        { label: "Новини", href: "/news" },
+        { label: "Контакти", href: "/contacts" },
+        { label: "Документи", href: "/documents" },
+        { label: "Результати аналізів", href: "/declaration" },
+        { label: "Підписати декларацію", href: "/declaration" },
+        { label: "Політика конфіденційності", href: "/privacy" },
+        { label: "Захист персональних даних", href: "/data-protection" },
+        { label: "Публічна оферта", href: "/offer" },
+        { label: "Перелік безкоштовних послуг (ПМГ)", href: "/free-services" },
+        { label: "Правила під час повітряної тривоги", href: "/air-alert" },
+    ];
+
+    const desktopMenuWithRules = [
+        ...desktopMenu,
+        { label: "Правила внутрішнього розпорядку", href: "/rules" },
+    ];
+
+    const menuToRender = isRulesInMenu ? desktopMenuWithRules : desktopMenu;
+
     return (
-        <footer className="footer">
+        <footer className={`footer ${isRulesInMenu ? "rules-in-menu" : ""}`}>
             <div className="footer-container">
-                {/* ===== TOP ===== */}
                 <div className="footer-top">
-                    {/* LOGO */}
                     <div className="footer-logo">
                         <img src={logofooter} alt="Для людей" />
                     </div>
 
-                    {/* CONTACT BLOCKS */}
+                    <div className="footer-mobile-addresses">
+                        {branches.map((b, i) => (
+                            <div className="footer-mobile-address" key={i}>
+                                <MapPin size={25} />
+                                <span>{b.address}</span>
+                            </div>
+                        ))}
+                    </div>
+
                     <div className="footer-contacts">
-                        {branches.map((branch, i) => (
+                        {branches.map((b, i) => (
                             <div className="footer-contact-block" key={i}>
                                 <p>
                                     <img
                                         src="/icons/icon-location.svg"
                                         alt=""
                                     />
-                                    {branch.address}
+                                    {b.address}
                                 </p>
-
                                 <p>
                                     <img src="/icons/icon-clock.svg" alt="" />
-                                    {branch.hours}
+                                    {b.hours}
                                 </p>
-
                                 <p>
                                     <img src="/icons/icon-phone.svg" alt="" />
-                                    <a href={`tel:${branch.phone}`}>
-                                        {branch.phone}
-                                    </a>
+                                    <a href={`tel:${b.phone}`}>{b.phone}</a>
                                 </p>
                             </div>
                         ))}
                     </div>
                 </div>
-                {/* ===== NAVIGATION ===== */}
-                <div className="footer-nav">
-                    <div className="footer-col">
-                        <a href="/about">Про клініку</a>
-                        <a href="/doctors">Лікарі</a>
-                        <a href="/services">Послуги</a>
-                    </div>
 
-                    <div className="footer-col">
-                        <a href="/departments">Відділення</a>
-                        <a href="/vacancies">Вакансії</a>
-                        <a href="/news">Новини</a>
-                    </div>
-
-                    <div className="footer-col">
-                        <a href="/contacts">Контакти</a>
-                        <a href="/results">Результати аналізів</a>
-                        <a href="/declaration">Підписати декларацію</a>
-                    </div>
-
-                    <div className="footer-col">
-                        <a href="/documents">Документи</a>
-                        <a href="/privacy">Політика конфіденційності</a>
-                        <a href="/data-protection">Захист персональних даних</a>
-                    </div>
-
-                    <div className="footer-col">
-                        <a href="/offer">Публічна оферта</a>
-                        <a href="/free-services">
-                            Перелік безкоштовних послуг (ПМГ)
+                <div className="footer-nav desktop-menu">
+                    {menuToRender.map((item, i) => (
+                        <a key={i} href={item.href}>
+                            {item.label}
                         </a>
-                        <a href="/air-alert">
-                            Правила під час повітряної тривоги
-                        </a>
+                    ))}
+                </div>
+
+                <div className="footer-mobile-menu">
+                    <div className="footer-mobile-col">
+                        {mobileLeft.map((item, i) => (
+                            <a key={i} href="#">
+                                {item}
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="footer-mobile-col">
+                        {mobileRight.map((item, i) => (
+                            <a key={i} href="#">
+                                {item}
+                            </a>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -105,25 +158,8 @@ export default function Footer() {
                 </a>
 
                 <div className="footer-socials">
-                    <a
-                        href="https://www.instagram.com/medcentr_dl/
-"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="social-link instagram"
-                    >
-                        <img src="/icons/icon-instagram.svg" alt="Instagram" />
-                    </a>
-
-                    <a
-                        href="https://www.facebook.com/f3.peremogi
-"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="social-link facebook"
-                    >
-                        <img src="/icons/icon-facebook.svg" alt="Facebook" />
-                    </a>
+                    <img src="/icons/icon-instagram.svg" alt="Instagram" />
+                    <img src="/icons/icon-facebook.svg" alt="Facebook" />
                 </div>
 
                 <a

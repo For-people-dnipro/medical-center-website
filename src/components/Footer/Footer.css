@@ -1,4 +1,3 @@
-/* ===== BASE ===== */
 .footer {
     background: #dff0f0;
     padding: 55px 20px 0px;
@@ -60,18 +59,35 @@
     height: 25px;
     flex-shrink: 0;
 }
-
 .footer-nav {
-    margin-top: 0px;
-
     display: grid;
-    grid-template-columns: repeat(5, max-content);
-    column-gap: 72px;
-    row-gap: 24px;
 
-    align-items: start;
+    /* 🔑 кількість рядків = пунктів у колонці */
+    grid-template-rows: repeat(3, auto);
+
+    /* 🔑 головне — колонки */
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: space-between;
+
+    column-gap: clamp(24px, 4vw, 72px);
+    row-gap: 14px;
+
+    max-width: 1100px;
+    width: 100%;
 }
+.footer-nav a {
+    display: block;
+    width: 100%; /* ⬅️ тягнеться */
+    white-space: nowrap;
 
+    text-decoration: none;
+    color: #000;
+    line-height: 1.4;
+}
+.footer-nav a:hover {
+    color: #008b96;
+}
 .footer-col a {
     display: block;
     text-decoration: none;
@@ -106,7 +122,7 @@
     line-height: 16px;
 }
 .social-link.instagram img {
-    transform: scale(0.95);
+    transform: scale(0.3);
 }
 
 .social-link.facebook img {
@@ -142,12 +158,18 @@
     color: #008b96;
 }
 
-.footer-socials img {
-    width: 30px;
-    height: 30px;
-    transition:
-        transform 0.25s ease,
-        opacity 0.25s ease;
+.footer-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-contact img {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    min-height: 22px;
+    object-fit: contain;
 }
 
 .footer-socials a:hover img {
@@ -159,16 +181,217 @@
 .footer-copy {
     white-space: nowrap;
 }
+/* ===== NAV DESKTOP ===== */
+.desktop-menu {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    column-gap: 72px;
+    row-gap: 14px;
+}
 
-@media (max-width: 600px) {
-    .footer-bottom {
-        grid-template-columns: 1fr;
-        row-gap: 16px;
-        text-align: center;
+/* ===== MOBILE MENU ===== */
+.footer-mobile-menu {
+    display: none;
+}
+
+.footer-mobile-col a {
+    display: block;
+    margin-bottom: 14px;
+    text-decoration: none;
+    width: 100%; /* ⬅️ КЛЮЧ */
+    white-space: normal;
+    color: #000;
+}
+.desktop-menu {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    column-gap: 72px;
+    row-gap: 14px;
+}
+.footer-nav-rules {
+    display: none;
+} /* ===== MOBILE ADDRESSES ===== */
+.footer-addresses-mobile {
+    display: none;
+}
+
+.footer-address-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* ===== VISIBILITY ===== */
+.desktop-only {
+    display: block;
+}
+.footer-mobile-addresses {
+    display: none;
+}
+@media (max-width: 1243px) {
+    .desktop-menu {
+        grid-template-rows: repeat(4, auto);
     }
 
-    .footer-copy,
-    .footer-dev {
-        justify-self: center;
+    .footer-nav-rules {
+        display: block;
+        grid-column: 1; /* остання колонка */
+    }
+
+    .footer-rules {
+        display: none;
+    }
+    .footer-nav {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 1080px) {
+    .footer-nav {
+        grid-template-rows: repeat(5, auto);
+    }
+    .desktop-menu {
+        grid-template-rows: repeat(4, auto);
+    }
+
+    /* 🔥 ВАЖЛИВО: показуємо пункт для балансу */
+    .desktop-menu .menu-results {
+        display: block;
+    }
+    .footer-nav-rules {
+        display: none;
+    }
+    .footer-nav {
+        column-gap: 40px;
+        row-gap: 14px;
+    }
+    .footer-contacts {
+        display: none;
+    }
+
+    .footer {
+        font-size: 15px;
+    }
+    .footer-top {
+        gap: 10px;
+    }
+    .footer-mobile-addresses {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        font-size: 15px;
+        margin-top: 20px;
+    }
+
+    .footer-mobile-address {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        line-height: 1.4;
+    }
+
+    .footer-mobile-address span {
+        display: block;
+        width: 100%; /* 🔥 тягнеться на всю ширину */
+    }
+    .footer-bottom {
+        font-size: 15px;
+    }
+    .footer-contact {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-contact img {
+        width: 15px;
+        height: 15px;
+        min-width: 22px;
+        min-height: 22px;
+        object-fit: contain;
+    }
+}
+@media (max-width: 1244px) and (min-width: 901px) {
+    .footer-nav {
+        grid-template-rows: repeat(4, auto);
+    }
+    .desktop-menu {
+        grid-template-rows: repeat(4, auto);
+    }
+    .footer.rules-in-menu .footer-rules {
+        display: none;
+    }
+}
+@media (max-width: 900px) and (min-width: 680px) {
+    .footer-nav {
+        grid-template-rows: repeat(5, auto);
+    }
+    .desktop-menu {
+        grid-template-rows: repeat(5, auto);
+    }
+}
+@media (max-width: 768px) {
+    #root {
+        padding-bottom: 40px;
+    }
+}
+@media (max-width: 679px) {
+    /* ===== BASE ===== */
+    .footer {
+        padding: 55px 10px 0px 20px;
+    }
+    .footer-rules {
+        display: none;
+    }
+    .desktop-menu {
+        display: none;
+    }
+
+    .footer-mobile-menu {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* ⬅️ ОБИДВІ колонки рівні */
+        column-gap: 32px;
+        width: 100%;
+    }
+
+    .footer-mobile-col {
+        width: 100%;
+    }
+
+    .footer-mobile-col a {
+        display: block;
+        width: 100%; /* ⬅️ РОЗТЯГУЄМО */
+        white-space: nowrap;
+        text-align: left; /* ⬅️ стабільно */
+        padding-right: 8px; /* ⬅️ щоб текст не “лип” */
+    }
+
+    .footer-rules {
+        display: none;
+    }
+    #root {
+        padding-bottom: 40px;
+    }
+}
+@media (max-width: 569px) {
+    .footer {
+        font-size: 14px;
+    }
+    .footer-nav {
+        column-gap: 20px;
+        row-gap: 14px;
+    }
+    .footer-rules {
+        display: none;
+    }
+    #root {
+        padding-bottom: 40px;
     }
 }
