@@ -6,10 +6,15 @@ export default function WhyChooseUsSection() {
         <section className="why-section">
             <div className="why-container">
                 {/* TITLE */}
-                <h2 className="why-title">ЧОМУ ВАРТО ОБРАТИ НАС?</h2>
+                <h2 className="why-title why-title-desktop">
+                    ЧОМУ ВАРТО ОБРАТИ НАС?
+                </h2>
+                <h2 className="why-title why-title-mobile">
+                    МЦ «Для людей» — сучасна медицина з турботою про кожного
+                </h2>
 
                 {/* DESCRIPTION */}
-                <p className="why-description">
+                <p className="why-description why-description-desktop">
                     Наші центри — це місце, де до кожного ставляться з повагою
                     та турботою. Ми зібрали команду лікарів, які слухають,
                     пояснюють і підбирають найкраще рішення саме для вас. Тут
@@ -17,6 +22,21 @@ export default function WhyChooseUsSection() {
                     власна лабораторія та простір, де про вас справді
                     піклуються.
                 </p>
+                <div className="why-description why-description-mobile">
+                    <p>
+                        Наші центри — це місце, де до кожного ставляться з
+                        повагою та турботою.
+                    </p>
+                    <p>
+                        Ми зібрали команду лікарів, які слухають, пояснюють і
+                        підбирають найкраще рішення саме для вас.
+                    </p>
+                    <p>
+                        Тут усе створено для вашої зручності: сучасна
+                        діагностика, власна лабораторія та простір, де про вас
+                        справді піклуються.
+                    </p>
+                </div>
 
                 {/* STATS */}
                 <div className="why-stats">
@@ -64,7 +84,7 @@ export default function WhyChooseUsSection() {
                         </div>
                     </div>
                 </div>
-
+                <h3 className="why-subtitle">Наші Переваги:</h3>
                 <div className="why-features-wrapper">
                     <div className="why-features">
                         <ul>

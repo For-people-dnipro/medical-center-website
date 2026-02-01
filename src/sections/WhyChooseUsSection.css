@@ -1,5 +1,5 @@
 .why-section {
-    padding: 6rem 0rem 3rem 0rem;
+    padding: 3rem 0rem 3rem 0rem;
     background: #fff;
 }
 
@@ -20,6 +20,7 @@
     margin: 0 auto 40px;
     font-size: 16px;
     line-height: 1.7;
+
     text-align: justify;
     color: #222;
 }
@@ -69,13 +70,12 @@
 
 .why-features {
     display: grid;
-    grid-template-columns: auto auto;
-    gap: 210px;
-    margin-bottom: 50px;
-    justify-content: center;
+    grid-template-columns: max-content max-content; /* ⬅️ ключ */
+    justify-content: center; /* ⬅️ центр */
+    column-gap: 120px; /* ⬅️ контроль */
 
-    max-width: 1200px; /* 👈 ключ */
-    margin: 0 auto 30px; /* 👈 ключ */
+    max-width: 1200px;
+    margin: 0 auto 30px;
 }
 
 .why-features ul {
@@ -109,24 +109,180 @@
     margin: 0 auto;
 }
 
+.why-title-mobile,
+.why-description-mobile,
+.why-subtitle {
+    display: none;
+}
+
 /* BUTTON */
 .why-button {
     text-align: center;
 }
+@media (max-width: 1300px) {
+    .why-container {
+        padding: 0px 35px 0px 35px;
+    }
+}
+@media (max-width: 1050px) {
+    .why-features {
+        column-gap: 50px;
+    }
+}
 
 /* MOBILE */
-@media (max-width: 900px) {
+@media (max-width: 956px) {
     .why-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        display: grid;
+        grid-auto-flow: column; /* ⬅️ все в 1 ряд */
+        grid-auto-columns: minmax(140px, 1fr);
+        gap: 24px;
+
+        overflow-x: auto;
+        padding-bottom: 0px;
+
+        scroll-snap-type: x mandatory;
+    }
+    .stat {
+        scroll-snap-align: center;
     }
 
+    /* FEATURES — padding зліва */
     .why-features {
         grid-template-columns: 1fr;
-        gap: 30px;
+        row-gap: 0px;
+        margin-bottom: 20px;
+        justify-items: center;
+    }
+
+    .why-features li {
+        font-size: 16px;
+        margin-bottom: 24px;
+        padding-left: 35px;
+    }
+    .why-features ul {
+        width: fit-content; /* ⬅️ щоб список не тягнувся */
+    }
+    .why-features li::before {
+        width: 22px;
+        height: 22px;
     }
 
     .stat-number {
         font-size: 44px;
     }
+}
+@media (max-width: 752px) {
+    .why-stats {
+        grid-auto-flow: unset; /* прибираємо horizontal scroll */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        overflow: visible;
+    }
+
+    .why-stats .stat:nth-child(4) {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .why-section {
+        padding: 40px 0 32px;
+    }
+
+    .why-container {
+        padding: 0px 16px;
+    }
+    .why-title {
+        text-align: left;
+        font-size: 20px;
+        line-height: 1.35;
+        color: #0c8a87;
+        margin-bottom: 18px;
+    }
+    .why-title-desktop,
+    .why-description-desktop {
+        display: none;
+    }
+
+    .why-title-mobile,
+    .why-description-mobile,
+    .why-subtitle {
+        display: block;
+    }
+
+    .why-description {
+        text-align: justify;
+        margin-bottom: 32px;
+        line-height: 1.4;
+    }
+    .why-description-mobile p {
+        margin: 0 0 18px;
+    }
+
+    .why-description-mobile p:last-child {
+        margin-bottom: 0;
+    }
+
+    .why-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 26px;
+    }
+
+    .why-stats .stat:nth-child(4) {
+        display: none;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 500;
+    }
+
+    .stat-text {
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .stat-line {
+        width: 80px;
+        margin: 6px auto 6px;
+    }
+
+    .why-features {
+        gap: 0px;
+        margin-bottom: 16px;
+        display: block; /* ⬅️ вихід з grid */
+        justify-items: unset;
+    }
+    .why-subtitle {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0c8a87;
+        margin: 32px 0 18px 0;
+    }
+
+    .why-features li {
+        font-size: 16px;
+        margin-bottom: 24px;
+        padding-left: 35px;
+    }
+
+    .why-features li::before {
+        width: 22px;
+        height: 22px;
+    }
+    .why-button {
+        margin-top: 50px;
+    }
+}
+@media (max-width: 480px) {
+    .why-features li {
+        font-size: 16px;
+        padding-left: 30px;
+    }
+}
+
+/* Very small phones (old / mini) */
+@media (max-width: 360px) {
 }
