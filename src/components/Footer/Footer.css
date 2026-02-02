@@ -375,7 +375,7 @@
     }
 }
 @media (max-width: 768px) {
-    #root {
+    .page-home {
         padding-bottom: 40px;
     }
 }
@@ -406,7 +406,7 @@
         display: none;
     }
 
-    #root {
+    .page-home {
         padding-bottom: 40px;
     }
     .footer-bottom {
@@ -455,7 +455,7 @@
     .footer-rules {
         display: none;
     }
-    #root {
+    .page-home {
         padding-bottom: 40px;
     }
     .footer-mobile-menu {

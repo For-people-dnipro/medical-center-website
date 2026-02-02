@@ -272,10 +272,6 @@
 }
 
 @media (max-width: 1024px) {
-    .form-header h2 {
-        font-size: 24px;
-    }
-
     .form-header p {
         font-size: 24px;
     }

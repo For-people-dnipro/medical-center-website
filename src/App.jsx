@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import AllServices from "./pages/AllServices";
 import Header from "./sections/Header";
+import MobileCTA from "./components/MobileCTA/MobileCTA";
 import "./styles/pageTransitions.css";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                     <Route path="*" element={<Home />} />
                 </Routes>
             </div>
+            <MobileCTA />
         </>
     );
 }

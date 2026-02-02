@@ -87,33 +87,6 @@ export default function Banner() {
                 <span className="slogan-diagnose">ДІАГНОСТУЄМО.</span>{" "}
                 <span className="slogan-treat">ЛІКУЄМО.</span>
             </div>
-
-            {/* ===== FIXED MOBILE CTA (BUTTONS ONLY) ===== */}
-            <div className="mobile-cta">
-                <div className="mobile-cta-buttons">
-                    <button className="mobile-btn">
-                        <div className="mobile-btn-content">
-                            <span className="mobile-btn-icon">
-                                <img src="/icons/document.svg" alt="" />
-                            </span>
-                            <span className="mobile-btn-text">
-                                Підписати декларацію
-                            </span>
-                        </div>
-                    </button>
-
-                    <button className="mobile-btn">
-                        <div className="mobile-btn-content">
-                            <span className="mobile-btn-icon">
-                                <img src="/icons/lab.svg" alt="" />
-                            </span>
-                            <span className="mobile-btn-text">
-                                Результати аналізів
-                            </span>
-                        </div>
-                    </button>
-                </div>
-            </div>
         </div>
     );
 }

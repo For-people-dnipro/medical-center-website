@@ -91,13 +91,8 @@
 }
 
 /* =======================
-   MOBILE CTA + SLOGAN (HIDDEN BY DEFAULT)
+   MOBILE SLOGAN (HIDDEN BY DEFAULT)
 ======================= */
-
-.mobile-cta {
-    opacity: 0;
-    pointer-events: none;
-}
 
 .mobile-slogan {
     display: none;
@@ -138,65 +133,7 @@
         color: #008b96;
     }
 
-    /* ===== MOBILE CTA ===== */
-    .mobile-cta {
-        opacity: 1;
-        pointer-events: auto;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: #3c8f98;
-        z-index: 9999;
-    }
-
-    .mobile-cta-buttons {
-        display: flex;
-        width: 100%;
-    }
-
-    .mobile-btn {
-        flex: 1;
-        height: 48px;
-        padding: 6px 8px;
-        background: transparent;
-        border: none;
-        color: #ffffff;
-        cursor: pointer;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        box-sizing: border-box;
-        overflow: hidden;
-    }
-
-    .mobile-btn-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        max-width: 100%;
-    }
-
-    .mobile-btn-icon img {
-        width: 30px;
-        height: 30px;
-        flex-shrink: 0;
-    }
-
-    .mobile-btn-text {
-        font-size: clamp(1px, 3.2vw, 15px);
-        line-height: 1.2;
-        text-align: center;
-        white-space: normal;
-        white-space: nowrap;
-        word-break: break-word;
-    }
-
     body {
-        padding-bottom: 120px;
         overflow-x: hidden;
     }
 }

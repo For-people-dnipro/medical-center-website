@@ -9,13 +9,14 @@ export default function AllServices() {
         <div className="all-services-page">
             <main className="all-services-main">
                 <section className="all-services-hero">
-                    <div className="all-services-crumbs">
-                        <Link to="/">Головна</Link>
-                        <span className="crumb-separator">/</span>
-                        <span>Послуги</span>
+                    <div className="services-grid services-grid--crumbs">
+                        <div className="all-services-crumbs">
+                            <Link to="/">Головна</Link>
+                            <span className="crumb-separator">›</span>
+                            <span className="current">Послуги</span>
+                        </div>
                     </div>
                 </section>
-
                 <ServicesSection />
 
                 <section className="all-services-contact">
