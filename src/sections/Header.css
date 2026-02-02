@@ -25,6 +25,11 @@
     justify-content: space-between;
 }
 
+.header-logo {
+    display: inline-flex;
+    text-decoration: none;
+}
+
 .header-logo img {
     height: 80px;
     cursor: pointer;

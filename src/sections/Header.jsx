@@ -3,10 +3,17 @@ import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
 import arrowIcon from "../../public/icons/arrow-down.svg";
+import { Link } from "react-router-dom";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
+
+    const handleLogoClick = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        setMenuOpen(false);
+        setServicesOpen(false);
+    };
 
     return (
         <>
@@ -14,20 +21,25 @@ export default function Header() {
             <header className="header">
                 <div className="header-inner">
                     <div className="header-content">
-                        <div className="header-logo">
+                        <Link
+                            to="/"
+                            className="header-logo"
+                            onClick={handleLogoClick}
+                            aria-label="На головну"
+                        >
                             <img src={logo} alt="Для людей" />
-                        </div>
+                        </Link>
 
                         {/* DESKTOP */}
                         <div className="header-right">
                             <nav className="header-nav">
-                                <a href="/about">Про нас</a>
-                                <a href="/doctors">Лікарі</a>
-                                <a href="/services">Послуги</a>
-                                <a href="/branches">Філії</a>
-                                <a href="/vacancies">Вакансії</a>
-                                <a href="/news">Новини</a>
-                                <a href="/contacts">Контакти</a>
+                                <Link to="/about">Про нас</Link>
+                                <Link to="/doctors">Лікарі</Link>
+                                <Link to="/services">Послуги</Link>
+                                <Link to="/branches">Філії</Link>
+                                <Link to="/vacancies">Вакансії</Link>
+                                <Link to="/news">Новини</Link>
+                                <Link to="/contacts">Контакти</Link>
                             </nav>
 
                             <div className="header-actions">
@@ -72,36 +84,70 @@ export default function Header() {
             {/* ================= MOBILE MENU ================= */}
             <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
                 <nav className="mobile-nav">
-                    <a href="/about">Про нас</a>
-                    <a href="/doctors">Лікарі</a>
+                    <Link to="/about" onClick={() => setMenuOpen(false)}>
+                        Про нас
+                    </Link>
+
+                    <Link to="/doctors" onClick={() => setMenuOpen(false)}>
+                        Лікарі
+                    </Link>
 
                     <button
                         className="mobile-dropdown-toggle"
                         onClick={() => setServicesOpen((v) => !v)}
                     >
                         <span>Послуги</span>
-
                         <img
                             src={arrowIcon}
                             alt=""
-                            className={`arrow-icon ${
-                                servicesOpen ? "open" : ""
-                            }`}
+                            className={`arrow-icon ${servicesOpen ? "open" : ""}`}
                         />
                     </button>
 
                     {servicesOpen && (
                         <div className="mobile-submenu">
-                            <a href="#">Терапія</a>
-                            <a href="#">Педіатрія</a>
-                            <a href="#">Діагностика</a>
+                            <Link
+                                to="/services"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Всі послуги
+                            </Link>
+                            <Link
+                                to="/services#therapy"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Терапія
+                            </Link>
+                            <Link
+                                to="/services#pediatrics"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Педіатрія
+                            </Link>
+                            <Link
+                                to="/services#diagnostics"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Діагностика
+                            </Link>
                         </div>
                     )}
 
-                    <a href="/branches">Філії</a>
-                    <a href="/vacancies">Вакансії</a>
-                    <a href="/news">Новини</a>
-                    <a href="/contacts">Контакти</a>
+                    <Link to="/branches" onClick={() => setMenuOpen(false)}>
+                        Філії
+                    </Link>
+
+                    <Link to="/vacancies" onClick={() => setMenuOpen(false)}>
+                        Вакансії
+                    </Link>
+
+                    <Link to="/news" onClick={() => setMenuOpen(false)}>
+                        Новини
+                    </Link>
+
+                    <Link to="/contacts" onClick={() => setMenuOpen(false)}>
+                        Контакти
+                    </Link>
                 </nav>
 
                 <div className="mobile-actions">

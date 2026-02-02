@@ -11,12 +11,12 @@ const faqs = [
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-        question:
-            "Як перепідписати декларацію, якщо вона вже укладена в іншому закладі?",
+        question: "Як записатися на прийом?",
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-        question: "Що таке річна програма медичного супроводу?",
+        question:
+            "Як перепідписати декларацію, якщо вона вже укладена в іншому закладі?",
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
@@ -36,7 +36,11 @@ const faqs = [
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-        question: "Чи можна отримати онлайн консультацію сімейного лікаря?",
+        question: "Чи потрібно готуватися до консультації у спеціаліста?",
+        answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
+    {
+        question: "Чи можна отримати термінову консультацію в день звернення?",
         answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
 ];

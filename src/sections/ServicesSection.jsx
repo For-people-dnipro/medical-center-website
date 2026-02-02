@@ -91,7 +91,7 @@ export default function ServicesSection() {
                         </div>
                     ))}
 
-                    <div className="service-card more-btn">
+                    <a className="service-card more-btn" href="/services">
                         <span>ВСІ ПОСЛУГИ</span>
                         <div className="arrow-circle">
                             <img
@@ -100,7 +100,7 @@ export default function ServicesSection() {
                                 className="service-arrow"
                             />
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -167,7 +167,7 @@ export default function ServicesSection() {
 
                     {/* BUTTON */}
                     <div className="services-btn">
-                        <Button href="/">Всі послуги</Button>
+                        <Button href="/services">Всі послуги</Button>
                     </div>
                 </div>
             </div>
