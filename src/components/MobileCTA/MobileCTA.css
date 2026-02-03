@@ -1,12 +1,18 @@
 .mobile-cta {
-    opacity: 0;
-    pointer-events: none;
+    display: none;
+}
+
+:root {
+    --mobile-cta-height: 0px;
 }
 
 @media (max-width: 768px) {
+    :root {
+        --mobile-cta-height: 48px;
+    }
+
     .mobile-cta {
-        opacity: 1;
-        pointer-events: auto;
+        display: block;
         position: fixed;
         bottom: 0;
         left: 0;

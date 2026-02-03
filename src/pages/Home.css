@@ -1,5 +1,3 @@
-@media (max-width: 768px) {
-    .page-home {
-        padding-bottom: 40;
-    }
+.page-home {
+    padding-bottom: var(--mobile-cta-height);
 }
