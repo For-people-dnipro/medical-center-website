@@ -74,8 +74,9 @@
 /* SCROLL CONTAINER */
 .faq-answer-scroll {
     max-height: 260px;
-    padding: 0 20px 20px;
+    padding: 0 20px;
     -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
 }
 
 .faq-answer-scroll.no-scroll {
@@ -104,6 +105,12 @@
 .faq-answer-content {
     display: grid;
     gap: 6px;
+}
+
+.faq-answer-content::after {
+    content: "";
+    display: block;
+    height: 20px;
 }
 
 .faq-answer p {
