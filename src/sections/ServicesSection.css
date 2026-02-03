@@ -291,6 +291,8 @@
         border-radius: 999px;
         border: 1px solid #ededed;
         background: #fff;
+        text-decoration: none;
+        color: inherit;
     }
 
     .service-left {
