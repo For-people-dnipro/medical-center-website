@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./ServicesSection.css";
 import Button from "../components/Button/Button";
 
@@ -8,6 +9,7 @@ export default function ServicesSection() {
             icon: "/icons/service-declaration.svg",
             iconMobile: "/icons/service-declaration-mobile.svg",
             label: "Декларація",
+            href: "/declaration",
         },
         {
             icon: "/icons/service-consult.svg",
@@ -77,19 +79,29 @@ export default function ServicesSection() {
                 </div>
 
                 <div className="services-grid">
-                    {services.map((item, i) => (
-                        <div
-                            className={`service-card ${getExtraClass(
-                                item.label,
-                            )}`}
-                            key={i}
-                        >
-                            <div className="service-icon-wrap">
-                                <img src={item.icon} alt="" />
+                    {services.map((item, i) => {
+                        const cardClass = `service-card ${getExtraClass(
+                            item.label,
+                        )}`;
+                        const content = (
+                            <>
+                                <div className="service-icon-wrap">
+                                    <img src={item.icon} alt="" />
+                                </div>
+                                <span>{item.label}</span>
+                            </>
+                        );
+
+                        return item.href ? (
+                            <Link className={cardClass} key={i} to={item.href}>
+                                {content}
+                            </Link>
+                        ) : (
+                            <div className={cardClass} key={i}>
+                                {content}
                             </div>
-                            <span>{item.label}</span>
-                        </div>
-                    ))}
+                        );
+                    })}
 
                     <a className="service-card more-btn" href="/services">
                         <span>ВСІ ПОСЛУГИ</span>
@@ -132,25 +144,46 @@ export default function ServicesSection() {
                         {filteredServices.length > 0 ? (
                             <>
                                 <div className="services-scroll">
-                                    {filteredServices.map((item, i) => (
-                                        <div className="service-chip" key={i}>
-                                            <div className="service-left">
-                                                <div className="service-icon-wrap">
-                                                    <img
-                                                        src={item.iconMobile}
-                                                        alt=""
-                                                    />
+                                    {filteredServices.map((item, i) => {
+                                        const chipContent = (
+                                            <>
+                                                <div className="service-left">
+                                                    <div className="service-icon-wrap">
+                                                        <img
+                                                            src={
+                                                                item.iconMobile
+                                                            }
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <span>{item.label}</span>
                                                 </div>
-                                                <span>{item.label}</span>
-                                            </div>
 
-                                            <img
-                                                src="/icons/arrow-right.svg"
-                                                alt=""
-                                                className="service-arrow"
-                                            />
-                                        </div>
-                                    ))}
+                                                <img
+                                                    src="/icons/arrow-right.svg"
+                                                    alt=""
+                                                    className="service-arrow"
+                                                />
+                                            </>
+                                        );
+
+                                        return item.href ? (
+                                            <Link
+                                                className="service-chip"
+                                                key={i}
+                                                to={item.href}
+                                            >
+                                                {chipContent}
+                                            </Link>
+                                        ) : (
+                                            <div
+                                                className="service-chip"
+                                                key={i}
+                                            >
+                                                {chipContent}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
 
                                 {/* FADE тільки коли НЕ шукаємо */}

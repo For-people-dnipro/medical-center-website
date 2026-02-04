@@ -299,7 +299,6 @@
 }
 @media (max-width: 768px) {
     .contact-form {
-        border-radius: 0px;
         box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
         gap: 18px;
         padding: 50px 45px;

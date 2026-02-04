@@ -1,0 +1,262 @@
+/* ================================
+   HERO SECTION
+================================ */
+
+.services-card-hero {
+    padding: 20px 0 32px;
+    background: transparent;
+}
+
+.services-card-hero__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ================================
+   CARD
+================================ */
+
+.services-card-hero__card {
+    background: #ffffff;
+    border-radius: 26px;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 32px;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    min-height: 240px;
+    margin-top: 30px;
+}
+
+.services-card-hero__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+}
+/* Breadcrumbs */
+.services-card-hero__crumbs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 48px;
+    font-size: 12px;
+    margin-top: 24px;
+    margin-left: 10px;
+    color: #98a2a8;
+}
+
+.services-card-hero__crumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.services-card-hero__crumbs .current {
+    color: #0aa2a6;
+    font-weight: 500;
+}
+
+/* Title */
+.services-card-hero__title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.services-card-hero__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.services-card-hero__icon img {
+    width: 56px;
+    height: 56px;
+}
+
+.services-card-hero__title h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Divider */
+.services-card-hero__line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #e6e9ec;
+    margin: 0 0 24px;
+}
+
+/* Subtitle */
+.services-card-hero__subtitle {
+    font-size: 18px;
+    margin: 0 0 22px 10px;
+    font-weight: 400;
+}
+
+/* Button */
+.services-card-hero__button {
+    width: fit-content;
+    display: inline-flex;
+    margin-bottom: 24px;
+    margin-left: 10px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    border-radius: 999px;
+}
+
+/* ================================
+   RIGHT IMAGE
+================================ */
+
+.services-card-hero__right {
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.services-card-hero__right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ================================
+   TABLET & MOBILE
+================================ */
+
+@media (max-width: 900px) {
+    .services-card-hero {
+        padding: 0px 0px 32px 0px;
+    }
+
+    .services-card-hero__card {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 24px;
+        min-height: unset;
+    }
+
+    .services-card-hero__left {
+        justify-content: flex-start;
+    }
+
+    .services-card-hero__right {
+        width: 100%;
+        border-radius: 18px;
+    }
+
+    .services-card-hero__right img {
+        height: 220px;
+    }
+    .services-card-hero__button {
+        margin-left: 10px;
+    }
+}
+
+/* ================================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 480px) {
+    .services-card-hero {
+        padding: 10px 0 32px;
+        background: transparent;
+    }
+    .services-card-hero__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+    .services-card-hero__card {
+        padding: 24px 32px;
+        margin-top: 0px;
+    }
+
+    .services-card-hero__title h1 {
+        font-size: 20px;
+    }
+
+    .services-card-hero__subtitle {
+        font-size: 16px;
+    }
+    .services-card-hero__icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .services-card-hero__right img {
+        height: 200px;
+    } /* Breadcrumbs */
+    .services-card-hero__crumbs {
+        margin-left: 6px;
+    }
+    .services-card-hero__subtitle {
+        font-size: 16px;
+        margin: 0 0 22px 6px;
+        font-weight: 400;
+    }
+    .services-card-hero__button {
+        width: fit-content;
+        display: inline-flex;
+        margin-bottom: 24px;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+        border-radius: 999px;
+        margin-left: 6px;
+    }
+}
+@media (max-width: 377px) {
+    /* HERO CARD */
+    .services-card-hero__card {
+        padding: 16px;
+        min-height: unset;
+    }
+
+    /* TITLE */
+    .services-card-hero__title h1 {
+        font-size: 21px;
+        line-height: 1.2;
+    }
+
+    .services-card-hero__subtitle {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .services-card-hero__button {
+        display: flex; /* ❌ не inline-flex */
+        width: 100%;
+        max-width: 100%;
+
+        box-sizing: border-box; /* ⬅️ КРИТИЧНО */
+
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+
+        white-space: normal; /* ⬅️ дозволяє перенос */
+        text-align: center;
+        line-height: 1.2;
+
+        margin: 16px 0 20px 0; /* ❌ без margin-left */
+    }
+
+    /* якщо Button — це <a> або <button> */
+    .services-card-hero__button,
+    .services-card-hero__button * {
+        max-width: 100%;
+    }
+
+    /* IMAGE — SMALLER */
+    .services-card-hero__right img {
+        height: 160px;
+        border-radius: 14px;
+    }
+}
