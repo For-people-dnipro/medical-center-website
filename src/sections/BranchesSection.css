@@ -1,5 +1,5 @@
 .branches-section {
-    padding: 70px 25px;
+    padding: 100px 25px;
 }
 
 .branches-container {
@@ -228,18 +228,19 @@
         gap: 32px;
     }
 }
-
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+    .branches-title {
+        font-size: 20px;
+    }
     .branches-section {
         padding: 70px 16px;
     }
+}
+@media (max-width: 576px) {
     .branches-container {
         display: flex;
         flex-direction: column;
         gap: 32px;
-    }
-    .branches-title {
-        font-size: 20px;
     }
 
     .branches-text {

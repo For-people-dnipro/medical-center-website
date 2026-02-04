@@ -1,6 +1,5 @@
 .why-section {
     padding: 0rem;
-    background: #fff;
 }
 
 .why-container {
@@ -13,6 +12,7 @@
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 30px;
+    margin-top: 0px;
 }
 
 .why-description {
@@ -170,6 +170,11 @@
 
     .stat-number {
         font-size: 44px;
+    }
+}
+@media (max-width: 768px) {
+    .why-title-desktop {
+        font-size: 20px;
     }
 }
 @media (max-width: 752px) {

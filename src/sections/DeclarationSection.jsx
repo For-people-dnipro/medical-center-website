@@ -19,7 +19,7 @@ export default function DeclarationSection() {
                 </div>
 
                 {/* MOBILE TITLE */}
-                <div className="title-mobile">
+                <div className="decl-title-mobile">
                     <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування після
                         підписання <span>ДЕКЛАРАЦІЇ</span>

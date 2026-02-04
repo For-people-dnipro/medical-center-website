@@ -27,6 +27,7 @@
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 10px;
+    margin-top: 0px;
 }
 
 .subtitle-desktop {
@@ -142,7 +143,7 @@
 }
 @media (max-width: 1306px) {
     .doctors-container {
-        padding: 0px 25px;
+        padding: 0px 16px;
     }
 }
 
@@ -150,8 +151,16 @@
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    .doctors-container {
-        padding: 0px 25px;
+}
+@media (max-width: 768px) {
+    .subtitle-mobile {
+        display: block;
+        font-size: 16px; /* можеш трошки менше */
+        margin-bottom: 30px;
+    }
+
+    .title {
+        font-size: 20px;
     }
 }
 @media (max-width: 576px) {
@@ -164,11 +173,12 @@
     .subtitle-desktop {
         display: none;
     }
-
-    .subtitle-mobile {
-        display: block;
-        font-size: 16px; /* можеш трошки менше */
-        margin-bottom: 30px;
+    .name {
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 12px 0px 0px 0px;
+        padding: 0px 8px;
     }
 
     .swiper-slide {
@@ -188,16 +198,6 @@
     .swiper-slide-next {
         opacity: 0.7;
         transform: scale(0.94);
-    }
-    .name {
-        text-align: left;
-        font-size: 16px;
-        font-weight: 600;
-        margin: 12px 0px 0px 0px;
-        padding: 0px 8px;
-    }
-    .title {
-        font-size: 20px;
     }
 
     .mobile-position {

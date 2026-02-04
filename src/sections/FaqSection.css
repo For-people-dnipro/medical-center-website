@@ -1,7 +1,6 @@
 /* SECTION */
 .faq-section {
-    padding: 70px 20px;
-    background: #fff;
+    padding: 80px 20px;
 }
 
 .faq-container {
@@ -131,13 +130,16 @@
 .faq-answer-spacer {
     height: 10px;
 }
-
-/* MOBILE */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+    .faq-title {
+        font-size: 20px;
+    }
     .faq-section {
         padding: 70px 16px;
     }
-
+}
+/* MOBILE */
+@media (max-width: 576px) {
     .faq-row.active .faq-answer {
         max-height: 260px;
     }
