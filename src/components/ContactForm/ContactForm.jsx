@@ -37,7 +37,7 @@ export default function ContactForm({
             const timer = setTimeout(() => {
                 setSuccess(false);
                 setError(false);
-            }, 3949838393929000);
+            }, 3000); // 3 секунди
 
             return () => clearTimeout(timer);
         }
@@ -72,7 +72,7 @@ export default function ContactForm({
                     message: formData.message,
                     time: new Date().toLocaleString("uk-UA"),
                 },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
             );
 
             setSuccess(true);
@@ -107,8 +107,11 @@ export default function ContactForm({
                 />
 
                 <div className="form-header">
-                    <h2>{title}</h2>
-                    <p>{subtitle}</p>
+                    <h2 className="title-desktop">{title}</h2>
+                    <p className="subtitle-desktop">{subtitle}</p>
+                    <h2 className="title-mobile">МИ ПОРУЧ, ЩОБ ДОПОМОГТИ</h2>
+                    <h2 className="title-mobile-small">МИ ЗАВЖДИ ПОРУЧ</h2>
+                    <p className="subtitle-mobile">ЗАЛИШТЕ ПОВІДОМЛЕННЯ</p>
                 </div>
 
                 <div className="form-group form-name">

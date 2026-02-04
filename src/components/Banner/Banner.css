@@ -1,7 +1,11 @@
+/* =======================
+   BASE
+======================= */
+
 .banner-container {
     width: 100%;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
 }
 
 .banner-container .swiper-slide {
@@ -9,6 +13,12 @@
     aspect-ratio: 1920 / 900;
     position: relative;
     overflow: hidden;
+}
+
+.banner-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .banner-image {
@@ -21,23 +31,9 @@
     display: block;
 }
 
-@media (max-width: 1440px) {
-    .banner-container .swiper-slide {
-        aspect-ratio: 16 / 7;
-    }
-}
-
-@media (max-width: 1024px) {
-    .banner-container .swiper-slide {
-        aspect-ratio: 16 / 9;
-    }
-}
-
-@media (max-width: 768px) {
-    .banner-container .swiper-slide {
-        aspect-ratio: 1 / 1;
-    }
-}
+/* =======================
+   SWIPER
+======================= */
 
 .swiper-pagination {
     background: white;
@@ -51,7 +47,6 @@
     left: 50% !important;
     transform: translateX(-50%);
 }
-
 .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
@@ -59,10 +54,14 @@
     opacity: 1 !important;
     border-radius: 50%;
 }
-
 .swiper-pagination-bullet-active {
     background: #238f9c !important;
 }
+
+/* =======================
+   ARROWS (DESKTOP)
+======================= */
+
 .banner-arrow {
     position: absolute;
     top: 50%;
@@ -70,7 +69,6 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0;
     z-index: 20;
 }
 
@@ -79,7 +77,6 @@
     height: 45px;
 }
 
-/* Left & right positions */
 .banner-arrow-left {
     left: 20px;
 }
@@ -88,14 +85,55 @@
     right: 20px;
 }
 
-/* Optional hover */
-.banner-arrow:hover img {
-    transform: scale(1.1);
-    transition: 0.2s;
-}
-
-/* Hide default navigation */
 .swiper-button-next,
 .swiper-button-prev {
     display: none !important;
+}
+
+/* =======================
+   MOBILE SLOGAN (HIDDEN BY DEFAULT)
+======================= */
+
+.mobile-slogan {
+    display: none;
+}
+
+/* =======================
+   MOBILE
+======================= */
+
+@media (max-width: 768px) {
+    .banner-container .swiper-slide {
+        height: 75vh;
+        aspect-ratio: auto;
+    }
+
+    .banner-arrow,
+    .swiper-pagination {
+        display: none !important;
+    }
+
+    /* ===== SLOGAN ===== */
+    .mobile-slogan {
+        display: block;
+        text-align: center;
+        font-weight: 700;
+        background: #ffffff;
+        padding: 20px 5px;
+        font-size: clamp(18px, 4.5vw, 26px);
+    }
+
+    .slogan-care {
+        color: #008b96;
+    }
+    .slogan-diagnose {
+        color: #652f6b;
+    }
+    .slogan-treat {
+        color: #008b96;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
 }

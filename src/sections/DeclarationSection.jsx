@@ -7,7 +7,7 @@ export default function DeclarationSection() {
     return (
         <section className="decl-section">
             <div className="decl-container">
-                {/* TITLE CENTERED ABOVE BOTH COLUMNS */}
+                {/* DESKTOP TITLE */}
                 <div className="decl-title">
                     <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування
@@ -18,7 +18,14 @@ export default function DeclarationSection() {
                     </h3>
                 </div>
 
-                {/* LEFT TEXT BLOCK */}
+                {/* MOBILE TITLE */}
+                <div className="decl-title-mobile">
+                    <h2>
+                        <span>БЕЗКОШТОВНЕ</span> медичне обслуговування після
+                        підписання <span>ДЕКЛАРАЦІЇ</span>
+                    </h2>
+                </div>
+
                 <div className="decl-content">
                     <div className="decl-text">
                         <p className="decl-description">
@@ -29,22 +36,42 @@ export default function DeclarationSection() {
 
                         <p className="decl-subtitle">Це дозволить вам:</p>
 
+                        {/* DESKTOP LIST */}
                         <ul className="decl-list">
                             <li>
-                                <img src={check} alt="" /> проходити
-                                консультації та огляди безкоштовно
+                                <img src={check} alt="" />
+                                проходити консультації та огляди безкоштовно
                             </li>
                             <li>
-                                <img src={check} alt="" /> отримувати
-                                направлення на спеціалізовану медичну допомогу
+                                <img src={check} alt="" />
+                                отримувати направлення на спеціалізовану медичну
+                                допомогу
                             </li>
                             <li>
-                                <img src={check} alt="" /> отримувати
-                                направлення на високоспеціалізовану допомогу
+                                <img src={check} alt="" />
+                                отримувати направлення на високоспеціалізовану
+                                допомогу
                             </li>
                             <li>
-                                <img src={check} alt="" /> користуватись повним
-                                спектром державних медичних послуг
+                                <img src={check} alt="" />
+                                користуватись повним спектром державних медичних
+                                послуг
+                            </li>
+                        </ul>
+
+                        {/* MOBILE LIST */}
+                        <ul className="decl-list-mobile">
+                            <li>
+                                <img src={check} alt="" />
+                                проходити консультації та огляди безкоштовно
+                            </li>
+                            <li>
+                                <img src={check} alt="" />
+                                отримувати направлення до спеціалістів
+                            </li>
+                            <li>
+                                <img src={check} alt="" />
+                                мати доступ до гарантованих державою послуг
                             </li>
                         </ul>
 
@@ -52,11 +79,18 @@ export default function DeclarationSection() {
                             <Button href="/doctors">
                                 Підписати декларацію
                             </Button>
-                            <Button href="/doctors"> Дізнатися більше</Button>
+                            <Button href="/doctors">
+                                Перелік безкоштовних послуг
+                            </Button>
                         </div>
                     </div>
 
-                    {/* RIGHT IMAGE */}
+                    <div className="decl-actions-mobile">
+                        <Button href="/doctors">
+                            Перелік безкоштовних послуг
+                        </Button>
+                    </div>
+
                     <div className="decl-image">
                         <img src={nszulogo} alt="НСЗУ" />
                     </div>

@@ -3,10 +3,12 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 body {
     background-color: #fdfdfd;
+    padding-top: 104px; /* ≈ реальна висота header */
 }
 .h1,
 .h2,
@@ -23,4 +25,14 @@ body {
 }
 * {
     font-family: "Montserrat", sans-serif;
+}
+html,
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
 }

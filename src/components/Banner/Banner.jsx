@@ -14,23 +14,20 @@ export default function Banner() {
         fetch("http://localhost:1337/api/home-sliders?populate=*")
             .then((res) => res.json())
             .then((data) => {
-                const items = Array.isArray(data?.data) ? data.data : [];
-                const sorted = items
-                    .slice()
-                    .sort((a, b) => (a.order || 0) - (b.order || 0));
-                setSlides(sorted);
+                const sortedSlides = data.data.sort(
+                    (a, b) => (a.order || 0) - (b.order || 0),
+                );
+                setSlides(sortedSlides);
             })
-            .catch((err) => {
-                console.error("Failed to load home-sliders:", err);
-                setSlides([]);
-            });
+            .catch((err) => console.error(err));
     }, []);
 
     return (
         <div className="banner-container">
+            {/* ===== SLIDER ===== */}
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, Keyboard]}
-                loop={true}
+                loop={slides.length > 1}
                 autoplay={{
                     delay: 4000,
                     disableOnInteraction: false,
@@ -44,8 +41,9 @@ export default function Banner() {
                 pagination={{ clickable: true }}
                 keyboard={{ enabled: true }}
                 slidesPerView={1}
-                allowTouchMove={true}
+                allowTouchMove
             >
+                {/* arrows — тільки для desktop */}
                 <button className="banner-arrow banner-arrow-left">
                     <img src="/icons/arrow-left.svg" alt="prev" />
                 </button>
@@ -54,26 +52,41 @@ export default function Banner() {
                     <img src="/icons/arrow-right.svg" alt="next" />
                 </button>
 
-                {slides.map((slide) => {
-                    const imageUrl = slide.photo?.url
-                        ? `http://localhost:1337${slide.photo.url}`
-                        : null;
+                {slides.map((slide) => (
+                    <SwiperSlide key={slide.id}>
+                        <div className="banner-slide">
+                            <picture>
+                                {/* MOBILE IMAGE */}
+                                <source
+                                    media="(max-width: 768px)"
+                                    srcSet={
+                                        slide.photomobile?.url
+                                            ? `http://localhost:1337${slide.photomobile.url}`
+                                            : undefined
+                                    }
+                                />
 
-                    return (
-                        <SwiperSlide key={slide.id}>
-                            <div className="banner-slide">
-                                {imageUrl && (
-                                    <img
-                                        src={imageUrl}
-                                        alt="banner"
-                                        className="banner-image"
-                                    />
-                                )}
-                            </div>
-                        </SwiperSlide>
-                    );
-                })}
+                                {/* DESKTOP IMAGE */}
+                                <img
+                                    src={
+                                        slide.photodesktop?.url
+                                            ? `http://localhost:1337${slide.photodesktop.url}`
+                                            : ""
+                                    }
+                                    alt="banner"
+                                    className="banner-image"
+                                />
+                            </picture>
+                        </div>
+                    </SwiperSlide>
+                ))}
             </Swiper>
+
+            <div className="mobile-slogan">
+                <span className="slogan-care">ДБАЄМО.</span>{" "}
+                <span className="slogan-diagnose">ДІАГНОСТУЄМО.</span>{" "}
+                <span className="slogan-treat">ЛІКУЄМО.</span>
+            </div>
         </div>
     );
 }

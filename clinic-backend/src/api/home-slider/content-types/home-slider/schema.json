@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "photo": {
+    "photodesktop": {
       "type": "media",
       "multiple": false,
       "required": true,
@@ -35,6 +35,15 @@
       "type": "integer",
       "required": false,
       "default": 1
+    },
+    "photomobile": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     }
   }
 }

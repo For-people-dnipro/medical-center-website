@@ -494,7 +494,9 @@ export interface ApiHomeSliderHomeSlider extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
-    photo: Schema.Attribute.Media<'images' | 'files'> &
+    photodesktop: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    photomobile: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     showButton: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;

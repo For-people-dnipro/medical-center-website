@@ -54,17 +54,19 @@ export default function Home() {
 
     return (
         <div>
-            <Banner />
-            <DeclarationSection />
-            <Ticket />
-            <ServicesSection />
+            <div className="page-home">
+                <Banner />
+                <DeclarationSection />
+                <Ticket />
+                <ServicesSection />
 
-            {loading ? null : <DoctorsSection doctors={doctors} />}
-            <BranchesSection />
-            <WhyChooseUsSection />
-            <FAQSection />
-            <ContactForm />
-            <Footer />
+                {loading ? null : <DoctorsSection doctors={doctors} />}
+                <BranchesSection />
+                <WhyChooseUsSection />
+                <FAQSection />
+                <ContactForm />
+                <Footer />
+            </div>
         </div>
     );
 }
