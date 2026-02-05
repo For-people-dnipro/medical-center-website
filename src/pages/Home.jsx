@@ -57,7 +57,7 @@ export default function Home() {
             <div className="page-home">
                 <Banner />
                 <DeclarationSection />
-                <Ticket />
+                <Ticket text="САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ ДЛЯ ВАШОГО ЗДОРОВ’Я" />
                 <ServicesSection />
 
                 {loading ? null : <DoctorsSection doctors={doctors} />}

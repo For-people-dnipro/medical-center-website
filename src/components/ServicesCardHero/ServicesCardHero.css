@@ -158,12 +158,24 @@
         margin-left: 10px;
     }
 }
+@media (max-width: 768px) {
+    .services-card-hero__title h1 {
+        font-size: 20px;
+    }
 
-/* ================================
-   SMALL MOBILE
-================================ */
-
-@media (max-width: 480px) {
+    .services-card-hero__subtitle {
+        font-size: 16px;
+    }
+    .services-card-hero__button {
+        width: fit-content;
+        display: inline-flex;
+        margin-bottom: 24px;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+        border-radius: 999px;
+        margin-left: 6px;
+    }
     .services-card-hero {
         padding: 10px 0 32px;
         background: transparent;
@@ -173,18 +185,7 @@
         margin: 0 auto;
         padding: 0 16px;
     }
-    .services-card-hero__card {
-        padding: 24px 32px;
-        margin-top: 0px;
-    }
 
-    .services-card-hero__title h1 {
-        font-size: 20px;
-    }
-
-    .services-card-hero__subtitle {
-        font-size: 16px;
-    }
     .services-card-hero__icon img {
         width: 40px;
         height: 40px;
@@ -201,15 +202,15 @@
         margin: 0 0 22px 6px;
         font-weight: 400;
     }
-    .services-card-hero__button {
-        width: fit-content;
-        display: inline-flex;
-        margin-bottom: 24px;
-        align-items: center;
-        gap: 10px;
-        margin-top: 24px;
-        border-radius: 999px;
-        margin-left: 6px;
+}
+/* ================================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 480px) {
+    .services-card-hero__card {
+        padding: 24px 32px;
+        margin-top: 20px;
     }
 }
 @media (max-width: 377px) {

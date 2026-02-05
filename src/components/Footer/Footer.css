@@ -152,7 +152,7 @@
         transform 0.25s ease;
 }
 .footer-rules:hover {
-    color: #1d9ba6;
+    color: #008b96;
 }
 
 .footer-contact {
@@ -234,7 +234,7 @@
 
 .footer-nav a:hover,
 .footer-mobile-col a:hover {
-    color: #1d9ba6;
+    color: #008b96;
 }
 
 @media (max-width: 1243px) {

@@ -138,7 +138,7 @@
     width: 100%;
     padding: 0px 22px;
     border-radius: 28px;
-    border: 2px solid #1d9ba6;
+    border: 2px solid #008b96;
     background: transparent;
     color: #000000;
 
@@ -261,7 +261,7 @@
 }
 .form-message textarea:focus {
     outline: none;
-    border-color: #1d9ba6;
+    border-color: #008b96;
 } /* default — desktop */
 .title-mobile,
 .subtitle-mobile {

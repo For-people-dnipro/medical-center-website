@@ -92,7 +92,7 @@
 }
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar-thumb {
-    background: #1d9ba6;
+    background: #008b96;
     border-radius: 10px;
 }
 
@@ -122,7 +122,7 @@
 
 /* LINKS */
 .faq-answer a {
-    color: #1d9ba6;
+    color: #008b96;
     text-decoration: underline;
     font-weight: 500;
 }
