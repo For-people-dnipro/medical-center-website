@@ -17,7 +17,6 @@ export default function Header() {
 
     return (
         <>
-            {/* ================= HEADER ================= */}
             <header className="header">
                 <div className="header-inner">
                     <div className="header-content">
@@ -30,7 +29,6 @@ export default function Header() {
                             <img src={logo} alt="Для людей" />
                         </Link>
 
-                        {/* DESKTOP */}
                         <div className="header-right">
                             <nav className="header-nav">
                                 <Link to="/about">Про нас</Link>
@@ -52,7 +50,6 @@ export default function Header() {
                             </div>
                         </div>
 
-                        {/* MOBILE ICONS */}
                         <div className="header-mobile-icons">
                             <img
                                 src={ncsuIcon}
@@ -74,14 +71,12 @@ export default function Header() {
                     <span />
                 </span>
             </button>
-            {/* ================= OVERLAY ================= */}
             {menuOpen && (
                 <div
                     className="menu-overlay"
                     onClick={() => setMenuOpen(false)}
                 />
             )}
-            {/* ================= MOBILE MENU ================= */}
             <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
                 <nav className="mobile-nav">
                     <Link to="/about" onClick={() => setMenuOpen(false)}>
@@ -125,7 +120,7 @@ export default function Header() {
                                 Педіатрія
                             </Link>
                             <Link
-                                to="/services#diagnostics"
+                                to="/diagnostics"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Діагностика

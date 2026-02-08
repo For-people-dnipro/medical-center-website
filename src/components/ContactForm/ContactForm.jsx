@@ -1,21 +1,86 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import emailjs from "@emailjs/browser";
 import "./ContactForm.css";
 
+/**
+ * Universal ContactForm
+ * - Same layout/styles (uses your existing ContactForm.css)
+ * - You can enable/disable fields per page via props
+ * - Adds "form_type" marker so you see which form sent it
+ */
+
 export default function ContactForm({
+    // titles (optional)
     title = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ",
     subtitle = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ",
-}) {
-    const [formData, setFormData] = useState({
-        name: "",
-        phone: "",
-        email: "",
-        branch: "",
-        message: "",
-        consent: false,
-        company: "",
-    });
+    smallTitle,
 
+    // IMPORTANT: marker for email so you know which form sent it
+    formType = "Контактна форма",
+
+    // choose fields for this exact form
+    fields = {
+        name: true,
+        phone: true,
+        email: true,
+        branch: true,
+        diagnostic: false, // for diagnostics page
+        message: true,
+    },
+
+    // labels/placeholders per form (optional)
+    labels = {
+        name: "Імʼя *",
+        phone: "Номер телефону *",
+        email: "Електронна пошта",
+        branch: "Оберіть філію медичного центру *",
+        diagnostic: "Необхідна діагностика *",
+        message: "Повідомлення *",
+        consent: "Даю згоду на збір та обробку персональних даних",
+    },
+
+    placeholders = {
+        name: "Ваше імʼя",
+        phone: "Ваш номер телефону",
+        email: "Ваша ел. пошта (за бажанням)",
+        branch: "Оберіть філію",
+        diagnostic: "Вкажіть назву процедури",
+        message: "Що вас турбує?",
+    },
+
+    // branch options (optional)
+    branchOptions = [
+        "Ще не визначився(лась) / Потрібна консультація",
+        "вул. Данила Галицького, 34",
+        "просп. Богдана Хмельницького, 127",
+        "бульвар Слави, 8",
+    ],
+}) {
+    const hasSmallTitle = Boolean(smallTitle);
+    const hasEmailLike = fields.email || fields.diagnostic;
+    const formClassName = [
+        "contact-form",
+        !hasEmailLike && "contact-form--no-email",
+        !fields.branch && "contact-form--no-branch",
+    ]
+        .filter(Boolean)
+        .join(" ");
+
+    const initialData = useMemo(() => {
+        return {
+            name: "",
+            phone: "",
+            email: "",
+            branch: "",
+            diagnostic: "",
+            message: "",
+            consent: false,
+            company: "", // honeypot
+        };
+    }, []);
+
+    const [formData, setFormData] = useState(initialData);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -28,24 +93,22 @@ export default function ContactForm({
         }));
     };
 
-    const closePopup = () => {
-        setSuccess(false);
-        setError(false);
-    };
     useEffect(() => {
         if (success || error) {
             const timer = setTimeout(() => {
                 setSuccess(false);
                 setError(false);
-            }, 3000); // 3 секунди
-
+            }, 3000);
             return () => clearTimeout(timer);
         }
     }, [success, error]);
 
     useEffect(() => {
         const handleEsc = (e) => {
-            if (e.key === "Escape") closePopup();
+            if (e.key === "Escape") {
+                setSuccess(false);
+                setError(false);
+            }
         };
         window.addEventListener("keydown", handleEsc);
         return () => window.removeEventListener("keydown", handleEsc);
@@ -53,38 +116,50 @@ export default function ContactForm({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // spam bot trap
         if (formData.company) return;
 
         setLoading(true);
         setError(false);
         setSuccess(false);
 
+        // Build email payload ONLY from fields that exist on this form
+        // (so removed fields won't arrive)
+        const details = [];
+
+        // helper
+        const addField = (label, value) => {
+            if (value && value.trim() !== "") {
+                details.push(`${label}: ${value}`);
+            }
+        };
+
+        addField("Форма", formType);
+
+        if (fields.name) addField("Імʼя", formData.name);
+        if (fields.phone) addField("Телефон", formData.phone);
+        if (fields.email) addField("Email", formData.email);
+        if (fields.branch) addField("Філія", formData.branch);
+        if (fields.diagnostic) addField("Діагностика", formData.diagnostic);
+        if (fields.message) addField("Повідомлення", formData.message);
+
+        addField("Дата та час", new Date().toLocaleString("uk-UA"));
+
+        const payload = {
+            details: details.join("\n"),
+        };
+
         try {
             await emailjs.send(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
                 import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                {
-                    title: "Контактна форма — Для людей",
-                    name: formData.name,
-                    phone: formData.phone,
-                    email: formData.email,
-                    branch: formData.branch,
-                    message: formData.message,
-                    time: new Date().toLocaleString("uk-UA"),
-                },
+                payload,
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
             );
 
             setSuccess(true);
-            setFormData({
-                name: "",
-                phone: "",
-                email: "",
-                branch: "",
-                message: "",
-                consent: false,
-                company: "",
-            });
+            setFormData(initialData);
         } catch (err) {
             console.error("EmailJS error:", err);
             setError(true);
@@ -95,7 +170,8 @@ export default function ContactForm({
 
     return (
         <>
-            <form className="contact-form" onSubmit={handleSubmit}>
+            <form className={formClassName} onSubmit={handleSubmit}>
+                {/* honeypot */}
                 <input
                     type="text"
                     name="company"
@@ -107,80 +183,109 @@ export default function ContactForm({
                 />
 
                 <div className="form-header">
-                    <h2 className="title-desktop">{title}</h2>
-                    <p className="subtitle-desktop">{subtitle}</p>
-                    <h2 className="title-mobile">МИ ПОРУЧ, ЩОБ ДОПОМОГТИ</h2>
-                    <h2 className="title-mobile-small">МИ ЗАВЖДИ ПОРУЧ</h2>
-                    <p className="subtitle-mobile">ЗАЛИШТЕ ПОВІДОМЛЕННЯ</p>
-                </div>
-
-                <div className="form-group form-name">
-                    <label>Імʼя *</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group form-phone">
-                    <label>Номер телефону *</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group form-email">
-                    <label>Електронна пошта</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div className="form-group form-branch">
-                    <label>Оберіть філію медичного центру *</label>
-                    <select
-                        name="branch"
-                        value={formData.branch}
-                        onChange={handleChange}
-                        required
+                    <h2
+                        className={hasSmallTitle ? "form-title--has-small" : ""}
                     >
-                        <option value="" disabled hidden>
-                            Оберіть філію
-                        </option>
-                        <option value="Потрібна консультація">
-                            Ще не визначився / Потрібна консультація
-                        </option>
-                        <option value="вул. Данила Галицького, 34">
-                            вул. Данила Галицького, 34
-                        </option>
-                        <option value="просп. Богдана Хмельницького, 127">
-                            просп. Богдана Хмельницького, 127
-                        </option>
-                        <option value="бульвар Слави, 8">
-                            бульвар Слави, 8
-                        </option>
-                    </select>
+                        <span className="form-title-main">{title}</span>
+                        {hasSmallTitle && (
+                            <span className="form-title-small">
+                                {smallTitle}
+                            </span>
+                        )}
+                    </h2>
+                    {subtitle && <p>{subtitle}</p>}
                 </div>
 
-                <div className="form-message">
-                    <label>Повідомлення *</label>
-                    <textarea
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                {fields.name && (
+                    <div className="form-group form-name">
+                        <label>{labels.name}</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder={placeholders.name}
+                            required
+                        />
+                    </div>
+                )}
+
+                {fields.phone && (
+                    <div className="form-group form-phone">
+                        <label>{labels.phone}</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder={placeholders.phone}
+                            required
+                        />
+                    </div>
+                )}
+
+                {fields.email && (
+                    <div className="form-group form-email">
+                        <label>{labels.email}</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder={placeholders.email}
+                        />
+                    </div>
+                )}
+
+                {fields.branch && (
+                    <div className="form-group form-branch">
+                        <label>{labels.branch}</label>
+                        <select
+                            name="branch"
+                            value={formData.branch}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="" disabled hidden>
+                                {placeholders.branch}
+                            </option>
+                            {branchOptions.map((opt) => (
+                                <option key={opt} value={opt}>
+                                    {opt}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                {fields.diagnostic && (
+                    <div className="form-group form-email">
+                        {/* We reuse area "email" slot visually in your grid.
+                If you want a true separate grid-area, tell me and I’ll adjust CSS too. */}
+                        <label>{labels.diagnostic}</label>
+                        <input
+                            type="text"
+                            name="diagnostic"
+                            value={formData.diagnostic}
+                            onChange={handleChange}
+                            placeholder={placeholders.diagnostic}
+                            required
+                        />
+                    </div>
+                )}
+
+                {fields.message && (
+                    <div className="form-message">
+                        <label>{labels.message}</label>
+                        <textarea
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            placeholder={placeholders.message}
+                            required
+                        />
+                    </div>
+                )}
 
                 <label className="form-consent">
                     <input
@@ -191,7 +296,7 @@ export default function ContactForm({
                         required
                     />
                     <span className="custom-checkbox" />
-                    <span>Даю згоду на збір та обробку персональних даних</span>
+                    <span>{labels.consent}</span>
                 </label>
 
                 <div className="form-button">
@@ -212,40 +317,45 @@ export default function ContactForm({
                 </div>
             </form>
 
-            {(success || error) && (
-                <div
-                    className="popup-overlay"
-                    onClick={() => {
-                        setSuccess(false);
-                        setError(false);
-                    }}
-                >
-                    <div className="popup" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            className="popup-close"
-                            aria-label="Закрити"
-                            onClick={() => {
-                                setSuccess(false);
-                                setError(false);
-                            }}
+            {(success || error) &&
+                createPortal(
+                    <div
+                        className="popup-overlay"
+                        onClick={() => {
+                            setSuccess(false);
+                            setError(false);
+                        }}
+                    >
+                        <div
+                            className="popup"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            ×
-                        </button>
+                            <button
+                                className="popup-close"
+                                aria-label="Закрити"
+                                onClick={() => {
+                                    setSuccess(false);
+                                    setError(false);
+                                }}
+                            >
+                                ×
+                            </button>
 
-                        <h3>
-                            {success
-                                ? "Повідомлення надіслано"
-                                : "Сталася помилка."}
-                        </h3>
+                            <h3>
+                                {success
+                                    ? "Повідомлення надіслано"
+                                    : "Сталася помилка."}
+                            </h3>
 
-                        <p>
-                            {success
-                                ? "Дякуємо! Ми зв’яжемося з вами найближчим часом."
-                                : "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо."}
-                        </p>
-                    </div>
-                </div>
-            )}
+                            <p>
+                                {success
+                                    ? "Дякуємо! Ми зв’яжемося з вами найближчим часом."
+                                    : "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо."}
+                            </p>
+                        </div>
+                    </div>,
+                    document.body,
+                )}
         </>
     );
 }

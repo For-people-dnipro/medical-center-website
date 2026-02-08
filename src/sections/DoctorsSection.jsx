@@ -11,7 +11,6 @@ export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
     if (!limitedDoctors.length) return null;
 
-    /* ===== MOBILE NAME SPLIT (ONE-TIME, STABLE) ===== */
     const mobileNameRefs = useRef([]);
     const [forceSplit, setForceSplit] = useState(false);
 
@@ -66,7 +65,6 @@ export default function DoctorsSection({ doctors = [] }) {
                     Команда, яка дбає про вас щодня
                 </p>
 
-                {/* ===== DESKTOP GRID ===== */}
                 <div className="doctors-scroll">
                     <div className="grid">
                         {limitedDoctors.map((doc) => {
@@ -102,7 +100,6 @@ export default function DoctorsSection({ doctors = [] }) {
                                         )}
                                     </div>
 
-                                    {/* DESKTOP — завжди 2 рядки */}
                                     <h3 className="name">
                                         {d.surname}
                                         <br />
@@ -118,7 +115,6 @@ export default function DoctorsSection({ doctors = [] }) {
                     </div>
                 </div>
 
-                {/* ===== MOBILE SLIDER ===== */}
                 <div className="doctors-mobile">
                     <Swiper
                         modules={[Autoplay]}
@@ -169,7 +165,6 @@ export default function DoctorsSection({ doctors = [] }) {
                                             )}
                                         </div>
 
-                                        {/* MOBILE — єдине глобальне рішення */}
                                         <h3
                                             ref={(el) =>
                                                 (mobileNameRefs.current[index] =

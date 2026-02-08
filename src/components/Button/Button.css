@@ -26,6 +26,7 @@
 
 .ui-button-arrow {
     display: block;
+    transform-origin: 50% 50%;
     transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
     width: 40px;
@@ -35,4 +36,12 @@
 .ui-button:hover .ui-button-arrow {
     transform: translateX(4px);
     transition-delay: 0.06s;
+}
+
+.ui-button.arrow-down .ui-button-arrow {
+    transform: rotate(90deg);
+}
+
+.ui-button.arrow-down:hover .ui-button-arrow {
+    transform: rotate(90deg) translateY(4px);
 }

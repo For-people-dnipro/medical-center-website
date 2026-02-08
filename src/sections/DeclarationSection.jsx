@@ -7,7 +7,6 @@ export default function DeclarationSection() {
     return (
         <section className="decl-section">
             <div className="decl-container">
-                {/* DESKTOP TITLE */}
                 <div className="decl-title">
                     <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування
@@ -18,7 +17,6 @@ export default function DeclarationSection() {
                     </h3>
                 </div>
 
-                {/* MOBILE TITLE */}
                 <div className="decl-title-mobile">
                     <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування після
@@ -36,7 +34,6 @@ export default function DeclarationSection() {
 
                         <p className="decl-subtitle">Це дозволить вам:</p>
 
-                        {/* DESKTOP LIST */}
                         <ul className="decl-list">
                             <li>
                                 <img src={check} alt="" />
@@ -59,7 +56,6 @@ export default function DeclarationSection() {
                             </li>
                         </ul>
 
-                        {/* MOBILE LIST */}
                         <ul className="decl-list-mobile">
                             <li>
                                 <img src={check} alt="" />

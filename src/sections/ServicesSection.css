@@ -24,7 +24,7 @@
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, 260px);
-    justify-content: center; /* щоб красиво по центру */
+    justify-content: center;
 }
 
 .service-card {
@@ -45,7 +45,7 @@
 .service-card img {
     width: 42px;
     height: 42px;
-    flex-shrink: 0; /* іконка ніколи не стискається */
+    flex-shrink: 0;
 }
 
 .service-card span {
@@ -149,7 +149,6 @@
         display: block;
     }
 
-    /* TITLES */
     .services-title h2 {
         font-size: 20px;
         font-weight: 600;
@@ -174,7 +173,6 @@
         box-sizing: border-box;
     }
 
-    /* LIST */
     .services-list {
         display: flex;
         flex-direction: column;
@@ -203,7 +201,6 @@
         white-space: nowrap;
     }
 
-    /* ARROW */
     .service-arrow-circle {
         width: 32px;
         height: 32px;
@@ -223,7 +220,6 @@
         height: 32px;
     }
 
-    /* ALL SERVICES BUTTON */
     .services-all-btn {
         margin-top: 18px;
         width: 100%;
@@ -248,7 +244,7 @@
 
     .services-mobile {
         display: block;
-    } /* SEARCH */
+    }
     .services-search-wrapper {
         display: flex;
         gap: 8px;
@@ -267,16 +263,15 @@
         flex-shrink: 0;
     }
 
-    /* HORIZONTAL SCROLL */
     .services-scroll {
         display: flex;
         gap: 6px;
         overflow-x: auto;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
-        flex-direction: column; /* ← ВАЖЛИВО */
-        max-height: 180px; /* ← висота блоку */
-        overflow-y: auto; /* ← вертикальний скрол */
+        flex-direction: column;
+        max-height: 180px;
+        overflow-y: auto;
     }
 
     .services-scroll::-webkit-scrollbar {

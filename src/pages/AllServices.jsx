@@ -20,7 +20,7 @@ export default function AllServices() {
                 <ServicesSection />
 
                 <section className="all-services-contact">
-                    <ContactForm />
+                    <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
                 </section>
             </main>
             <Footer />

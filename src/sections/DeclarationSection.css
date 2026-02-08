@@ -145,7 +145,6 @@
     }
 }
 @media (max-width: 673px) {
-    /* layout */
     .decl-content {
         flex-direction: column;
         gap: 30px;
@@ -155,7 +154,6 @@
         display: none;
     }
 
-    /* lists */
     .decl-list {
         display: none;
     }

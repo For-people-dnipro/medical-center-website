@@ -15,6 +15,7 @@ export default function ServicesSection() {
             icon: "/icons/service-consult.svg",
             iconMobile: "/icons/service-consult-mobile.svg",
             label: "Консультація",
+            href: "/consultation",
         },
         {
             icon: "/icons/service-tests.svg",
@@ -30,11 +31,13 @@ export default function ServicesSection() {
             icon: "/icons/service-diagnostics.svg",
             iconMobile: "/icons/service-diagnostics-mobile.svg",
             label: "Діагностика",
+            href: "/diagnostics",
         },
         {
             icon: "/icons/service-manipulation.svg",
             iconMobile: "/icons/service-manipulation-mobile.svg",
             label: "Маніпуляції",
+            href: "/manipulation",
         },
         {
             icon: "/icons/service-packages.svg",
@@ -62,7 +65,6 @@ export default function ServicesSection() {
 
     const [search, setSearch] = useState("");
 
-    // для мобільного: перший елемент в кінець
     const mobileServices = [...services.slice(1), services[0]];
 
     const filteredServices = mobileServices.filter((item) =>
@@ -71,7 +73,6 @@ export default function ServicesSection() {
 
     return (
         <section className="services-section">
-            {/* ================= DESKTOP ================= */}
             <div className="services-desktop">
                 <div className="services-title">
                     <h2>ПОСЛУГИ</h2>
@@ -116,7 +117,6 @@ export default function ServicesSection() {
                 </div>
             </div>
 
-            {/* ================= MOBILE ================= */}
             <div className="services-mobile">
                 <div className="services-mobile-card">
                     <div className="services-title">
@@ -124,7 +124,6 @@ export default function ServicesSection() {
                         <p>Все для турботи про ваше здоров’я</p>
                     </div>
 
-                    {/* SEARCH */}
                     <div className="services-search-wrapper">
                         <input
                             type="text"
@@ -135,7 +134,6 @@ export default function ServicesSection() {
                         />
                     </div>
 
-                    {/* CONTENT */}
                     <div
                         className={`services-scroll-wrapper ${
                             filteredServices.length > 0 ? "has-results" : ""
@@ -186,7 +184,6 @@ export default function ServicesSection() {
                                     })}
                                 </div>
 
-                                {/* FADE тільки коли НЕ шукаємо */}
                                 {search === "" && (
                                     <div className="services-fade" />
                                 )}
@@ -198,7 +195,6 @@ export default function ServicesSection() {
                         )}
                     </div>
 
-                    {/* BUTTON */}
                     <div className="services-btn">
                         <Button href="/services">Всі послуги</Button>
                     </div>

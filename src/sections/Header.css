@@ -242,7 +242,7 @@
     top: 50%;
     width: 6px;
     height: 6px;
-    background-color: #008b96; /* твій зелений */
+    background-color: #008b96;
     border-radius: 50%;
     transform: translateY(-50%);
 }
@@ -250,10 +250,10 @@
     width: 25px;
     height: 25px;
     transform: translateX(-12px);
-    display: block; /* ⬅️ ВАЖЛИВО */
-    flex-shrink: 0; /* ⬅️ ВАЖЛИВО */
+    display: block;
+    flex-shrink: 0;
     transition: transform 0.25s ease;
-    transform-origin: center; /* ⬅️ ФІКС */
+    transform-origin: center;
 }
 
 .arrow-icon.open {

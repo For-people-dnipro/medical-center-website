@@ -3,6 +3,7 @@ import Footer from "../components/Footer/Footer";
 import "./DeclarationPage.css";
 import ServicesCardHero from "../components/ServicesCardHero/ServicesCardHero";
 import Ticket from "../components/Ticket/Ticket";
+import FAQSection from "../sections/FaqSection";
 
 const benefits = [
     "Щоб мати свого лікаря, який знає історію вашого здоров'я.",
@@ -80,14 +81,120 @@ const freeServices = [
     },
 ];
 
+const declarationFaqTitle = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
+const declarationFaqs = [
+    {
+        question: "Навіщо потрібно укладати декларацію з лікарем?",
+        answer: [
+            "Декларація — це документ, який підтверджує ваш вибір лікаря первинної медичної допомоги та надає можливість безоплатно отримувати базові медичні послуги у медичному закладі, зокрема:",
+            "• консультації сімейного лікаря / терапевта / педіатра (без обмежень за кількістю візитів протягом року)",
+            "• оформлення медичних довідок",
+            "• лікарняні",
+            "• електронні направлення до спеціалістів",
+            "• електронні рецепти на лікарські засоби",
+            "• електрокардіограму (ЕКГ)",
+            "• вакцинацію",
+        ],
+    },
+    {
+        question: "Що необхідно для оформлення декларації?",
+        answer: [
+            "Щоб оформити декларацію, достатньо завітати в нашу клініку і звернутися до адміністратора медичного закладу. Зазвичай при собі потрібно мати:",
+            "• телефон",
+            "• паспорт",
+            "• ідентифікаційний код (ІПН)",
+            "• якщо декларація з педіатром для дитини до 14 років — свідоцтво про народження дитини.",
+        ],
+    },
+    {
+        question: "До якого віку дитину обслуговує педіатр?",
+        answer: [
+            "Педіатр здійснює медичне обслуговування дітей до 18 років. Після досягнення 18 років необхідно підписати декларацію з сімейним лікарем або терапевтом.",
+        ],
+    },
+    {
+        question: "На який термін укладається декларація з лікарем?",
+        answer: [
+            "Декларація є безстроковою — її не потрібно переукладати щороку. Вона діє доти, доки ви самі не вирішите змінити лікаря та підписати нову декларацію.",
+        ],
+    },
+    {
+        question: "Як обрати сімейного лікаря для підписання декларації?",
+        answer: [
+            "Існує поширена думка, що декларації можна укладати лише в державних медичних закладах, але це не так. Декларацію можна підписати і в приватному медичному центрі, отримуючи ті самі безоплатні послуги, передбачені системою первинної допомоги. Зазвичай у приватних клініках процес організований зручніше: менше очікування, швидша комунікація через контакт-центр та своєчасна первинна медична допомога.",
+        ],
+    },
+    {
+        question:
+            "Які аналізи та обстеження доступні безоплатно за декларацією?",
+        answer: [
+            "За наявності декларації пацієнтам також доступні базові безоплатні аналізи та процедури, зокрема:",
+            "• загальний аналіз крові з лейкоцитарною формулою",
+            "• загальний аналіз сечі",
+            "• визначення рівня глюкози крові",
+            "• загальний холестерин",
+            "• вимірювання артеріального тиску",
+            "• швидкі тести (на вагітність, тропонін, ВІЛ, вірусні гепатити)",
+        ],
+    },
+
+    {
+        question:
+            "Як дізнатися, чи підписана у мене декларація з сімейним лікарем?",
+        answer: [
+            <>
+                Перевірити наявність декларації можна в Особистому кабінеті
+                пацієнта на медичних порталах, таких як{" "}
+                <a
+                    href="https://helsi.me"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Helsi
+                </a>
+                ,{" "}
+                <a
+                    href="https://medportal.ua/#/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Портал Пацієнта
+                </a>
+                . Також варто знати, що ви можете переукласти декларацію з іншим
+                лікарем у будь-який момент — звертатися до чинного сімейного
+                лікаря для цього не потрібно. Після підписання нової декларації
+                попередня автоматично анулюється.
+            </>,
+        ],
+    },
+    {
+        question: "Чи потрібно платити за підписання декларації з лікарем?",
+        answer: [
+            "Підписання декларації з сімейним лікарем, терапевтом або педіатром є повністю безоплатним і не передбачає жодних прихованих платежів.",
+        ],
+    },
+];
+
 export default function DeclarationPage() {
     return (
         <div className="declaration-page">
             <main className="declaration-page__main">
-                <ServicesCardHero />
+                <ServicesCardHero
+                    title="ДЕКЛАРАЦІЯ"
+                    subtitle="Турбота починається з довіри"
+                    icon="/icons/service-declaration.svg"
+                    image="/images/declaration-hero.jpg"
+                    crumbs={[
+                        { label: "Головна", to: "/" },
+                        { label: "Послуги", to: "/services" },
+                        { label: "Декларація" },
+                    ]}
+                    buttonText="Підписати декларацію"
+                    buttonHref="#declaration-form"
+                />
 
-                <section className="declaration-page__intro">
-                    <div className="declaration-page__container">
+                <section className="services-text-under-card__intro">
+                    <div className="services-text-under-card__container">
                         <p>
                             Декларація — це перший крок до вашого сімейного
                             лікаря, який турбується про ваше здоров’я
@@ -98,7 +205,7 @@ export default function DeclarationPage() {
                 </section>
 
                 <section className="declaration-page__info">
-                    <div className="declaration-page__container">
+                    <div className="services-text-under-card__container">
                         <div className="declaration-page__info-grid">
                             <article className="declaration-page__info-card">
                                 <h2>НАВІЩО ПОТРІБНА ДЕКЛАРАЦІЯ?</h2>
@@ -160,12 +267,12 @@ export default function DeclarationPage() {
                     </div>
                 </section>
 
-                <section className="declaration-page__cta">
+                <section className="cta-all-pages">
                     <Ticket text="Підпишіть декларацію онлайн або завітайте до клініки і дозвольте нам дбати про вас." />
                 </section>
 
                 <section className="declaration-page__services">
-                    <div className="declaration-page__container">
+                    <div className="services-text-under-card__container">
                         <h2>ЯКІ ПОСЛУГИ ВИ ОТРИМУЄТЕ БЕЗКОШТОВНО?</h2>
 
                         <div className="declaration-page__services-grid">
@@ -186,11 +293,16 @@ export default function DeclarationPage() {
                     </div>
                 </section>
 
+                <FAQSection
+                    title={declarationFaqTitle}
+                    faqs={declarationFaqs}
+                />
+
                 <section
                     className="declaration-page__contact"
                     id="declaration-form"
                 >
-                    <ContactForm />
+                    <ContactForm className="contact-form-declaration" />
                 </section>
             </main>
             <Footer />

@@ -18,6 +18,32 @@
     gap: 20px 48px;
 }
 
+.contact-form.contact-form--no-branch {
+    grid-template-areas:
+        "header header"
+        "name message"
+        "phone message"
+        "email message"
+        "consent button";
+}
+
+.contact-form.contact-form--no-email {
+    grid-template-areas:
+        "header header"
+        "name message"
+        "phone message"
+        "branch message"
+        "consent button";
+}
+
+.contact-form.contact-form--no-email.contact-form--no-branch {
+    grid-template-areas:
+        "header header"
+        "name message"
+        "phone message"
+        "consent button";
+}
+
 /* GRID AREAS */
 .form-header {
     grid-area: header;
@@ -55,8 +81,17 @@
     margin: 0;
 }
 
+.form-title-main {
+    display: inline;
+    margin-bottom: 24px;
+}
+
+.form-title-small {
+    display: none;
+}
+
 .form-header p {
-    font-size: 25px;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 6px;
 }
@@ -102,7 +137,7 @@
 .form-message textarea {
     flex: 1;
     padding: 14px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 6px;
     border: 1px solid #e6eaf0;
     resize: none;
@@ -201,10 +236,10 @@
     position: relative;
     background: #ffffff;
 
-    width: calc(100vw - 32px);
-    max-width: 360px;
+    width: calc(100vw - 48px);
+    max-width: 320px;
 
-    padding: 20px;
+    padding: 16px;
     border-radius: 16px;
 
     text-align: center;
@@ -218,20 +253,36 @@
 }
 
 .popup p {
-    font-size: 15px;
+    font-size: 16px;
     color: #444;
 }
 
 .popup-close {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 10px;
+    right: 10px;
     background: none;
     border: none;
-    font-size: 26px;
+    font-size: 22px;
     line-height: 1;
     cursor: pointer;
     color: #888;
+}
+
+@media (max-width: 480px) {
+    .popup {
+        width: calc(100vw - 64px);
+        max-width: 280px;
+        padding: 14px;
+    }
+
+    .popup h3 {
+        font-size: 18px;
+    }
+
+    .popup p {
+        font-size: 15px;
+    }
 }
 
 .popup-close:hover {
@@ -262,22 +313,6 @@
 .form-message textarea:focus {
     outline: none;
     border-color: #008b96;
-} /* default — desktop */
-.title-mobile,
-.subtitle-mobile {
-    display: none;
-}
-.title-mobile-small {
-    display: none;
-}
-
-@media (max-width: 1024px) {
-    .form-header p {
-        font-size: 24px;
-    }
-    .title-mobile-small {
-        display: none;
-    }
 }
 @media (max-width: 900px) {
     .contact-form {
@@ -293,8 +328,37 @@
             "button";
         padding: 60px 55px;
     }
-    .title-mobile-small {
-        display: none;
+
+    .contact-form.contact-form--no-branch {
+        grid-template-areas:
+            "header"
+            "name"
+            "phone"
+            "email"
+            "message"
+            "consent"
+            "button";
+    }
+
+    .contact-form.contact-form--no-email {
+        grid-template-areas:
+            "header"
+            "name"
+            "phone"
+            "branch"
+            "message"
+            "consent"
+            "button";
+    }
+
+    .contact-form.contact-form--no-email.contact-form--no-branch {
+        grid-template-areas:
+            "header"
+            "name"
+            "phone"
+            "message"
+            "consent"
+            "button";
     }
 }
 @media (max-width: 768px) {
@@ -305,12 +369,6 @@
     }
     .form-header h2 {
         font-size: 20px;
-        line-height: 1.35;
-    }
-
-    .form-header p {
-        font-size: 20px;
-        margin-top: 4px;
     }
 
     .form-group label,
@@ -321,16 +379,7 @@
     .form-group input,
     .form-group select {
         height: 44px;
-        font-size: 15px;
-    }
-    .title-desktop,
-    .subtitle-desktop {
-        display: none;
-    }
-
-    .title-mobile,
-    .subtitle-mobile {
-        display: block;
+        font-size: 14px;
     }
     .form-message textarea {
         flex: none;
@@ -363,43 +412,32 @@
         width: 32px;
         height: 32px;
     }
-    .title-mobile-small {
-        display: none;
-    }
 }
 @media (max-width: 576px) {
+    .form-title--has-small .form-title-main {
+        display: none;
+    }
+
+    .form-title--has-small .form-title-small {
+        display: inline;
+        font-size: 20px;
+    }
+
     .contact-form {
-        padding: 40px 20px;
+        padding: 40px 16px;
+    }
+    .form-header h2 {
+        font-size: 20px;
+        line-height: 1.3;
+        letter-spacing: 0.02em;
+        text-transform: none; /* ⬅️ важливо */
     }
     .form-message textarea {
         flex: none; /* 🔴 КЛЮЧОВЕ */
         max-height: 100px;
         min-height: 60px;
     }
-    .subtitle-mobile {
-        margin-bottom: 10px;
-    }
     .form-consent span:last-child {
         font-size: 13.5px;
-    }
-    .title-mobile-small {
-        display: none;
-    }
-}
-@media (max-width: 400px) {
-    .title-mobile-small {
-        display: block;
-    }
-    .title-mobile {
-        display: none;
-    }
-}
-@media (max-width: 339px) {
-    .form-header h2 {
-        font-size: 18px;
-    }
-
-    .form-header p {
-        font-size: 18px;
     }
 }

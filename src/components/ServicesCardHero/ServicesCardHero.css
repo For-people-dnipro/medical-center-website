@@ -35,27 +35,6 @@
     justify-content: flex-start;
     gap: 0;
 }
-/* Breadcrumbs */
-.services-card-hero__crumbs {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 48px;
-    font-size: 12px;
-    margin-top: 24px;
-    margin-left: 10px;
-    color: #98a2a8;
-}
-
-.services-card-hero__crumbs a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.services-card-hero__crumbs .current {
-    color: #0aa2a6;
-    font-weight: 500;
-}
 
 /* Title */
 .services-card-hero__title {
@@ -129,7 +108,34 @@
 /* ================================
    TABLET & MOBILE
 ================================ */
+.services-card-hero__crumbs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    margin-bottom: 48px;
+    margin-top: 24px;
+    margin-left: 10px;
+    color: #98a2a8;
+}
 
+.services-card-hero__crumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.services-card-hero__crumbs a:hover {
+    color: #7f7f7f;
+}
+
+.services-card-hero__crumbs .current {
+    color: #0aa2a6;
+    font-weight: 500;
+}
+
+.services-card-hero__crumbs .crumb-separator {
+    color: #c2c9ce;
+}
 @media (max-width: 900px) {
     .services-card-hero {
         padding: 0px 0px 32px 0px;
@@ -193,7 +199,7 @@
 
     .services-card-hero__right img {
         height: 200px;
-    } /* Breadcrumbs */
+    }
     .services-card-hero__crumbs {
         margin-left: 6px;
     }
@@ -203,9 +209,6 @@
         font-weight: 400;
     }
 }
-/* ================================
-   SMALL MOBILE
-================================ */
 
 @media (max-width: 480px) {
     .services-card-hero__card {

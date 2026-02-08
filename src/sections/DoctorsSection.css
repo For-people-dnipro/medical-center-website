@@ -4,7 +4,7 @@
 }
 
 .position {
-    margin: 0 0 0px 0; /* тільки знизу 6px */
+    margin: 0 0 0px 0;
 }
 
 .address,
@@ -40,7 +40,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
     justify-items: center;
-    justify-content: center; /* ДОДАТИ ЦЕ */
+    justify-content: center;
 }
 
 .card {
@@ -155,7 +155,7 @@
 @media (max-width: 768px) {
     .subtitle-mobile {
         display: block;
-        font-size: 16px; /* можеш трошки менше */
+        font-size: 16px;
         margin-bottom: 30px;
     }
 
@@ -261,7 +261,7 @@
         margin-top: 0px;
     }
     .smart-name {
-        white-space: nowrap; /* КРИТИЧНО */
+        white-space: nowrap;
         overflow: hidden;
         font-size: 16px;
         font-weight: 600;

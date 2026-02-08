@@ -112,8 +112,8 @@
 
 .branches-button-wrapper {
     margin-top: 30px;
-    display: flex; /* ⬅ */
-    justify-content: center; /* ⬅ */
+    display: flex;
+    justify-content: center;
 }
 .branches-button-wrapper.desktop-only {
     justify-self: center;
@@ -168,7 +168,6 @@
     display: none;
 }
 
-/* Mobile */
 @media (max-width: 900px) {
     .branches-container {
         display: flex;
