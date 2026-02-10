@@ -108,7 +108,7 @@
     margin: 0;
     font-size: 15px;
     line-height: 1.6;
-    color: var(--color-text-muted);
+    color: var(--color-text-main);
     text-align: justify;
 }
 
