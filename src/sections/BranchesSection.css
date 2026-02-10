@@ -228,9 +228,6 @@
     }
 }
 @media (max-width: 768px) {
-    .branches-title h1 {
-        font-size: 20px;
-    }
     .branches-section {
         padding: 70px 16px;
     }

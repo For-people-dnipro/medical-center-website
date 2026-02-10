@@ -273,7 +273,7 @@ export default function DeclarationPage() {
 
                 <section className="declaration-page__services">
                     <div className="services-text-under-card__container">
-                        <h2>ЯКІ ПОСЛУГИ ВИ ОТРИМУЄТЕ БЕЗКОШТОВНО?</h2>
+                        <h1>ЯКІ ПОСЛУГИ ВИ ОТРИМУЄТЕ БЕЗКОШТОВНО?</h1>
 
                         <div className="declaration-page__services-grid">
                             {freeServices.map((service) => (

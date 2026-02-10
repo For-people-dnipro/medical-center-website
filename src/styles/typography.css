@@ -56,7 +56,7 @@ body {
 /* Section title (ONE per section) */
 .text-h1 {
     font-size: var(--font-h1);
-    font-weight: var(--fw-semibold);
+    font-weight: var(--fw-medium);
     line-height: var(--lh-heading);
 }
 

@@ -148,9 +148,6 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-    .section-types__title h1 {
-        font-size: 20px;
-    }
     .section-types {
         padding: 38px 16px 0px 16px;
     }

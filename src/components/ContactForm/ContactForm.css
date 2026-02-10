@@ -367,11 +367,7 @@
         gap: 18px;
         padding: 50px 45px;
     }
-    .form-header h1 {
-        font-size: 20px;
-    }
-
-    .form-group label,
+    d .form-group label,
     .form-message label {
         font-size: 14px;
     }

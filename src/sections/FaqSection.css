@@ -7,10 +7,9 @@
     margin: 0 auto;
 }
 
-.faq-title h1 {
+.faq-title {
     text-align: center;
     font-size: var(--font-h1);
-    font-weight: 600;
     margin-bottom: 40px;
 }
 
@@ -123,9 +122,6 @@
     height: 10px;
 }
 @media (max-width: 768px) {
-    .faq-title h1 {
-        font-size: 20px;
-    }
     .faq-section {
         padding: 70px 16px;
     }
