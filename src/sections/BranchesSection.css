@@ -18,18 +18,16 @@
     justify-content: center;
 }
 
-.branches-title h1 {
-    font-size: var(--font-h1);
-    font-weight: 600;
+.branches-title {
+    font-size: var(--font-h2);
     margin-bottom: 40px;
     text-align: center;
     margin-top: 0px;
 }
 
 .branches-description {
-    font-size: 16px;
     text-align: justify;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     line-height: 1.4;
 }
 
@@ -44,7 +42,7 @@
     align-items: center;
     gap: 12px;
     font-size: 18px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .branches-item .icon {
@@ -55,7 +53,7 @@
 .branches-item a {
     text-decoration: none;
     color: #000;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
 }
 
@@ -154,6 +152,7 @@
 
 .branches-item .icon {
     transition: transform 0.25s ease;
+    margin-top: 5px;
 }
 
 .branches-item:hover .icon {
@@ -230,6 +229,9 @@
 @media (max-width: 768px) {
     .branches-section {
         padding: 70px 16px;
+    }
+    .branches-title {
+        margin-bottom: 30px;
     }
 }
 @media (max-width: 576px) {

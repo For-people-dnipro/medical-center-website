@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useLayoutEffect, useRef, useState } from "react";
+import { Heading3 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
@@ -58,12 +59,12 @@ export default function DoctorsSection({ doctors = [] }) {
             <div className="doctors-container">
                 <h2 className="title">ЛІКАРІ</h2>
 
-                <p className="subtitle subtitle-desktop">
+                <h3 className="subtitle subtitle-desktop">
                     Команда, яка щодня дбає про ваше самопочуття
-                </p>
-                <p className="subtitle subtitle-mobile">
+                </h3>
+                <h3 className="subtitle subtitle-mobile">
                     Команда, яка дбає про вас щодня
-                </p>
+                </h3>
 
                 <div className="doctors-scroll">
                     <div className="grid">
@@ -100,11 +101,11 @@ export default function DoctorsSection({ doctors = [] }) {
                                         )}
                                     </div>
 
-                                    <h3 className="name">
+                                    <p className="name">
                                         {d.surname}
                                         <br />
                                         {d.name}
-                                    </h3>
+                                    </p>
 
                                     {d.position && (
                                         <p className="position">{d.position}</p>

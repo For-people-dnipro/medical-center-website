@@ -76,7 +76,7 @@ export default function ServicesSection() {
             <div className="services-desktop">
                 <div className="services-title">
                     <h2>ПОСЛУГИ</h2>
-                    <p>Все, що потрібно для турботи про здоров’я</p>
+                    <h3>Все, що потрібно для турботи про здоров’я</h3>
                 </div>
 
                 <div className="services-grid">
@@ -121,9 +121,12 @@ export default function ServicesSection() {
                 <div className="services-mobile-card">
                     <div className="services-title">
                         <h2>ПОСЛУГИ</h2>
-                        <p>Все для турботи про ваше здоров’я</p>
-                    </div>
-
+                        <h3>Все для турботи про ваше здоров’я</h3>
+                    </div>{" "}
+                    <h1 class="visually-hidden">
+                        Приватний медичний центр "Для Людей" у місті Дніпро,
+                        Україна.
+                    </h1>
                     <div className="services-search-wrapper">
                         <input
                             type="text"
@@ -133,7 +136,6 @@ export default function ServicesSection() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-
                     <div
                         className={`services-scroll-wrapper ${
                             filteredServices.length > 0 ? "has-results" : ""
@@ -194,7 +196,6 @@ export default function ServicesSection() {
                             </div>
                         )}
                     </div>
-
                     <div className="services-btn">
                         <Button href="/services">Всі послуги</Button>
                     </div>

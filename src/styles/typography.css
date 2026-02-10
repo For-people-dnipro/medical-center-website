@@ -8,8 +8,8 @@
 
     /* ===== Laptop / Desktop ( > 768px ) ===== */
     --font-display: 56px;
-    --font-h1: 24px;
-    --font-h2: 18px;
+    --font-h2: 24px;
+    --font-h3: 18px;
     --font-body: 16px;
     --font-caption: 12px;
 
@@ -42,39 +42,34 @@ body {
     font-family: inherit;
 }
 
-/* =========================
-   TEXT STYLES
-   ========================= */
-
-/* Display (Hero titles) */
-.text-display {
+h1 {
     font-size: var(--font-display);
     font-weight: var(--fw-semibold);
     line-height: var(--lh-heading);
 }
 
-/* Section title (ONE per section) */
-.text-h1 {
-    font-size: var(--font-h1);
+h2 {
+    font-size: var(--font-h2);
     font-weight: var(--fw-semibold);
     line-height: var(--lh-heading);
 }
 
-/* Subtitles / card titles */
-.text-h2 {
-    font-size: var(--font-h2);
-    font-weight: var(--fw-medium);
+h3 {
+    font-size: var(--font-h3);
+    font-weight: var(--fw-regular);
     line-height: var(--lh-heading);
 }
 
-/* Body text */
-.text-body {
+p {
     font-size: var(--font-body);
     font-weight: var(--fw-regular);
     line-height: var(--lh-body);
 }
-
-/* Caption / helper text */
+li {
+    font-size: var(--font-body);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+}
 .text-caption {
     font-size: var(--font-caption);
     font-weight: var(--fw-regular);
@@ -102,8 +97,8 @@ body {
 @media (max-width: 768px) {
     :root {
         --font-display: 48px;
-        --font-h1: 20px;
-        --font-h2: 16px;
+        --font-h2: 20px;
+        --font-h3: 16px;
         --font-body: 14px;
         --font-caption: 10px;
     }

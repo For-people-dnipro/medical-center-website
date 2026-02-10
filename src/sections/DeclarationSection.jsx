@@ -8,20 +8,20 @@ export default function DeclarationSection() {
         <section className="decl-section">
             <div className="decl-container">
                 <div className="decl-title">
-                    <h1>
+                    <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування
-                    </h1>
-                    <h1>
+                    </h2>
+                    <h2>
                         за умови <span>ПІДПИСАННЯ</span> декларації з сімейним
                         лікарем
-                    </h1>
+                    </h2>
                 </div>
 
                 <div className="decl-title-mobile">
-                    <h1>
+                    <h2>
                         <span>БЕЗКОШТОВНЕ</span> медичне обслуговування після
                         підписання <span>ДЕКЛАРАЦІЇ</span>
-                    </h1>
+                    </h2>
                 </div>
 
                 <div className="decl-content">
@@ -63,7 +63,8 @@ export default function DeclarationSection() {
                             </li>
                             <li>
                                 <img src={check} alt="" />
-                                отримувати направлення до спеціалістів
+                                безкоштовно отримувати направлення до
+                                спеціалістів
                             </li>
                             <li>
                                 <img src={check} alt="" />
