@@ -20,7 +20,7 @@
     grid-template-columns: 0.9fr 1.1fr;
 }
 
-.service-template__text h2 {
+.service-template__text h1 {
     margin: 0 0 30px;
     font-size: var(--font-h1);
     font-weight: 600;
@@ -73,10 +73,6 @@
 
     .service-template__card {
         padding: 40px 20px;
-    }
-
-    .service-template__text h2 {
-        font-size: 20px;
     }
 }
 

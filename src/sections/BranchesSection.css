@@ -18,7 +18,7 @@
     justify-content: center;
 }
 
-.branches-title {
+.branches-title h1 {
     font-size: var(--font-h1);
     font-weight: 600;
     margin-bottom: 40px;
@@ -228,7 +228,7 @@
     }
 }
 @media (max-width: 768px) {
-    .branches-title {
+    .branches-title h1 {
         font-size: 20px;
     }
     .branches-section {

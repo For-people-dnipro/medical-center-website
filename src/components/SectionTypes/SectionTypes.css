@@ -8,7 +8,7 @@
     padding: 0;
 }
 
-.section-types__title {
+.section-types__title h1 {
     text-align: center;
     font-size: var(--font-h1);
     font-weight: 600;
@@ -148,7 +148,7 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-    .section-types__title {
+    .section-types__title h1 {
         font-size: 20px;
     }
     .section-types {
