@@ -8,9 +8,9 @@
     padding: 0;
 }
 
-.section-types__title h1 {
+.section-types__title {
     text-align: center;
-    font-size: var(--font-h1);
+    font-size: var(--font-h2);
     font-weight: 600;
     margin: 0 0 28px;
     font-weight: 600;
@@ -106,10 +106,11 @@
 
 .section-types__col-title {
     margin: 0 0 14px;
-    font-size: 18px;
     font-weight: 600;
 }
-
+.text-paragraph {
+    font-size: var(--font-body);
+}
 .section-types__list {
     margin: 0;
     padding-left: 0;
@@ -137,7 +138,6 @@
 .section-types__note {
     margin: 14px auto 0;
     text-align: justify;
-    font-size: 16px;
     opacity: 0.85;
 }
 @media (max-width: 900px) {
