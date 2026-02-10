@@ -1,5 +1,5 @@
 .section-types {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 80px 20px 0px 20px;
 }
@@ -91,7 +91,7 @@
 }
 
 .section-types__description {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto 24px;
     line-height: 1.4;
     text-align: justify;
