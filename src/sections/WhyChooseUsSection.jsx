@@ -84,7 +84,7 @@ export default function WhyChooseUsSection() {
                         </div>
                     </div>
                 </div>
-                <h3 className="why-subtitle">Наші Переваги:</h3>
+                <h2 className="why-subtitle">Наші Переваги:</h2>
                 <div className="why-features-wrapper">
                     <div className="why-features">
                         <ul>

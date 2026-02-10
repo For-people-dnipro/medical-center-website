@@ -7,10 +7,9 @@
     margin: 0 auto;
 }
 
-.why-title h1 {
+.why-title {
     text-align: center;
-    font-size: var(--font-h1);
-    font-weight: 600;
+    font-size: var(--font-h2);
     margin-bottom: 30px;
     margin-top: 0px;
 }
@@ -18,7 +17,7 @@
 .why-description {
     max-width: 1080px;
     margin: 0 auto 40px;
-    font-size: 16px;
+    font-size: var(--font-body);
     line-height: 1.7;
 
     text-align: justify;
@@ -86,7 +85,6 @@
 
 .why-features li {
     margin-bottom: 30px;
-    font-size: 16px;
     position: relative;
     padding-left: 50px;
 }
@@ -153,7 +151,6 @@
     }
 
     .why-features li {
-        font-size: 16px;
         margin-bottom: 24px;
         padding-left: 35px;
     }
@@ -169,11 +166,7 @@
         font-size: 44px;
     }
 }
-@media (max-width: 768px) {
-    .why-title-desktop {
-        font-size: 20px;
-    }
-}
+
 @media (max-width: 752px) {
     .why-stats {
         grid-auto-flow: unset;
@@ -195,9 +188,8 @@
     .why-container {
         padding: 0px 16px;
     }
-    .why-title h1 {
+    .why-title {
         text-align: left;
-        font-size: 20px;
         line-height: 1.35;
         color: #0c8a87;
         margin-bottom: 18px;
@@ -258,14 +250,12 @@
         justify-items: unset;
     }
     .why-subtitle {
-        font-size: 20px;
-        font-weight: 600;
         color: #0c8a87;
         margin: 32px 0 18px 0;
+        font-weight: 600;
     }
 
     .why-features li {
-        font-size: 16px;
         margin-bottom: 24px;
         padding-left: 35px;
     }
@@ -280,7 +270,6 @@
 }
 @media (max-width: 480px) {
     .why-features li {
-        font-size: 16px;
         padding-left: 30px;
     }
 }
