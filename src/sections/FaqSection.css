@@ -9,7 +9,7 @@
 
 .faq-title {
     text-align: center;
-    font-size: 28px;
+    font-size: var(--font-h1);
     font-weight: 600;
     margin-bottom: 40px;
 }

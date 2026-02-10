@@ -10,7 +10,7 @@
 
 .section-types__title {
     text-align: center;
-    font-size: 28px;
+    font-size: var(--font-h1);
     font-weight: 600;
     margin: 0 0 28px;
     font-weight: 600;
