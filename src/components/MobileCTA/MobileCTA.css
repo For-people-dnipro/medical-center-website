@@ -32,7 +32,7 @@
         padding: 6px 8px;
         background: transparent;
         border: none;
-        color: #ffffff;
+        color: var(--color-bg-main);
         cursor: pointer;
 
         display: flex;

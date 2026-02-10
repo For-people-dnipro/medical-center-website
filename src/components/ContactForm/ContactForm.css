@@ -108,7 +108,7 @@
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #2aa6b8;
+    border-color: #008b96;
 }
 
 /* SELECT */
@@ -155,7 +155,7 @@
 
 .form-consent input:checked + .custom-checkbox {
     background: url("/icons/check.svg") no-repeat center / contain;
-    border-color: #2aa6b8;
+    border-color: #008b96;
 }
 .form-subtitle {
     margin: 0 0 10px 0;
@@ -163,7 +163,7 @@
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
     font-size: 16px;
-    color: #9aa1aa;
+    color: var(--color-text-muted);
 }
 
 .submit-button {
@@ -172,7 +172,7 @@
     border-radius: 28px;
     border: 2px solid #008b96;
     background: transparent;
-    color: #000000;
+    color: var(--color-text-main);
 
     font-size: 16px;
     font-weight: 500;
@@ -251,7 +251,7 @@
 
 .popup p {
     font-size: 16px;
-    color: #444;
+    color: var(--color-text-main);
 }
 
 .popup-close {
@@ -263,7 +263,7 @@
     font-size: 22px;
     line-height: 1;
     cursor: pointer;
-    color: #888;
+    color: var(--color-text-muted);
 }
 .form-title--has-small {
     margin: 10px;
@@ -286,7 +286,7 @@
 }
 
 .popup-close:hover {
-    color: #000;
+    color: var(--color-text-main);
 }
 
 @keyframes popupFade {
@@ -304,11 +304,11 @@
 }
 
 .form-group select {
-    color: #111;
+    color: var(--color-text-main);
 }
 
 .form-group select:has(option[value=""]:checked) {
-    color: #b9bec7;
+    color: var(--color-text-muted);
 }
 .form-message textarea:focus {
     outline: none;

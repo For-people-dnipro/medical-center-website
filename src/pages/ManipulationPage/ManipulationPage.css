@@ -1,5 +1,5 @@
 .manipulation-page {
-    color: #1a1a1a;
+    color: var(--color-text-main);
 }
 
 /* COMMON */
@@ -51,7 +51,7 @@
 
 .manipulation-list li span {
     font-size: 14px;
-    color: #555;
+    color: var(--color-text-muted);
 }
 
 /* SAFETY */

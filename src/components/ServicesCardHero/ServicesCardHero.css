@@ -115,7 +115,7 @@
     margin-bottom: 48px;
     margin-top: 24px;
     margin-left: 10px;
-    color: #98a2a8;
+    color: var(--color-text-muted);
 }
 
 .services-card-hero__crumbs a {
@@ -128,12 +128,12 @@
 }
 
 .services-card-hero__crumbs .current {
-    color: #0aa2a6;
+    color: var(--color-primary);
     font-weight: 500;
 }
 
 .services-card-hero__crumbs .crumb-separator {
-    color: #c2c9ce;
+    color: var(--color-text-muted);
 }
 @media (max-width: 900px) {
     .services-card-hero {

@@ -1,6 +1,6 @@
 .diagnostics-page {
     min-height: 100vh;
-    color: #1a1a1a;
+    color: var(--color-text-main);
 }
 
 .diagnostics-form-section .form-header {

@@ -90,10 +90,16 @@ li {
     font-weight: var(--fw-bold);
 }
 
-/* =========================
-   MOBILE ( ≤ 768px )
-   ========================= */
+:root {
+    --color-primary: #008b96;
 
+    --color-text-main: #000000;
+    --color-text-muted: #98a2a8;
+
+    --color-bg-main: #ffffff;
+
+    --color-border: #e6eaf0;
+}
 @media (max-width: 768px) {
     :root {
         --font-display: 48px;

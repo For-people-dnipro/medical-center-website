@@ -18,7 +18,7 @@
 .ticket-item {
     font-size: 20px;
     font-weight: 700;
-    color: white;
+    color: var(--color-bg-main);
     text-transform: uppercase;
     margin-right: 80px;
     letter-spacing: 0.6px;

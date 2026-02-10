@@ -326,7 +326,7 @@
     .services-empty {
         padding: 10px 5px;
         text-align: center;
-        color: #6b6b6b;
+        color: var(--color-text-muted);
         justify-content: center;
     }
 
@@ -340,7 +340,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        color: #6b6b6b;
+        color: var(--color-text-muted);
         font-size: 16px;
         font-weight: 500;
         padding: 0 20px;

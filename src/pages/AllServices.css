@@ -27,13 +27,13 @@
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #98a2a8;
+    color: var(--color-text-muted);
     margin-bottom: 0;
     padding: 0;
 }
 
 .all-services-crumbs .current {
-    color: #0aa2a6;
+    color: var(--color-primary);
     font-weight: 500;
 }
 .all-services-crumbs a {
@@ -46,7 +46,7 @@
 }
 
 .crumb-separator {
-    color: #c2c9ce;
+    color: var(--color-text-muted);
 }
 
 .all-services-hero h1 {
@@ -59,7 +59,7 @@
 .all-services-hero p {
     margin: 0;
     font-size: 18px;
-    color: #5f6b72;
+    color: var(--color-text-muted);
 }
 
 .all-services-contact {

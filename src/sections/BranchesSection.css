@@ -46,12 +46,12 @@
 
 .branches-item .icon {
     font-size: 22px;
-    color: #0c8a87;
+    color: var(--color-primary);
 }
 
 .branches-item a {
     text-decoration: none;
-    color: #000;
+    color: var(--color-text-main);
     font-weight: 500;
     font-size: 16px;
 }
@@ -119,9 +119,9 @@
 .branches-button {
     display: inline-block;
     padding: 12px 28px;
-    border: 2px solid #0c8a87;
+    border: 2px solid var(--color-primary);
     border-radius: 30px;
-    color: #0c8a87;
+    color: var(--color-primary);
     font-weight: 600;
     text-decoration: none;
     transition: 0.3s;
@@ -129,7 +129,7 @@
 
 .branches-button:hover {
     background: #0c8a87;
-    color: white;
+    color: var(--color-bg-main);
 }
 
 .branches-map iframe {
@@ -144,7 +144,7 @@
 }
 
 .branches-item:hover a {
-    color: #0c8a87;
+    color: var(--color-primary);
     transform: translateX(4px);
     text-decoration: none;
 }

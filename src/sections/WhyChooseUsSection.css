@@ -21,7 +21,7 @@
     line-height: 1.7;
 
     text-align: justify;
-    color: #222;
+    color: var(--color-text-main);
 }
 
 .why-stats {
@@ -38,7 +38,7 @@
 .stat-number {
     font-size: 56px;
     font-weight: 500;
-    color: #000;
+    color: var(--color-text-main);
 }
 .stat-number {
     display: inline-block;
@@ -191,7 +191,7 @@
     .why-title {
         text-align: left;
         line-height: 1.35;
-        color: #0c8a87;
+        color: var(--color-primary);
         margin-bottom: 18px;
     }
     .why-title-desktop,
@@ -250,7 +250,7 @@
         justify-items: unset;
     }
     .why-subtitle {
-        color: #0c8a87;
+        color: var(--color-primary);
         margin: 32px 0 18px 0;
         font-weight: 600;
     }

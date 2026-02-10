@@ -124,13 +124,13 @@
     }
 
     .slogan-care {
-        color: #008b96;
+        color: var(--color-primary);
     }
     .slogan-diagnose {
         color: #652f6b;
     }
     .slogan-treat {
-        color: #008b96;
+        color: var(--color-primary);
     }
 
     body {

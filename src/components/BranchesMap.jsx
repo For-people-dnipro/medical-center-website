@@ -59,7 +59,7 @@ export default function BranchesMap() {
                         position={{ lat: b.lat, lng: b.lng }}
                         icon={{
                             path: PIN_PATH,
-                            fillColor: "#0c8a87",
+                            fillColor: "#008b96",
                             fillOpacity: 1,
                             strokeWeight: 0,
                             scale: hoveredIndex === i ? 1.0 : 0.9,
