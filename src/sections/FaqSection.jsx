@@ -53,7 +53,10 @@ export default function FAQSection({ title = DEFAULT_TITLE, faqs = [] }) {
     return (
         <section className="faq-section">
             <div className="faq-container">
-                <h1 className="faq-title">{title}</h1>
+                <h2 className="faq-title">
+                    <span className="faq-title-desktop">{title}</span>
+                    <span className="faq-title-mobile">ПОШИРЕНІ ЗАПИТАННЯ</span>
+                </h2>
 
                 <div className="faq-list">
                     {items.map((item, i) => (

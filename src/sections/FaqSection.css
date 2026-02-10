@@ -9,7 +9,7 @@
 
 .faq-title {
     text-align: center;
-    font-size: var(--font-h1);
+    font-size: var(--font-h2);
     margin-bottom: 40px;
 }
 
@@ -121,9 +121,27 @@
 .faq-answer-spacer {
     height: 10px;
 }
+.faq-title-mobile {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .faq-section {
         padding: 70px 16px;
+    }
+
+    .faq-question {
+        font-size: 14px;
+    }
+    .faq-answer p {
+        font-size: 13px;
+    }
+    .faq-title-desktop {
+        display: none;
+    }
+
+    .faq-title-mobile {
+        display: inline;
     }
 }
 @media (max-width: 576px) {
