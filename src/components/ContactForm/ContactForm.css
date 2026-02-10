@@ -71,14 +71,9 @@
 }
 
 .form-header {
-    text-align: center;
-}
-
-.form-header h1 {
-    font-size: var(--font-h1);
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: var(--font-h2);
     margin: 0;
+    text-align: center;
 }
 
 .form-title-main {
@@ -88,12 +83,6 @@
 
 .form-title-small {
     display: none;
-}
-
-.form-header p {
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 6px;
 }
 
 .form-group {
@@ -167,6 +156,14 @@
 .form-consent input:checked + .custom-checkbox {
     background: url("/icons/check.svg") no-repeat center / contain;
     border-color: #2aa6b8;
+}
+.form-subtitle {
+    margin: 0 0 10px 0;
+} /* ===== Placeholders ===== */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    font-size: 16px;
+    color: #9aa1aa;
 }
 
 .submit-button {
@@ -268,6 +265,9 @@
     cursor: pointer;
     color: #888;
 }
+.form-title--has-small {
+    margin: 10px;
+}
 
 @media (max-width: 480px) {
     .popup {
@@ -367,7 +367,7 @@
         gap: 18px;
         padding: 50px 45px;
     }
-    d .form-group label,
+    .form-group label,
     .form-message label {
         font-size: 14px;
     }
@@ -382,7 +382,10 @@
         max-height: 160px;
         min-height: 60px;
     }
-
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+        font-size: 14px;
+    }
     .form-consent {
         align-items: flex-start;
         gap: 10px;
@@ -422,10 +425,7 @@
     .contact-form {
         padding: 40px 16px;
     }
-    .form-header h1 {
-        font-size: 20px;
-        line-height: 1.3;
-        letter-spacing: 0.02em;
+    .form-header {
         text-transform: none; /* ⬅️ важливо */
     }
     .form-message textarea {

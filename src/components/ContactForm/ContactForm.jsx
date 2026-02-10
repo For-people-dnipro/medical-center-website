@@ -193,7 +193,7 @@ export default function ContactForm({
                             </span>
                         )}
                     </h2>
-                    {subtitle && <p>{subtitle}</p>}
+                    {subtitle && <h2 className="form-subtitle">{subtitle}</h2>}
                 </div>
 
                 {fields.name && (
