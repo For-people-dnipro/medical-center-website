@@ -39,10 +39,10 @@ export default function ConsultPage() {
                 <section className="consult-page__specialists">
                     <div className="services-text-under-card__container">
                         <h2>НАШІ СПЕЦІАЛІСТИ</h2>
-                        <p className="consult-page__subtitle">
+                        <h3 className="consult-page__subtitle">
                             У нашій клініці ви можете отримати консультацію
                             досвідчених фахівців:
-                        </p>
+                        </h3>
 
                         <div className="consult-page__grid">
                             <article className="consult-page__card">

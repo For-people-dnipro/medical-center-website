@@ -12,6 +12,8 @@
 .services-text-under-card__container {
     max-width: 1080px;
     margin: 0 auto;
+}
+.services-text-under-card__container p {
     padding: 0 20px;
 }
 

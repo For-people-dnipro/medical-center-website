@@ -20,18 +20,15 @@
     grid-template-columns: 0.9fr 1.1fr;
 }
 
-.service-template__text h1 {
+.service-template__text {
     margin: 0 0 30px;
-    font-size: var(--font-h1);
+    font-size: var(--font-h2);
     font-weight: 600;
     text-align: center;
 }
 
 .service-template__text p {
     margin: 0;
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.01em;
     color: var(--color-text-main);
     max-width: 550px;
     text-align: justify;
@@ -59,7 +56,9 @@
         height: 200px;
         object-fit: cover;
     }
-
+    .service-template__text {
+        margin-bottom: 10px;
+    }
     .service-template__text p {
         max-width: 100%;
     }
