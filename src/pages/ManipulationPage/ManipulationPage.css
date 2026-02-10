@@ -1,11 +1,13 @@
 .manipulation-page {
-    color: var(--color-text-main);
+    color: #1a1a1a;
 }
 
 /* COMMON */
 .manipulation-container {
-    max-width: 1080px;
+    max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
+
     padding: 0 20px;
 }
 
@@ -51,12 +53,13 @@
 
 .manipulation-list li span {
     font-size: 14px;
-    color: var(--color-text-muted);
+    color: #555;
 }
 
 /* SAFETY */
 .manipulation-safety {
     padding: 80px 0;
+    margin-top: 8px;
 }
 
 .manipulation-safety h2 {

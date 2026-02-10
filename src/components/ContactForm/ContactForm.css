@@ -415,18 +415,8 @@
     }
 }
 @media (max-width: 576px) {
-    .contact-form .form-title-main {
-        font-size: 0;
-        line-height: 0;
-    }
     .contact-form h2 {
         margin-bottom: 8px; /* ⬅️ less space under title */
-    }
-
-    .contact-form .form-title-main::after {
-        content: "ПОРУЧ ЩОБ ДОПОМОГТИ";
-        font-size: var(--font-h2);
-        line-height: 1.2;
     }
 
     .form-title--has-small .form-title-main {

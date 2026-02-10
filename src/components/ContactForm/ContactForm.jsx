@@ -3,6 +3,10 @@ import { createPortal } from "react-dom";
 import emailjs from "@emailjs/browser";
 import "./ContactForm.css";
 
+const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
+const DEFAULT_MOBILE_TITLE = "ПОРУЧ ЩОБ ДОПОМОГТИ";
+const DEFAULT_SUBTITLE = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ";
+
 /**
  * Universal ContactForm
  * - Same layout/styles (uses your existing ContactForm.css)
@@ -12,8 +16,8 @@ import "./ContactForm.css";
 
 export default function ContactForm({
     // titles (optional)
-    title = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ",
-    subtitle = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ",
+    title,
+    subtitle = DEFAULT_SUBTITLE,
     smallTitle,
 
     // IMPORTANT: marker for email so you know which form sent it
@@ -57,7 +61,10 @@ export default function ContactForm({
         "бульвар Слави, 8",
     ],
 }) {
-    const hasSmallTitle = Boolean(smallTitle);
+    const resolvedTitle = title ?? DEFAULT_TITLE;
+    const resolvedSmallTitle =
+        smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
+    const hasSmallTitle = Boolean(resolvedSmallTitle);
     const hasEmailLike = fields.email || fields.diagnostic;
     const formClassName = [
         "contact-form",
@@ -186,10 +193,10 @@ export default function ContactForm({
                     <h2
                         className={hasSmallTitle ? "form-title--has-small" : ""}
                     >
-                        <span className="form-title-main">{title}</span>
+                        <span className="form-title-main">{resolvedTitle}</span>
                         {hasSmallTitle && (
                             <span className="form-title-small">
-                                {smallTitle}
+                                {resolvedSmallTitle}
                             </span>
                         )}
                     </h2>
