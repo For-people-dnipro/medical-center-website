@@ -99,6 +99,7 @@
     top: 50px; /* ⬅️ відступ зверху */
     bottom: 50px; /* ⬅️ відступ знизу */
     width: 1px;
+    background-color: #e6e9ec;
 }
 .declaration-page__list {
     display: flex;
@@ -113,7 +114,6 @@
     display: flex;
     gap: 10px;
     align-items: flex-start;
-    font-size: 16px;
     color: var(--color-text-main);
     line-height: 1.5;
     text-align: justify;
@@ -138,7 +138,7 @@
 .declaration-page__steps li::marker {
     color: var(--color-primary);
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .declaration-page__steps p {
@@ -148,14 +148,18 @@
 .declaration-page__substeps {
     margin: 8px 0 0;
     padding-left: 18px;
+    list-style: none;
     display: grid;
     gap: 8px;
     font-size: 16px;
     line-height: 1.45;
 }
 
-.declaration-page__substeps li::marker {
+.declaration-page__substeps li::before {
+    content: "●";
     color: var(--color-primary);
+    font-size: 10px;
+    margin-right: 8px;
 }
 
 .declaration-page__notice p {
@@ -180,15 +184,11 @@
 }
 
 .declaration-page__services {
-    padding: 80px 0 20px;
-}
-
-.declaration-page__services h1 {
     text-align: center;
     font-size: var(--font-h1);
     letter-spacing: normal;
-    font-weight: 600;
-    margin: 0 0 40px;
+    padding: 80px 0 20px;
+    margin: 0 0 0px;
 }
 
 .declaration-page__services-grid {
@@ -220,6 +220,7 @@
 .declaration-page__service-card ul {
     margin: 0;
     padding-left: 18px;
+    list-style: none;
     font-size: 16px;
     line-height: 1.45;
     color: var(--color-text-main);
@@ -229,8 +230,11 @@
     margin-bottom: 8px;
 }
 
-.declaration-page__service-card li::marker {
+.declaration-page__service-card li::before {
+    content: "●";
     color: var(--color-primary);
+    font-size: 10px;
+    margin-right: 8px;
 }
 
 .declaration-page__contact {
@@ -298,8 +302,7 @@
     .declaration-page__service-card {
         padding: 20px;
     }
-    .services-text-under-card__container h1 {
-        font-size: 20px;
+    .services-text-under-card__container {
         margin-bottom: 30px;
         padding: 0px 16px;
     }
@@ -308,9 +311,11 @@
     }
 
     .declaration-page__service-card ul {
-        list-style: none;
         padding: 0;
         margin: 0;
+    }
+    .declaration-page__info {
+        padding: 80px 0;
     }
     .declaration-page__service-card li {
         display: flex;
@@ -324,11 +329,9 @@
         margin-bottom: 8px;
     }
     .declaration-page__service-card li::before {
-        content: "•";
-        color: var(--color-primary);
-        font-size: 20px;
-        line-height: 1;
-        margin-top: 0px;
+        content: "●";
+        font-size: 10px;
+        margin-right: 0;
         flex-shrink: 0;
     }
     .declaration-page__service-card li {

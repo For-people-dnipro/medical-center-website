@@ -232,9 +232,9 @@
 }
 .mobile-submenu a {
     position: relative;
-    padding-left: 16px;
+    padding-left: 8px;
 }
-
+/* 
 .mobile-submenu a::before {
     content: "";
     position: absolute;
@@ -245,7 +245,7 @@
     background-color: #008b96;
     border-radius: 50%;
     transform: translateY(-50%);
-}
+} */
 .arrow-icon {
     width: 25px;
     height: 25px;

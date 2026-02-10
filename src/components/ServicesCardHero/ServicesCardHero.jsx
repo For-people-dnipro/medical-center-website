@@ -61,15 +61,15 @@ export default function ServicesCardHero({
                                     <img src={icon} alt="" />
                                 </span>
                             )}
-                            <h1>{title}</h1>
+                            <h2>{title}</h2>
                         </div>
 
                         <span className="services-card-hero__line" />
 
                         {subtitle && (
-                            <p className="services-card-hero__subtitle">
+                            <h3 className="services-card-hero__subtitle">
                                 {subtitle}
-                            </p>
+                            </h3>
                         )}
 
                         {buttonText && buttonHref && (

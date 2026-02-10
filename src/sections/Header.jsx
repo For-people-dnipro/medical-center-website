@@ -107,23 +107,61 @@ export default function Header() {
                             >
                                 Всі послуги
                             </Link>
+
                             <Link
-                                to="/services#therapy"
+                                to="/declaration"
                                 onClick={() => setMenuOpen(false)}
                             >
-                                Терапія
+                                Декларація
                             </Link>
+
                             <Link
-                                to="/services#pediatrics"
+                                to="/consultation"
                                 onClick={() => setMenuOpen(false)}
                             >
-                                Педіатрія
+                                Консультація
                             </Link>
+
+                            <Link
+                                to="/services#tests"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Аналізи
+                            </Link>
+
+                            <Link
+                                to="/services#vaccination"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Вакцинація
+                            </Link>
+
                             <Link
                                 to="/diagnostics"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Діагностика
+                            </Link>
+
+                            <Link
+                                to="/manipulation"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Маніпуляції
+                            </Link>
+
+                            <Link
+                                to="/services#packages"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Пакетні послуги
+                            </Link>
+
+                            <Link
+                                to="/services#checkup"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Check-up{" "}
                             </Link>
                         </div>
                     )}
