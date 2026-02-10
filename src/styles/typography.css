@@ -1,15 +1,110 @@
-.h1 {
-    font-size: clamp(26px, 4vw, 42px);
-    font-weight: 700;
+/* =========================
+   TYPOGRAPHY SYSTEM
+   ========================= */
+
+/* Global font */
+:root {
+    --font-family-base: "Montserrat", sans-serif;
+
+    /* ===== Laptop / Desktop ( > 768px ) ===== */
+    --font-display: 56px;
+    --font-h1: 24px;
+    --font-h2: 18px;
+    --font-body: 16px;
+    --font-caption: 12px;
+
+    /* Font weights */
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+
+    /* Line heights */
+    --lh-heading: 1.2;
+    --lh-body: 1.6;
+    --lh-caption: 1.4;
 }
 
-.h2 {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
+/* =========================
+   GLOBAL RESET
+   ========================= */
+
+html,
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-body);
+    line-height: var(--lh-body);
 }
 
-.p {
-    font-size: clamp(14px, 1.5vw, 18px);
-    line-height: 1.5;
-    max-width: 640px;
+*,
+*::before,
+*::after {
+    font-family: inherit;
+}
+
+/* =========================
+   TEXT STYLES
+   ========================= */
+
+/* Display (Hero titles) */
+.text-display {
+    font-size: var(--font-display);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-heading);
+}
+
+/* Section title (ONE per section) */
+.text-h1 {
+    font-size: var(--font-h1);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-heading);
+}
+
+/* Subtitles / card titles */
+.text-h2 {
+    font-size: var(--font-h2);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-heading);
+}
+
+/* Body text */
+.text-body {
+    font-size: var(--font-body);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+}
+
+/* Caption / helper text */
+.text-caption {
+    font-size: var(--font-caption);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-caption);
+}
+
+/* Utility weights (optional) */
+.text-regular {
+    font-weight: var(--fw-regular);
+}
+.text-medium {
+    font-weight: var(--fw-medium);
+}
+.text-semibold {
+    font-weight: var(--fw-semibold);
+}
+.text-bold {
+    font-weight: var(--fw-bold);
+}
+
+/* =========================
+   MOBILE ( ≤ 768px )
+   ========================= */
+
+@media (max-width: 768px) {
+    :root {
+        --font-display: 48px;
+        --font-h1: 20px;
+        --font-h2: 16px;
+        --font-body: 14px;
+        --font-caption: 10px;
+    }
 }
