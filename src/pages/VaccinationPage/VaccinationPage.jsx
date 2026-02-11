@@ -1,5 +1,4 @@
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
-import ServicesTemplate from "../../components/CardTemplateServices/CardTemplateServices";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
 import FAQSection from "../../sections/FaqSection";
@@ -60,10 +59,17 @@ const vaccinationSteps = [
         number: "3",
         title: "ПІСЛЯ ВАКЦИНАЦІЇ",
         text: [
-            "Після щеплення ми просимо залишатись у клініці ще близько 30 хвилин, щоб переконатися, що організм добре реагує на вакцину. У разі потреби наші фахівці одразу нададуть допомогу.",
-            "Якщо підвищується температура, то можна прийняти Ібупрофен або Парацетамол.",
+            "Після щеплення ми просимо залишатись у клініці ще близько 30 хвилин — щоб переконатися, що організм добре реагує на вакцину. У разі потреби наші фахівці одразу нададуть допомогу. ",
+            "Якщо підвищується температура , то можна прийняти Ібупрофен або Парацетамол.",
         ],
     },
+];
+
+const vaccinationOfferItems = [
+    "планові дитячі щеплення",
+    "ревакцинацію",
+    "вакцинацію перед подорожами",
+    "сезонні щеплення (наприклад, проти грипу)",
 ];
 
 export default function VaccinationPage() {
@@ -94,14 +100,14 @@ export default function VaccinationPage() {
                     buttonOnClick={handleScrollToForm}
                 />
 
-                <section className="vaccination-page__intro">
-                    <div className="vaccination-page__container">
-                        <p className="vaccination-page__intro-text">
+                <section className="services-text-under-card__intro">
+                    <div className="services-text-under-card__container">
+                        <p>
                             Вакцинація допомагає захистити себе і своїх рідних
                             від серйозних захворювань, зміцнює імунітет і дає
-                            спокій за здоров'я родини. У нашій клініці
-                            щеплення проводяться у комфортних умовах, з увагою
-                            і турботою. Ми використовуємо лише перевірені
+                            спокій за здоров’я родини. У нашій клініці щеплення
+                            проводяться у комфортних умовах, з увагою і
+                            турботою. Ми використовуємо лише перевірені
                             сертифіковані вакцини, дотримуємось усіх стандартів
                             зберігання та контролю якості.
                         </p>
@@ -137,12 +143,35 @@ export default function VaccinationPage() {
                     </div>
                 </section>
 
-                <ServicesTemplate
-                    title="У НАС ВИ МОЖЕТЕ ЗРОБИТИ"
-                    text={`• планові дитячі щеплення\n• ревакцинацію\n• вакцинацію перед подорожами\n• сезонні щеплення (наприклад, проти грипу)`}
-                    image="/images/vaccination-hero.jpg"
-                    imageAlt="Вакцинація в медичному центрі"
-                />
+                <section className="vaccination-page__offer">
+                    <div className="vaccination-page__container">
+                        <div className="vaccination-page__offer-card">
+                            <div className="vaccination-page__offer-content">
+                                <h2 className="vaccination-page__offer-title">
+                                    У НАС ВИ МОЖЕТЕ ЗРОБИТИ
+                                </h2>
+
+                                <ul className="vaccination-page__offer-list">
+                                    {vaccinationOfferItems.map((item) => (
+                                        <li
+                                            className="vaccination-page__offer-item"
+                                            key={item}
+                                        >
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="vaccination-page__offer-media">
+                                <img
+                                    src="/images/vaccination-hero.jpg"
+                                    alt="Вакцинація в медичному центрі"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
                 <section className="vaccination-page__mobile-offer">
                     <div className="vaccination-page__container">
@@ -183,17 +212,12 @@ export default function VaccinationPage() {
                             <article className="vaccination-page__mobile-offer-card vaccination-page__mobile-offer-card--bordered">
                                 <h3>ЦЕ РІШЕННЯ ІДЕАЛЬНО ПІДХОДИТЬ ДЛЯ</h3>
                                 <ul>
+                                    <li>Планові дитячі щеплення</li>
+                                    <li>Ревакцинацію</li>
+                                    <li>Вакцинацію перед подорожами</li>
                                     <li>
-                                        компаній, які дбають про здоров'я
-                                        співробітників;
-                                    </li>
-                                    <li>
-                                        навчальних закладів, що організовують
-                                        вакцинацію для дітей та педагогів;
-                                    </li>
-                                    <li>
-                                        великих родин або громадських
-                                        організацій;
+                                        Сезонні щеплення (наприклад, проти
+                                        грипу)
                                     </li>
                                 </ul>
                             </article>
@@ -209,15 +233,15 @@ export default function VaccinationPage() {
                         </h2>
                         <p>
                             Всі вакцинації, проведені нашими лікарями,
-                            обов'язково вносяться до електронної системи
-                            охорони здоров'я (ЕСОЗ). Це гарантує, що у вашій
-                            медкартці зберігаються точні дати щеплень, назви
-                            вакцин і серії препаратів. За потреби інформація
-                            дублюється у карту профілактичних щеплень,
-                            затверджену МОЗ. Ви можете переглядати всю історію
-                            вакцинацій у своєму кабінеті в HELSI (Медкарта →
-                            Вакцинації). Тож усі потрібні дані завжди доступні у
-                            зручному для вас форматі.
+                            обов'язково вносяться до електронної системи охорони
+                            здоров'я (ЕСОЗ). Це гарантує, що у вашій медкартці
+                            зберігаються точні дати щеплень, назви вакцин і
+                            серії препаратів. За потреби інформація дублюється у
+                            карту профілактичних щеплень, затверджену МОЗ. Ви
+                            можете переглядати всю історію вакцинацій у своєму
+                            кабінеті в HELSI (Медкарта → Вакцинації). Тож усі
+                            потрібні дані завжди доступні у зручному для вас
+                            форматі.
                         </p>
                     </div>
                 </section>
