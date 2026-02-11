@@ -1,35 +1,69 @@
+import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import AllServices from "./pages/AllServices";
 import DeclarationPage from "./pages/DeclarationPage";
 import Header from "./sections/Header";
 import MobileCTA from "./components/MobileCTA/MobileCTA";
+import PageLoader from "./components/PageLoader/PageLoader";
 import "./styles/pageTransitions.css";
 import ConsultPage from "./pages/ConsultPage/ConsultPage";
 import DiagnosticsPage from "./pages/DiagnosticsPage/DiagnosticsPage";
 import ManipulationPage from "./pages/ManipulationPage/ManipulationPage";
+import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
 
 function App() {
     const location = useLocation();
+    const [isLoaderVisible, setIsLoaderVisible] = useState(true);
+    const [isLoaderExiting, setIsLoaderExiting] = useState(false);
+
+    useEffect(() => {
+        const showTimer = window.setTimeout(() => {
+            setIsLoaderExiting(true);
+        }, 1500);
+
+        return () => window.clearTimeout(showTimer);
+    }, []);
 
     return (
         <>
-            <Header />
-            <div className="page-fade" key={location.pathname}>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/services" element={<AllServices />} />
-                    <Route path="/declaration" element={<DeclarationPage />} />
-                    <Route path="/consultation" element={<ConsultPage />} />
-                    <Route path="/diagnostics" element={<DiagnosticsPage />} />
-                    <Route
-                        path="/manipulation"
-                        element={<ManipulationPage />}
-                    />
-                    <Route path="*" element={<Home />} />
-                </Routes>
+            {isLoaderVisible ? (
+                <PageLoader
+                    isExiting={isLoaderExiting}
+                    onExited={() => setIsLoaderVisible(false)}
+                />
+            ) : null}
+
+            <div
+                className={`app-shell ${!isLoaderVisible ? "app-shell--ready" : ""}`}
+            >
+                <Header />
+                <div className="page-fade" key={location.pathname}>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/services" element={<AllServices />} />
+                        <Route
+                            path="/declaration"
+                            element={<DeclarationPage />}
+                        />
+                        <Route path="/consultation" element={<ConsultPage />} />
+                        <Route
+                            path="/diagnostics"
+                            element={<DiagnosticsPage />}
+                        />
+                        <Route
+                            path="/manipulation"
+                            element={<ManipulationPage />}
+                        />{" "}
+                        <Route
+                            path="/vaccination"
+                            element={<VaccinationPage />}
+                        />
+                        <Route path="*" element={<Home />} />
+                    </Routes>
+                </div>
+                <MobileCTA />
             </div>
-            <MobileCTA />
         </>
     );
 }

@@ -26,6 +26,7 @@ export default function ServicesSection() {
             icon: "/icons/service-vaccine.svg",
             iconMobile: "/icons/service-vaccine-mobile.svg",
             label: "Вакцинація",
+            href: "/vaccination",
         },
         {
             icon: "/icons/service-diagnostics.svg",
