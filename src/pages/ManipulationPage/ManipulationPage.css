@@ -1,17 +1,13 @@
 .manipulation-page {
-    color: #1a1a1a;
+    color: var(--color-text-primary);
 }
 
-/* COMMON */
 .manipulation-container {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
     box-sizing: border-box;
-
-    padding: 0 20px;
 }
 
-/* INTRO */
 .manipulation-intro {
     padding: 60px 0;
 }
@@ -19,54 +15,77 @@
 .manipulation-intro p {
     max-width: 820px;
     margin: 0 auto 16px;
-    line-height: 1.6;
     text-align: center;
 }
 
-/* LIST */
 .manipulation-list {
-    padding: 60px 0;
+    padding: 70px 20px 0;
 }
 
 .manipulation-list .card {
-    background: #fff;
+    background: var(--color-bg-white);
     border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    padding: 50px 60px;
+    box-sizing: border-box;
 }
 
 .manipulation-list h2 {
     text-align: center;
-    margin-bottom: 32px;
+    margin: 0px 0 50px 0;
 }
 
-.manipulation-list ul {
+.manipulation-list__grid {
     list-style: none;
-    padding: 0;
+    padding: 0 30px;
+    margin: 0;
     display: grid;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    column-gap: clamp(32px, 8vw, 30px);
+    row-gap: 32px;
 }
 
-.manipulation-list li strong {
+.manipulation-list__item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    column-gap: 10px;
+    align-items: start;
+}
+
+.manipulation-list__item::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    margin-top: 8px;
+}
+
+.manipulation-list__item strong {
     display: block;
+    grid-column: 2;
 }
 
-.manipulation-list li span {
-    font-size: 14px;
-    color: #555;
+.manipulation-list__item span {
+    display: block;
+    grid-column: 2;
+    color: var(--color-text-primary);
 }
 
 /* SAFETY */
 .manipulation-safety {
-    padding: 80px 0;
-    margin-top: 8px;
+    padding: 80px 20px;
 }
 
 .manipulation-safety h2 {
     text-align: center;
     margin-bottom: 40px;
 }
-
+.manipulation-safety h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
 .safety-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -74,57 +93,176 @@
 }
 
 .safety-card {
-    background: #fff;
+    background: var(--color-bg-white);
     border-radius: 20px;
     padding: 32px 24px;
     text-align: center;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
 }
 
 .safety-card img {
-    width: 40px;
-    margin-bottom: 16px;
+    width: 50px;
 }
 
 /* CONTACTS */
 .manipulation-contacts {
-    padding: 80px 0;
+    padding: 0px 20px;
+}
+
+.manipulation-contacts .manipulation-container {
+    max-width: 1080px;
+    margin: 0 auto;
 }
 
 .manipulation-contacts h2 {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 24px;
 }
 
-.manipulation-contacts p {
+.manipulation-contacts .manipulation-container > h3 {
     text-align: center;
-    margin-bottom: 32px;
+    margin: 0 auto;
+    max-width: 700px;
 }
 
-.contacts-grid {
+.manipulation-contacts .manipulation-container .contacts-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    justify-self: start;
+}
+
+.manipulation-contacts .manipulation-container .contact-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    text-align: center;
+    grid-template-columns: 24px max-content;
+    column-gap: 12px;
+    align-items: center;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
+.manipulation-contacts .manipulation-container .contact-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.manipulation-contacts .manipulation-container .contact-text {
+    margin: 0;
+    text-align: left;
+}
+
+.manipulation-contacts .manipulation-container .contact-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    text-align: left;
+}
+
+.manipulation-contacts .manipulation-container .contact-link:hover {
+    color: var(--color-primary);
+}
+
+.manipulation-contacts .manipulation-container .contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: space-between;
+    align-items: stretch;
+    column-gap: 24px;
+    row-gap: 24px;
+    width: 100%;
+    margin: 40px auto 0;
+}
+.contact-text {
+    white-space: normal; /* або просто видалити */
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+@media (max-width: 1031px) {
+    .safety-grid {
+        grid-template-columns: 1fr;
+    }
+    .manipulation-list__grid {
+        grid-template-columns: 1fr;
+        row-gap: 25px;
+    }
+    .manipulation-contacts .manipulation-container .contacts-grid {
+        grid-template-columns: 1fr;
+        justify-content: stretch;
+        max-width: 360px;
+        margin: 32px auto 0;
+        row-gap: 16px;
+    }
     .manipulation-intro {
         padding: 40px 0;
     }
+    .manipulation-list {
+        padding: 20px 16px 0;
+    }
 
     .manipulation-list .card {
-        padding: 24px;
+        padding: 32px 50px;
     }
 
-    .safety-grid,
-    .contacts-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .manipulation-safety,
     .manipulation-contacts {
-        padding: 60px 0;
+        padding: 0px 16px;
+    }
+    .manipulation-contacts .manipulation-container .contacts-card {
+        width: 100%;
+        justify-self: stretch;
+        padding: 24px 0;
+    }
+
+    .manipulation-safety {
+        padding: 60px 16px;
+    }
+    .manipulation-list h2 {
+        text-align: center;
+        margin: 0px 0 50px 0;
+    }
+    .manipulation-container {
+        margin: 0 16px;
+    }
+    .contacts-card {
+        padding: 28px 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .contacts-card:first-child {
+        border-top: 1px solid var(--color-border);
+    }
+
+    .contacts-card:last-child {
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+
+@media (max-width: 874px) {
+    .manipulation-list__grid {
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+    }
+    .manipulation-list__grid {
+        padding: 0px;
+    }
+}
+
+@media (max-width: 768px) {
+}
+@media (max-width: 480px) {
+    .manipulation-list .card {
+        background: var(--color-bg-white);
+        border-radius: 24px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        padding: 40px 30px;
+        box-sizing: border-box;
+        margin: 40px 0 10px 0;
+    }
+    .manipulation-safety h2 {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .manipulation-safety h2 {
+        margin-bottom: 20px;
     }
 }

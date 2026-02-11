@@ -6,7 +6,6 @@ export default function ManipulationPage() {
     return (
         <>
             <main className="manipulation-page">
-                {/* HERO */}
                 <ServicesCardHero
                     title="МАНІПУЛЯЦІЇ"
                     subtitle="Дбайливо. Безпечно. Професійно."
@@ -21,64 +20,79 @@ export default function ManipulationPage() {
                     buttonHref="#manipulation-contacts"
                 />
 
-                {/* TEXT */}
-                <section className="manipulation-intro">
-                    <div className="manipulation-container">
+                <section className="services-text-under-card__intro">
+                    <div className="services-text-under-card__container">
                         <p>
-                            Уколи, перев’язки, крапельниці та інші маніпуляційні
-                            процедури — це важлива частина лікування та
-                            профілактики захворювань. Деякі з них можна
-                            виконувати вдома, але без медичної підготовки та
-                            стерильних умов це може бути небезпечно.
-                        </p>
-                        <p>
-                            Ми рекомендуємо проводити всі маніпуляції в умовах
-                            клініки — де є досвідчені медсестри, стерильне
-                            обладнання й контроль лікаря.
+                            Уколи, перев’язки, крапельниці та інші маніпуляції є
+                            важливою частиною лікування й профілактики. Деякі
+                            процедури можна виконувати вдома, однак без медичної
+                            підготовки та стерильних умов це може бути
+                            небезпечно. У клініці всі маніпуляції проводять
+                            досвідчені медсестри з використанням стерильного
+                            обладнання та під контролем лікаря — для вашої
+                            безпеки, спокою й максимальної ефективності
+                            лікування.
                         </p>
                     </div>
                 </section>
 
-                {/* LIST */}
                 <section className="manipulation-list">
                     <div className="manipulation-container card">
-                        <h2>МИ ВИКОНУЄМО</h2>
-
-                        <ul>
-                            <li>
-                                <strong>Інʼєкції</strong>
-                                <span>
+                        <h2 className="text-heading-lg-sm">МИ ВИКОНУЄМО:</h2>
+                        <ul className="manipulation-list__grid">
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
+                                    Інʼєкції
+                                </strong>
+                                <span className="text-body-sm">
                                     (внутрішньомʼязові, підшкірні,
                                     внутрішньовенні)
                                 </span>
                             </li>
-                            <li>
-                                <strong>Вакцинацію</strong>
-                                <span>(планові щеплення, грип, ВПЛ)</span>
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
+                                    Постановку крапельниць
+                                </strong>
+                                <span className="text-body-sm">
+                                    (внутрішньовенні інфузії)
+                                </span>
                             </li>
-                            <li>
-                                <strong>
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
+                                    Вакцинацію
+                                </strong>
+                                <span className="text-body-sm">
+                                    (планові щеплення, грип, ВПЛ)
+                                </span>
+                            </li>
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
+                                    Обробку ран
+                                </strong>
+                                <span className="text-body-sm">
+                                    (опіки, пролежні, інфіковані рани)
+                                </span>
+                            </li>
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
                                     Лікувальні та профілактичні процедури
                                 </strong>
-                                <span>(за призначенням лікаря)</span>
+                                <span className="text-body-sm">
+                                    (за призначенням лікаря)
+                                </span>
                             </li>
-                            <li>
-                                <strong>Постановку крапельниць</strong>
-                                <span>(внутрішньовенні інфузії)</span>
-                            </li>
-                            <li>
-                                <strong>Обробку ран</strong>
-                                <span>(опіки, пролежні, інфіковані рани)</span>
-                            </li>
-                            <li>
-                                <strong>Зняття швів та перевʼязки</strong>
-                                <span>(післяопераційний догляд)</span>
+                            <li className="manipulation-list__item">
+                                <strong className="text-list-title">
+                                    Зняття швів та перевʼязки
+                                </strong>
+                                <span className="text-body-sm">
+                                    (післяопераційний догляд)
+                                </span>
                             </li>
                         </ul>
                     </div>
                 </section>
 
-                {/* SAFETY */}
                 <section className="manipulation-safety">
                     <div className="manipulation-container">
                         <h2>ГАРАНТІЯ БЕЗПЕКИ</h2>
@@ -86,15 +100,19 @@ export default function ManipulationPage() {
                         <div className="safety-grid">
                             <article className="safety-card">
                                 <img src="/icons/safety-sterile.svg" alt="" />
-                                <h3>Безпека та стерильність</h3>
+                                <h3 className="text-heading-xxs text-medium">
+                                    Безпека та стерильність
+                                </h3>
                                 <p>
                                     Використовуємо стерильні одноразові системи
                                 </p>
                             </article>
 
                             <article className="safety-card">
-                                <img src="/icons/safety-staff.svg" alt="" />
-                                <h3>Кваліфікований персонал</h3>
+                                <img src="/icons/service-consult.svg" alt="" />
+                                <h3 className="text-heading-xxs text-medium">
+                                    Кваліфікований персонал
+                                </h3>
                                 <p>
                                     Процедури виконують досвідчені медичні
                                     сестри
@@ -103,7 +121,9 @@ export default function ManipulationPage() {
 
                             <article className="safety-card">
                                 <img src="/icons/safety-control.svg" alt="" />
-                                <h3>Контроль стану</h3>
+                                <h3 className="text-heading-xxs text-medium">
+                                    Контроль стану
+                                </h3>
                                 <p>
                                     Під час і після маніпуляції фіксуються
                                     основні показники
@@ -113,41 +133,123 @@ export default function ManipulationPage() {
                     </div>
                 </section>
 
-                {/* CONTACTS */}
                 <section
                     id="manipulation-contacts"
                     className="manipulation-contacts"
                 >
                     <div className="manipulation-container">
                         <h2>ЗАПИС НА ПРОЦЕДУРУ</h2>
-                        <p>
+                        <h3>
                             зателефонуйте у зручну для вас філію, наш
                             адміністратор підбере час і оформить запис
-                        </p>
+                        </h3>
 
                         <div className="contacts-grid">
-                            <div>
-                                <p>
-                                    <strong>бульвар Слави, 8</strong>
-                                </p>
-                                <p>+380997654321</p>
-                                <p>ПН–ПТ: 9:00 – 17:00</p>
+                            {" "}
+                            <div className="contacts-card">
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-location.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg text-medium">
+                                        м. Дніпро, вул. Д. Галицького, 34
+                                    </p>
+                                </div>
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-clock.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg">
+                                        ПН-ПТ з 9:00 до 18:00
+                                    </p>
+                                </div>{" "}
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-phone.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <a
+                                        href="tel:+380997654321"
+                                        className="contact-link text-body-lg"
+                                    >
+                                        050-067-13-88
+                                    </a>
+                                </div>
+                            </div>{" "}
+                            <div className="contacts-card">
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-location.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg text-medium">
+                                        м. Дніпро, просп. Б. Хмельницького, 127
+                                    </p>
+                                </div>
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-clock.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg">
+                                        ПН-ПТ з 9:00 до 18:00
+                                    </p>
+                                </div>{" "}
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-phone.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <a
+                                        href="tel:+380997654321"
+                                        className="contact-link text-body-lg"
+                                    >
+                                        050-067-22-35
+                                    </a>
+                                </div>
                             </div>
-                            <div>
-                                <p>
-                                    <strong>
-                                        просп. Б. Хмельницького, 127
-                                    </strong>
-                                </p>
-                                <p>+380997654321</p>
-                                <p>ПН–ПТ: 9:00 – 17:00</p>
-                            </div>
-                            <div>
-                                <p>
-                                    <strong>вул. Д. Галицького, 34</strong>
-                                </p>
-                                <p>+380997654321</p>
-                                <p>ПН–ПТ: 9:00 – 17:00</p>
+                            <div className="contacts-card">
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-location.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg text-medium">
+                                        м. Дніпро, бульвар Слави, 8
+                                    </p>
+                                </div>
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-clock.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <p className="contact-text text-body-lg">
+                                        ПН-ПТ з 9:00 до 18:00
+                                    </p>
+                                </div>{" "}
+                                <div className="contact-row">
+                                    <img
+                                        src="/icons/icon-phone.svg"
+                                        alt=""
+                                        className="contact-icon"
+                                    />
+                                    <a
+                                        href="tel:+380997654321"
+                                        className="contact-link text-body-lg"
+                                    >
+                                        066-067-00-37
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
