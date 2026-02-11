@@ -1,0 +1,236 @@
+.vaccines-price-section {
+    padding: 80px 0;
+}
+
+.vaccines-price-section__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.vaccines-price-section__title {
+    margin: 0;
+    text-align: left;
+    font-size: var(--font-h2);
+    font-weight: var(--fw-semibold);
+}
+
+.vaccines-price-section__list-wrapper {
+    margin-top: 28px;
+    border-radius: 20px;
+    background: var(--color-bg-main);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    padding: 18px;
+}
+
+.vaccines-price-section__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-height: 360px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.vaccines-price-section__list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.vaccines-price-section__list::-webkit-scrollbar-track {
+    background: rgba(0, 139, 150, 0.12);
+    border-radius: 999px;
+}
+
+.vaccines-price-section__list::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 999px;
+}
+
+.vaccines-price-section__list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) rgba(0, 139, 150, 0.12);
+}
+
+.vaccines-price-section__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.vaccines-price-section__item + .vaccines-price-section__item {
+    margin-top: 8px;
+}
+
+.vaccines-price-section__item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.vaccines-price-section__item--expected {
+    opacity: 0.76;
+}
+
+.vaccines-price-section__name-wrap {
+    min-width: 0;
+}
+
+.vaccines-price-section__name {
+    margin: 0;
+    font-size: var(--font-body);
+    line-height: 1.4;
+}
+
+.vaccines-price-section__availability {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: var(--font-caption);
+    color: #b14444;
+    font-weight: var(--fw-medium);
+}
+
+.vaccines-price-section__price-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vaccines-price-section__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1ea070;
+}
+
+.vaccines-price-section__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+}
+
+.vaccines-price-section__badge--in-stock {
+    color: #0d6f57;
+    background: #d9f2ea;
+}
+
+.vaccines-price-section__badge--expected {
+    color: #8f3434;
+    background: #f7dddd;
+}
+
+.vaccines-price-section__state {
+    min-height: 180px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 24px;
+    color: var(--color-text-muted);
+}
+
+.vaccines-price-section__item--loading {
+    pointer-events: none;
+    grid-template-columns: 1fr 140px;
+}
+
+.vaccines-price-section__line,
+.vaccines-price-section__badge--loading {
+    display: block;
+    height: 18px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #eef1f3 25%, #e3e8ec 50%, #eef1f3 75%);
+    background-size: 200% 100%;
+    animation: vaccinesPricePulse 1.2s ease-in-out infinite;
+}
+
+.vaccines-price-section__line {
+    width: min(90%, 680px);
+}
+
+.vaccines-price-section__badge--loading {
+    width: 100%;
+}
+
+@keyframes vaccinesPricePulse {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@media (max-width: 992px) {
+    .vaccines-price-section {
+        padding: 70px 0;
+    }
+
+    .vaccines-price-section__list {
+        max-height: 340px;
+    }
+
+    .vaccines-price-section__badge {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .vaccines-price-section {
+        padding: 60px 0;
+    }
+
+    .vaccines-price-section__container {
+        padding: 0 16px;
+    }
+
+    .vaccines-price-section__title {
+        text-align: center;
+    }
+
+    .vaccines-price-section__list-wrapper {
+        margin-top: 20px;
+        padding: 12px;
+    }
+
+    .vaccines-price-section__item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .vaccines-price-section__price-wrap {
+        justify-content: flex-end;
+    }
+
+    .vaccines-price-section__name {
+        font-size: 14px;
+    }
+
+    .vaccines-price-section__badge {
+        font-size: 14px;
+        min-height: 28px;
+        padding: 6px 10px;
+    }
+
+    .vaccines-price-section__availability {
+        margin-top: 2px;
+    }
+
+    .vaccines-price-section__list {
+        max-height: 300px;
+    }
+}
