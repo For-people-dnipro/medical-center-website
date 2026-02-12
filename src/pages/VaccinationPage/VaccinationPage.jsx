@@ -255,8 +255,6 @@ export default function VaccinationPage() {
                     </div>
                 </section>
 
-                <VaccinesPriceSection />
-
                 <FAQSection
                     title="НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ"
                     faqs={vaccinationFaqs}
@@ -281,7 +279,8 @@ export default function VaccinationPage() {
                         labels={{
                             name: "Ім'я *",
                             phone: "Номер телефону *",
-                            diagnostic: "Назва вакцини та необхідна кількість *",
+                            diagnostic:
+                                "Назва вакцини та необхідна кількість *",
                             message: "Повідомлення *",
                             consent:
                                 "Даю згоду на збір та обробку персональних даних",

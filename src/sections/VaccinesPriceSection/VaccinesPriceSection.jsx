@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./VaccinesPriceSection.css";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const VISIBLE_VACCINES_COUNT = 5;
 
 function normalizeVaccines(items = []) {
     return items
@@ -81,92 +82,121 @@ export default function VaccinesPriceSection() {
     }, []);
 
     const hasVaccines = useMemo(() => vaccines.length > 0, [vaccines]);
+    const isScrollableState = useMemo(
+        () => !loading && !error && vaccines.length > VISIBLE_VACCINES_COUNT,
+        [loading, error, vaccines.length],
+    );
+
+    const cardClassName = [
+        "vaccines-price-section__card",
+        isScrollableState && "vaccines-price-section__card--scrollable",
+    ]
+        .filter(Boolean)
+        .join(" ");
+
+    const listClassName = [
+        "vaccines-price-section__list",
+        isScrollableState && "vaccines-price-section__list--scrollable",
+    ]
+        .filter(Boolean)
+        .join(" ");
 
     return (
         <section className="vaccines-price-section" aria-labelledby="prices-title">
             <div className="vaccines-price-section__container">
-                <h2 id="prices-title" className="vaccines-price-section__title">
-                    ЦІНИ НА ВАКЦИНАЦІЮ
-                </h2>
+                <div className={cardClassName}>
+                    <h2
+                        id="prices-title"
+                        className="vaccines-price-section__title"
+                    >
+                        ЦІНИ НА ВАКЦИНАЦІЮ
+                    </h2>
 
-                <div className="vaccines-price-section__list-wrapper">
-                    {loading ? (
-                        <ul className="vaccines-price-section__list" aria-live="polite">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <li
-                                    className="vaccines-price-section__item vaccines-price-section__item--loading"
-                                    key={`loading-${index}`}
-                                >
-                                    <span className="vaccines-price-section__line" />
-                                    <span className="vaccines-price-section__badge vaccines-price-section__badge--loading" />
-                                </li>
-                            ))}
-                        </ul>
-                    ) : null}
-
-                    {!loading && error ? (
-                        <div className="vaccines-price-section__state" role="status">
-                            Не вдалося завантажити ціни. Спробуйте пізніше.
-                        </div>
-                    ) : null}
-
-                    {!loading && !error && !hasVaccines ? (
-                        <div className="vaccines-price-section__state" role="status">
-                            Наразі активних вакцин немає.
-                        </div>
-                    ) : null}
-
-                    {!loading && !error && hasVaccines ? (
-                        <ul className="vaccines-price-section__list" aria-live="polite">
-                            {vaccines.map((vaccine) => {
-                                const isExpected = vaccine.availability === "expected";
-                                const itemClassName = [
-                                    "vaccines-price-section__item",
-                                    isExpected
-                                        ? "vaccines-price-section__item--expected"
-                                        : "vaccines-price-section__item--in-stock",
-                                ].join(" ");
-
-                                const badgeClassName = [
-                                    "vaccines-price-section__badge",
-                                    isExpected
-                                        ? "vaccines-price-section__badge--expected"
-                                        : "vaccines-price-section__badge--in-stock",
-                                ].join(" ");
-
-                                return (
-                                    <li className={itemClassName} key={vaccine.id}>
-                                        <div className="vaccines-price-section__name-wrap">
-                                            <p className="vaccines-price-section__name">
-                                                {vaccine.title}
-                                            </p>
-                                            {isExpected ? (
-                                                <span className="vaccines-price-section__availability">
-                                                    (очікуємо)
-                                                </span>
-                                            ) : null}
-                                        </div>
-
-                                        <div className="vaccines-price-section__price-wrap">
-                                            {!isExpected ? (
-                                                <span
-                                                    className="vaccines-price-section__dot"
-                                                    aria-hidden="true"
-                                                />
-                                            ) : null}
-
-                                            <span className={badgeClassName}>
-                                                {formatPrice(
-                                                    vaccine.price,
-                                                    vaccine.currency,
-                                                )}
-                                            </span>
-                                        </div>
+                    <div className="vaccines-price-section__list-wrapper">
+                        {loading ? (
+                            <ul className={listClassName} aria-live="polite">
+                                {Array.from({ length: 5 }).map((_, index) => (
+                                    <li
+                                        className="vaccines-price-section__item vaccines-price-section__item--loading"
+                                        key={`loading-${index}`}
+                                    >
+                                        <span className="vaccines-price-section__line" />
+                                        <span className="vaccines-price-section__badge vaccines-price-section__badge--loading" />
                                     </li>
-                                );
-                            })}
-                        </ul>
-                    ) : null}
+                                ))}
+                            </ul>
+                        ) : null}
+
+                        {!loading && error ? (
+                            <div
+                                className="vaccines-price-section__state"
+                                role="status"
+                            >
+                                Не вдалося завантажити ціни. Спробуйте пізніше.
+                            </div>
+                        ) : null}
+
+                        {!loading && !error && !hasVaccines ? (
+                            <div
+                                className="vaccines-price-section__state"
+                                role="status"
+                            >
+                                Наразі активних вакцин немає.
+                            </div>
+                        ) : null}
+
+                        {!loading && !error && hasVaccines ? (
+                            <ul className={listClassName} aria-live="polite">
+                                {vaccines.map((vaccine) => {
+                                    const isExpected =
+                                        vaccine.availability === "expected";
+                                    const itemClassName = [
+                                        "vaccines-price-section__item",
+                                        isExpected
+                                            ? "vaccines-price-section__item--expected"
+                                            : "vaccines-price-section__item--in-stock",
+                                    ].join(" ");
+
+                                    const badgeClassName = [
+                                        "vaccines-price-section__badge",
+                                        isExpected
+                                            ? "vaccines-price-section__badge--expected"
+                                            : "vaccines-price-section__badge--in-stock",
+                                    ].join(" ");
+
+                                    return (
+                                        <li className={itemClassName} key={vaccine.id}>
+                                            <div className="vaccines-price-section__name-wrap">
+                                                <p className="vaccines-price-section__name">
+                                                    {vaccine.title}
+                                                </p>
+                                            </div>
+
+                                            <div className="vaccines-price-section__price-wrap">
+                                                {isExpected ? (
+                                                    <span className="vaccines-price-section__availability">
+                                                        (очікуємо)
+                                                    </span>
+                                                ) : (
+                                                    <span
+                                                        className="vaccines-price-section__dot"
+                                                        aria-hidden="true"
+                                                    />
+                                                )}
+
+                                                <span className={badgeClassName}>
+                                                    {formatPrice(
+                                                        vaccine.price,
+                                                        vaccine.currency,
+                                                    )}
+                                                </span>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        ) : null}
+                    </div>
                 </div>
             </div>
         </section>
