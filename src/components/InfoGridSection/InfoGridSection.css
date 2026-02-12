@@ -1,0 +1,87 @@
+.info-grid-section__container {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.info-grid-section--vaccination .info-grid-section__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.info-grid-section--vaccination .info-grid-section__card {
+    padding: 32px 28px;
+}
+
+.info-grid-section--vaccination .info-grid-section__card + .info-grid-section__card {
+    border-left: 1px solid var(--color-border);
+}
+
+.info-grid-section--vaccination .info-grid-section__title {
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.info-grid-section--vaccination .info-grid-section__list {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.info-grid-section--vaccination .info-grid-section__list--check li {
+    position: relative;
+    padding-left: 34px;
+    line-height: var(--lh-body);
+}
+
+.info-grid-section--vaccination .info-grid-section__list--check li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.4em;
+    width: 18px;
+    height: 10px;
+    border-left: 4px solid var(--color-primary);
+    border-bottom: 4px solid var(--color-primary);
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 992px) {
+    .info-grid-section--vaccination .info-grid-section__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid-section--vaccination .info-grid-section__card + .info-grid-section__card {
+        border-left: 0;
+        border-top: 1px solid var(--color-border);
+    }
+}
+
+@media (max-width: 768px) {
+    .info-grid-section--vaccination .info-grid-section__card {
+        padding: 24px 16px;
+    }
+
+    .info-grid-section--vaccination .info-grid-section__list {
+        gap: 12px;
+    }
+
+    .info-grid-section--vaccination .info-grid-section__list--check li {
+        padding-left: 30px;
+    }
+
+    .info-grid-section--vaccination .info-grid-section__list--check li::before {
+        width: 16px;
+        height: 9px;
+        border-left-width: 3px;
+        border-bottom-width: 3px;
+    }
+}
