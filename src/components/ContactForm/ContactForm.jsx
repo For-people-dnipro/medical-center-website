@@ -21,7 +21,7 @@ export default function ContactForm({
     smallTitle,
 
     // IMPORTANT: marker for email so you know which form sent it
-    formType = "Контактна форма",
+    formType = "Загальна базова форма",
 
     // choose fields for this exact form
     fields = {
@@ -53,6 +53,9 @@ export default function ContactForm({
         message: "Що вас турбує?",
     },
 
+    // labels used in EmailJS `details` string (optional overrides)
+    detailsLabels = {},
+
     // branch options (optional)
     branchOptions = [
         "Ще не визначився(лась) / Потрібна консультація",
@@ -61,6 +64,18 @@ export default function ContactForm({
         "бульвар Слави, 8",
     ],
 }) {
+    const resolvedDetailsLabels = {
+        form: "Форма",
+        name: "Імʼя",
+        phone: "Телефон",
+        email: "Email",
+        branch: "Філія",
+        diagnostic: "Діагностика",
+        message: "Повідомлення",
+        dateTime: "Дата та час",
+        ...detailsLabels,
+    };
+
     const resolvedTitle = title ?? DEFAULT_TITLE;
     const resolvedSmallTitle =
         smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
@@ -142,19 +157,25 @@ export default function ContactForm({
             }
         };
 
-        addField("Форма", formType);
+        addField(resolvedDetailsLabels.form, formType);
 
-        if (fields.name) addField("Імʼя", formData.name);
-        if (fields.phone) addField("Телефон", formData.phone);
-        if (fields.email) addField("Email", formData.email);
-        if (fields.branch) addField("Філія", formData.branch);
-        if (fields.diagnostic) addField("Діагностика", formData.diagnostic);
-        if (fields.message) addField("Повідомлення", formData.message);
+        if (fields.name) addField(resolvedDetailsLabels.name, formData.name);
+        if (fields.phone) addField(resolvedDetailsLabels.phone, formData.phone);
+        if (fields.email) addField(resolvedDetailsLabels.email, formData.email);
+        if (fields.branch)
+            addField(resolvedDetailsLabels.branch, formData.branch);
+        if (fields.diagnostic)
+            addField(resolvedDetailsLabels.diagnostic, formData.diagnostic);
+        if (fields.message)
+            addField(resolvedDetailsLabels.message, formData.message);
 
-        addField("Дата та час", new Date().toLocaleString("uk-UA"));
-
+        addField(
+            resolvedDetailsLabels.dateTime,
+            new Date().toLocaleString("uk-UA"),
+        );
         const payload = {
             details: details.join("\n"),
+            formType,
         };
 
         try {

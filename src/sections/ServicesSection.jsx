@@ -61,6 +61,7 @@ export default function ServicesSection() {
         if (label === "Пакетні послуги") return "card-packages";
         if (label === "Check-up") return "card-checkup";
         if (label === "Косметологія") return "card-cosmetology";
+        if (label === "Консультація") return "card-consultation";
         return "";
     };
 

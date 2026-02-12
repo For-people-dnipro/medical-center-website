@@ -172,13 +172,13 @@ export default function VaccinationPage() {
                         </div>
                     </div>
                 </section>
-
-                <section className="vaccination-page__mobile-offer">
-                    <div className="vaccination-page__container">
-                        <h2 className="vaccination-page__section-title">
+                <section className="vaccination-visit">
+                    <div className="vaccination-visit__container">
+                        <h2 className="vaccination-visit__title">
                             ВИЇЗНА ВАКЦИНАЦІЯ
                         </h2>
-                        <p className="vaccination-page__mobile-offer-text">
+
+                        <p className="vaccination-visit__text">
                             Ми розуміємо, як важко знайти час на медичні
                             процедури у щільному графіку. Саме тому пропонуємо
                             виїзну вакцинацію - зручний спосіб подбати про
@@ -189,35 +189,44 @@ export default function VaccinationPage() {
                             відповідає на запитання.
                         </p>
 
-                        <div className="vaccination-page__mobile-offer-grid">
-                            <article className="vaccination-page__mobile-offer-card">
-                                <h3>
+                        <div className="vaccination-visit__grid">
+                            <article className="vaccination-visit__card">
+                                <h3 className="vaccination-visit__card-title">
                                     НАША КОМАНДА ПРИЙДЕ ДО ВАС З УСІМ НЕОБХІДНИМ
                                 </h3>
-                                <ul>
+
+                                <ul className="vaccination-visit__list">
                                     <li>із сертифікованими вакцинами</li>
-                                    <li>зі стерильними інструментами;</li>
+                                    <li>зі стерильними інструментами</li>
                                     <li>
                                         з холодильним обладнанням для
                                         правильного зберігання та
-                                        транспортування препаратів;
+                                        транспортування препаратів
                                     </li>
                                     <li>
                                         з повним пакетом документів і медичним
-                                        супроводом.
+                                        супроводом
                                     </li>
                                 </ul>
                             </article>
 
-                            <article className="vaccination-page__mobile-offer-card vaccination-page__mobile-offer-card--bordered">
-                                <h3>ЦЕ РІШЕННЯ ІДЕАЛЬНО ПІДХОДИТЬ ДЛЯ</h3>
-                                <ul>
-                                    <li>Планові дитячі щеплення</li>
-                                    <li>Ревакцинацію</li>
-                                    <li>Вакцинацію перед подорожами</li>
+                            <article className="vaccination-visit__card vaccination-visit__card--border">
+                                <h3 className="vaccination-visit__card-title">
+                                    ЦЕ РІШЕННЯ ІДЕАЛЬНО ПІДХОДИТЬ ДЛЯ
+                                </h3>
+
+                                <ul className="vaccination-visit__list">
                                     <li>
-                                        Сезонні щеплення (наприклад, проти
-                                        грипу)
+                                        компаній, які дбають про здоров'я
+                                        співробітників
+                                    </li>
+                                    <li>
+                                        навчальних закладів, що організовують
+                                        вакцинацію для дітей та педагогів
+                                    </li>
+                                    <li>
+                                        великих родин або громадських
+                                        організацій
                                     </li>
                                 </ul>
                             </article>
@@ -227,10 +236,10 @@ export default function VaccinationPage() {
 
                 <section className="vaccination-page__records">
                     <div className="vaccination-page__container">
-                        <h2>
+                        <h3>
                             МИ ДБАЄМО, ЩОБ ВАША МЕДИЧНА ІНФОРМАЦІЯ БУЛА ПОВНОЮ,
                             ТОЧНОЮ ТА ДОСТУПНОЮ.
-                        </h2>
+                        </h3>
                         <p>
                             Всі вакцинації, проведені нашими лікарями,
                             обов'язково вносяться до електронної системи охорони
@@ -259,23 +268,26 @@ export default function VaccinationPage() {
                 >
                     <ContactForm
                         title="ЗАПИШІТЬСЯ НА ВАКЦИНАЦІЮ"
-                        subtitle="ПОДБАЙТЕ ПРО БЕЗПЕКУ СВОЄЇ РОДИНИ ВЖЕ СЬОГОДНІ."
-                        formType="Форма: Вакцинація"
+                        subtitle="ПОДБАЙТЕ ПРО БЕЗПЕКУ СВОЄЇ РОДИНИ ВЖЕ СЬОГОДНІ"
+                        formType="Вакцинація"
                         fields={{
                             name: true,
                             phone: true,
+                            diagnostic: true,
                             email: false,
                             branch: false,
-                            diagnostic: true,
                             message: true,
                         }}
                         labels={{
                             name: "Ім'я *",
                             phone: "Номер телефону *",
-                            diagnostic: "Назва вакцини та необхідна кількість*",
+                            diagnostic: "Назва вакцини та необхідна кількість *",
                             message: "Повідомлення *",
                             consent:
                                 "Даю згоду на збір та обробку персональних даних",
+                        }}
+                        detailsLabels={{
+                            diagnostic: "Назва вакцини та кількість",
                         }}
                         placeholders={{
                             name: "Ваше ім'я",

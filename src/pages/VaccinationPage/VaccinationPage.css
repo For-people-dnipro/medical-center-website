@@ -62,7 +62,7 @@
     margin-top: 32px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 12px;
 }
 
 .vaccination-page__step-card {
@@ -130,7 +130,7 @@
 
 .vaccination-page__offer-title {
     margin: 0;
-    align-items: center;
+    text-align: center;
 }
 
 .vaccination-page__offer-list {
@@ -163,19 +163,30 @@
 }
 
 /* =========================
-   MOBILE OFFER
+   VISIT SECTION
    ========================= */
 
-.vaccination-page__mobile-offer {
+.vaccination-visit {
     padding-top: 80px;
 }
 
-.vaccination-page__mobile-offer-text {
-    margin-top: 24px;
+.vaccination-visit__container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.vaccination-visit__title {
+    margin: 0;
+    text-align: center;
+}
+
+.vaccination-visit__text {
+    margin: 24px 0 0;
     text-align: justify;
 }
 
-.vaccination-page__mobile-offer-grid {
+.vaccination-visit__grid {
     margin-top: 24px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -185,21 +196,23 @@
     overflow: hidden;
 }
 
-.vaccination-page__mobile-offer-card {
+.vaccination-visit__card {
     padding: 32px 28px;
 }
 
-.vaccination-page__mobile-offer-card--bordered {
+.vaccination-visit__card--border {
     border-left: 1px solid var(--color-border);
 }
 
-.vaccination-page__mobile-offer-card h3 {
+.vaccination-visit__card-title {
     text-align: center;
-    margin: 0;
+    margin: 0 80px;
+    line-height: 1.4;
     text-transform: uppercase;
+    font-weight: 600;
 }
 
-.vaccination-page__mobile-offer-card ul {
+.vaccination-visit__list {
     margin-top: 20px;
     list-style: none;
     padding: 0;
@@ -208,9 +221,22 @@
     gap: 14px;
 }
 
-.vaccination-page__mobile-offer-card li {
+.vaccination-visit__list li {
     position: relative;
     padding-left: 34px;
+    line-height: var(--lh-body);
+    font-weight: var(--fw-regular);
+}
+
+.vaccination-visit__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 10px;
+    border-left: 4px solid var(--color-primary);
+    border-bottom: 4px solid var(--color-primary);
+    transform: rotate(-45deg);
 }
 
 .vaccination-page__offer-item::before {
@@ -229,34 +255,35 @@
 
 .vaccination-page__records {
     margin-top: 80px;
-    padding: 60px 20px;
+    padding: 40px 20px;
     background: var(--color-primary);
-    color: #ffffff;
+    color: var(--color-bg-main);
 }
-
-.vaccination-page__records h2 {
-    text-align: center;
-    margin: 0;
-    font-weight: var(--fw-bold);
+.vaccination-page__contact {
+    padding: 00px 20px;
 }
-
-.vaccination-page__records p {
+.vaccination-page .services-text-under-card__container {
+    margin-top: 30px;
+}
+.vaccination-page__container p {
+    text-align: justify;
     margin-top: 24px;
     font-weight: var(--fw-medium);
 }
 
-/* =========================
-   CONTACT
-   ========================= */
-
-.vaccination-page__contact {
-    padding: 80px 20px;
+.vaccination-page__records h3 {
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.6;
 }
-
-/* =========================
-   RESPONSIVE
-   ========================= */
-
+@media (max-width: 1112px) {
+    .vaccination-visit__card-title {
+        text-align: center;
+        margin: 0px;
+    }
+}
 @media (max-width: 992px) {
     .vaccination-page__steps-grid {
         grid-template-columns: 1fr;
@@ -273,11 +300,11 @@
         gap: 16px;
     }
 
-    .vaccination-page__mobile-offer-grid {
+    .vaccination-visit__grid {
         grid-template-columns: 1fr;
     }
 
-    .vaccination-page__mobile-offer-card--bordered {
+    .vaccination-visit__card--border {
         border-left: 0;
         border-top: 1px solid var(--color-border);
     }
@@ -285,35 +312,67 @@
 
 @media (max-width: 768px) {
     .vaccination-page__container {
+        padding: 0px;
+    }
+    .form-subtitle {
+        display: none;
+    }
+
+    .vaccination-visit__container {
         padding: 0 16px;
     }
 
     .vaccination-page__steps,
     .vaccination-page__offer,
-    .vaccination-page__mobile-offer,
-    .vaccination-page__records {
+    .vaccination-visit {
         padding-top: 70px;
     }
 
     .vaccination-page__offer-card {
-        padding: 22px 16px;
+        padding: 40px 10px;
     }
 
     .vaccination-page__offer-list {
         gap: 14px;
+        padding-left: 15px;
     }
 
     .vaccination-page__offer-item {
         padding-left: 30px;
     }
 
-    .vaccination-page__offer-item::before {
-        width: 12px;
-        height: 12px;
-        top: 0.65em;
+    .vaccination-visit__card {
+        padding: 24px 16px;
+    }
+
+    .vaccination-visit__list {
+        gap: 12px;
+        padding: 0px 15px 0 0;
+    }
+
+    .vaccination-visit__list li {
+        padding-left: 35px;
+    }
+
+    .vaccination-visit__list li::before {
+        width: 16px;
+        height: 9px;
+        border-left-width: 3px;
+        border-bottom-width: 3px;
     }
 
     .vaccination-page__records {
         padding: 40px 16px;
+    }
+
+    .vaccination-page__offer-item::before {
+        top: 7px;
+        width: 7px;
+        height: 7px;
+    }
+}
+@media (max-width: 428px) {
+    .vaccination-visit__card {
+        padding: 24px 20px;
     }
 }

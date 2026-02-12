@@ -4,6 +4,7 @@ import "./DeclarationPage.css";
 import ServicesCardHero from "../components/ServicesCardHero/ServicesCardHero";
 import Ticket from "../components/Ticket/Ticket";
 import FAQSection from "../sections/FaqSection";
+import InfoGridSection from "../components/InfoGridSection/InfoGridSection";
 
 const benefits = [
     "Щоб мати свого лікаря, який знає історію вашого здоров'я.",
@@ -24,6 +25,7 @@ const steps = [
             "У філії — зверніться до адміністратора без попереднього запису. Візьміть паспорт і код. Якщо оформлюєте декларацію для дитини — також свідоцтво про народження.",
             "Онлайн — заповніть форму, після чого адміністратор зв’яжеться з вами, щоб підписати декларацію без відвідування клініки.",
         ],
+        notice: "Для оформлення декларації на дитину довірена особа (мати чи батько) повинна бути зареєстрована в ЕСОЗ.",
     },
     {
         text: "Після підписання декларації ви одразу стаєте нашим пацієнтом і можете звертатися по допомогу у будь-який час.",
@@ -204,68 +206,14 @@ export default function DeclarationPage() {
                     </div>
                 </section>
 
-                <section className="declaration-page__info">
-                    <div className="services-text-under-card__container">
-                        <div className="declaration-page__info-grid">
-                            <article className="declaration-page__info-card">
-                                <h2>НАВІЩО ПОТРІБНА ДЕКЛАРАЦІЯ?</h2>
-                                <ul className="declaration-page__list">
-                                    {benefits.map((item, index) => (
-                                        <li key={index}>
-                                            <img
-                                                src="/icons/check.svg"
-                                                alt=""
-                                            />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </article>
-
-                            <article className="declaration-page__info-card">
-                                <h2>ЯК УКЛАСТИ ДЕКЛАРАЦІЮ?</h2>
-                                <ol className="declaration-page__steps">
-                                    {steps.map((step, index) => (
-                                        <li
-                                            key={index}
-                                            className="declaration-page__step"
-                                        >
-                                            <p>{step.text}</p>
-
-                                            {step.substeps && (
-                                                <ul className="declaration-page__substeps">
-                                                    {step.substeps.map(
-                                                        (substep) => (
-                                                            <li key={substep}>
-                                                                {substep}
-                                                            </li>
-                                                        ),
-                                                    )}
-                                                </ul>
-                                            )}
-
-                                            {/* УВАГА після другого пункту */}
-                                            {index === 1 && (
-                                                <div className="declaration-page__notice">
-                                                    <p>
-                                                        <span className="notice-label">
-                                                            УВАГА!
-                                                        </span>{" "}
-                                                        Для оформлення
-                                                        декларації на дитину
-                                                        довірена особа (мати чи
-                                                        батько) повинна бути
-                                                        зареєстрована в ЕСОЗ.
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ol>
-                            </article>
-                        </div>
-                    </div>
-                </section>
+                <InfoGridSection
+                    type="declaration"
+                    className="declaration-page__info"
+                    leftTitle="НАВІЩО ПОТРІБНА ДЕКЛАРАЦІЯ?"
+                    leftItems={benefits}
+                    rightTitle="ЯК УКЛАСТИ ДЕКЛАРАЦІЮ?"
+                    rightItems={steps}
+                />
 
                 <section className="cta-all-pages">
                     <Ticket text="Підпишіть декларацію онлайн або завітайте до клініки і дозвольте нам дбати про вас." />
