@@ -2,8 +2,8 @@ import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
 import FAQSection from "../../sections/FaqSection";
-import VaccinesPriceSection from "../../sections/VaccinesPriceSection/VaccinesPriceSection";
 import "./VaccinationPage.css";
+import VaccinesStaticSection from "../../components/VaccinesStaticSection/VaccinesStaticSection";
 
 const vaccinationFaqs = [
     {
@@ -34,33 +34,6 @@ const vaccinationFaqs = [
         question: "Чи можна займатися спортом після щеплення?",
         answer: [
             "Після вакцинації організм активно формує імунну відповідь, тому протягом перших 24-48 годин рекомендується уникати інтенсивних фізичних навантажень. Це не через небезпеку, а для того, щоб не створювати додатковий стрес для організму.",
-        ],
-    },
-];
-
-const vaccinationSteps = [
-    {
-        number: "1",
-        title: "ПОПЕРЕДНІЙ ОГЛЯД У ЛІКАРЯ",
-        text: [
-            "Спеціальна підготовка не потрібна, достатньо пройти короткий огляд у лікаря та взяти із собою карту щеплень.",
-            "Лікар уважно огляне вас або дитину, щоб переконатись, що немає ознак застуди чи загострення хронічних захворювань і візьме інформаційну згоду на проведення щеплення.",
-        ],
-    },
-    {
-        number: "2",
-        title: "ПРОВЕДЕННЯ ЩЕПЛЕННЯ",
-        text: [
-            "Щеплення проводиться у маніпуляційному кабінеті нашою досвідченою медсестрою.",
-            "Ми суворо дотримуємось вимог контролю, використовуємо лише сертифіковані матеріали та забезпечуємо повну безпеку під час вакцинації.",
-        ],
-    },
-    {
-        number: "3",
-        title: "ПІСЛЯ ВАКЦИНАЦІЇ",
-        text: [
-            "Після щеплення ми просимо залишатись у клініці ще близько 30 хвилин — щоб переконатися, що організм добре реагує на вакцину. У разі потреби наші фахівці одразу нададуть допомогу. ",
-            "Якщо підвищується температура , то можна прийняти Ібупрофен або Парацетамол.",
         ],
     },
 ];
@@ -99,8 +72,7 @@ export default function VaccinationPage() {
                     buttonHref="#vaccination-contact-form"
                     buttonOnClick={handleScrollToForm}
                 />
-
-                <section className="services-text-under-card__intro">
+                {/* <section className="services-text-under-card__intro">
                     <div className="services-text-under-card__container">
                         <p>
                             Вакцинація допомагає захистити себе і своїх рідних
@@ -112,37 +84,100 @@ export default function VaccinationPage() {
                             зберігання та контролю якості.
                         </p>
                     </div>
-                </section>
-
+                </section> */}
                 <section className="vaccination-page__steps">
                     <div className="vaccination-page__container">
-                        <h2 className="vaccination-page__section-title">
-                            ЯК ПРОХОДИТЬ ВАКЦИНАЦІЯ
-                        </h2>
+                        <div className="vaccination-page__steps-intro">
+                            <p className="vaccination-page__steps-eyebrow">
+                                БЕЗПЕЧНО • ПРОФЕСІЙНО • ПІД КОНТРОЛЕМ
+                            </p>
+                            <h2 className="vaccination-page__steps-title">
+                                БЕЗПЕЧНА ВАКЦИНАЦІЯ — КРОК ЗА КРОКОМ
+                            </h2>
+                            <p className="vaccination-page__steps-description">
+                                Ми працюємо відповідно до чітких медичних
+                                протоколів та міжнародних стандартів
+                                безпеки.Кожен етап організований так, щоб
+                                забезпечити максимальну безпеку та комфорт на
+                                кожному етапі.
+                            </p>
+                        </div>
 
-                        <div className="vaccination-page__steps-grid">
-                            {vaccinationSteps.map((step) => (
-                                <article
-                                    className="vaccination-page__step-card"
-                                    key={step.number}
+                        <div className="vaccination-page__timeline-wrapper">
+                            <svg
+                                className="vaccination-page__timeline-line"
+                                viewBox="0 0 1200 420"
+                                preserveAspectRatio="none"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M13 205
+C80 300 190 305 255 260
+S410 225 510 265
+S670 295 760 130
+S900 20 986 3"
+                                    fill="none"
+                                    stroke="var(--color-primary)"
+                                    strokeWidth="4"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    filter="url(#timeline-shadow)"
+                                />
+                            </svg>
+
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--1" />
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--2" />
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--3" />
+
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--1">
+                                <span
+                                    className="vaccination-page__timeline-step-bg"
+                                    aria-hidden="true"
                                 >
-                                    <span className="vaccination-page__step-number">
-                                        {step.number}
-                                    </span>
-                                    <h3 className="vaccination-page__step-title">
-                                        {step.title}
-                                    </h3>
-                                    <div className="vaccination-page__step-text">
-                                        {step.text.map((paragraph) => (
-                                            <p key={paragraph}>{paragraph}</p>
-                                        ))}
-                                    </div>
-                                </article>
-                            ))}
+                                    1
+                                </span>
+                                <h3>ПОПЕРЕДНІЙ ОГЛЯД У ЛІКАРЯ</h3>
+                                <p>
+                                    Спеціальна підготовка не потрібна —
+                                    достатньо пройти огляд і взяти карту
+                                    щеплень. Лікар перевірить стан здоров’я та
+                                    оформить згоду.
+                                </p>
+                            </article>
+
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--2">
+                                <span
+                                    className="vaccination-page__timeline-step-bg"
+                                    aria-hidden="true"
+                                >
+                                    2
+                                </span>
+                                <h3>ПРОВЕДЕННЯ ЩЕПЛЕННЯ</h3>
+                                <p>
+                                    Вакцинацію проводить досвідчений медичний
+                                    персонал у стерильних умовах із
+                                    використанням сертифікованих матеріалів.
+                                </p>
+                            </article>
+
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--3">
+                                <span
+                                    className="vaccination-page__timeline-step-bg"
+                                    aria-hidden="true"
+                                >
+                                    3
+                                </span>
+                                <h3>ПІСЛЯ ВАКЦИНАЦІЇ</h3>
+                                <p>
+                                    Рекомендуємо залишатись у клініці близько 30
+                                    хвилин для контролю реакції організму. За
+                                    потреби наші фахівці одразу нададуть
+                                    допомогу.
+                                </p>
+                            </article>
                         </div>
                     </div>
-                </section>
-
+                </section>{" "}
                 <section className="vaccination-page__offer">
                     <div className="vaccination-page__container">
                         <div className="vaccination-page__offer-card">
@@ -171,7 +206,8 @@ export default function VaccinationPage() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section>{" "}
+                <VaccinesStaticSection />
                 <section className="vaccination-visit">
                     <div className="vaccination-visit__container">
                         <h2 className="vaccination-visit__title">
@@ -233,7 +269,6 @@ export default function VaccinationPage() {
                         </div>
                     </div>
                 </section>
-
                 <section className="vaccination-page__records">
                     <div className="vaccination-page__container">
                         <h3>
@@ -254,12 +289,10 @@ export default function VaccinationPage() {
                         </p>
                     </div>
                 </section>
-
                 <FAQSection
                     title="НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ"
                     faqs={vaccinationFaqs}
                 />
-
                 <section
                     id="vaccination-contact-form"
                     className="vaccination-page__contact"
