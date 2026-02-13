@@ -183,6 +183,9 @@
 .vaccination-page__steps.timeline-sequence-enabled .js-timeline-node.is-active {
     transform: translate(-50%, -50%) scale(1.08);
 }
+.vaccination-page__container h3 {
+    font-weight: 700;
+}
 
 .vaccination-page__timeline-step--1 {
     left: 0px;
@@ -307,7 +310,7 @@
 }
 
 .vaccination-visit__text {
-    margin: 24px 0 0;
+    margin: 24px 0 15px;
     text-align: justify;
 }
 
@@ -644,6 +647,18 @@
         top: 7px;
         width: 7px;
         height: 7px;
+    }
+
+    .vaccination-page .faq-list {
+        border: 1px solid #e6eaf0;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 12px 28px rgba(15, 24, 34, 0.12);
+        overflow: hidden;
+    }
+
+    .vaccination-page .faq-row:last-child {
+        border-bottom: 0;
     }
 }
 @media (max-width: 428px) {
