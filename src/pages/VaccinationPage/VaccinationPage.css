@@ -13,6 +13,20 @@
     padding: 0px;
 }
 
+.vaccination-page .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 720ms ease-out,
+        transform 720ms ease-out;
+    will-change: opacity, transform;
+}
+
+.vaccination-page .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* =========================
    HERO FIXES
    ========================= */
@@ -85,7 +99,7 @@
 .vaccination-page__timeline-wrapper {
     position: relative;
     margin-top: -100px;
-    min-height: 620px;
+    min-height: 540px;
 }
 
 .vaccination-page__timeline-line {
@@ -129,6 +143,31 @@
     max-width: 340px;
 }
 
+.vaccination-page__steps.timeline-sequence-enabled .js-timeline-step {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity 700ms ease-out,
+        transform 700ms ease-out,
+        box-shadow 320ms ease-out;
+}
+
+.vaccination-page__steps.timeline-sequence-enabled .js-timeline-step.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    border-radius: 16px;
+}
+
+.vaccination-page__steps.timeline-sequence-enabled .js-timeline-node {
+    transition:
+        transform 320ms ease-out,
+        box-shadow 320ms ease-out;
+}
+
+.vaccination-page__steps.timeline-sequence-enabled .js-timeline-node.is-active {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
 .vaccination-page__timeline-step--1 {
     left: 0px;
     top: 330px;
@@ -157,7 +196,7 @@
     font-size: var(--font-body);
     line-height: 1.6;
     font-weight: var(--fw-regular);
-    color: #1f2328;
+
     text-align: justify;
 }
 
@@ -184,7 +223,7 @@
 }
 
 .vaccination-page__offer {
-    padding-top: 80px;
+    padding-top: 48px;
 }
 
 .vaccination-page__offer-card {
@@ -554,5 +593,26 @@
 @media (max-width: 428px) {
     .vaccination-visit__card {
         padding: 24px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vaccination-page .scroll-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .vaccination-page__steps.timeline-sequence-enabled .js-timeline-step {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .vaccination-page__steps.timeline-sequence-enabled .js-timeline-node,
+    .vaccination-page__steps.timeline-sequence-enabled
+        .js-timeline-node.is-active {
+        transition: none;
+        transform: translate(-50%, -50%);
     }
 }

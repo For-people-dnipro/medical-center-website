@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
@@ -46,6 +47,10 @@ const vaccinationOfferItems = [
 ];
 
 export default function VaccinationPage() {
+    const pageRef = useRef(null);
+    const stepsSectionRef = useRef(null);
+    const timelineSequenceStartedRef = useRef(false);
+
     const handleScrollToForm = (event) => {
         event.preventDefault();
         const target = document.querySelector("#vaccination-contact-form");
@@ -55,9 +60,123 @@ export default function VaccinationPage() {
         }
     };
 
+    useEffect(() => {
+        const pageNode = pageRef.current;
+
+        if (!pageNode) {
+            return;
+        }
+
+        const revealBlocks = pageNode.querySelectorAll("[data-reveal='true']");
+
+        if (revealBlocks.length === 0) {
+            return;
+        }
+
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (prefersReducedMotion) {
+            revealBlocks.forEach((block) => block.classList.add("is-visible"));
+            return;
+        }
+
+        const revealObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.2,
+                rootMargin: "0px 0px -10% 0px",
+            },
+        );
+
+        revealBlocks.forEach((block) => {
+            revealObserver.observe(block);
+        });
+
+        return () => revealObserver.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const stepsNode = stepsSectionRef.current;
+
+        if (!stepsNode) {
+            return;
+        }
+
+        const timelineSteps = stepsNode.querySelectorAll(".js-timeline-step");
+        const timelineNodes = stepsNode.querySelectorAll(".js-timeline-node");
+        const timers = [];
+
+        if (timelineSteps.length === 0 || timelineNodes.length === 0) {
+            return;
+        }
+
+        stepsNode.classList.add("timeline-sequence-enabled");
+
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (prefersReducedMotion) {
+            timelineSteps.forEach((step, index) => {
+                step.classList.add("is-active");
+                timelineNodes[index]?.classList.add("is-active");
+            });
+            return;
+        }
+
+        const timelineObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (
+                        !entry.isIntersecting ||
+                        timelineSequenceStartedRef.current
+                    ) {
+                        return;
+                    }
+
+                    timelineSequenceStartedRef.current = true;
+
+                    timelineSteps.forEach((step, index) => {
+                        const delay = index * 300;
+                        const timerId = window.setTimeout(() => {
+                            step.classList.add("is-active");
+                            timelineNodes[index]?.classList.add("is-active");
+                        }, delay);
+
+                        timers.push(timerId);
+                    });
+
+                    observer.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.35,
+                rootMargin: "0px 0px -12% 0px",
+            },
+        );
+
+        timelineObserver.observe(stepsNode);
+
+        return () => {
+            timelineObserver.disconnect();
+            timers.forEach((timerId) => window.clearTimeout(timerId));
+        };
+    }, []);
+
     return (
         <>
-            <main className="vaccination-page">
+            <main className="vaccination-page" ref={pageRef}>
                 <ServicesCardHero
                     title="ВАКЦИНАЦІЯ"
                     subtitle="Прояв турботи про себе та близьких"
@@ -85,7 +204,11 @@ export default function VaccinationPage() {
                         </p>
                     </div>
                 </section> */}
-                <section className="vaccination-page__steps">
+                <section
+                    className="vaccination-page__steps scroll-reveal timeline-sequence-enabled"
+                    data-reveal="true"
+                    ref={stepsSectionRef}
+                >
                     <div className="vaccination-page__container">
                         <div className="vaccination-page__steps-intro">
                             <p className="vaccination-page__steps-eyebrow">
@@ -125,11 +248,11 @@ S900 20 986 3"
                                 />
                             </svg>
 
-                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--1" />
-                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--2" />
-                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--3" />
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--1 js-timeline-node" />
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--2 js-timeline-node" />
+                            <span className="vaccination-page__timeline-node vaccination-page__timeline-node--3 js-timeline-node" />
 
-                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--1">
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--1 js-timeline-step">
                                 <span
                                     className="vaccination-page__timeline-step-bg"
                                     aria-hidden="true"
@@ -145,7 +268,7 @@ S900 20 986 3"
                                 </p>
                             </article>
 
-                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--2">
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--2 js-timeline-step">
                                 <span
                                     className="vaccination-page__timeline-step-bg"
                                     aria-hidden="true"
@@ -160,7 +283,7 @@ S900 20 986 3"
                                 </p>
                             </article>
 
-                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--3">
+                            <article className="vaccination-page__timeline-step vaccination-page__timeline-step--3 js-timeline-step">
                                 <span
                                     className="vaccination-page__timeline-step-bg"
                                     aria-hidden="true"
@@ -200,7 +323,7 @@ S900 20 986 3"
 
                             <div className="vaccination-page__offer-media">
                                 <img
-                                    src="/images/vaccination-hero.jpg"
+                                    src="/images/vaccination-section-picture.jpg"
                                     alt="Вакцинація в медичному центрі"
                                 />
                             </div>
