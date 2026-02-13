@@ -20,6 +20,7 @@
         opacity 720ms ease-out,
         transform 720ms ease-out;
     will-change: opacity, transform;
+    padding: 80px 20px 0 20px;
 }
 
 .vaccination-page .scroll-reveal.is-visible {
@@ -74,17 +75,32 @@
 .vaccination-page__steps-eyebrow {
     margin: 0;
     font-size: var(--font-body);
-    line-height: 1.5;
     font-weight: var(--fw-semibold);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--color-primary);
 }
 
+/* Override generic ".vaccination-page__container p" rule */
+.vaccination-page__steps .vaccination-page__steps-eyebrow {
+    margin: 0;
+    text-align: left;
+    line-height: 1.4;
+    font-weight: var(--fw-semibold);
+}
+
 .vaccination-page__steps-title {
     margin: 18px 0 0;
     font-size: var(--font-h2);
     text-transform: uppercase;
+}
+
+.vaccination-page__steps-title-full {
+    display: inline;
+}
+
+.vaccination-page__steps-title-short {
+    display: none;
 }
 
 .vaccination-page__steps-description {
@@ -223,7 +239,7 @@
 }
 
 .vaccination-page__offer {
-    padding-top: 48px;
+    padding-top: 0px;
 }
 
 .vaccination-page__offer-card {
@@ -369,7 +385,7 @@
     color: var(--color-bg-main);
 }
 .vaccination-page__contact {
-    padding: 00px 20px;
+    padding: 0px 20px;
 }
 .vaccination-page .services-text-under-card__container {
     margin-top: 30px;
@@ -380,7 +396,7 @@
     font-weight: var(--fw-medium);
 }
 
-.vaccination-page__steps .vaccination-page__steps-eyebrow {
+.vaccination-page__steps {
     font-weight: var(--fw-semibold);
 }
 
@@ -394,25 +410,41 @@
     justify-content: center;
     text-align: center;
 }
-@media (max-width: 1112px) {
+@media (max-width: 1065px) {
     .vaccination-visit__card-title {
         text-align: center;
         margin: 0px;
     }
-}
-@media (max-width: 992px) {
+
     .vaccination-page__steps {
         padding-top: 70px;
     }
 
-    .vaccination-page__steps-title br {
+    .vaccination-page__steps-intro {
+        max-width: none;
+        text-align: center;
+    }
+
+    .vaccination-page__steps .vaccination-page__steps-eyebrow {
+        text-align: center;
+        display: block;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    .vaccination-page__steps-title {
+        text-align: center;
+    }
+
+    .vaccination-page__steps-description {
         display: none;
     }
 
     .vaccination-page__timeline-wrapper {
+        --timeline-rail-x: 10px;
+        --timeline-dot-size: 18px;
         min-height: auto;
         margin-top: 28px;
-        padding-left: 26px;
         display: grid;
         gap: 28px;
     }
@@ -420,9 +452,9 @@
     .vaccination-page__timeline-wrapper::before {
         content: "";
         position: absolute;
-        left: 8px;
-        top: 8px;
-        bottom: 8px;
+        left: var(--timeline-rail-x);
+        top: 0px;
+        bottom: 0px;
         width: 3px;
         border-radius: 999px;
         background: var(--color-primary);
@@ -436,35 +468,54 @@
 
     .vaccination-page__timeline-step {
         position: relative;
-        top: auto;
-        left: auto;
-        right: auto;
+        top: 0px;
+        left: 0;
+        right: 0;
         max-width: none;
-        padding-left: 0;
+        padding-left: 52px;
     }
 
     .vaccination-page__timeline-step::before {
         content: "";
         position: absolute;
-        left: -25px;
-        top: 8px;
-        width: 18px;
-        height: 18px;
+        left: calc(
+            var(--timeline-rail-x) - (var(--timeline-dot-size) / 2) - 1px
+                /* половина ширини лінії (3px / 2 ≈ 1.5px) округлюємо */
+        );
+        top: calc(
+            (var(--font-h3) * var(--lh-heading) - var(--timeline-dot-size)) /
+                2 - 6px
+        );
+        width: var(--timeline-dot-size);
+        height: var(--timeline-dot-size);
         border-radius: 50%;
         background: var(--color-primary);
         border: 3px solid #ffffff;
         box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
     }
 
-    .vaccination-page__timeline-step-bg {
+    /* .vaccination-page__timeline-step-bg {
         font-size: clamp(120px, 20vw, 160px);
-    }
+    } */
 
     .vaccination-page__timeline-step--1 .vaccination-page__timeline-step-bg,
     .vaccination-page__timeline-step--2 .vaccination-page__timeline-step-bg,
     .vaccination-page__timeline-step--3 .vaccination-page__timeline-step-bg {
-        right: 0;
-        top: -52px;
+        display: none;
+    }
+
+    .vaccination-page__timeline-step h3 {
+        text-align: left;
+    }
+
+    .vaccination-page .scroll-reveal {
+        padding: 0px 16px;
+        margin-top: 70px;
+    }
+}
+@media (max-width: 992px) {
+    .vaccination-page__steps-title br {
+        display: none;
     }
 
     .vaccination-page__offer-card {
@@ -505,37 +556,42 @@
         padding-top: 70px;
     }
 
-    .vaccination-page__steps {
-        padding-top: 70px;
-    }
-
     .vaccination-page__steps-eyebrow {
-        font-size: var(--font-body);
+        text-align: center;
+        display: block;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     .vaccination-page__steps-title {
         margin-top: 14px;
+        text-align: center;
         font-size: var(--font-h2);
     }
 
-    .vaccination-page__steps-description {
-        margin-top: 14px;
+    .vaccination-page__steps-title-full {
+        display: none;
+    }
+
+    .vaccination-page__steps-title-short {
+        display: inline;
     }
 
     .vaccination-page__timeline-wrapper {
+        --timeline-rail-x: 8px;
+        --timeline-dot-size: 16px;
         margin-top: 24px;
         gap: 24px;
-        padding-left: 22px;
+        padding-left: 0;
     }
 
     .vaccination-page__timeline-wrapper::before {
-        left: 6px;
+        left: var(--timeline-rail-x);
     }
 
-    .vaccination-page__timeline-step::before {
-        left: -21px;
-        width: 16px;
-        height: 16px;
+    .vaccination-page__timeline-step {
+        padding-left: 46px;
     }
 
     .vaccination-page__timeline-step h3 {
@@ -614,5 +670,15 @@
         .js-timeline-node.is-active {
         transition: none;
         transform: translate(-50%, -50%);
+    }
+}
+@media (max-width: 516px) {
+    .vaccination-page__timeline-step {
+        padding-left: 32px;
+    }
+    .vaccination-page__steps-eyebrow {
+        text-align: center;
+        display: block;
+        font-weight: 600; /* або 700 */
     }
 }

@@ -215,7 +215,12 @@ export default function VaccinationPage() {
                                 БЕЗПЕЧНО • ПРОФЕСІЙНО • ПІД КОНТРОЛЕМ
                             </p>
                             <h2 className="vaccination-page__steps-title">
-                                БЕЗПЕЧНА ВАКЦИНАЦІЯ — КРОК ЗА КРОКОМ
+                                <span className="vaccination-page__steps-title-full">
+                                    БЕЗПЕЧНА ВАКЦИНАЦІЯ — КРОК ЗА КРОКОМ
+                                </span>
+                                <span className="vaccination-page__steps-title-short">
+                                    Безпечна вакцинація
+                                </span>
                             </h2>
                             <p className="vaccination-page__steps-description">
                                 Ми працюємо відповідно до чітких медичних
