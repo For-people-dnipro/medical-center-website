@@ -427,6 +427,9 @@
         max-width: none;
         text-align: center;
     }
+    .vaccination-page__contact {
+        padding: 0px;
+    }
 
     .vaccination-page__steps .vaccination-page__steps-eyebrow {
         text-align: center;
@@ -647,14 +650,6 @@
         top: 7px;
         width: 7px;
         height: 7px;
-    }
-
-    .vaccination-page .faq-list {
-        border: 1px solid #e6eaf0;
-        border-radius: 14px;
-        background: #ffffff;
-        box-shadow: 0 12px 28px rgba(15, 24, 34, 0.12);
-        overflow: hidden;
     }
 
     .vaccination-page .faq-row:last-child {

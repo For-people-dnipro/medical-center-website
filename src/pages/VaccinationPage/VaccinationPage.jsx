@@ -5,6 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import FAQSection from "../../sections/FaqSection";
 import "./VaccinationPage.css";
 import VaccinesStaticSection from "../../components/VaccinesStaticSection/VaccinesStaticSection";
+import VaccinationStandardsCarousel from "../../components/VaccinationStandardsCarousel/VaccinationStandardsCarousel";
 
 const vaccinationFaqs = [
     {
@@ -368,6 +369,7 @@ S900 20 986 3"
                     </div>
                 </section>{" "}
                 <VaccinesStaticSection />
+                <VaccinationStandardsCarousel />
                 <section className="vaccination-visit">
                     <div className="vaccination-visit__container">
                         <h2 className="vaccination-visit__title">
