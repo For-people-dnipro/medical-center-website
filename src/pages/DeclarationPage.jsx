@@ -253,7 +253,6 @@ export default function DeclarationPage() {
                     <ContactForm className="contact-form-declaration" />
                 </section>
             </main>
-            <Footer />
         </div>
     );
 }

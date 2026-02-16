@@ -23,7 +23,6 @@ export default function AllServices() {
                     <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
                 </section>
             </main>
-            <Footer />
         </div>
     );
 }

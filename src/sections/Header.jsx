@@ -151,14 +151,14 @@ export default function Header() {
                             </Link>
 
                             <Link
-                                to="/services#packages"
+                                to="/packages"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Пакетні послуги
                             </Link>
 
                             <Link
-                                to="/services#checkup"
+                                to="/checkup"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Check-up{" "}

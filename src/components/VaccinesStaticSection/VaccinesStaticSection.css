@@ -1,0 +1,205 @@
+.vaccines-static {
+    padding: 80px 20px 0 20px;
+}
+
+.vaccines-static__container {
+    width: min(100%, 1080px);
+    margin: 0 auto;
+}
+
+.vaccines-static__card {
+    border-radius: 24px;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    padding: 45px 18px 40px;
+    overflow: hidden;
+}
+
+.vaccines-static__title {
+    margin: 0;
+    text-align: center;
+    font-size: var(--font-h2);
+    line-height: 1.25;
+    font-weight: var(--fw-semibold);
+}
+
+.vaccines-static__subtitle {
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+.vaccines-static__list-wrapper {
+    position: relative;
+    margin-top: 18px;
+    border-radius: 14px;
+}
+
+.vaccines-static__list {
+    height: 420px;
+    min-height: 420px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-right: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.vaccines-static__list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.vaccines-static__scrollbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    border-radius: 999px;
+    background: rgba(0, 139, 150, 0.12);
+    pointer-events: none;
+}
+
+.vaccines-static__scrollbar-thumb {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    min-height: 28px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    transition:
+        transform 120ms linear,
+        height 120ms linear;
+}
+
+.vaccines-static__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 8px 16px 8px 20px;
+    background: #ffffff;
+    border: 0.8px solid #e8edf1;
+    border-radius: 10px;
+    box-shadow: 0 2px 9px rgba(15, 24, 34, 0.05);
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.vaccines-static__name {
+    min-width: 0;
+    padding-right: 14px;
+    font-size: var(--font-body);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vaccines-static__badge {
+    width: 140px;
+    height: 34px;
+    min-width: 140px;
+    border-radius: 8px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--color-primary-opacity);
+    color: var(--color-text-main);
+    font-size: var(--font-body);
+    line-height: 1;
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+}
+
+.vaccines-static__fade {
+    position: absolute;
+    left: 0;
+    right: 10px;
+    bottom: 0;
+    height: 90px;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 55%,
+        rgba(255, 255, 255, 0.85) 80%,
+        #ffffff 100%
+    );
+}
+.vaccines-static__note-row {
+    padding: 10px 8px 2px;
+}
+
+.vaccines-static__note {
+    margin: 0;
+    text-align: center;
+    font-size: var(--font-body);
+    line-height: 1.45;
+    font-weight: var(--fw-medium);
+    color: #171b1f;
+}
+
+@media (max-width: 992px) {
+    .vaccines-static {
+        padding: 70px 20px;
+    }
+
+    .vaccines-static__badge {
+        width: 124px;
+        min-width: 124px;
+    }
+}
+
+@media (max-width: 768px) {
+    .vaccines-static {
+        padding: 70px 16px 0 16px;
+    }
+
+    .vaccines-static__card {
+        border-radius: 18px;
+        padding: 35px 10px 20px;
+    }
+
+    .vaccines-static__list {
+        gap: 8px;
+        padding-right: 12px;
+    }
+
+    .vaccines-static__item {
+        padding: 10px 8px 10px 12px;
+    }
+
+    .vaccines-static__name {
+        font-size: 14px;
+        line-height: 1.35;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: anywhere;
+        padding-right: 8px;
+        word-break: normal;
+        hyphens: auto;
+    }
+
+    .vaccines-static__badge {
+        width: 80px;
+        min-width: 50px;
+        height: 28px;
+        padding: 0 8px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+    .vaccines-static__note-row {
+        padding: 8px 10px 2px;
+    }
+
+    .vaccines-static__note {
+        font-size: 14px;
+    }
+}

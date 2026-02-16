@@ -104,8 +104,6 @@ export default function ConsultPage() {
                     <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
                 </section>
             </main>
-
-            <Footer />
         </div>
     );
 }

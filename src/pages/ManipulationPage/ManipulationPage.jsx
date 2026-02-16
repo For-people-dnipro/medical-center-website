@@ -255,8 +255,6 @@ export default function ManipulationPage() {
                     </div>
                 </section>
             </main>
-
-            <Footer />
         </>
     );
 }

@@ -89,8 +89,6 @@ export default function DiagnosticsPage() {
                     />
                 </section>
             </main>
-
-            <Footer />
         </>
     );
 }

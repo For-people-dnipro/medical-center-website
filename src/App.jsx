@@ -11,6 +11,9 @@ import ConsultPage from "./pages/ConsultPage/ConsultPage";
 import DiagnosticsPage from "./pages/DiagnosticsPage/DiagnosticsPage";
 import ManipulationPage from "./pages/ManipulationPage/ManipulationPage";
 import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
+import PackagesPage from "./pages/PackagesPage/PackagesPage";
+import TestPage from "./pages/TestPage/TestPage";
+import Footer from "./components/Footer/Footer";
 
 function App() {
     const location = useLocation();
@@ -59,11 +62,14 @@ function App() {
                             path="/vaccination"
                             element={<VaccinationPage />}
                         />
+                        <Route path="/packages" element={<PackagesPage />} />
+                        <Route path="/checkup" element={<TestPage />} />
                         <Route path="*" element={<Home />} />
                     </Routes>
                 </div>
                 <MobileCTA />
             </div>
+            <Footer />
         </>
     );
 }

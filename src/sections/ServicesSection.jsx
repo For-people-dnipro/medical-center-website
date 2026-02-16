@@ -44,11 +44,13 @@ export default function ServicesSection() {
             icon: "/icons/service-packages.svg",
             iconMobile: "/icons/service-packages-mobile.svg",
             label: "Пакетні послуги",
+            href: "/packages",
         },
         {
             icon: "/icons/service-checkup.svg",
             iconMobile: "/icons/service-checkup-mobile.svg",
             label: "Check-up",
+            href: "/checkup",
         },
         // {
         //     icon: "/icons/service-cosmetology.svg",

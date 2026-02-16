@@ -1,0 +1,283 @@
+.test-page {
+    min-height: 100vh;
+}
+
+.test-page__container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.test-page .services-card-hero__card,
+.test-page .services-card-hero__right,
+.test-page .services-card-hero__right img {
+    border-radius: 20px;
+}
+
+.test-page__intro {
+    padding: 0 0 40px;
+}
+
+.test-page__intro p {
+    margin: 0;
+    text-align: justify;
+}
+
+.test-page__packages {
+    padding: 0 0 80px;
+}
+
+.test-page__packages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.test-page__package-card {
+    height: 100%;
+    background: var(--color-bg-main);
+    border-radius: 20px;
+    padding: 30px 28px;
+    box-shadow: 0 8px 22px
+        color-mix(in srgb, var(--color-text-main) 8%, transparent);
+    display: flex;
+    flex-direction: column;
+}
+
+.test-page__package-label {
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.test-page__package-title {
+    margin: 4px 0 0;
+    text-align: center;
+    font-weight: var(--fw-semibold);
+}
+
+.test-page__package-subtitle {
+    margin: 12px 0 0;
+    text-align: center;
+}
+
+.test-page__package-list {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+}
+
+.test-page__package-list li {
+    position: relative;
+    padding-left: 24px;
+    line-height: var(--lh-body);
+}
+
+.test-page__package-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    transform: translateY(-50%);
+}
+
+.test-page__package-note {
+    margin: auto 0 0;
+    padding-top: 24px;
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: var(--fw-medium);
+}
+
+.test-page__highlight {
+    background: var(--color-primary);
+    padding: 16px;
+}
+
+.test-page__highlight p {
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-bg-main);
+    font-size: var(--font-h2);
+    font-weight: var(--fw-semibold);
+    line-height: 1.2;
+}
+
+.test-page__corporate {
+    padding: 80px 0;
+}
+
+.test-page__corporate h2 {
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.test-page__corporate-text {
+    margin: 24px 0 0;
+    text-align: justify;
+}
+
+.test-page__corporate-card .service-template {
+    padding: 40px 20px 0;
+}
+
+.test-page__corporate-card .service-template__card {
+    border-radius: 20px;
+    padding: 28px 32px;
+    align-items: stretch;
+}
+
+.test-page__corporate-card .service-template__text {
+    margin: 0;
+    text-align: left;
+}
+
+.test-page__corporate-card .service-template__text h2 {
+    margin: 0 0 24px;
+    text-align: left;
+}
+
+.test-page__corporate-card .service-template__text p {
+    max-width: 100%;
+    text-align: left;
+}
+
+.test-page__benefit-item {
+    position: relative;
+    display: block;
+    padding-left: 44px;
+    margin-bottom: 14px;
+}
+
+.test-page__benefit-item:last-child {
+    margin-bottom: 0;
+}
+
+.test-page__benefit-item::before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: url("/icons/check.svg") no-repeat center / contain;
+}
+
+.test-page__corporate-card .service-template__image img {
+    height: 100%;
+    min-height: 260px;
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.test-page__form-section {
+    padding: 0 20px 80px;
+}
+
+.test-page__form-section .contact-form {
+    border-radius: 20px;
+}
+
+.test-page__form-section .form-header {
+    text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+    .test-page__packages-grid {
+        gap: 20px;
+    }
+
+    .test-page__package-card {
+        padding: 28px 24px;
+    }
+
+    .test-page__corporate {
+        padding: 80px 0;
+    }
+
+    .test-page__corporate-card .service-template__card {
+        padding: 32px 28px;
+    }
+
+    .test-page__corporate-card .service-template__image img {
+        min-height: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .test-page__container {
+        padding: 0 16px;
+    }
+
+    .test-page__intro {
+        padding-bottom: 30px;
+    }
+
+    .test-page__packages {
+        padding-bottom: 70px;
+    }
+
+    .test-page__packages-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .test-page__package-card {
+        padding: 28px 20px;
+    }
+
+    .test-page__package-list {
+        gap: 10px;
+    }
+
+    .test-page__highlight {
+        padding: 14px 16px;
+    }
+
+    .test-page__highlight p {
+        font-size: var(--font-h3);
+    }
+
+    .test-page__corporate {
+        padding: 70px 0;
+    }
+
+    .test-page__corporate-card .service-template {
+        padding: 30px 16px 0;
+    }
+
+    .test-page__corporate-card .service-template__card {
+        padding: 24px 20px;
+    }
+
+    .test-page__benefit-item {
+        padding-left: 38px;
+        margin-bottom: 12px;
+    }
+
+    .test-page__benefit-item::before {
+        width: 26px;
+        height: 26px;
+    }
+
+    .test-page__corporate-card .service-template__image img {
+        min-height: 220px;
+    }
+
+    .test-page__form-section {
+        padding: 0 16px 70px;
+    }
+}

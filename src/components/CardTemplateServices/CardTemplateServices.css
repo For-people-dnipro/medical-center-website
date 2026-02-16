@@ -64,7 +64,6 @@
     }
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 768px) {
     .service-template {
         padding: 70px 16px;
@@ -75,7 +74,6 @@
     }
 }
 
-/* ===== SMALL MOBILE ===== */
 @media (max-width: 480px) {
     .service-template {
         padding: 70px 16px;

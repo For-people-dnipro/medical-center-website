@@ -22,6 +22,7 @@ export default function ContactForm({
 
     // IMPORTANT: marker for email so you know which form sent it
     formType = "Загальна базова форма",
+    buttonText = "Надіслати повідомлення",
 
     // choose fields for this exact form
     fields = {
@@ -30,6 +31,7 @@ export default function ContactForm({
         email: true,
         branch: true,
         diagnostic: false, // for diagnostics page
+        checkupName: false, // for check-up page
         message: true,
     },
 
@@ -40,6 +42,7 @@ export default function ContactForm({
         email: "Електронна пошта",
         branch: "Оберіть філію медичного центру *",
         diagnostic: "Необхідна діагностика *",
+        checkupName: "Назва CHECK-UP*",
         message: "Повідомлення *",
         consent: "Даю згоду на збір та обробку персональних даних",
     },
@@ -50,6 +53,7 @@ export default function ContactForm({
         email: "Ваша ел. пошта (за бажанням)",
         branch: "Оберіть філію",
         diagnostic: "Вкажіть назву процедури",
+        checkupName: "Введіть назву CHECK-UP",
         message: "Що вас турбує?",
     },
 
@@ -71,6 +75,7 @@ export default function ContactForm({
         email: "Email",
         branch: "Філія",
         diagnostic: "Діагностика",
+        checkupName: "Назва CHECK-UP",
         message: "Повідомлення",
         dateTime: "Дата та час",
         ...detailsLabels,
@@ -80,7 +85,7 @@ export default function ContactForm({
     const resolvedSmallTitle =
         smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
     const hasSmallTitle = Boolean(resolvedSmallTitle);
-    const hasEmailLike = fields.email || fields.diagnostic;
+    const hasEmailLike = fields.email || fields.diagnostic || fields.checkupName;
     const formClassName = [
         "contact-form",
         !hasEmailLike && "contact-form--no-email",
@@ -96,6 +101,7 @@ export default function ContactForm({
             email: "",
             branch: "",
             diagnostic: "",
+            checkupName: "",
             message: "",
             consent: false,
             company: "", // honeypot
@@ -166,6 +172,8 @@ export default function ContactForm({
             addField(resolvedDetailsLabels.branch, formData.branch);
         if (fields.diagnostic)
             addField(resolvedDetailsLabels.diagnostic, formData.diagnostic);
+        if (fields.checkupName)
+            addField(resolvedDetailsLabels.checkupName, formData.checkupName);
         if (fields.message)
             addField(resolvedDetailsLabels.message, formData.message);
 
@@ -302,6 +310,20 @@ export default function ContactForm({
                     </div>
                 )}
 
+                {!fields.email && !fields.diagnostic && fields.checkupName && (
+                    <div className="form-group form-email">
+                        <label>{labels.checkupName}</label>
+                        <input
+                            type="text"
+                            name="checkupName"
+                            value={formData.checkupName}
+                            onChange={handleChange}
+                            placeholder={placeholders.checkupName}
+                            required
+                        />
+                    </div>
+                )}
+
                 {fields.message && (
                     <div className="form-message">
                         <label>{labels.message}</label>
@@ -334,9 +356,7 @@ export default function ContactForm({
                         disabled={loading}
                     >
                         <span className="submit-button__text">
-                            {loading
-                                ? "Надсилання..."
-                                : "Надіслати повідомлення"}
+                            {loading ? "Надсилання..." : buttonText}
                         </span>
                         <span className="submit-button__icon">
                             <img src="/icons/arrow-right.svg" alt="" />

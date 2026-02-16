@@ -195,7 +195,6 @@ export default function Home() {
                 <WhyChooseUsSection />
                 <FAQSection title={homeFaqTitle} faqs={homeFaqs} />
                 <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
-                <Footer />
             </div>
         </div>
     );

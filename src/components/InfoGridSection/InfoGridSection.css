@@ -17,7 +17,9 @@
     padding: 32px 28px;
 }
 
-.info-grid-section--vaccination .info-grid-section__card + .info-grid-section__card {
+.info-grid-section--vaccination
+    .info-grid-section__card
+    + .info-grid-section__card {
     border-left: 1px solid var(--color-border);
 }
 
@@ -59,7 +61,9 @@
         grid-template-columns: 1fr;
     }
 
-    .info-grid-section--vaccination .info-grid-section__card + .info-grid-section__card {
+    .info-grid-section--vaccination
+        .info-grid-section__card
+        + .info-grid-section__card {
         border-left: 0;
         border-top: 1px solid var(--color-border);
     }
@@ -69,7 +73,14 @@
     .info-grid-section--vaccination .info-grid-section__card {
         padding: 24px 16px;
     }
+    .packages-page .info-grid-section__container {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
+    .info-grid-section__container .services-text-under-card__container {
+        padding: 0px;
+    }
     .info-grid-section--vaccination .info-grid-section__list {
         gap: 12px;
     }
