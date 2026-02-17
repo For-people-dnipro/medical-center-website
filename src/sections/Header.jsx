@@ -123,14 +123,14 @@ export default function Header() {
                             </Link>
 
                             <Link
-                                to="/services#tests"
+                                to="/diagnostics"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Аналізи
                             </Link>
 
                             <Link
-                                to="/services#vaccination"
+                                to="/vaccination"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Вакцинація

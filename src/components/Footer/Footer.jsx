@@ -53,8 +53,7 @@ export default function Footer() {
         "Політика конфіденційності",
         "Захист персональних даних",
         "Перелік безкоштовних послуг (ПМГ)",
-
-        "Правила під час повітряної тривоги",
+        "Правила повітряної тривоги",
         "Правила внутрішнього розпорядку",
     ];
 
@@ -73,7 +72,7 @@ export default function Footer() {
         { label: "Захист персональних даних", href: "/data-protection" },
         { label: "Публічна оферта", href: "/offer" },
         { label: "Перелік безкоштовних послуг (ПМГ)", href: "/free-services" },
-        { label: "Правила під час повітряної тривоги", href: "/air-alert" },
+        { label: "Правила повітряної тривоги", href: "/air-alert" },
     ];
 
     const desktopMenuWithRules = [
@@ -142,7 +141,14 @@ export default function Footer() {
 
                     <div className="footer-mobile-col">
                         {mobileRight.map((item, i) => (
-                            <a key={i} href="#">
+                            <a
+                                key={i}
+                                href={
+                                    item === "Правила повітряної тривоги"
+                                        ? "/air-alert"
+                                        : "#"
+                                }
+                            >
                                 {item}
                             </a>
                         ))}

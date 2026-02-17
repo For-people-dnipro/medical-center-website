@@ -46,7 +46,7 @@ export default function DiagnosticsPage() {
                     </div>
                 </section>
                 <SectionTypes />
-                <section>
+                <section className="diagnostics-page__about">
                     <CardTemplateServices
                         title="ЯК ПІДГОТУВАТИСЯ?"
                         text={

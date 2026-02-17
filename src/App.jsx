@@ -13,6 +13,7 @@ import ManipulationPage from "./pages/ManipulationPage/ManipulationPage";
 import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
 import PackagesPage from "./pages/PackagesPage/PackagesPage";
 import TestPage from "./pages/TestPage/TestPage";
+import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
 import Footer from "./components/Footer/Footer";
 
 function App() {
@@ -64,6 +65,8 @@ function App() {
                         />
                         <Route path="/packages" element={<PackagesPage />} />
                         <Route path="/checkup" element={<TestPage />} />
+                        <Route path="/check-up" element={<TestPage />} />
+                        <Route path="/air-alert" element={<AirAlertPage />} />
                         <Route path="*" element={<Home />} />
                     </Routes>
                 </div>

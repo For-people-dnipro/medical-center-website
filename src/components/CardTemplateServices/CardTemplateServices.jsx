@@ -6,14 +6,17 @@ export default function CardTemplateServices({
     image,
     imageAlt,
     reverse = false,
+    titleTag = "h2",
 }) {
+    const TitleTag = titleTag;
+
     return (
         <section className="service-template">
             <div
                 className={`service-template__card ${reverse ? "reverse" : ""}`}
             >
                 <div className="service-template__text">
-                    <h2>{title}</h2>
+                    <TitleTag>{title}</TitleTag>
                     <p>{text}</p>
                 </div>
 

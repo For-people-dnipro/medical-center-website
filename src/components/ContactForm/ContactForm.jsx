@@ -7,35 +7,25 @@ const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
 const DEFAULT_MOBILE_TITLE = "ПОРУЧ ЩОБ ДОПОМОГТИ";
 const DEFAULT_SUBTITLE = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ";
 
-/**
- * Universal ContactForm
- * - Same layout/styles (uses your existing ContactForm.css)
- * - You can enable/disable fields per page via props
- * - Adds "form_type" marker so you see which form sent it
- */
-
 export default function ContactForm({
-    // titles (optional)
     title,
     subtitle = DEFAULT_SUBTITLE,
     smallTitle,
+    subtitleAsParagraph = false,
 
-    // IMPORTANT: marker for email so you know which form sent it
     formType = "Загальна базова форма",
     buttonText = "Надіслати повідомлення",
 
-    // choose fields for this exact form
     fields = {
         name: true,
         phone: true,
         email: true,
         branch: true,
-        diagnostic: false, // for diagnostics page
-        checkupName: false, // for check-up page
+        diagnostic: false,
+        checkupName: false,
         message: true,
     },
 
-    // labels/placeholders per form (optional)
     labels = {
         name: "Імʼя *",
         phone: "Номер телефону *",
@@ -57,10 +47,8 @@ export default function ContactForm({
         message: "Що вас турбує?",
     },
 
-    // labels used in EmailJS `details` string (optional overrides)
     detailsLabels = {},
 
-    // branch options (optional)
     branchOptions = [
         "Ще не визначився(лась) / Потрібна консультація",
         "вул. Данила Галицького, 34",
@@ -85,7 +73,9 @@ export default function ContactForm({
     const resolvedSmallTitle =
         smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
     const hasSmallTitle = Boolean(resolvedSmallTitle);
-    const hasEmailLike = fields.email || fields.diagnostic || fields.checkupName;
+    const SubtitleTag = subtitleAsParagraph ? "p" : "h2";
+    const hasEmailLike =
+        fields.email || fields.diagnostic || fields.checkupName;
     const formClassName = [
         "contact-form",
         !hasEmailLike && "contact-form--no-email",
@@ -104,7 +94,7 @@ export default function ContactForm({
             checkupName: "",
             message: "",
             consent: false,
-            company: "", // honeypot
+            company: "",
         };
     }, []);
 
@@ -145,18 +135,14 @@ export default function ContactForm({
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // spam bot trap
         if (formData.company) return;
 
         setLoading(true);
         setError(false);
         setSuccess(false);
 
-        // Build email payload ONLY from fields that exist on this form
-        // (so removed fields won't arrive)
         const details = [];
 
-        // helper
         const addField = (label, value) => {
             if (value && value.trim() !== "") {
                 details.push(`${label}: ${value}`);
@@ -207,7 +193,6 @@ export default function ContactForm({
     return (
         <>
             <form className={formClassName} onSubmit={handleSubmit}>
-                {/* honeypot */}
                 <input
                     type="text"
                     name="company"
@@ -229,7 +214,11 @@ export default function ContactForm({
                             </span>
                         )}
                     </h2>
-                    {subtitle && <h2 className="form-subtitle">{subtitle}</h2>}
+                    {subtitle && (
+                        <SubtitleTag className="form-subtitle">
+                            {subtitle}
+                        </SubtitleTag>
+                    )}
                 </div>
 
                 {fields.name && (
@@ -296,8 +285,6 @@ export default function ContactForm({
 
                 {fields.diagnostic && (
                     <div className="form-group form-email">
-                        {/* We reuse area "email" slot visually in your grid.
-                If you want a true separate grid-area, tell me and I’ll adjust CSS too. */}
                         <label>{labels.diagnostic}</label>
                         <input
                             type="text"

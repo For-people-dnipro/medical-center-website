@@ -1,5 +1,6 @@
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import CardTemplateServices from "../../components/CardTemplateServices/CardTemplateServices";
+import Ticket from "../../components/Ticket/Ticket";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
 import "./TestPage.css";
@@ -65,6 +66,9 @@ const corporateBenefits = [
     "показати працівникам, що їхнє благополуччя для вас важливе.",
 ];
 
+const checkupTopRow = checkupPackages.slice(0, 2);
+const checkupBottomRow = checkupPackages.slice(2);
+
 export default function TestPage() {
     const handleScrollToForm = (event) => {
         event.preventDefault();
@@ -80,7 +84,7 @@ export default function TestPage() {
             <main className="test-page__main">
                 <ServicesCardHero
                     title="CHECK-UP"
-                    subtitle="Просто перевіритись — щоб бути спокійним."
+                    subtitle="Перевірити здоров’я для власного спокою"
                     icon="/icons/service-checkup.svg"
                     image="/images/consultation.jpg"
                     crumbs={[
@@ -98,17 +102,52 @@ export default function TestPage() {
                         <p>
                             Регулярні профілактичні обстеження допомагають
                             помічати зміни ще до появи симптомів. Ми створили
-                            прості програми перевірки здоровʼя, які можна пройти
+                            прості програми перевірки здоров’я, які можна пройти
                             швидко, зручно та отримати показники, що дійсно
                             покажуть стан вашого здоров’я.
                         </p>
                     </div>
                 </section>
 
-                <section className="test-page__packages">
+                <section className="test-page__packages test-page__packages--top">
                     <div className="test-page__container">
                         <div className="test-page__packages-grid">
-                            {checkupPackages.map((pkg) => (
+                            {checkupTopRow.map((pkg) => (
+                                <article
+                                    className="test-page__package-card"
+                                    key={pkg.title}
+                                >
+                                    <h3 className="test-page__package-label">
+                                        CHECK-UP
+                                    </h3>
+                                    <h3 className="test-page__package-title">
+                                        {pkg.title}
+                                    </h3>
+                                    <p className="test-page__package-subtitle">
+                                        {pkg.subtitle}
+                                    </p>
+
+                                    <ul className="test-page__package-list">
+                                        {pkg.items.map((item) => (
+                                            <li key={item}>{item}</li>
+                                        ))}
+                                    </ul>
+
+                                    <p className="test-page__package-note">
+                                        {pkg.recommendation}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <Ticket text="Всесвітня організація охорони здоров’я (ВООЗ) рекомендує проходити чекапи регулярно!" />
+
+                <section className="test-page__packages test-page__packages--bottom">
+                    <div className="test-page__container">
+                        <div className="test-page__packages-grid">
+                            {checkupBottomRow.map((pkg) => (
                                 <article
                                     className="test-page__package-card"
                                     key={pkg.title}
@@ -138,34 +177,26 @@ export default function TestPage() {
                     </div>
                 </section>
 
-                <section className="test-page__highlight">
-                    <p>
-                        Всесвітня організація охорони здоров’я (ВООЗ) рекомендує
-                        проходити чекапи регулярно!
-                    </p>
-                </section>
-
                 <section className="test-page__corporate">
                     <div className="test-page__container">
                         <h2>ПІКЛУЄМОСЯ ПРО ЗДОРОВ’Я ВАШОЇ КОМАНДИ</h2>
                         <p className="test-page__corporate-text">
-                            Ми проводимо профілактичні обстеження не лише для
-                            окремих пацієнтів, а й для колективів компаній.
-                            Чек-уп програми адаптуємо під потреби вашої
-                            організації — від базових аналізів до комплексних
-                            обстежень із консультаціями лікарів. Обстеження
-                            можна провести у клініці або з виїздом на
-                            підприємство — так, як буде зручніше для вашої
-                            команди. Програми формуємо індивідуально, з
-                            урахуванням кількості працівників та специфіки
-                            роботи. Чек-уп для співробітників — це турбота про
-                            здоров’я команди, яку відчувають усі.
+                            Ми проводимо профілактичні обстеження для окремих
+                            пацієнтів і колективів компаній. Check-up програми
+                            адаптуємо під потреби вашої організації — від
+                            базових аналізів до комплексних обстежень із
+                            консультаціями лікарів. Обстеження можливе у клініці
+                            або з виїздом на підприємство. Формуємо програми
+                            індивідуально з урахуванням кількості працівників і
+                            специфіки роботи. Check-up для співробітників — це
+                            турбота про здоров’я команди, яку відчувають усі.
                         </p>
                     </div>
 
                     <div className="test-page__corporate-card">
                         <CardTemplateServices
                             title="ТАКІ ПРОГРАМИ ДОПОМАГАЮТЬ:"
+                            titleTag="h3"
                             text={
                                 <>
                                     {corporateBenefits.map((benefit) => (
@@ -188,8 +219,9 @@ export default function TestPage() {
                     <ContactForm
                         title="ЗАЛИШТЕ ЗАПИТ"
                         subtitle="МИ ПІДБЕРЕМО НАЙКРАЩИЙ ФОРМАТ ДЛЯ ВАШОЇ КОМПАНІЇ"
+                        subtitleAsParagraph={true}
                         formType="Форма: CHECK-UP"
-                        buttonText="НАДІСЛАТИ ПОВІДОМЛЕННЯ"
+                        buttonText="Надіслати повідомлення"
                         fields={{
                             name: true,
                             phone: true,

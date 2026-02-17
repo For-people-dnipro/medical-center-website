@@ -3,6 +3,10 @@
     color: var(--color-text-main);
 }
 
+.diagnostics-page .service-template__text h2 {
+    margin: 0 0 40px;
+}
+
 .diagnostics-form-section .form-header {
     margin-bottom: 10px;
 }
@@ -101,6 +105,9 @@
     .diagnostics-lists {
         grid-template-columns: 1fr;
         gap: 24px;
+    }
+    .diagnostics-page .service-template__text h2 {
+        margin: 0 0 20px;
     }
 }
 @media (max-width: 576px) {

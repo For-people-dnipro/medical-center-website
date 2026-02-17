@@ -10,7 +10,7 @@
 }
 
 .packages-page__about .service-template__image {
-    order: -1;
+    order: 1;
 }
 
 .packages-page__about .service-template__image img {

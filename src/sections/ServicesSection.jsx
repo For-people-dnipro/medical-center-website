@@ -21,6 +21,7 @@ export default function ServicesSection() {
             icon: "/icons/service-tests.svg",
             iconMobile: "/icons/service-tests-mobile.svg",
             label: "Аналізи",
+            href: "/diagnostics",
         },
         {
             icon: "/icons/service-vaccine.svg",
@@ -127,7 +128,7 @@ export default function ServicesSection() {
                         <h2>ПОСЛУГИ</h2>
                         <h3>Все для турботи про ваше здоров’я</h3>
                     </div>{" "}
-                    <h1 class="visually-hidden">
+                    <h1 className="visually-hidden">
                         Приватний медичний центр "Для Людей" у місті Дніпро,
                         Україна.
                     </h1>
