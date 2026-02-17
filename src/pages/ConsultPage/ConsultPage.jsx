@@ -101,7 +101,10 @@ export default function ConsultPage() {
                 />
 
                 <section id="consult-form" className="consult-page__contact">
-                    <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
+                    <ContactForm
+                        smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                        subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
+                    />
                 </section>
             </main>
         </div>

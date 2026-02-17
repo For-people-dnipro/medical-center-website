@@ -298,6 +298,10 @@
     .test-page__corporate-card .service-template__image img {
         min-height: 220px;
     }
+
+    .test-page__form-section .form-subtitle {
+        display: none;
+    }
 }
 @media (max-width: 409px) {
     .test-page__package-note {

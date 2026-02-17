@@ -20,7 +20,10 @@ export default function AllServices() {
                 <ServicesSection />
 
                 <section className="all-services-contact">
-                    <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
+                    <ContactForm
+                        smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                        subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
+                    />
                 </section>
             </main>
         </div>

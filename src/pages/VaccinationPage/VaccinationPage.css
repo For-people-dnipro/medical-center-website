@@ -549,7 +549,7 @@
     .vaccination-page__container {
         padding: 0px;
     }
-    .form-subtitle {
+    .vaccination-page__contact .form-subtitle {
         display: none;
     }
 

@@ -194,7 +194,10 @@ export default function Home() {
                 <BranchesSection />
                 <WhyChooseUsSection />
                 <FAQSection title={homeFaqTitle} faqs={homeFaqs} />
-                <ContactForm smallTitle="МИ ЗАВЖДИ ПОРУЧ" />
+                <ContactForm
+                    smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                    subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
+                />
             </div>
         </div>
     );

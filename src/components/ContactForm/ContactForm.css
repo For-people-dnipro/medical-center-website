@@ -159,6 +159,7 @@
 }
 .form-subtitle {
     margin: 0 0 10px 0;
+    font-weight: var(--fw-semibold);
 } /* ===== Placeholders ===== */
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
@@ -415,6 +416,10 @@
     }
 }
 @media (max-width: 576px) {
+    .form-subtitle {
+        display: block;
+    }
+
     .contact-form h2 {
         margin-bottom: 8px; /* ⬅️ less space under title */
     }

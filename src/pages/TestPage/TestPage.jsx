@@ -217,9 +217,8 @@ export default function TestPage() {
 
                 <section id="checkup-form" className="test-page__form-section">
                     <ContactForm
-                        title="ЗАЛИШТЕ ЗАПИТ"
+                        title="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
                         subtitle="МИ ПІДБЕРЕМО НАЙКРАЩИЙ ФОРМАТ ДЛЯ ВАШОЇ КОМПАНІЇ"
-                        subtitleAsParagraph={true}
                         formType="Форма: CHECK-UP"
                         buttonText="Надіслати повідомлення"
                         fields={{

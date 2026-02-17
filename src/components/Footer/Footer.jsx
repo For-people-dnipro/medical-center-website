@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Instagram, Facebook } from "lucide-react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 import MapPin from "../MapPin";
@@ -123,11 +124,17 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-nav desktop-menu">
-                    {menuToRender.map((item, i) => (
-                        <a key={i} href={item.href}>
-                            {item.label}
-                        </a>
-                    ))}
+                    {menuToRender.map((item, i) =>
+                        item.href === "/air-alert" ? (
+                            <Link key={i} to={item.href}>
+                                {item.label}
+                            </Link>
+                        ) : (
+                            <a key={i} href={item.href}>
+                                {item.label}
+                            </a>
+                        ),
+                    )}
                 </div>
 
                 <div className="footer-mobile-menu">
@@ -141,16 +148,15 @@ export default function Footer() {
 
                     <div className="footer-mobile-col">
                         {mobileRight.map((item, i) => (
-                            <a
-                                key={i}
-                                href={
-                                    item === "Правила повітряної тривоги"
-                                        ? "/air-alert"
-                                        : "#"
-                                }
-                            >
-                                {item}
-                            </a>
+                            item === "Правила повітряної тривоги" ? (
+                                <Link key={i} to="/air-alert">
+                                    {item}
+                                </Link>
+                            ) : (
+                                <a key={i} href="#">
+                                    {item}
+                                </a>
+                            )
                         ))}
                     </div>
                 </div>

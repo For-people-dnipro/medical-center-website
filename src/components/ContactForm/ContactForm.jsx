@@ -4,14 +4,14 @@ import emailjs from "@emailjs/browser";
 import "./ContactForm.css";
 
 const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
-const DEFAULT_MOBILE_TITLE = "ПОРУЧ ЩОБ ДОПОМОГТИ";
+const DEFAULT_MOBILE_TITLE = "ПОРУЧ, ЩОБ ДОПОМОГТИ";
 const DEFAULT_SUBTITLE = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ";
 
 export default function ContactForm({
     title,
     subtitle = DEFAULT_SUBTITLE,
     smallTitle,
-    subtitleAsParagraph = false,
+    subtitleTag,
 
     formType = "Загальна базова форма",
     buttonText = "Надіслати повідомлення",
@@ -73,7 +73,7 @@ export default function ContactForm({
     const resolvedSmallTitle =
         smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
     const hasSmallTitle = Boolean(resolvedSmallTitle);
-    const SubtitleTag = subtitleAsParagraph ? "p" : "h2";
+    const SubtitleTag = subtitleTag ?? "h3";
     const hasEmailLike =
         fields.email || fields.diagnostic || fields.checkupName;
     const formClassName = [
