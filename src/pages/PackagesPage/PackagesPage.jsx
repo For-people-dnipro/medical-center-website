@@ -70,6 +70,7 @@ export default function PackagesPage() {
                     ]}
                     buttonText="Записатися"
                     buttonHref="#packages-form"
+                    buttonClassName="arrow-down"
                     buttonOnClick={handleScrollToForm}
                 />
                 <section className="packages-page__about">
@@ -95,6 +96,7 @@ export default function PackagesPage() {
                 <section id="packages-form" className="packages-page__contact">
                     <ContactForm
                         title="МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                        smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
                         subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
                     />
                 </section>

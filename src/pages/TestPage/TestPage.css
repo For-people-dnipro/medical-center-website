@@ -203,6 +203,10 @@
     font-weight: var(--fw-semibold);
 }
 
+.test-page__form-section {
+    scroll-margin-top: 150px;
+}
+
 @media (max-width: 965px) {
     .test-page__packages-grid {
         gap: 20px;
@@ -301,6 +305,10 @@
 
     .test-page__form-section .form-subtitle {
         display: none;
+    }
+
+    .test-page__form-section {
+        scroll-margin-top: 80px;
     }
 }
 @media (max-width: 409px) {

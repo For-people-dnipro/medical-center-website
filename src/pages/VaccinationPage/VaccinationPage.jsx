@@ -222,6 +222,7 @@ export default function VaccinationPage() {
                     ]}
                     buttonText="Записатися"
                     buttonHref="#vaccination-contact-form"
+                    buttonClassName="arrow-down"
                     buttonOnClick={handleScrollToForm}
                 />
                 {/* <section className="services-text-under-card__intro">

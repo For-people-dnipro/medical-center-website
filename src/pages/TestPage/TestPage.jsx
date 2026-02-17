@@ -94,6 +94,7 @@ export default function TestPage() {
                     ]}
                     buttonText="Записатися"
                     buttonHref="#checkup-form"
+                    buttonClassName="arrow-down"
                     buttonOnClick={handleScrollToForm}
                 />
 

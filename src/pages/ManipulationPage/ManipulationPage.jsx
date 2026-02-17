@@ -18,6 +18,7 @@ export default function ManipulationPage() {
                     ]}
                     buttonText="Записатися"
                     buttonHref="#manipulation-contacts"
+                    buttonClassName="arrow-down"
                 />
 
                 <section className="services-text-under-card__intro">

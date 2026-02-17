@@ -192,7 +192,7 @@ export default function DeclarationPage() {
                         { label: "Декларація" },
                     ]}
                     buttonText="Підписати декларацію"
-                    buttonHref="#declaration-form"
+                    buttonHref="#"
                 />
 
                 <section className="services-text-under-card__intro">

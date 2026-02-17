@@ -107,6 +107,7 @@
 /* CONTACTS */
 .manipulation-contacts {
     padding: 0px 20px;
+    scroll-margin-top: 220px;
 }
 
 .manipulation-contacts .manipulation-container {
@@ -250,6 +251,9 @@
 }
 
 @media (max-width: 768px) {
+    .manipulation-contacts {
+        scroll-margin-top: 200px;
+    }
 }
 @media (max-width: 480px) {
     .manipulation-list .card {
