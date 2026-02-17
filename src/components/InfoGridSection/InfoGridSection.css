@@ -3,6 +3,53 @@
     margin: 0 auto;
 }
 
+.info-grid-section--analyses .info-grid-section__grid--analyses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.info-grid-section--analyses .info-grid-section__card {
+    padding: 0;
+}
+
+.info-grid-section--analyses .info-grid-section__card--analyses-media {
+    padding: 32px 24px 32px 32px;
+}
+
+.info-grid-section--analyses .info-grid-section__card--analyses-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.info-grid-section--analyses .info-grid-section__card--analyses-text {
+    padding: 42px 36px 42px 24px;
+}
+
+.info-grid-section--analyses .info-grid-section__title {
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.info-grid-section--analyses .info-grid-section__list--analyses {
+    margin: 26px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 10px;
+}
+
+.info-grid-section--analyses .info-grid-section__list--analyses li {
+    line-height: 1.45;
+}
+
 .info-grid-section--vaccination .info-grid-section__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -57,6 +104,18 @@
 }
 
 @media (max-width: 992px) {
+    .info-grid-section--analyses .info-grid-section__card--analyses-media {
+        padding: 24px 16px 24px 24px;
+    }
+
+    .info-grid-section--analyses .info-grid-section__card--analyses-text {
+        padding: 28px 24px 28px 16px;
+    }
+
+    .info-grid-section--analyses .info-grid-section__list--analyses {
+        margin-top: 20px;
+    }
+
     .info-grid-section--vaccination .info-grid-section__grid {
         grid-template-columns: 1fr;
     }
@@ -70,6 +129,26 @@
 }
 
 @media (max-width: 768px) {
+    .info-grid-section--analyses .info-grid-section__grid--analyses {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid-section--analyses .info-grid-section__card--analyses-media {
+        padding: 20px 16px 0;
+    }
+
+    .info-grid-section--analyses .info-grid-section__card--analyses-media img {
+        min-height: 220px;
+    }
+
+    .info-grid-section--analyses .info-grid-section__card--analyses-text {
+        padding: 24px 16px 24px;
+    }
+
+    .info-grid-section--analyses .info-grid-section__list--analyses {
+        gap: 8px;
+    }
+
     .info-grid-section--vaccination .info-grid-section__card {
         padding: 24px 16px;
     }

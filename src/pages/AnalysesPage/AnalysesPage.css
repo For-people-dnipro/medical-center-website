@@ -1,0 +1,83 @@
+.analyses-page {
+    min-height: 100vh;
+    color: var(--color-text-main);
+}
+
+.analyses-page__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.analyses-page__container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.analyses-page__intro {
+    padding: 0 0 70px;
+}
+
+.analyses-page__intro p {
+    margin: 0;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+.analyses-page__recommendation {
+    padding: 0 20px;
+}
+
+.analyses-page__faq .faq-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.analyses-page__contact {
+    padding: 0 20px;
+    scroll-margin-top: 90px;
+}
+
+.analyses-page__contact-title {
+    margin: 0 0 36px;
+    text-align: center;
+}
+
+@media (max-width: 992px) {
+    .analyses-page__intro {
+        padding-bottom: 60px;
+    }
+
+    .analyses-page__contact-title {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .analyses-page__container {
+        padding: 0 16px;
+    }
+
+    .analyses-page__intro {
+        padding-bottom: 52px;
+    }
+
+    .analyses-page__recommendation {
+        padding: 0 16px;
+    }
+
+    .analyses-page__faq .faq-section {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .analyses-page__contact {
+        padding: 0 16px;
+        scroll-margin-top: 80px;
+    }
+
+    .analyses-page__contact-title {
+        margin-bottom: 24px;
+    }
+}

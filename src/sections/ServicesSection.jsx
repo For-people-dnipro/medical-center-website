@@ -21,7 +21,7 @@ export default function ServicesSection() {
             icon: "/icons/service-tests.svg",
             iconMobile: "/icons/service-tests-mobile.svg",
             label: "Аналізи",
-            href: "/diagnostics",
+            href: "/analyses",
         },
         {
             icon: "/icons/service-vaccine.svg",

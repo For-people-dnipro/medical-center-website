@@ -1,7 +1,7 @@
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useState, Fragment } from "react";
 
-const branches = [
+const DEFAULT_BRANCHES = [
     {
         lat: 48.4613,
         lng: 34.9384,
@@ -26,7 +26,14 @@ const PIN_PATH =
    C0,14 10,0 10,-8 \
    C10,-14 6,-18 0,-18 Z";
 
-export default function BranchesMap() {
+const DEFAULT_CENTER = { lat: 48.4272, lng: 35.0019 };
+
+export default function BranchesMap({
+    branches = DEFAULT_BRANCHES,
+    center = DEFAULT_CENTER,
+    zoom = 11,
+    borderRadius = 20,
+}) {
     const [hoveredIndex, setHoveredIndex] = useState(null);
 
     const { isLoaded } = useLoadScript({
@@ -40,10 +47,10 @@ export default function BranchesMap() {
             mapContainerStyle={{
                 width: "100%",
                 height: "100%",
-                borderRadius: "20px",
+                borderRadius: `${borderRadius}px`,
             }}
-            center={{ lat: 48.4272, lng: 35.0019 }}
-            zoom={11}
+            center={center}
+            zoom={zoom}
             options={{
                 scrollwheel: false,
                 gestureHandling: "greedy",
@@ -67,7 +74,11 @@ export default function BranchesMap() {
                         zIndex={10}
                         onMouseOver={() => setHoveredIndex(i)}
                         onMouseOut={() => setHoveredIndex(null)}
-                        onClick={() => window.open(b.link, "_blank")}
+                        onClick={() => {
+                            if (b.link) {
+                                window.open(b.link, "_blank");
+                            }
+                        }}
                     />
 
                     {/* БІЛИЙ КРУЖЕЧОК */}

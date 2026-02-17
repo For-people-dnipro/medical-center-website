@@ -123,7 +123,7 @@ export default function Header() {
                             </Link>
 
                             <Link
-                                to="/diagnostics"
+                                to="/analyses"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Аналізи

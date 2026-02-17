@@ -14,6 +14,8 @@ import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
 import PackagesPage from "./pages/PackagesPage/PackagesPage";
 import TestPage from "./pages/TestPage/TestPage";
 import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
+import BranchesPage from "./pages/BranchesPage/BranchesPage";
+import AnalysesPage from "./pages/AnalysesPage/AnalysesPage";
 import Footer from "./components/Footer/Footer";
 
 function App() {
@@ -67,6 +69,8 @@ function App() {
                         <Route path="/checkup" element={<TestPage />} />
                         <Route path="/check-up" element={<TestPage />} />
                         <Route path="/air-alert" element={<AirAlertPage />} />
+                        <Route path="/branches" element={<BranchesPage />} />
+                        <Route path="/analyses" element={<AnalysesPage />} />
                         <Route path="*" element={<Home />} />
                     </Routes>
                 </div>

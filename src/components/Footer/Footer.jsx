@@ -42,7 +42,7 @@ export default function Footer() {
         "Про клініку",
         "Лікарі",
         "Послуги",
-        "Відділення",
+        "Філії",
         "Вакансії",
         "Новини",
         "Контакти",
@@ -62,7 +62,7 @@ export default function Footer() {
         { label: "Про клініку", href: "/about" },
         { label: "Лікарі", href: "/doctors" },
         { label: "Послуги", href: "/services" },
-        { label: "Відділення", href: "/departments" },
+        { label: "Філії", href: "/branches" },
         { label: "Вакансії", href: "/vacancies" },
         { label: "Новини", href: "/news" },
         { label: "Контакти", href: "/contacts" },
@@ -125,7 +125,8 @@ export default function Footer() {
 
                 <div className="footer-nav desktop-menu">
                     {menuToRender.map((item, i) =>
-                        item.href === "/air-alert" ? (
+                        item.href === "/air-alert" ||
+                        item.href === "/branches" ? (
                             <Link key={i} to={item.href}>
                                 {item.label}
                             </Link>
@@ -140,9 +141,15 @@ export default function Footer() {
                 <div className="footer-mobile-menu">
                     <div className="footer-mobile-col">
                         {mobileLeft.map((item, i) => (
-                            <a key={i} href="#">
-                                {item}
-                            </a>
+                            item === "Філії" ? (
+                                <Link key={i} to="/branches">
+                                    {item}
+                                </Link>
+                            ) : (
+                                <a key={i} href="#">
+                                    {item}
+                                </a>
+                            )
                         ))}
                     </div>
 

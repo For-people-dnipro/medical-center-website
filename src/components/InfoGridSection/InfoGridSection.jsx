@@ -5,6 +5,8 @@ export default function InfoGridSection({
     leftItems = [],
     rightTitle,
     rightItems = [],
+    imageSrc = "",
+    imageAlt = "",
     type = "declaration",
     className = "",
 }) {
@@ -15,6 +17,33 @@ export default function InfoGridSection({
     ]
         .filter(Boolean)
         .join(" ");
+
+    if (type === "analyses") {
+        return (
+            <section className={rootClassName}>
+                <div className="info-grid-section__container services-text-under-card__container">
+                    <div className="info-grid-section__grid info-grid-section__grid--analyses">
+                        <article className="info-grid-section__card info-grid-section__card--analyses-media">
+                            {imageSrc ? (
+                                <img src={imageSrc} alt={imageAlt} />
+                            ) : null}
+                        </article>
+
+                        <article className="info-grid-section__card info-grid-section__card--analyses-text">
+                            <h2 className="info-grid-section__title">
+                                {rightTitle}
+                            </h2>
+                            <ul className="info-grid-section__list info-grid-section__list--analyses">
+                                {rightItems.map((item, index) => (
+                                    <li key={`${item}-${index}`}>{item}</li>
+                                ))}
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     if (type === "declaration") {
         return (
