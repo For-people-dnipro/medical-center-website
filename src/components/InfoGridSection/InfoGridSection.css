@@ -35,12 +35,13 @@
 }
 
 .info-grid-section--analyses .info-grid-section__title {
-    margin: 0;
+    margin: 30px 0 0;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .info-grid-section--analyses .info-grid-section__list--analyses {
-    margin: 26px 0 0;
+    margin: 40px 0 0;
     padding-left: 20px;
     display: grid;
     gap: 10px;
@@ -48,6 +49,10 @@
 
 .info-grid-section--analyses .info-grid-section__list--analyses li {
     line-height: 1.45;
+}
+
+.info-grid-section--analyses .info-grid-section__list--analyses li::marker {
+    color: var(--color-primary);
 }
 
 .info-grid-section--vaccination .info-grid-section__grid {
@@ -113,7 +118,7 @@
     }
 
     .info-grid-section--analyses .info-grid-section__list--analyses {
-        margin-top: 20px;
+        margin-top: 28px;
     }
 
     .info-grid-section--vaccination .info-grid-section__grid {
@@ -134,7 +139,8 @@
     }
 
     .info-grid-section--analyses .info-grid-section__card--analyses-media {
-        padding: 20px 16px 0;
+        order: 2;
+        padding: 0 16px 40px;
     }
 
     .info-grid-section--analyses .info-grid-section__card--analyses-media img {
@@ -142,7 +148,12 @@
     }
 
     .info-grid-section--analyses .info-grid-section__card--analyses-text {
-        padding: 24px 16px 24px;
+        order: 1;
+        padding: 32px 16px 16px;
+    }
+
+    .info-grid-section--analyses .info-grid-section__title {
+        margin-top: 5px;
     }
 
     .info-grid-section--analyses .info-grid-section__list--analyses {

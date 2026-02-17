@@ -5,15 +5,22 @@ import ContactForm from "../../components/ContactForm/ContactForm";
 import "./AnalysesPage.css";
 
 const recommendationItems = [
-    "здавати аналізи вранці натщесерце;",
-    "не їсти 8–12 годин;",
-    "уникати алкоголю та жирної їжі;",
-    "обмежити фізичні навантаження;",
-    "не палити за 2–3 години;",
-    "повідомити про ліки.",
+    "здавати аналізи вранці натщесерце",
+    "не їсти 8–12 годин",
+    "уникати алкоголю та жирної їжі",
+    "обмежити фізичні навантаження",
+    "не палити за 2–3 години",
+    "повідомити про ліки",
 ];
 
 const analysesFaqs = [
+    {
+        question: "Де та як можна отримати результати аналізів?",
+        answer: [
+            "Результати можна отримати у вашого лікаря або через адміністратора медичного центру.",
+            "Формат отримання залежить від типу дослідження та внутрішнього регламенту лабораторії.",
+        ],
+    },
     {
         question: "Як правильно підготуватися до здачі аналізу крові?",
         answer: [
@@ -49,13 +56,6 @@ const analysesFaqs = [
             "Деякі засоби можуть впливати на результати аналізів.",
         ],
     },
-    {
-        question: "Де та як можна отримати результати аналізів?",
-        answer: [
-            "Результати можна отримати у вашого лікаря або через адміністратора медичного центру.",
-            "Формат отримання залежить від типу дослідження та внутрішнього регламенту лабораторії.",
-        ],
-    },
 ];
 
 export default function AnalysesPage() {
@@ -64,21 +64,21 @@ export default function AnalysesPage() {
             <main className="analyses-page__main">
                 <ServicesCardHero
                     title="АНАЛІЗИ"
-                    subtitle="Турбота, що починається з розмови"
+                    subtitle="Точна лабораторна діагностика"
                     icon="/icons/service-tests.svg"
-                    image="/images/consult-hero.jpg"
+                    image="/images/analyses-hero.jpg"
                     crumbs={[
                         { label: "Головна", to: "/" },
                         { label: "Послуги", to: "/services" },
                         { label: "Аналізи" },
                     ]}
-                    buttonText="Обрати лікаря"
+                    buttonText="Записатися на аналізи"
                     buttonHref="#analyses-contact"
-                    buttonClassName="arrow-down"
+                    buttonClassName="arrow-right"
                 />
 
-                <section className="analyses-page__intro">
-                    <div className="analyses-page__container">
+                <section className="services-text-under-card__intro">
+                    <div className="services-text-under-card__container">
                         <p>
                             У нашому медичному центрі ви можете здати аналізи
                             безоплатно (для пацієнтів із декларацією) або за
@@ -95,9 +95,9 @@ export default function AnalysesPage() {
                 <InfoGridSection
                     type="analyses"
                     className="analyses-page__recommendation"
-                    rightTitle="ДЛЯ ТОЧНИХ РЕЗУЛЬТАТІВ РЕКОМЕНДУЄМО:"
+                    rightTitle="Для точних результатів:"
                     rightItems={recommendationItems}
-                    imageSrc="/images/consultation.jpg"
+                    imageSrc="/images/analysesInfo.jpg"
                     imageAlt="Лікар під час консультації"
                 />
 
@@ -108,13 +108,15 @@ export default function AnalysesPage() {
                     />
                 </section>
 
-                <section id="analyses-contact" className="analyses-page__contact">
-                    <div className="analyses-page__container">
-                        <h2 className="analyses-page__contact-title">
-                            Потрібно записатися?
-                        </h2>
-                    </div>
-                    <ContactForm formType="Форма: Аналізи" />
+                <section
+                    id="analyses-contact"
+                    className="analyses-page__contact"
+                >
+                    <ContactForm
+                        title="ПОТРІБНО ЗАПИСАТИСЯ?"
+                        subtitle="ЗАЛИШТЕ ЗАЯВКУ — МИ ЗВ’ЯЖЕМОСЯ З ВАМИ"
+                        formType="Форма: Аналізи"
+                    />
                 </section>
             </main>
         </div>

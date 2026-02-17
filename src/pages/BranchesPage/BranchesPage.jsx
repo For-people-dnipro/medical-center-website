@@ -129,7 +129,7 @@ export default function BranchesPage() {
                     <ContactForm
                         title="ВАША ДУМКА ВАЖЛИВА"
                         subtitle="ЗАЛИШТЕ СВІЙ ВІДГУК ЩОДО ЯКОСТІ НАШИХ ПОСЛУГ"
-                        formType="Форма: Філії"
+                        formType="Форма: Відгук"
                         fields={{
                             name: true,
                             phone: true,

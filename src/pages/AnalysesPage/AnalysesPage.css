@@ -16,7 +16,7 @@
 }
 
 .analyses-page__intro {
-    padding: 0 0 70px;
+    padding: 0;
 }
 
 .analyses-page__intro p {
@@ -27,6 +27,7 @@
 
 .analyses-page__recommendation {
     padding: 0 20px;
+    margin-top: 80px;
 }
 
 .analyses-page__faq .faq-section {
@@ -35,8 +36,7 @@
 }
 
 .analyses-page__contact {
-    padding: 0 20px;
-    scroll-margin-top: 90px;
+    scroll-margin-top: 150px;
 }
 
 .analyses-page__contact-title {
@@ -46,7 +46,7 @@
 
 @media (max-width: 992px) {
     .analyses-page__intro {
-        padding-bottom: 60px;
+        padding: 0;
     }
 
     .analyses-page__contact-title {
@@ -60,11 +60,12 @@
     }
 
     .analyses-page__intro {
-        padding-bottom: 52px;
+        padding: 0;
     }
 
     .analyses-page__recommendation {
-        padding: 0 16px;
+        padding: 0;
+        margin-top: 70px;
     }
 
     .analyses-page__faq .faq-section {
@@ -73,8 +74,7 @@
     }
 
     .analyses-page__contact {
-        padding: 0 16px;
-        scroll-margin-top: 80px;
+        scroll-margin-top: 110px;
     }
 
     .analyses-page__contact-title {
