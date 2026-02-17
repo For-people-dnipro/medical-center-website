@@ -1,0 +1,143 @@
+.air-alert-page {
+    min-height: 100vh;
+    color: var(--color-text-main);
+}
+
+.air-alert-page__container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.air-alert-page__intro {
+    padding: 30px 0 10px;
+}
+
+.air-alert-page__crumbs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-caption);
+    color: var(--color-text-muted);
+    margin-bottom: 26px;
+}
+
+.air-alert-page__crumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.air-alert-page__crumbs a:hover {
+    color: #7f7f7f;
+}
+
+.air-alert-page__crumbs .current {
+    color: var(--color-primary);
+    font-weight: var(--fw-medium);
+}
+
+.air-alert-page__intro h1 {
+    margin: 50px 0 50px;
+    text-align: center;
+    font-size: var(--font-h2);
+    line-height: var(--lh-heading);
+}
+
+.air-alert-page__content {
+    padding: 0 0 40px;
+}
+
+.air-alert-page__lead {
+    margin: 0 0 20px;
+    text-align: justify;
+    line-height: 1.65;
+}
+
+.air-alert-page__block {
+    margin-bottom: 20px;
+}
+
+.air-alert-page__block h3 {
+    margin: 0 0 16px;
+    font-size: var(--font-h3);
+    font-weight: var(--fw-semibold);
+}
+
+.air-alert-page__block p {
+    margin: 0;
+    text-align: justify;
+}
+
+.air-alert-page__block p + p {
+    margin-top: 10px;
+}
+
+.air-alert-page__block ul {
+    margin: 12px 0 0;
+    padding-left: 22px;
+    display: grid;
+    gap: 8px;
+}
+
+.air-alert-page__block ul li::marker {
+    color: var(--color-primary);
+}
+
+.air-alert-page__block a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 2px;
+}
+
+.air-alert-page__block a:hover {
+    opacity: 0.9;
+}
+
+.air-alert-page__thanks {
+    margin: 30px 0 0;
+    font-weight: var(--fw-medium);
+}
+
+.air-alert-page__sign {
+    margin: 8px 0 0;
+}
+
+.air-alert-page__contact .form-header h2,
+.air-alert-page__contact .form-subtitle {
+    font-weight: var(--fw-semibold);
+}
+
+@media (max-width: 768px) {
+    .air-alert-page__container {
+        padding: 0 16px;
+    }
+
+    .air-alert-page__intro {
+        padding: 24px 0 20px;
+    }
+
+    .air-alert-page__crumbs {
+        margin-bottom: 20px;
+    }
+
+    .air-alert-page__intro h1 {
+        font-size: var(--font-h2);
+        margin: 30px 0px 10px;
+    }
+
+    .air-alert-page__block {
+        margin-top: 15px;
+    }
+
+    .air-alert-page__block h3 {
+        margin-bottom: 14px;
+        font-size: var(--font-h3);
+        font-weight: var(--fw-semibold);
+    }
+
+    .air-alert-page__block ul {
+        padding-left: 20px;
+    }
+}
