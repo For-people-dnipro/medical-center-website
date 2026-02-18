@@ -31,11 +31,6 @@
     border-radius: 14px;
 }
 
-.services-price-section__list-scroll-area {
-    position: relative;
-    border-radius: 14px;
-}
-
 .services-price-section__header {
     display: grid;
     grid-template-columns:
@@ -76,7 +71,7 @@
     scrollbar-gutter: stable;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    padding: 6px 16px 6px 20px;
+    padding: 0 16px 6px 20px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -263,12 +258,13 @@
     .services-price-section {
         padding: 70px 20px 0 20px;
     }
-
+    .services-price-section__name {
+        font-size: 14px;
+    }
     .services-price-section__header,
     .services-price-section__item {
         column-gap: 12px;
     }
-
     .services-price-section__head-col {
         font-size: 12px;
     }
@@ -286,7 +282,7 @@
 
     .services-price-section__card {
         border-radius: 18px;
-        padding: 32px 12px 20px;
+        padding: 40px 12px 20px;
     }
 
     .services-price-section__header {
@@ -304,7 +300,7 @@
     }
 
     .services-price-section__list {
-        padding: 4px 8px 4px 8px;
+        padding: 4px 14px 4px 8px;
     }
 
     .services-price-section__item {
@@ -314,24 +310,28 @@
             "decl non";
         column-gap: 8px;
         row-gap: 6px;
-        padding: 6px 8px;
+        padding: 0px 20px 15px;
         align-items: center;
+        justify-items: center;
     }
 
     .services-price-section__name {
         grid-area: name;
         padding-right: 0;
-        font-size: 14px;
         line-height: 1.2;
         white-space: normal;
         overflow: visible;
         text-overflow: clip;
         overflow-wrap: anywhere;
+        width: 100%;
+        margin: 17px 0 8px;
+        text-align: left;
     }
 
     .services-price-section__col {
         justify-content: center;
         justify-self: stretch;
+        width: 100%;
         border-left: 0;
         border-top: 0;
         padding: 0;
@@ -358,6 +358,7 @@
         line-height: 1.1;
         opacity: 0.7;
         white-space: nowrap;
+        text-align: center;
     }
 
     .services-price-section__badge {
@@ -380,10 +381,11 @@
         column-gap: 6px;
         row-gap: 4px;
         padding: 6px;
+        padding: 0px 20px 15px;
     }
 
     .services-price-section__name {
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.2;
     }
 
@@ -424,9 +426,12 @@
     }
 
     .services-price-section__col {
-        justify-content: space-between;
+        justify-content: left;
         gap: 6px;
         padding: 0;
+    }
+    .services-price-section__badge {
+        font-size: 12px;
     }
 
     .services-price-section__col:first-of-type {

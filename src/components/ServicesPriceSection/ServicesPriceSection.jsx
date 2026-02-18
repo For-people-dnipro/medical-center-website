@@ -208,6 +208,12 @@ export default function ServicesPriceSection({
         const resizeObserver = new ResizeObserver(updateScrollState);
         resizeObserver.observe(listElement);
 
+        const mutationObserver = new MutationObserver(updateScrollState);
+        mutationObserver.observe(listElement, {
+            childList: true,
+            subtree: true,
+        });
+
         listElement.addEventListener("scroll", updateScrollState, {
             passive: true,
         });
@@ -215,6 +221,7 @@ export default function ServicesPriceSection({
 
         return () => {
             resizeObserver.disconnect();
+            mutationObserver.disconnect();
             listElement.removeEventListener("scroll", updateScrollState);
             window.removeEventListener("resize", updateScrollState);
         };
@@ -284,8 +291,8 @@ export default function ServicesPriceSection({
 
                 <div className="services-price-section__note-row">
                     <p className="services-price-section__note">
-                        Не знайшли потрібну консультацію? Напишіть нам, будь
-                        ласка.
+                        Не знайшли потрібну консультацію? Напишіть нам — ми
+                        обов’язково допоможемо.
                     </p>
                 </div>
             </>
@@ -311,31 +318,26 @@ export default function ServicesPriceSection({
                     </div>
 
                     <div className="services-price-section__list-wrapper">
-                        <div className="services-price-section__list-scroll-area">
-                            <div
-                                ref={listRef}
-                                className="services-price-section__list"
-                            >
-                                {content}
-                            </div>
-
-                            <div
-                                className="services-price-section__scrollbar"
-                                aria-hidden="true"
-                            >
-                                <span
-                                    ref={scrollbarThumbRef}
-                                    className="services-price-section__scrollbar-thumb"
-                                />
-                            </div>
-
-                            {showFadeOverlay ? (
-                                <div
-                                    className="services-price-section__fade"
-                                    aria-hidden="true"
-                                />
-                            ) : null}
+                        <div ref={listRef} className="services-price-section__list">
+                            {content}
                         </div>
+
+                        <div
+                            className="services-price-section__scrollbar"
+                            aria-hidden="true"
+                        >
+                            <span
+                                ref={scrollbarThumbRef}
+                                className="services-price-section__scrollbar-thumb"
+                            />
+                        </div>
+
+                        {showFadeOverlay ? (
+                            <div
+                                className="services-price-section__fade"
+                                aria-hidden="true"
+                            />
+                        ) : null}
                     </div>
                 </div>
             </div>
