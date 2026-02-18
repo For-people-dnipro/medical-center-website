@@ -537,6 +537,91 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiServicePriceItemServicePriceItem
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'service_price_items';
+  info: {
+    displayName: 'Service Price Item';
+    pluralName: 'service-price-items';
+    singularName: 'service-price-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    isFreeForDeclarant: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service-price-item.service-price-item'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<0>;
+    priceForDeclarant: Schema.Attribute.Decimal;
+    priceForNonDeclarant: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    visitType: Schema.Attribute.Enumeration<
+      ['consultation', 'gynecologist', 'endocrinologist', 'ultrasound', 'other']
+    >;
+  };
+}
+
+export interface ApiServicePriceServicePrice
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'service_prices';
+  info: {
+    displayName: 'Service Price';
+    pluralName: 'service-prices';
+    singularName: 'service-price';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    isFreeForDeclarant: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service-price.service-price'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer & Schema.Attribute.Required;
+    page: Schema.Attribute.Enumeration<
+      ['consultation', 'diagnostics', 'manipulation']
+    > &
+      Schema.Attribute.Required;
+    priceForDeclarant: Schema.Attribute.Integer;
+    priceForNonDeclarant: Schema.Attribute.Integer & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiVaccineVaccine extends Struct.CollectionTypeSchema {
   collectionName: 'vaccines';
   info: {
@@ -1087,6 +1172,8 @@ declare module '@strapi/strapi' {
       'api::doctor.doctor': ApiDoctorDoctor;
       'api::home-slider.home-slider': ApiHomeSliderHomeSlider;
       'api::homepage.homepage': ApiHomepageHomepage;
+      'api::service-price-item.service-price-item': ApiServicePriceItemServicePriceItem;
+      'api::service-price.service-price': ApiServicePriceServicePrice;
       'api::vaccine.vaccine': ApiVaccineVaccine;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

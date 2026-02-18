@@ -4,6 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import "./ConsultPage.css";
 import Ticket from "../../components/Ticket/Ticket";
 import CardTemplateServices from "../../components/CardTemplateServices/CardTemplateServices";
+import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 
 export default function ConsultPage() {
     return (
@@ -83,6 +84,12 @@ export default function ConsultPage() {
                 <section className="cta-all-pages">
                     <Ticket text="Підпишіть декларацію онлайн або завітайте до клініки і дозвольте нам дбати про вас." />
                 </section>
+
+                <ServicesPriceSection
+                    title="ЦІНИ НА КОНСУЛЬТАЦІЇ"
+                    endpoint="/api/service-prices"
+                    page="consultation"
+                />
 
                 <CardTemplateServices
                     title="ЯКЩО ПОТРІБЕН ІНШИЙ ЛІКАР"
