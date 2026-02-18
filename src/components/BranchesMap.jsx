@@ -1,5 +1,5 @@
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import { useState, Fragment } from "react";
+import { Fragment, memo, useMemo, useState } from "react";
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 
 const DEFAULT_BRANCHES = [
     {
@@ -26,76 +26,188 @@ const PIN_PATH =
    C0,14 10,0 10,-8 \
    C10,-14 6,-18 0,-18 Z";
 
-const DEFAULT_CENTER = { lat: 48.4272, lng: 35.0019 };
+const WHITE_DOT_PATH =
+    "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0";
 
-export default function BranchesMap({
+const DEFAULT_CENTER = { lat: 48.4272, lng: 35.0019 };
+const SCRIPT_ID = "branches-google-maps-script";
+const MAP_OPTIONS = {
+    scrollwheel: false,
+    gestureHandling: "greedy",
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullscreenControl: false,
+};
+
+function normalizeBranch(branch, index) {
+    const lat = Number(branch?.lat);
+    const lng = Number(branch?.lng);
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+        return null;
+    }
+
+    return {
+        id: branch?.id ?? `${lat}:${lng}:${index}`,
+        lat,
+        lng,
+        link: branch?.link,
+    };
+}
+
+function areCentersEqual(prevCenter, nextCenter) {
+    return (
+        Number(prevCenter?.lat) === Number(nextCenter?.lat) &&
+        Number(prevCenter?.lng) === Number(nextCenter?.lng)
+    );
+}
+
+function areBranchesEqual(prevBranches, nextBranches) {
+    const prev = Array.isArray(prevBranches) ? prevBranches : [];
+    const next = Array.isArray(nextBranches) ? nextBranches : [];
+
+    if (prev.length !== next.length) {
+        return false;
+    }
+
+    for (let i = 0; i < prev.length; i += 1) {
+        const prevBranch = prev[i] || {};
+        const nextBranch = next[i] || {};
+
+        if (
+            Number(prevBranch.lat) !== Number(nextBranch.lat) ||
+            Number(prevBranch.lng) !== Number(nextBranch.lng) ||
+            (prevBranch.id ?? "") !== (nextBranch.id ?? "") ||
+            (prevBranch.link ?? "") !== (nextBranch.link ?? "")
+        ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function areMapPropsEqual(prevProps, nextProps) {
+    return (
+        prevProps.zoom === nextProps.zoom &&
+        prevProps.borderRadius === nextProps.borderRadius &&
+        areCentersEqual(prevProps.center, nextProps.center) &&
+        areBranchesEqual(prevProps.branches, nextProps.branches)
+    );
+}
+
+function BranchesMap({
     branches = DEFAULT_BRANCHES,
     center = DEFAULT_CENTER,
     zoom = 11,
     borderRadius = 20,
 }) {
-    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [hoveredId, setHoveredId] = useState(null);
 
-    const { isLoaded } = useLoadScript({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY,
+    const { isLoaded, loadError } = useLoadScript({
+        id: SCRIPT_ID,
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY || "",
     });
 
-    if (!isLoaded) return null;
+    const normalizedBranches = useMemo(() => {
+        const source = Array.isArray(branches) ? branches : DEFAULT_BRANCHES;
+        return source
+            .map((branch, index) => normalizeBranch(branch, index))
+            .filter(Boolean);
+    }, [branches]);
+
+    const safeCenter = useMemo(() => {
+        const lat = Number(center?.lat);
+        const lng = Number(center?.lng);
+
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            return { lat, lng };
+        }
+
+        if (normalizedBranches.length === 1) {
+            return {
+                lat: normalizedBranches[0].lat,
+                lng: normalizedBranches[0].lng,
+            };
+        }
+
+        return DEFAULT_CENTER;
+    }, [center?.lat, center?.lng, normalizedBranches]);
+
+    const mapContainerStyle = useMemo(
+        () => ({
+            width: "100%",
+            height: "100%",
+            borderRadius: `${borderRadius}px`,
+        }),
+        [borderRadius],
+    );
+
+    const mainIcons = useMemo(() => {
+        return normalizedBranches.reduce((acc, branch) => {
+            acc[branch.id] = {
+                path: PIN_PATH,
+                fillColor: "#008b96",
+                fillOpacity: 1,
+                strokeWeight: 0,
+                scale: hoveredId === branch.id ? 1 : 0.9,
+            };
+            return acc;
+        }, {});
+    }, [normalizedBranches, hoveredId]);
+
+    const whiteDotIcon = useMemo(
+        () => ({
+            path: WHITE_DOT_PATH,
+            fillColor: "#ffffff",
+            fillOpacity: 1,
+            strokeWeight: 0,
+        }),
+        [],
+    );
+
+    if (loadError || !isLoaded || normalizedBranches.length === 0) {
+        return null;
+    }
 
     return (
         <GoogleMap
-            mapContainerStyle={{
-                width: "100%",
-                height: "100%",
-                borderRadius: `${borderRadius}px`,
-            }}
-            center={center}
+            mapContainerStyle={mapContainerStyle}
+            center={safeCenter}
             zoom={zoom}
-            options={{
-                scrollwheel: false,
-                gestureHandling: "greedy",
-                streetViewControl: false,
-                mapTypeControl: false,
-                fullscreenControl: false,
-            }}
+            options={MAP_OPTIONS}
         >
-            {branches.map((b, i) => (
-                <Fragment key={i}>
-                    {/* ОСНОВНИЙ ПІН */}
-                    <Marker
-                        position={{ lat: b.lat, lng: b.lng }}
-                        icon={{
-                            path: PIN_PATH,
-                            fillColor: "#008b96",
-                            fillOpacity: 1,
-                            strokeWeight: 0,
-                            scale: hoveredIndex === i ? 1.0 : 0.9,
+            {normalizedBranches.map((branch) => (
+                <Fragment key={branch.id}>
+                    <MarkerF
+                        position={{ lat: branch.lat, lng: branch.lng }}
+                        icon={mainIcons[branch.id]}
+                        options={{
+                            zIndex: 10,
+                            optimized: false,
                         }}
-                        zIndex={10}
-                        onMouseOver={() => setHoveredIndex(i)}
-                        onMouseOut={() => setHoveredIndex(null)}
+                        onMouseOver={() => setHoveredId(branch.id)}
+                        onMouseOut={() => setHoveredId(null)}
                         onClick={() => {
-                            if (b.link) {
-                                window.open(b.link, "_blank");
+                            if (branch.link) {
+                                window.open(branch.link, "_blank");
                             }
                         }}
                     />
 
-                    {/* БІЛИЙ КРУЖЕЧОК */}
-                    <Marker
-                        position={{ lat: b.lat, lng: b.lng }}
-                        icon={{
-                            path: "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0",
-
-                            fillColor: "#ffffff",
-                            fillOpacity: 1,
-                            strokeWeight: 0,
+                    <MarkerF
+                        position={{ lat: branch.lat, lng: branch.lng }}
+                        icon={whiteDotIcon}
+                        options={{
+                            zIndex: 11,
+                            clickable: false,
+                            optimized: false,
                         }}
-                        zIndex={11}
-                        options={{ clickable: false }}
                     />
                 </Fragment>
             ))}
         </GoogleMap>
     );
 }
+
+export default memo(BranchesMap, areMapPropsEqual);

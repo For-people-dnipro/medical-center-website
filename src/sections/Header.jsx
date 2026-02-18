@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
+    const openInNewTab = (url) => {
+        window.open(url, "_blank", "noopener,noreferrer");
+    };
 
     const handleLogoClick = () => {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -41,10 +44,22 @@ export default function Header() {
                             </nav>
 
                             <div className="header-actions">
-                                <button className="outline-btn purple">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        openInNewTab(
+                                            "https://vitalab.com.ua/qr-code",
+                                        )
+                                    }
+                                    className="outline-btn purple"
+                                >
                                     Результати аналізів
                                 </button>
-                                <button className="outline-btn teal">
+                                <button
+                                    type="button"
+                                    onClick={() => openInNewTab("/declaration")}
+                                    className="outline-btn teal"
+                                >
                                     Підписати декларацію
                                 </button>
                             </div>
@@ -184,10 +199,20 @@ export default function Header() {
                 </nav>
 
                 <div className="mobile-actions">
-                    <button className="outline-btn purple">
+                    <button
+                        type="button"
+                        onClick={() =>
+                            openInNewTab("https://vitalab.com.ua/qr-code")
+                        }
+                        className="outline-btn purple"
+                    >
                         Результати аналізів
                     </button>
-                    <button className="outline-btn teal">
+                    <button
+                        type="button"
+                        onClick={() => openInNewTab("/declaration")}
+                        className="outline-btn teal"
+                    >
                         Підписати декларацію
                     </button>
                 </div>

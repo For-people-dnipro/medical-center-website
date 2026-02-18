@@ -62,10 +62,10 @@
 .branches-page__card {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    background: var(--color-bg-main);
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    background: var(--color-bg-main);
 }
 
 .branches-page__card-content {
@@ -123,7 +123,35 @@
 
 .branches-page__map {
     min-height: 236px;
-    border-left: 1px solid rgba(230, 234, 240, 0.8);
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    isolation: isolate;
+}
+
+.branches-page__map::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.95) 30%,
+        rgba(255, 255, 255, 0.7) 60%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 5;
+}
+
+.branches-page__map > div,
+.branches-page__map .gm-style {
+    position: relative;
+    z-index: 1;
+    height: 100% !important;
 }
 
 .branches-page__contact {
@@ -185,8 +213,20 @@
 
     .branches-page__map {
         min-height: 280px;
-        border-left: 0;
-        border-top: 1px solid rgba(230, 234, 240, 0.8);
+    }
+
+    .branches-page__map::before {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0.95) 30%,
+            rgba(255, 255, 255, 0.7) 60%,
+            rgba(255, 255, 255, 0) 100%
+        );
     }
 
     .branches-page__contact {

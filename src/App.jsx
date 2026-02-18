@@ -31,6 +31,43 @@ function App() {
         return () => window.clearTimeout(showTimer);
     }, []);
 
+    useEffect(() => {
+        const setBlankTarget = (anchor) => {
+            const href = anchor.getAttribute("href") || "";
+
+            if (!href || href.startsWith("#") || href.startsWith("javascript:")) {
+                return;
+            }
+
+            anchor.setAttribute("target", "_blank");
+            anchor.setAttribute("rel", "noopener noreferrer");
+        };
+
+        const updateAnchors = (root = document) => {
+            root.querySelectorAll("a[href]").forEach(setBlankTarget);
+        };
+
+        updateAnchors();
+
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (!(node instanceof Element)) return;
+
+                    if (node.matches("a[href]")) {
+                        setBlankTarget(node);
+                    }
+
+                    updateAnchors(node);
+                });
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        return () => observer.disconnect();
+    }, [location.pathname, isLoaderVisible]);
+
     return (
         <>
             {isLoaderVisible ? (

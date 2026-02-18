@@ -67,7 +67,10 @@ export default function Footer() {
         { label: "Новини", href: "/news" },
         { label: "Контакти", href: "/contacts" },
         { label: "Документи", href: "/documents" },
-        { label: "Результати аналізів", href: "/declaration" },
+        {
+            label: "Результати аналізів",
+            href: "https://vitalab.com.ua/qr-code",
+        },
         { label: "Підписати декларацію", href: "/declaration" },
         { label: "Політика конфіденційності", href: "/privacy" },
         { label: "Захист персональних даних", href: "/data-protection" },
@@ -140,7 +143,7 @@ export default function Footer() {
 
                 <div className="footer-mobile-menu">
                     <div className="footer-mobile-col">
-                        {mobileLeft.map((item, i) => (
+                        {mobileLeft.map((item, i) =>
                             item === "Філії" ? (
                                 <Link key={i} to="/branches">
                                     {item}
@@ -149,12 +152,12 @@ export default function Footer() {
                                 <a key={i} href="#">
                                     {item}
                                 </a>
-                            )
-                        ))}
+                            ),
+                        )}
                     </div>
 
                     <div className="footer-mobile-col">
-                        {mobileRight.map((item, i) => (
+                        {mobileRight.map((item, i) =>
                             item === "Правила повітряної тривоги" ? (
                                 <Link key={i} to="/air-alert">
                                     {item}
@@ -163,8 +166,8 @@ export default function Footer() {
                                 <a key={i} href="#">
                                     {item}
                                 </a>
-                            )
-                        ))}
+                            ),
+                        )}
                     </div>
                 </div>
             </div>
