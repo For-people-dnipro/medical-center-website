@@ -7,6 +7,8 @@ const API_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
 
 const DEFAULT_TITLE = "ЦІНИ НА КОНСУЛЬТАЦІЇ";
 const DEFAULT_ENDPOINT = "/api/service-prices";
+const DEFAULT_NOTE_TEXT =
+    "Не знайшли потрібну консультацію? Напишіть нам — ми обов’язково допоможемо.";
 const SKELETON_ROWS = 6;
 
 function toAbsoluteUrl(endpoint) {
@@ -104,6 +106,7 @@ export default function ServicesPriceSection({
     endpoint = DEFAULT_ENDPOINT,
     page = "",
     visitType = "",
+    noteText = DEFAULT_NOTE_TEXT,
 }) {
     const listRef = useRef(null);
     const scrollbarThumbRef = useRef(null);
@@ -291,13 +294,12 @@ export default function ServicesPriceSection({
 
                 <div className="services-price-section__note-row">
                     <p className="services-price-section__note">
-                        Не знайшли потрібну консультацію? Напишіть нам — ми
-                        обов’язково допоможемо.
+                        {noteText}
                     </p>
                 </div>
             </>
         );
-    }, [error, items, loading]);
+    }, [error, items, loading, noteText]);
 
     const showFadeOverlay = isScrollable && !isAtBottom;
 

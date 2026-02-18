@@ -2,6 +2,7 @@ import Footer from "../../components/Footer/Footer";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import CardTemplateServices from "../../components/CardTemplateServices/CardTemplateServices";
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
+import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 import SectionTypes from "../../components/SectionTypes/SectionTypes";
 import "./DiagnosticsPage.css";
 
@@ -46,6 +47,14 @@ export default function DiagnosticsPage() {
                     </div>
                 </section>
                 <SectionTypes />
+
+                <ServicesPriceSection
+                    title="ЦІНИ НА ДІАГНОСТИКУ"
+                    endpoint="/api/service-prices"
+                    page="diagnostics"
+                    noteText="Не знайшли потрібну діагностику? Напишіть нам — ми обов’язково допоможемо."
+                />
+
                 <section className="diagnostics-page__about">
                     <CardTemplateServices
                         title="ЯК ПІДГОТУВАТИСЯ?"

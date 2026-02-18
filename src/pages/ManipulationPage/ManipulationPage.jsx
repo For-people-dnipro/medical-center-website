@@ -1,5 +1,6 @@
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import Footer from "../../components/Footer/Footer";
+import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 import "./ManipulationPage.css";
 
 export default function ManipulationPage() {
@@ -93,6 +94,13 @@ export default function ManipulationPage() {
                         </ul>
                     </div>
                 </section>
+
+                <ServicesPriceSection
+                    title="ЦІНИ НА МАНІПУЛЯЦІЇ"
+                    endpoint="/api/service-prices"
+                    page="manipulation"
+                    noteText="Не знайшли потрібну маніпуляцію? Напишіть нам — ми обов’язково допоможемо."
+                />
 
                 <section className="manipulation-safety">
                     <div className="manipulation-container">
