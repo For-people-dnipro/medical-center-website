@@ -37,8 +37,14 @@ const MAP_OPTIONS = {
     streetViewControl: false,
     mapTypeControl: false,
     fullscreenControl: false,
+    styles: [
+        {
+            featureType: "landscape",
+            elementType: "geometry",
+            stylers: [{ color: "#f5f7f9" }], // світліший фон
+        },
+    ],
 };
-
 function normalizeBranch(branch, index) {
     const lat = Number(branch?.lat);
     const lng = Number(branch?.lng);
