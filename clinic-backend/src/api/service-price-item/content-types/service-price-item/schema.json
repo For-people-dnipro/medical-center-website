@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_price_items",
+  "info": {
+    "singularName": "service-price-item",
+    "pluralName": "service-price-items",
+    "displayName": "Service Price Item"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "priceForDeclarant": {
+      "type": "decimal"
+    },
+    "priceForNonDeclarant": {
+      "type": "decimal"
+    },
+    "isFreeForDeclarant": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "visitType": {
+      "type": "enumeration",
+      "enum": [
+        "consultation",
+        "gynecologist",
+        "endocrinologist",
+        "ultrasound",
+        "other"
+      ]
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "isActive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

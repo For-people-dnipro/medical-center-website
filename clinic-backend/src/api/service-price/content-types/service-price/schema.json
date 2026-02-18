@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_prices",
+  "info": {
+    "singularName": "service-price",
+    "pluralName": "service-prices",
+    "displayName": "Service Price"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "page": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "consultation",
+        "diagnostics",
+        "manipulation"
+      ]
+    },
+    "priceForDeclarant": {
+      "type": "integer",
+      "required": false
+    },
+    "priceForNonDeclarant": {
+      "type": "integer",
+      "required": true
+    },
+    "isFreeForDeclarant": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "order": {
+      "type": "integer",
+      "required": true
+    },
+    "isActive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}
