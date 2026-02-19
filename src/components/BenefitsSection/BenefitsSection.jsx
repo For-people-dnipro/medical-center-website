@@ -15,7 +15,12 @@ export default function BenefitsSection() {
             <div className="benefits-section__container">
                 <div className="benefits-section__surface">
                     <h3 id="benefits-title" className="benefits-section__title">
-                        Переваги роботи в команді “Для людей”
+                        <span className="benefits-section__title-desktop">
+                            Переваги роботи в команді “Для людей”
+                        </span>
+                        <span className="benefits-section__title-mobile">
+                            Переваги роботи з нами
+                        </span>
                     </h3>
 
                     <p className="benefits-section__subtitle">
