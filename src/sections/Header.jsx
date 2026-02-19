@@ -165,7 +165,7 @@ export default function Header() {
                                 Маніпуляції
                             </Link>
 
-                            <Link
+                            {/* <Link
                                 to="/packages"
                                 onClick={() => setMenuOpen(false)}
                             >
@@ -177,7 +177,7 @@ export default function Header() {
                                 onClick={() => setMenuOpen(false)}
                             >
                                 Check-up{" "}
-                            </Link>
+                            </Link> */}
                         </div>
                     )}
 

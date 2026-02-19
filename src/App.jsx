@@ -16,6 +16,7 @@ import TestPage from "./pages/TestPage/TestPage";
 import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
 import BranchesPage from "./pages/BranchesPage/BranchesPage";
 import AnalysesPage from "./pages/AnalysesPage/AnalysesPage";
+import VacanciesPage from "./pages/VacanciesPage/VacanciesPage";
 import Footer from "./components/Footer/Footer";
 
 function App() {
@@ -108,6 +109,7 @@ function App() {
                         <Route path="/air-alert" element={<AirAlertPage />} />
                         <Route path="/branches" element={<BranchesPage />} />
                         <Route path="/analyses" element={<AnalysesPage />} />
+                        <Route path="/vacancies" element={<VacanciesPage />} />
                         <Route path="*" element={<Home />} />
                     </Routes>
                 </div>

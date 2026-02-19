@@ -41,18 +41,18 @@ export default function ServicesSection() {
             label: "Маніпуляції",
             href: "/manipulation",
         },
-        {
-            icon: "/icons/service-packages.svg",
-            iconMobile: "/icons/service-packages-mobile.svg",
-            label: "Пакетні послуги",
-            href: "/packages",
-        },
-        {
-            icon: "/icons/service-checkup.svg",
-            iconMobile: "/icons/service-checkup-mobile.svg",
-            label: "Check-up",
-            href: "/checkup",
-        },
+        // {
+        //     icon: "/icons/service-packages.svg",
+        //     iconMobile: "/icons/service-packages-mobile.svg",
+        //     label: "Пакетні послуги",
+        //     href: "/packages",
+        // },
+        // {
+        //     icon: "/icons/service-checkup.svg",
+        //     iconMobile: "/icons/service-checkup-mobile.svg",
+        //     label: "Check-up",
+        //     href: "/checkup",
+        // },
         // {
         //     icon: "/icons/service-cosmetology.svg",
         //     iconMobile: "/icons/service-cosmetology-mobile.svg",

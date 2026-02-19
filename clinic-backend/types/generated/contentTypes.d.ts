@@ -622,6 +622,42 @@ export interface ApiServicePriceServicePrice
   };
 }
 
+export interface ApiVacancyVacancy extends Struct.CollectionTypeSchema {
+  collectionName: 'vacancies';
+  info: {
+    displayName: 'Vacancy';
+    pluralName: 'vacancies';
+    singularName: 'vacancy';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    fullSchedule: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::vacancy.vacancy'
+    > &
+      Schema.Attribute.Private;
+    location: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    requirements: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    responsibilities: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    shortSchedule: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiVaccineVaccine extends Struct.CollectionTypeSchema {
   collectionName: 'vaccines';
   info: {
@@ -1174,6 +1210,7 @@ declare module '@strapi/strapi' {
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::service-price-item.service-price-item': ApiServicePriceItemServicePriceItem;
       'api::service-price.service-price': ApiServicePriceServicePrice;
+      'api::vacancy.vacancy': ApiVacancyVacancy;
       'api::vaccine.vaccine': ApiVaccineVaccine;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
