@@ -2,10 +2,12 @@ import { useState } from "react";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import VacanciesHero from "../../components/VacanciesHero/VacanciesHero";
 import VacanciesList from "../../components/VacanciesList/VacanciesList";
+import BenefitsSection from "../../components/BenefitsSection/BenefitsSection";
 import "./VacanciesPage.css";
+import Ticket from "../../components/Ticket/Ticket";
 
 export default function VacanciesPage() {
-    const [selectedVacancy, setSelectedVacancy] = useState("");
+    const [setSelectedVacancy] = useState("");
 
     const scrollToSection = (selector) => {
         const target = document.querySelector(selector);
@@ -34,45 +36,16 @@ export default function VacanciesPage() {
                     sectionId="vacancies-list"
                     onApply={handleApply}
                 />
+                <section className="cta-all-pages">
+                    <Ticket text="Долучайтеся до нашої команди — і давайте разом створювати медицину, якою хочеться пишатися." />
+                </section>
+
+                <BenefitsSection />
 
                 <section id="vacancies-form" className="vacancies-page__form">
                     <ContactForm
-                        title="ПОДАТИ ЗАЯВКУ"
-                        smallTitle="ПОДАТИ ЗАЯВКУ"
-                        subtitle="МИ ЗВʼЯЖЕМОСЯ З ВАМИ НАЙБЛИЖЧИМ ЧАСОМ"
-                        formType={`Форма: Вакансії${
-                            selectedVacancy ? ` (${selectedVacancy})` : ""
-                        }`}
-                        fields={{
-                            name: true,
-                            phone: true,
-                            email: true,
-                            branch: false,
-                            diagnostic: true,
-                            checkupName: false,
-                            message: true,
-                        }}
-                        labels={{
-                            name: "Імʼя *",
-                            phone: "Номер телефону *",
-                            email: "Електронна пошта",
-                            diagnostic: "Вакансія *",
-                            message: "Коротко про ваш досвід *",
-                            consent:
-                                "Даю згоду на збір та обробку персональних даних",
-                        }}
-                        placeholders={{
-                            name: "Ваше імʼя",
-                            phone: "Ваш номер телефону",
-                            email: "Ваша ел. пошта (за бажанням)",
-                            diagnostic:
-                                selectedVacancy || "Вкажіть назву вакансії",
-                            message:
-                                "Розкажіть про ваш досвід і зручний час для звʼязку",
-                        }}
-                        detailsLabels={{
-                            diagnostic: "Вакансія",
-                        }}
+                        smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                        subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
                     />
                 </section>
             </main>

@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import Button from "../Button/Button";
 import "./VacancyItem.css";
 
 function toPanelToken(id) {
     const value = String(id ?? "vacancy");
     return value.toLowerCase().replace(/[^a-z0-9_-]+/g, "-");
+}
+
+function splitDescription(value) {
+    if (!value) return [];
+
+    return String(value)
+        .split(/\r?\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean);
 }
 
 export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
@@ -37,6 +47,10 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
     const panelId = `vacancy-panel-${panelToken}`;
     const triggerId = `vacancy-trigger-${panelToken}`;
     const collapsedSchedule = vacancy.shortSchedule || vacancy.fullSchedule;
+    const descriptionLines = useMemo(
+        () => splitDescription(vacancy.description),
+        [vacancy.description],
+    );
 
     return (
         <article className={`vacancy-item ${isOpen ? "is-open" : ""}`}>
@@ -49,17 +63,26 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
                 onClick={onToggle}
             >
                 <span className="vacancy-item__head">
-                    <span className="vacancy-item__title">{vacancy.title}</span>
+                    <h2 className="vacancy-item__title">{vacancy.title}</h2>
 
                     <span className="vacancy-item__meta">
                         {vacancy.location ? (
                             <span className="vacancy-item__meta-item">
-                                {vacancy.location}
+                                <span className="vacancy-item__meta-icon">
+                                    <img
+                                        src="/icons/map-point-green.svg"
+                                        alt=""
+                                    />
+                                </span>
+                                <span>{vacancy.location}</span>
                             </span>
                         ) : null}
                         {collapsedSchedule ? (
                             <span className="vacancy-item__meta-item">
-                                {collapsedSchedule}
+                                <span className="vacancy-item__meta-icon">
+                                    <img src="/icons/clock-green.svg" alt="" />
+                                </span>
+                                <span>{collapsedSchedule}</span>
                             </span>
                         ) : null}
                     </span>
@@ -79,40 +102,14 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
                 style={{ maxHeight: isOpen ? `${contentHeight}px` : "0px" }}
             >
                 <div ref={contentRef} className="vacancy-item__content">
-                    <div className="vacancy-item__facts">
-                        {vacancy.location ? (
-                            <div className="vacancy-item__fact">
-                                <span className="vacancy-item__fact-label">
-                                    Локація
-                                </span>
-                                <span className="vacancy-item__fact-value">
-                                    {vacancy.location}
-                                </span>
-                            </div>
-                        ) : null}
-
-                        {vacancy.fullSchedule ? (
-                            <div className="vacancy-item__fact">
-                                <span className="vacancy-item__fact-label">
-                                    Графік
-                                </span>
-                                <span className="vacancy-item__fact-value">
-                                    {vacancy.fullSchedule}
-                                </span>
-                            </div>
-                        ) : null}
-                    </div>
-
                     {vacancy.responsibilities.length > 0 ? (
                         <section className="vacancy-item__section">
-                            <h4 className="vacancy-item__section-title">
-                                Обов&apos;язки
-                            </h4>
+                            <p className="vacancy-item__section-title">
+                                Обов&apos;язки:
+                            </p>
                             <ul className="vacancy-item__list">
                                 {vacancy.responsibilities.map((item, index) => (
-                                    <li
-                                        key={`${vacancy.id}-resp-${index}`}
-                                    >
+                                    <li key={`${vacancy.id}-resp-${index}`}>
                                         {item}
                                     </li>
                                 ))}
@@ -122,14 +119,12 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
 
                     {vacancy.requirements.length > 0 ? (
                         <section className="vacancy-item__section">
-                            <h4 className="vacancy-item__section-title">
-                                Вимоги
-                            </h4>
+                            <p className="vacancy-item__section-title">
+                                Необхідні навички та вміння:
+                            </p>
                             <ul className="vacancy-item__list">
                                 {vacancy.requirements.map((item, index) => (
-                                    <li
-                                        key={`${vacancy.id}-req-${index}`}
-                                    >
+                                    <li key={`${vacancy.id}-req-${index}`}>
                                         {item}
                                     </li>
                                 ))}
@@ -137,25 +132,48 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
                         </section>
                     ) : null}
 
-                    {vacancy.description ? (
+                    {descriptionLines.length > 0 ? (
                         <section className="vacancy-item__section">
-                            <h4 className="vacancy-item__section-title">
-                                Додаткова інформація
-                            </h4>
-                            <p className="vacancy-item__description">
-                                {vacancy.description}
-                            </p>
+                            <div className="vacancy-item__description">
+                                {descriptionLines.map((line, index) => (
+                                    <p key={`${vacancy.id}-desc-${index}`}>
+                                        {line}
+                                    </p>
+                                ))}
+                            </div>
                         </section>
                     ) : null}
 
+                    {vacancy.fullSchedule || vacancy.location ? (
+                        <div className="vacancy-item__summary">
+                            {vacancy.fullSchedule ? (
+                                <p className="vacancy-item__summary-line">
+                                    <span>Графік роботи: </span>
+                                    {vacancy.fullSchedule}
+                                </p>
+                            ) : null}
+
+                            {vacancy.location ? (
+                                <p className="vacancy-item__summary-line">
+                                    <span>Локація: </span>
+                                    {vacancy.location}
+                                </p>
+                            ) : null}
+                        </div>
+                    ) : null}
+
                     <div className="vacancy-item__actions">
-                        <button
-                            type="button"
+                        <Button
+                            href="#vacancies-form"
                             className="vacancy-item__apply"
-                            onClick={() => onApply?.(vacancy.title)}
+                            withArrow
+                            onClick={(event) => {
+                                event.preventDefault();
+                                onApply?.(vacancy.title);
+                            }}
                         >
                             Подати заявку
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

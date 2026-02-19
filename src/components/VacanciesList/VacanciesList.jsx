@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VacancyItem from "../VacancyItem/VacancyItem";
 import "./VacanciesList.css";
 
@@ -223,8 +223,7 @@ function normalizeVacancy(entry, index) {
         responsibilities: normalizeListField(source.responsibilities),
         requirements: normalizeListField(source.requirements),
         description: normalizeTextField(source.description),
-        isActive:
-            typeof source.isActive === "boolean" ? source.isActive : true,
+        isActive: typeof source.isActive === "boolean" ? source.isActive : true,
         order: Number.isFinite(order) ? order : index,
     };
 }
@@ -261,6 +260,7 @@ export default function VacanciesList({
     sectionId = "vacancies-list",
     onApply,
 }) {
+    const accordionRef = useRef(null);
     const [vacancies, setVacancies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -289,12 +289,18 @@ export default function VacanciesList({
                             signal: controller.signal,
                         });
 
-                        if (response.status === 401 || response.status === 403) {
+                        if (
+                            response.status === 401 ||
+                            response.status === 403
+                        ) {
                             unauthorized = true;
                             continue;
                         }
 
-                        if (response.status === 404 || response.status === 400) {
+                        if (
+                            response.status === 404 ||
+                            response.status === 400
+                        ) {
                             continue;
                         }
 
@@ -353,6 +359,32 @@ export default function VacanciesList({
         });
     }, [vacancies]);
 
+    useEffect(() => {
+        if (openId === null) return;
+
+        const handleOutsideClick = (event) => {
+            const root = accordionRef.current;
+            if (!root || !(event.target instanceof Node)) return;
+
+            const activeItem = root.querySelector(".vacancy-item.is-open");
+            if (!activeItem) return;
+
+            if (!activeItem.contains(event.target)) {
+                setOpenId(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("touchstart", handleOutsideClick, {
+            passive: true,
+        });
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("touchstart", handleOutsideClick);
+        };
+    }, [openId]);
+
     const hasVacancies = vacancies.length > 0;
 
     return (
@@ -366,7 +398,11 @@ export default function VacanciesList({
                     {title}
                 </h2>
 
-                <div className="vacancies-list__items" aria-live="polite">
+                <div
+                    ref={accordionRef}
+                    className="vacancies-list__items"
+                    aria-live="polite"
+                >
                     {loading ? <SkeletonList /> : null}
 
                     {!loading && error ? (

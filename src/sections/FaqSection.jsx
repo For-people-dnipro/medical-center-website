@@ -47,8 +47,35 @@ function FaqAnswerContent({ answer, isActive }) {
 }
 
 export default function FAQSection({ title = DEFAULT_TITLE, faqs = [] }) {
+    const accordionRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(null);
     const items = Array.isArray(faqs) ? faqs : [];
+
+    useEffect(() => {
+        if (activeIndex === null) return;
+
+        const handleOutsideClick = (event) => {
+            const root = accordionRef.current;
+            if (!root || !(event.target instanceof Node)) return;
+
+            const activeItem = root.querySelector(".faq-row.active");
+            if (!activeItem) return;
+
+            if (!activeItem.contains(event.target)) {
+                setActiveIndex(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("touchstart", handleOutsideClick, {
+            passive: true,
+        });
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("touchstart", handleOutsideClick);
+        };
+    }, [activeIndex]);
 
     return (
         <section className="faq-section">
@@ -58,7 +85,7 @@ export default function FAQSection({ title = DEFAULT_TITLE, faqs = [] }) {
                     <span className="faq-title-mobile">ПОШИРЕНІ ЗАПИТАННЯ</span>
                 </h2>
 
-                <div className="faq-list">
+                <div ref={accordionRef} className="faq-list">
                     {items.map((item, i) => (
                         <div
                             key={i}

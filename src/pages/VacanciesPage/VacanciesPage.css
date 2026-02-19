@@ -7,19 +7,19 @@
 }
 
 .vacancies-page__form {
-    padding: 0 20px 80px;
+    padding: 80px 20px 0;
     scroll-margin-top: 120px;
 }
 
 @media (max-width: 992px) {
     .vacancies-page__form {
-        padding: 0 20px 70px;
+        padding: 80px 20px 0;
     }
 }
 
 @media (max-width: 768px) {
     .vacancies-page__form {
-        padding: 0 16px 70px;
+        padding: 70px 16px 0;
         scroll-margin-top: 90px;
     }
 }
