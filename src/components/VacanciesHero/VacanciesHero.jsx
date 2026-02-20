@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 // import logoMain from "../../assets/logo_main.svg";
 import "./VacanciesHero.css";
 
@@ -11,21 +11,14 @@ export default function VacanciesHero({
     return (
         <section className="vacancies-hero">
             <div className="vacancies-hero__container">
-                <nav
+                <Breadcrumbs
                     className="vacancies-hero__crumbs"
-                    aria-label="Хлібні крихти"
-                >
-                    <Link to="/">Головна</Link>
-                    <span
-                        className="vacancies-hero__crumb-separator"
-                        aria-hidden="true"
-                    >
-                        &gt;
-                    </span>
-                    <span className="vacancies-hero__crumb-current">
-                        Вакансії
-                    </span>
-                </nav>
+                    ariaLabel="Хлібні крихти"
+                    items={[
+                        { label: "Головна", to: "/" },
+                        { label: "Вакансії" },
+                    ]}
+                />
 
                 <div className="vacancies-hero__layout">
                     <div className="vacancies-hero__media">

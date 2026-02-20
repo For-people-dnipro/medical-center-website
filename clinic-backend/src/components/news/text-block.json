@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_news_text_blocks",
+  "info": {
+    "displayName": "Text block"
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "blocks",
+      "required": true
+    }
+  }
+}

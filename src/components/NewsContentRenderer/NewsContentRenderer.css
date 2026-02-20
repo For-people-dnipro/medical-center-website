@@ -1,0 +1,124 @@
+.news-content {
+    display: grid;
+    gap: 30px;
+}
+
+.news-content__text-block {
+    display: grid;
+    gap: 18px;
+}
+
+.news-content h2,
+.news-content h3 {
+    margin: 0;
+    line-height: 1.35;
+    font-weight: var(--fw-semibold);
+}
+
+.news-content h2 {
+    font-size: var(--font-h2);
+}
+
+.news-content h3 {
+    font-size: var(--font-h3);
+}
+
+.news-content p {
+    margin: 0;
+    font-size: var(--font-body);
+    line-height: 1.65;
+    color: #1a1a1a;
+}
+
+.news-content ul,
+.news-content ol {
+    margin: 0;
+    padding-left: 24px;
+    display: grid;
+    gap: 8px;
+}
+
+.news-content li {
+    line-height: 1.6;
+}
+
+.news-content strong {
+    font-weight: var(--fw-semibold);
+}
+
+.news-content blockquote {
+    margin: 0;
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid #008b96;
+    font-style: italic;
+    color: #131313;
+}
+
+.news-content a {
+    color: #008b96;
+    text-decoration: underline;
+}
+
+.news-content__figure {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.news-content__figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.news-content__figure figcaption {
+    margin: 0;
+    font-size: var(--font-caption);
+    line-height: 1.4;
+    color: #4f5458;
+    text-align: center;
+}
+
+.news-content__highlight {
+    background: #b6dfe3;
+    border-left: 3px solid #008b96;
+    padding: 14px 16px;
+    line-height: 1.6;
+}
+
+.news-content__quote-block {
+    display: grid;
+    gap: 10px;
+}
+
+.news-content__quote-block cite {
+    font-size: var(--font-caption);
+    color: #4f5458;
+    font-style: normal;
+}
+
+.news-content__html h2,
+.news-content__html h3,
+.news-content__html p,
+.news-content__html ul,
+.news-content__html ol,
+.news-content__html blockquote {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .news-content {
+        gap: 24px;
+    }
+
+    .news-content__text-block {
+        gap: 14px;
+    }
+
+    .news-content ul,
+    .news-content ol {
+        padding-left: 20px;
+    }
+}

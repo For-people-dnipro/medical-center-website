@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import Button from "../Button/Button";
+import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 import "./ServicesCardHero.css";
 
 export default function ServicesCardHero({
@@ -20,40 +20,10 @@ export default function ServicesCardHero({
                     {/* LEFT */}
                     <div className="services-card-hero__left">
                         {crumbs.length > 0 && (
-                            <div className="services-card-hero__crumbs">
-                                {crumbs
-                                    .map((item, i) => (
-                                        <span
-                                            key={i}
-                                            className={
-                                                item.to
-                                                    ? "crumb-link"
-                                                    : "current"
-                                            }
-                                        >
-                                            {item.to ? (
-                                                <Link to={item.to}>
-                                                    {item.label}
-                                                </Link>
-                                            ) : (
-                                                item.label
-                                            )}
-                                        </span>
-                                    ))
-                                    .reduce((acc, el, i) => {
-                                        if (i === 0) return [el];
-                                        return [
-                                            ...acc,
-                                            <span
-                                                key={`sep-${i}`}
-                                                className="crumb-separator"
-                                            >
-                                                ›
-                                            </span>,
-                                            el,
-                                        ];
-                                    }, [])}
-                            </div>
+                            <Breadcrumbs
+                                className="services-card-hero__crumbs"
+                                items={crumbs}
+                            />
                         )}
                         <div className="services-card-hero__title">
                             {icon && (

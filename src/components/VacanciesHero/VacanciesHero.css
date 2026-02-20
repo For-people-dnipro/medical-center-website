@@ -28,12 +28,12 @@
     color: #7f7f7f;
 }
 
-.vacancies-hero__crumb-current {
+.vacancies-hero__crumbs .current {
     color: var(--color-primary);
     font-weight: 500;
 }
 
-.vacancies-hero__crumb-separator {
+.vacancies-hero__crumbs .crumb-separator {
     color: var(--color-text-muted);
 }
 

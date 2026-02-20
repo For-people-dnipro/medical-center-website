@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_news_quote_blocks",
+  "info": {
+    "displayName": "Quote block"
+  },
+  "options": {},
+  "attributes": {
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "author": {
+      "type": "string"
+    }
+  }
+}

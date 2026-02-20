@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_news_image_blocks",
+  "info": {
+    "displayName": "Image block"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "caption": {
+      "type": "string"
+    },
+    "alt": {
+      "type": "string"
+    }
+  }
+}

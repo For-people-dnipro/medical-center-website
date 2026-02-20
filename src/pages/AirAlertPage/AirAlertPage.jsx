@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import "./AirAlertPage.css";
 
 export default function AirAlertPage() {
@@ -8,16 +8,14 @@ export default function AirAlertPage() {
             <main className="air-alert-page__main">
                 <section className="air-alert-page__intro">
                     <div className="air-alert-page__container">
-                        <nav
+                        <Breadcrumbs
                             className="air-alert-page__crumbs"
-                            aria-label="Breadcrumb"
-                        >
-                            <Link to="/">Головна</Link>
-                            <span className="crumb-separator">›</span>
-                            <span className="current">
-                                Правила повітряної тривоги
-                            </span>
-                        </nav>
+                            ariaLabel="Breadcrumb"
+                            items={[
+                                { label: "Головна", to: "/" },
+                                { label: "Правила повітряної тривоги" },
+                            ]}
+                        />
 
                         <h1>Правила поведінки під час повітряної тривоги</h1>
                     </div>

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_news_highlight_blocks",
+  "info": {
+    "displayName": "Highlight block"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
