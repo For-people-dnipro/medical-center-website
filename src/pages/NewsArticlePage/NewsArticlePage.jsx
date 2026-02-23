@@ -83,6 +83,7 @@ export default function NewsArticlePage() {
         newsItem?.seoDescription ||
         newsItem?.shortDescription ||
         "Новини медичного центру “Для людей”.";
+    const heroImage = newsItem?.coverImageHero || newsItem?.coverImage || null;
 
     const canonicalUrl =
         typeof window !== "undefined"
@@ -107,9 +108,7 @@ export default function NewsArticlePage() {
                   mainEntityOfPage: canonicalUrl,
                   datePublished: articlePublishedIso || undefined,
                   dateModified: articleModifiedIso || undefined,
-                  image: newsItem.coverImage?.url
-                      ? [newsItem.coverImage.url]
-                      : undefined,
+                  image: heroImage?.url ? [heroImage.url] : undefined,
                   publisher: {
                       "@type": "Organization",
                       name: "Для людей медичний центр",
@@ -128,7 +127,7 @@ export default function NewsArticlePage() {
         description: pageDescription,
         ogTitle: newsItem?.seoTitle || newsItem?.title || "Новина",
         ogDescription: pageDescription,
-        ogImage: newsItem?.coverImage?.url || "",
+        ogImage: heroImage?.url || "",
         canonicalUrl,
         type: "article",
         robots: "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
@@ -207,25 +206,35 @@ export default function NewsArticlePage() {
                         ) : null}
                     </header>
 
-                    {newsItem.coverImage?.url ? (
-                        <figure className="news-article-page__cover">
-                            <img
-                                src={newsItem.coverImage.url}
-                                alt={newsItem.coverImage.alt || newsItem.title}
-                                width={newsItem.coverImage.width}
-                                height={newsItem.coverImage.height}
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </figure>
-                    ) : null}
+                    <div className="news-article-page__content">
+                        {heroImage?.url ? (
+                            <figure
+                                className="news-article-page__cover"
+                                style={{
+                                    "--cover-max-width": `${heroImage.width}px`,
+                                }}
+                            >
+                                <img
+                                    src={heroImage.url}
+                                    alt={heroImage.alt || newsItem.title}
+                                    width={heroImage.width}
+                                    height={heroImage.height}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </figure>
+                        ) : null}
 
-                    <NewsContentRenderer content={newsItem.content} />
+                        <NewsContentRenderer content={newsItem.content} />
 
-                    <div className="news-article-page__actions">
-                        <Link to="/news" className="news-article-page__back-button">
-                            Повернутися до списку новин
-                        </Link>
+                        <div className="news-article-page__actions">
+                            <Link
+                                to="/news"
+                                className="news-article-page__back-button"
+                            >
+                                Повернутися до списку новин
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </article>

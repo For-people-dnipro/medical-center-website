@@ -115,14 +115,6 @@ export default function NewsFilter({
                                 }}
                             >
                                 <span>{option.name}</span>
-                                {isActive ? (
-                                    <span className="news-filter__option-check">
-                                        <img
-                                            src="/icons/arrow-down.svg"
-                                            alt=""
-                                        />
-                                    </span>
-                                ) : null}
                             </button>
                         );
                     })}

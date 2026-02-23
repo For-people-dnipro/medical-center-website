@@ -549,12 +549,7 @@ export interface ApiNewsNewsItem extends Struct.CollectionTypeSchema {
   };
   attributes: {
     content: Schema.Attribute.DynamicZone<
-      [
-        'news.text-block',
-        'news.image-block',
-        'news.highlight-block',
-        'news.quote-block',
-      ]
+      ['news.text-block', 'news.highlight-block']
     >;
     cover_image: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;

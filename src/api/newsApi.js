@@ -89,7 +89,71 @@ function pickMediaSource(media) {
     return pickSource(media?.data ?? media);
 }
 
-export function resolveMedia(media) {
+const MEDIA_FORMAT_PRIORITY = {
+    hero: ["large", "xlarge"],
+    card: ["medium", "large", "xlarge", "small", "thumbnail"],
+    default: ["medium", "large", "xlarge", "small", "thumbnail"],
+};
+
+const MEDIA_MIN_WIDTH = {
+    hero: 1080,
+    card: 640,
+    default: 0,
+};
+
+function isUsableFormat(format) {
+    return Boolean(format && typeof format === "object" && format.url);
+}
+
+function pickBestFormat(formats, variant = "default") {
+    const priority =
+        MEDIA_FORMAT_PRIORITY[variant] || MEDIA_FORMAT_PRIORITY.default;
+    const minWidth = MEDIA_MIN_WIDTH[variant] ?? MEDIA_MIN_WIDTH.default;
+
+    const orderedFormats = priority
+        .map((name) => formats[name])
+        .filter((format) => isUsableFormat(format));
+
+    if (orderedFormats.length === 0) {
+        return null;
+    }
+
+    if (minWidth <= 0) {
+        return orderedFormats[0];
+    }
+
+    const sizedFormat = orderedFormats.find((format) => {
+        const width = Number(format.width);
+        return Number.isFinite(width) && width >= minWidth;
+    });
+
+    return sizedFormat || orderedFormats[0];
+}
+
+function makeResolvedMedia(source, preferred = null) {
+    const mediaSource = preferred && typeof preferred === "object" ? preferred : source;
+    const url = toAbsoluteMediaUrl(mediaSource?.url);
+    if (!url) {
+        return null;
+    }
+
+    const width = Number(mediaSource.width || source?.width);
+    const height = Number(mediaSource.height || source?.height);
+
+    return {
+        url,
+        width: Number.isFinite(width) && width > 0 ? width : 1200,
+        height: Number.isFinite(height) && height > 0 ? height : 680,
+        alt: toText(
+            source?.alternativeText || source?.alt || source?.caption,
+            toText(source?.name, "Зображення новини"),
+        ),
+        caption: toText(source?.caption),
+    };
+}
+
+export function resolveMedia(media, options = {}) {
+    const variant = toText(options.variant, "default");
     const source = pickMediaSource(media);
     if (!source || typeof source !== "object") {
         return null;
@@ -99,46 +163,51 @@ export function resolveMedia(media) {
         source.formats && typeof source.formats === "object"
             ? source.formats
             : {};
-    const selectedFormat =
-        formats.medium ||
-        formats.small ||
-        formats.thumbnail ||
-        formats.large ||
-        formats.xlarge ||
-        source;
+    const selectedFormat = pickBestFormat(formats, variant);
+    const minWidth = MEDIA_MIN_WIDTH[variant] ?? MEDIA_MIN_WIDTH.default;
+    const selectedWidth = Number(selectedFormat?.width);
+    const originalWidth = Number(source.width);
+    const shouldUseOriginalForHero =
+        variant === "hero" &&
+        (!selectedFormat ||
+            (!Number.isNaN(selectedWidth) &&
+                !Number.isNaN(originalWidth) &&
+                selectedWidth < minWidth &&
+                originalWidth > selectedWidth));
 
-    const url = toAbsoluteMediaUrl(selectedFormat.url || source.url);
-    if (!url) {
-        return null;
+    if (shouldUseOriginalForHero) {
+        return makeResolvedMedia(source);
     }
 
-    const width = Number(selectedFormat.width || source.width);
-    const height = Number(selectedFormat.height || source.height);
+    if (selectedFormat) {
+        return makeResolvedMedia(source, selectedFormat);
+    }
 
-    return {
-        url,
-        width: Number.isFinite(width) && width > 0 ? width : 1200,
-        height: Number.isFinite(height) && height > 0 ? height : 680,
-        alt: toText(
-            source.alternativeText || source.alt || source.caption,
-            toText(source.name, "Зображення новини"),
-        ),
-        caption: toText(source.caption),
-    };
+    return makeResolvedMedia(source);
 }
 
 function normalizeTheme(entry) {
+    if (typeof entry === "number" || typeof entry === "string") {
+        return {
+            id: entry,
+            name: "",
+            slug: "",
+            description: "",
+        };
+    }
+
     const source = pickSource(entry?.data ?? entry);
+    const sourceId = source?.id ?? source?.documentId;
     const slug = toText(source.slug);
     const name = toText(source.name);
 
-    if (!slug && !name) {
+    if (!slug && !name && !sourceId) {
         return null;
     }
 
     return {
-        id: source.id ?? source.documentId ?? slug,
-        name: name || "Тема",
+        id: sourceId ?? slug,
+        name,
         slug,
         description: toText(source.description),
     };
@@ -149,6 +218,12 @@ function normalizeNewsItem(entry, index = 0) {
     const title = toText(source.title, "Новина");
     const slug = toText(source.slug, `news-${entry?.id ?? source.id ?? index}`);
 
+    const coverImageCard = resolveMedia(source.cover_image, {
+        variant: "card",
+    });
+    const coverImageHero =
+        resolveMedia(source.cover_image, { variant: "hero" }) || coverImageCard;
+
     return {
         id: entry?.id ?? source.id ?? source.documentId ?? `news-${index}`,
         documentId: source.documentId ?? entry?.documentId ?? "",
@@ -156,8 +231,11 @@ function normalizeNewsItem(entry, index = 0) {
         slug,
         shortDescription: toText(source.short_description),
         content: source.content ?? source.body ?? "",
-        coverImage: resolveMedia(source.cover_image),
+        coverImage: coverImageHero || coverImageCard,
+        coverImageCard,
+        coverImageHero,
         theme: normalizeTheme(source.theme),
+        publishedAt: toText(source.publishedAt),
         publishedDate:
             toText(source.published_date) ||
             toText(source.publishedAt) ||
@@ -177,6 +255,58 @@ function normalizeCollection(payload) {
             : [];
 
     return rows.map(normalizeNewsItem);
+}
+
+function getNewsIdentity(item, index = 0) {
+    const documentId = toText(item?.documentId);
+    if (documentId) return `doc:${documentId}`;
+
+    const slug = toText(item?.slug);
+    if (slug) return `slug:${slug.toLocaleLowerCase("uk-UA")}`;
+
+    const id = toText(item?.id);
+    if (id) return `id:${id}`;
+
+    return `idx:${index}`;
+}
+
+function getNewsPriority(item) {
+    let score = 0;
+    if (item?.publishedAt) score += 10;
+    if (item?.coverImage?.url || item?.coverImageCard?.url) score += 2;
+    if (item?.shortDescription) score += 1;
+    return score;
+}
+
+function dedupeNewsItems(items) {
+    const unique = new Map();
+
+    items.forEach((item, index) => {
+        const key = getNewsIdentity(item, index);
+        const existing = unique.get(key);
+
+        if (!existing) {
+            unique.set(key, item);
+            return;
+        }
+
+        if (getNewsPriority(item) > getNewsPriority(existing)) {
+            unique.set(key, item);
+        }
+    });
+
+    return Array.from(unique.values());
+}
+
+function filterPublishedNews(items) {
+    // In Strapi with draft/publish enabled, `publishedAt` is the source of truth.
+    // Fallback to `publishedDate` only when `publishedAt` is absent for all items.
+    const hasPublishedAtField = items.some((item) => Boolean(item?.publishedAt));
+    if (hasPublishedAtField) {
+        return items.filter((item) => Boolean(item?.publishedAt));
+    }
+
+    return items.filter((item) => Boolean(item?.publishedDate));
 }
 
 async function fetchJson(url, { signal } = {}) {
@@ -314,46 +444,153 @@ export async function fetchThemes({ signal } = {}) {
 
 export async function fetchNewsList({
     themeSlug = "",
+    themeName = "",
+    themeId = "",
     page = 1,
     pageSize = 9,
     signal,
 } = {}) {
-    const baseParams = {
-        "filters[theme][slug][$eq]": themeSlug || undefined,
+    const normalizeValue = (value) =>
+        String(value || "")
+            .trim()
+            .toLocaleLowerCase("uk-UA");
+    const normalizeId = (value) => String(value ?? "").trim();
+    const normalizedThemeSlug = String(themeSlug || "")
+        .trim()
+        .toLocaleLowerCase("uk-UA");
+    const normalizedThemeName = normalizeValue(themeName);
+    const normalizedThemeId = normalizeId(themeId);
+    const populateParams = {
         "pagination[pageSize]": 100,
     };
 
-    const payload = await fetchWithEndpointFallback({
-        endpoints: NEWS_ENDPOINTS,
-        paramsVariants: [
-            {
-                ...baseParams,
-                populate: "*",
-            },
-            {
-                ...baseParams,
-                "populate[cover_image]": "*",
-                "populate[theme]": "*",
-            },
-            {
-                ...baseParams,
-                "populate[cover_image]": "*",
-            },
-            {},
-        ],
-        signal,
-    });
+    const loadPopulatedNews = () =>
+        fetchWithEndpointFallback({
+            endpoints: NEWS_ENDPOINTS,
+            paramsVariants: [
+                {
+                    ...populateParams,
+                    populate: "*",
+                },
+                {
+                    ...populateParams,
+                    "populate[0]": "cover_image",
+                    "populate[1]": "theme",
+                },
+                {
+                    ...populateParams,
+                    "populate[cover_image]": "*",
+                    "populate[theme]": "*",
+                },
+            ],
+            signal,
+        });
+    const matchesSelectedTheme = (item) => {
+        const itemThemeSlug = normalizeValue(item.theme?.slug);
+        const itemThemeName = normalizeValue(item.theme?.name);
+        const itemThemeId = normalizeId(item.theme?.id);
 
-    const normalized = normalizeCollection(payload);
-    const publishedItems = normalized.filter((item) => item.publishedDate);
+        return (
+            (normalizedThemeId && itemThemeId === normalizedThemeId) ||
+            itemThemeSlug === normalizedThemeSlug ||
+            (normalizedThemeName && itemThemeName === normalizedThemeName)
+        );
+    };
 
-    const canFilterByRelation = publishedItems.some((item) => item.theme?.slug);
-    const themeFiltered =
-        themeSlug && canFilterByRelation
-            ? publishedItems.filter((item) => item.theme?.slug === themeSlug)
-            : publishedItems;
+    let themeFiltered = [];
 
-    const sorted = [...themeFiltered].sort((a, b) => {
+    if (normalizedThemeSlug) {
+        // Preferred path: dedicated backend endpoint with stable relation filtering.
+        try {
+            const byThemePayload = await fetchWithEndpointFallback({
+                endpoints: [
+                    `/api/news/by-theme/${encodeURIComponent(
+                        normalizedThemeSlug,
+                    )}`,
+                ],
+                paramsVariants: [{}],
+                signal,
+            });
+            const byThemeItems = dedupeNewsItems(
+                filterPublishedNews(normalizeCollection(byThemePayload)),
+            );
+            const strictlyMatchedItems = byThemeItems.filter(matchesSelectedTheme);
+            if (strictlyMatchedItems.length > 0) {
+                themeFiltered = strictlyMatchedItems;
+            }
+        } catch {
+            // ignore and continue to generic fallback path
+        }
+    }
+
+    if (normalizedThemeSlug && themeFiltered.length === 0) {
+        // First: ask backend to filter by relation directly.
+        try {
+            const filteredPayload = await fetchWithEndpointFallback({
+                endpoints: NEWS_ENDPOINTS,
+                paramsVariants: [
+                    {
+                        ...populateParams,
+                        populate: "*",
+                        "filters[theme][slug][$eq]": normalizedThemeSlug,
+                    },
+                    {
+                        ...populateParams,
+                        populate: "*",
+                        "filters[theme][slug][$eqi]": normalizedThemeSlug,
+                    },
+                    ...(normalizedThemeId
+                        ? [
+                              {
+                                  ...populateParams,
+                                  populate: "*",
+                                  "filters[theme][id][$eq]": normalizedThemeId,
+                              },
+                          ]
+                        : []),
+                    ...(normalizedThemeName
+                        ? [
+                              {
+                                  ...populateParams,
+                                  populate: "*",
+                                  "filters[theme][name][$eqi]":
+                                      normalizedThemeName,
+                              },
+                          ]
+                        : []),
+                ],
+                signal,
+            });
+            const backendItems = dedupeNewsItems(
+                filterPublishedNews(normalizeCollection(filteredPayload)),
+            );
+            const strictlyMatchedItems = backendItems.filter(matchesSelectedTheme);
+
+            // If backend returns filtered rows, use them as source of truth.
+            // This works even when theme relation is not exposed in Public response.
+            if (strictlyMatchedItems.length > 0) {
+                themeFiltered = strictlyMatchedItems;
+            }
+        } catch {
+            // ignore and fallback below
+        }
+    }
+
+    // Fallback: load populated list and filter locally.
+    if (themeFiltered.length === 0) {
+        const payload = await loadPopulatedNews();
+        const publishedItems = dedupeNewsItems(
+            filterPublishedNews(normalizeCollection(payload)),
+        );
+
+        if (normalizedThemeSlug) {
+            themeFiltered = publishedItems.filter(matchesSelectedTheme);
+        } else {
+            themeFiltered = publishedItems;
+        }
+    }
+
+    const sorted = dedupeNewsItems(themeFiltered).sort((a, b) => {
         const aTime = new Date(a.publishedDate || 0).getTime() || 0;
         const bTime = new Date(b.publishedDate || 0).getTime() || 0;
         return bTime - aTime;
@@ -398,7 +635,9 @@ export async function fetchNewsBySlug(slug, { signal } = {}) {
         signal,
     });
 
-    const normalized = normalizeCollection(payload);
+    const normalized = dedupeNewsItems(
+        filterPublishedNews(normalizeCollection(payload)),
+    );
     const loweredSlug = String(slug || "")
         .trim()
         .toLocaleLowerCase("uk-UA");
@@ -406,7 +645,6 @@ export async function fetchNewsBySlug(slug, { signal } = {}) {
     const item =
         normalized.find(
             (entry) =>
-                entry.publishedDate &&
                 String(entry.slug || "")
                     .trim()
                     .toLocaleLowerCase("uk-UA") === loweredSlug,

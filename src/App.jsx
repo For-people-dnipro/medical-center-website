@@ -20,6 +20,7 @@ import VacanciesPage from "./pages/VacanciesPage/VacanciesPage";
 import NewsPage from "./pages/NewsPage/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage/NewsArticlePage";
 import Footer from "./components/Footer/Footer";
+import CookieBanner from "./components/CookieBanner/CookieBanner";
 
 function App() {
     const location = useLocation();
@@ -120,6 +121,7 @@ function App() {
                 <MobileCTA />
             </div>
             <Footer />
+            <CookieBanner />
         </>
     );
 }

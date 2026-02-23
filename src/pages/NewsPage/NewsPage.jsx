@@ -3,20 +3,24 @@ import { useSearchParams } from "react-router-dom";
 import NewsFilter from "../../components/NewsFilter/NewsFilter";
 import NewsGrid from "../../components/NewsGrid/NewsGrid";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import { fetchNewsList, fetchThemes } from "../../api/newsApi";
 import useSeoMeta from "../../hooks/useSeoMeta";
 import "./NewsPage.css";
 
-const PAGE_SIZE = 9;
+const CARDS_PER_ROW = 3;
+const ROWS_PER_BATCH = 3;
+const PAGE_SIZE = CARDS_PER_ROW * ROWS_PER_BATCH;
+const LOAD_MORE_THRESHOLD = PAGE_SIZE;
 
 function mergeNewsItems(currentItems, nextItems) {
-    const keys = new Set(
-        currentItems.map((item) => String(item.id || item.slug || "")),
-    );
+    const getItemKey = (item) =>
+        String(item.documentId || item.slug || item.id || "").trim();
+    const keys = new Set(currentItems.map((item) => getItemKey(item)));
     const merged = [...currentItems];
 
     nextItems.forEach((item) => {
-        const key = String(item.id || item.slug || "");
+        const key = getItemKey(item);
         if (keys.has(key)) return;
         keys.add(key);
         merged.push(item);
@@ -32,10 +36,15 @@ export default function NewsPage() {
     const [themes, setThemes] = useState([]);
     const [newsItems, setNewsItems] = useState([]);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(false);
+    const [totalNewsCount, setTotalNewsCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState("");
+    const activeTheme =
+        themes.find((theme) => String(theme.slug || "").trim() === themeSlug) ||
+        null;
+    const activeThemeId = activeTheme?.id || "";
+    const activeThemeName = activeTheme?.name || "";
     const canonicalUrl =
         typeof window !== "undefined"
             ? `${window.location.origin}/news${
@@ -94,18 +103,20 @@ export default function NewsPage() {
             setError("");
             setPage(1);
             setNewsItems([]);
-            setHasMore(false);
+            setTotalNewsCount(0);
 
             try {
                 const response = await fetchNewsList({
                     themeSlug,
+                    themeName: activeThemeName,
+                    themeId: activeThemeId,
                     page: 1,
                     pageSize: PAGE_SIZE,
                     signal: controller.signal,
                 });
 
                 setNewsItems(response.items);
-                setHasMore(response.hasMore);
+                setTotalNewsCount(response.pagination?.total || 0);
             } catch (requestError) {
                 if (requestError?.name === "AbortError") return;
                 console.error("Failed to load news list:", requestError);
@@ -126,7 +137,7 @@ export default function NewsPage() {
         loadFirstPage();
 
         return () => controller.abort();
-    }, [themeSlug]);
+    }, [themeSlug, activeThemeName, activeThemeId]);
 
     const handleThemeChange = (nextTheme) => {
         setSearchParams((previous) => {
@@ -143,7 +154,8 @@ export default function NewsPage() {
     };
 
     const handleLoadMore = async () => {
-        if (loadingMore || !hasMore) return;
+        const canLoadMore = newsItems.length < totalNewsCount;
+        if (loadingMore || !canLoadMore) return;
 
         const nextPage = page + 1;
         setLoadingMore(true);
@@ -152,6 +164,8 @@ export default function NewsPage() {
         try {
             const response = await fetchNewsList({
                 themeSlug,
+                themeName: activeThemeName,
+                themeId: activeThemeId,
                 page: nextPage,
                 pageSize: PAGE_SIZE,
             });
@@ -160,7 +174,7 @@ export default function NewsPage() {
                 mergeNewsItems(currentItems, response.items),
             );
             setPage(nextPage);
-            setHasMore(response.hasMore);
+            setTotalNewsCount(response.pagination?.total || 0);
         } catch (requestError) {
             console.error("Failed to load more news:", requestError);
             const rawMessage = String(requestError?.message || "");
@@ -174,6 +188,12 @@ export default function NewsPage() {
             setLoadingMore(false);
         }
     };
+
+    const shouldShowLoadMore =
+        !loading &&
+        !error &&
+        totalNewsCount > LOAD_MORE_THRESHOLD &&
+        newsItems.length < totalNewsCount;
 
     return (
         <main className="news-page">
@@ -229,21 +249,15 @@ export default function NewsPage() {
                         <NewsGrid items={newsItems} />
                     ) : null}
 
-                    {!loading && !error && hasMore ? (
+                    {shouldShowLoadMore ? (
                         <div className="news-page__load-more-wrap">
-                            <button
-                                type="button"
-                                className="news-page__load-more"
+                            <LoadMoreButton
                                 onClick={handleLoadMore}
                                 disabled={loadingMore}
-                            >
-                                <span>
-                                    {loadingMore
-                                        ? "Завантаження..."
-                                        : "Показати більше"}
-                                </span>
-                                <img src="/icons/arrow-down.svg" alt="" />
-                            </button>
+                                isLoading={loadingMore}
+                                label="Показати більше"
+                                loadingLabel="Завантаження..."
+                            />
                         </div>
                     ) : null}
                 </div>

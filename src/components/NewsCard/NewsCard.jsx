@@ -4,6 +4,7 @@ import "./NewsCard.css";
 
 export default function NewsCard({ item }) {
     const dateLabel = formatNewsDate(item.publishedDate);
+    const cardImage = item.coverImageCard || item.coverImage;
 
     let dateTime = "";
     if (item.publishedDate) {
@@ -17,13 +18,13 @@ export default function NewsCard({ item }) {
         <article className="news-card">
             <Link to={`/news/${item.slug}`} className="news-card__link">
                 <div className="news-card__media">
-                    {item.coverImage?.url ? (
+                    {cardImage?.url ? (
                         <img
                             className="news-card__image"
-                            src={item.coverImage.url}
-                            alt={item.coverImage.alt || item.title}
-                            width={item.coverImage.width}
-                            height={item.coverImage.height}
+                            src={cardImage.url}
+                            alt={cardImage.alt || item.title}
+                            width={cardImage.width}
+                            height={cardImage.height}
                             loading="lazy"
                             decoding="async"
                         />
@@ -38,11 +39,11 @@ export default function NewsCard({ item }) {
                 <div className="news-card__body">
                     <h3 className="news-card__title">{item.title}</h3>
 
-                    {item.shortDescription ? (
+                    {/* {item.shortDescription ? (
                         <p className="news-card__description">
                             {item.shortDescription}
                         </p>
-                    ) : null}
+                    ) : null} */}
 
                     <div className="news-card__footer">
                         {dateLabel ? (

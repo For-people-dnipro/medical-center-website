@@ -1,5 +1,14 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface NewsApvf extends Struct.ComponentSchema {
+  collectionName: 'components_news_apvf';
+  info: {
+    displayName: '\u0430\u043F\u0432\u0444';
+    icon: 'cloud';
+  };
+  attributes: {};
+}
+
 export interface NewsHighlightBlock extends Struct.ComponentSchema {
   collectionName: 'components_news_highlight_blocks';
   info: {
@@ -46,6 +55,7 @@ export interface NewsTextBlock extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'news.apvf': NewsApvf;
       'news.highlight-block': NewsHighlightBlock;
       'news.image-block': NewsImageBlock;
       'news.quote-block': NewsQuoteBlock;

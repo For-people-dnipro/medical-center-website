@@ -27,9 +27,7 @@
       "type": "dynamiczone",
       "components": [
         "news.text-block",
-        "news.image-block",
-        "news.highlight-block",
-        "news.quote-block"
+        "news.highlight-block"
       ]
     },
     "cover_image": {

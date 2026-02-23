@@ -8,5 +8,13 @@ export default {
         auth: false,
       },
     },
+    {
+      method: 'GET',
+      path: '/news/by-theme/:slug',
+      handler: 'news-item.byTheme',
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

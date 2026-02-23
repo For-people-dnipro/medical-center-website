@@ -22,5 +22,42 @@ export default factories.createCoreController(
         })),
       };
     },
+
+    async byTheme(ctx) {
+      const slug = String(ctx.params?.slug || '').trim().toLocaleLowerCase('uk-UA');
+
+      if (!slug) {
+        ctx.body = { data: [] };
+        return;
+      }
+
+      const theme = await strapi.db.query('api::theme.theme').findOne({
+        where: { slug },
+        select: ['id', 'name', 'slug', 'description'],
+      });
+
+      if (!theme?.id) {
+        ctx.body = { data: [] };
+        return;
+      }
+
+      const newsItems = await strapi.db.query('api::news.news-item').findMany({
+        where: {
+          theme: theme.id,
+        },
+        orderBy: [
+          { published_date: 'desc' },
+          { createdAt: 'desc' },
+        ],
+        populate: {
+          cover_image: true,
+          theme: {
+            select: ['id', 'name', 'slug', 'description'],
+          },
+        },
+      });
+
+      ctx.body = { data: newsItems || [] };
+    },
   }),
 );

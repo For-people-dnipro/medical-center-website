@@ -1,6 +1,9 @@
 .news-content {
     display: grid;
     gap: 30px;
+    width: 100%;
+    max-width: var(--article-content-max-width, 980px);
+    margin: 0 auto;
 }
 
 .news-content__text-block {
