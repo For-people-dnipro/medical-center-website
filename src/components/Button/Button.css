@@ -11,6 +11,10 @@
     gap: 8px;
     white-space: nowrap;
     border: 2px solid #008b96;
+    background: transparent;
+    appearance: none;
+    font-family: inherit;
+    line-height: inherit;
     color: var(--color-main);
     padding-right: 8px;
     transition:
@@ -22,6 +26,23 @@
 .ui-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+.ui-button:disabled {
+    opacity: 0.65;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+}
+
+.ui-button:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.ui-button:disabled:hover .ui-button-arrow {
+    transform: none;
+    transition-delay: 0s;
 }
 
 .ui-button-arrow {
@@ -44,4 +65,8 @@
 
 .ui-button.arrow-down:hover .ui-button-arrow {
     transform: rotate(90deg) translateY(4px);
+}
+
+.ui-button.arrow-down:disabled:hover .ui-button-arrow {
+    transform: rotate(90deg);
 }

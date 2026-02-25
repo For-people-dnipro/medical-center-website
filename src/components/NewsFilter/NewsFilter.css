@@ -6,7 +6,6 @@
 }
 
 .news-filter__label {
-    font-size: 0;
     width: 1px;
     height: 1px;
     margin: -1px;
@@ -32,7 +31,7 @@
     color: #111111;
     padding: 8px 12px 8px 18px;
     font-size: var(--font-body);
-    line-height: 1.35;
+    line-height: var(--lh-ui);
     font-weight: var(--fw-medium);
     cursor: pointer;
     display: flex;
@@ -114,7 +113,7 @@
     text-align: left;
     cursor: pointer;
     font-size: var(--font-body);
-    line-height: 1.35;
+    line-height: var(--lh-ui);
     color: #1b1b1b;
 }
 

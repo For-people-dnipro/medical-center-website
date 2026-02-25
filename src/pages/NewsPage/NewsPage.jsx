@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import NewsFilter from "../../components/NewsFilter/NewsFilter";
 import NewsGrid from "../../components/NewsGrid/NewsGrid";
@@ -8,10 +8,27 @@ import { fetchNewsList, fetchThemes } from "../../api/newsApi";
 import useSeoMeta from "../../hooks/useSeoMeta";
 import "./NewsPage.css";
 
-const CARDS_PER_ROW = 3;
-const ROWS_PER_BATCH = 3;
-const PAGE_SIZE = CARDS_PER_ROW * ROWS_PER_BATCH;
-const LOAD_MORE_THRESHOLD = PAGE_SIZE;
+const MOBILE_BREAKPOINT = 768;
+const MOBILE_PAGINATION_THRESHOLD = 18;
+const SMALL_NEWS_INITIAL_COUNT = 4;
+const SMALL_NEWS_STEP = 4;
+const MOBILE_PAGE_SIZE = 18;
+const DESKTOP_PAGE_SIZE = 9;
+
+function getIsMobileViewport() {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
+}
+
+function parsePageParam(value) {
+    const parsed = Number.parseInt(String(value || ""), 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+function parsePositiveIntOrNull(value) {
+    const parsed = Number.parseInt(String(value || "").trim(), 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
 
 function mergeNewsItems(currentItems, nextItems) {
     const getItemKey = (item) =>
@@ -29,14 +46,78 @@ function mergeNewsItems(currentItems, nextItems) {
     return merged;
 }
 
+function getInitialVisibleCount({
+    isMobileViewport,
+    totalCount,
+    pageItemsCount,
+}) {
+    const safeTotal = Math.max(0, Number(totalCount) || 0);
+    const safePageItemsCount = Math.max(0, Number(pageItemsCount) || 0);
+
+    if (!isMobileViewport) {
+        return Math.min(SMALL_NEWS_INITIAL_COUNT, safePageItemsCount || safeTotal);
+    }
+
+    return Math.min(SMALL_NEWS_INITIAL_COUNT, safePageItemsCount || safeTotal);
+}
+
+function buildPaginationItems(currentPage, pageCount) {
+    if (pageCount <= 7) {
+        return Array.from({ length: pageCount }, (_, index) => index + 1);
+    }
+
+    const pages = new Set([1, pageCount, currentPage]);
+    pages.add(Math.max(1, currentPage - 1));
+    pages.add(Math.min(pageCount, currentPage + 1));
+
+    if (currentPage <= 3) {
+        pages.add(2);
+        pages.add(3);
+        pages.add(4);
+    }
+
+    if (currentPage >= pageCount - 2) {
+        pages.add(pageCount - 1);
+        pages.add(pageCount - 2);
+        pages.add(pageCount - 3);
+    }
+
+    const sortedPages = Array.from(pages)
+        .filter((page) => page >= 1 && page <= pageCount)
+        .sort((a, b) => a - b);
+
+    const items = [];
+    sortedPages.forEach((page, index) => {
+        const previous = sortedPages[index - 1];
+        if (index > 0 && page - previous > 1) {
+            items.push(`ellipsis-${previous}-${page}`);
+        }
+        items.push(page);
+    });
+
+    return items;
+}
+
 export default function NewsPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const themeSlug = (searchParams.get("theme") || "").trim();
+    const pageParam = (searchParams.get("page") || "").trim();
+    const mobilePreviewLimitParam = (
+        searchParams.get("preview_mobile_limit") || ""
+    ).trim();
+    const requestedPage = parsePageParam(pageParam);
+    const newsListSectionRef = useRef(null);
 
     const [themes, setThemes] = useState([]);
     const [newsItems, setNewsItems] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalNewsCount, setTotalNewsCount] = useState(0);
+    const [isMobileViewport, setIsMobileViewport] = useState(getIsMobileViewport);
+    const [visibleCount, setVisibleCount] = useState(SMALL_NEWS_INITIAL_COUNT);
+    const [pagination, setPagination] = useState({
+        page: 1,
+        pageSize: DESKTOP_PAGE_SIZE,
+        pageCount: 1,
+        total: 0,
+    });
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState("");
@@ -45,11 +126,39 @@ export default function NewsPage() {
         null;
     const activeThemeId = activeTheme?.id || "";
     const activeThemeName = activeTheme?.name || "";
+    const previewMobileLimit =
+        import.meta.env.DEV && isMobileViewport
+            ? parsePositiveIntOrNull(mobilePreviewLimitParam)
+            : null;
+    const effectiveMobileLimit = previewMobileLimit
+        ? Math.max(SMALL_NEWS_INITIAL_COUNT, previewMobileLimit)
+        : MOBILE_PAGINATION_THRESHOLD;
+    const currentPageSize = isMobileViewport
+        ? effectiveMobileLimit
+        : DESKTOP_PAGE_SIZE;
+    const requestPageForFetch = isMobileViewport ? requestedPage : 1;
+    const totalNewsCount = Number(pagination?.total) || 0;
+    const isPaginationMode =
+        isMobileViewport && totalNewsCount > effectiveMobileLimit;
+    const currentPage = Number(pagination?.page) || requestedPage || 1;
+    const pageCount = Math.max(1, Number(pagination?.pageCount) || 1);
+    const visibleNewsItems = isMobileViewport
+        ? newsItems.slice(0, visibleCount)
+        : newsItems;
     const canonicalUrl =
         typeof window !== "undefined"
-            ? `${window.location.origin}/news${
-                  themeSlug ? `?theme=${encodeURIComponent(themeSlug)}` : ""
-              }`
+            ? (() => {
+                  const params = new URLSearchParams();
+                  if (themeSlug) {
+                      params.set("theme", themeSlug);
+                  }
+                  if (isMobileViewport && requestedPage > 1) {
+                      params.set("page", String(requestedPage));
+                  }
+                  const query = params.toString();
+
+                  return `${window.location.origin}/news${query ? `?${query}` : ""}`;
+              })()
             : "";
 
     const listSchema = canonicalUrl
@@ -96,27 +205,111 @@ export default function NewsPage() {
     }, []);
 
     useEffect(() => {
+        if (typeof window === "undefined") return undefined;
+
+        const mediaQuery = window.matchMedia(
+            `(max-width: ${MOBILE_BREAKPOINT}px)`,
+        );
+        const handleChange = (event) => {
+            setIsMobileViewport(event.matches);
+        };
+
+        setIsMobileViewport(mediaQuery.matches);
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleChange);
+            return () => mediaQuery.removeEventListener("change", handleChange);
+        }
+
+        mediaQuery.addListener(handleChange);
+        return () => mediaQuery.removeListener(handleChange);
+    }, []);
+
+    useEffect(() => {
         const controller = new AbortController();
 
         async function loadFirstPage() {
             setLoading(true);
+            setLoadingMore(false);
             setError("");
-            setPage(1);
             setNewsItems([]);
-            setTotalNewsCount(0);
+            setVisibleCount(
+                getInitialVisibleCount({
+                    isMobileViewport,
+                    totalCount: 0,
+                    pageItemsCount: currentPageSize,
+                }),
+            );
+            setPagination((current) => ({
+                ...current,
+                page: requestPageForFetch,
+                pageSize: currentPageSize,
+                pageCount: 1,
+                total: 0,
+            }));
 
             try {
                 const response = await fetchNewsList({
                     themeSlug,
                     themeName: activeThemeName,
                     themeId: activeThemeId,
-                    page: 1,
-                    pageSize: PAGE_SIZE,
+                    page: requestPageForFetch,
+                    pageSize: currentPageSize,
+                    preferServerPagination: isMobileViewport,
                     signal: controller.signal,
                 });
 
+                if (controller.signal.aborted) return;
+
                 setNewsItems(response.items);
-                setTotalNewsCount(response.pagination?.total || 0);
+                const nextPagination = {
+                    page: Number(response.pagination?.page) || 1,
+                    pageSize: Number(response.pagination?.pageSize) || currentPageSize,
+                    pageCount: Math.max(
+                        1,
+                        Number(response.pagination?.pageCount) || 1,
+                    ),
+                    total: Math.max(0, Number(response.pagination?.total) || 0),
+                };
+                setPagination(nextPagination);
+                setVisibleCount(
+                    getInitialVisibleCount({
+                        isMobileViewport,
+                        totalCount: nextPagination.total,
+                        pageItemsCount: response.items.length,
+                    }),
+                );
+
+                const fetchedPage = nextPagination.page;
+                const fetchedTotal = nextPagination.total;
+
+                if (!isMobileViewport) {
+                    if (pageParam) {
+                        setSearchParams((previous) => {
+                            const params = new URLSearchParams(previous);
+                            params.delete("page");
+                            return params;
+                        }, { replace: true });
+                    }
+                } else if (fetchedTotal <= effectiveMobileLimit) {
+                    if (pageParam) {
+                        setSearchParams((previous) => {
+                            const params = new URLSearchParams(previous);
+                            params.delete("page");
+                            return params;
+                        }, { replace: true });
+                    }
+                } else if (fetchedPage !== requestedPage) {
+                    setSearchParams((previous) => {
+                        const params = new URLSearchParams(previous);
+                        if (fetchedPage <= 1) {
+                            params.delete("page");
+                        } else {
+                            params.set("page", String(fetchedPage));
+                        }
+                        return params;
+                    }, { replace: true });
+                }
             } catch (requestError) {
                 if (requestError?.name === "AbortError") return;
                 console.error("Failed to load news list:", requestError);
@@ -137,7 +330,19 @@ export default function NewsPage() {
         loadFirstPage();
 
         return () => controller.abort();
-    }, [themeSlug, activeThemeName, activeThemeId]);
+    }, [
+        themeSlug,
+        activeThemeName,
+        activeThemeId,
+        isMobileViewport,
+        mobilePreviewLimitParam,
+        effectiveMobileLimit,
+        currentPageSize,
+        requestPageForFetch,
+        requestedPage,
+        pageParam,
+        setSearchParams,
+    ]);
 
     const handleThemeChange = (nextTheme) => {
         setSearchParams((previous) => {
@@ -148,52 +353,116 @@ export default function NewsPage() {
             } else {
                 params.delete("theme");
             }
+            params.delete("page");
 
             return params;
         });
     };
 
-    const handleLoadMore = async () => {
-        const canLoadMore = newsItems.length < totalNewsCount;
-        if (loadingMore || !canLoadMore) return;
+    const scrollToNewsList = () => {
+        const section = newsListSectionRef.current;
+        if (!section) return;
 
-        const nextPage = page + 1;
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
+
+    const handleLoadMore = () => {
+        if (isMobileViewport) {
+            setVisibleCount((current) =>
+                Math.min(current + SMALL_NEWS_STEP, newsItems.length),
+            );
+            return;
+        }
+
+        const canLoadMoreDesktop = newsItems.length < totalNewsCount;
+        if (loading || loadingMore || !canLoadMoreDesktop) return;
+
+        const nextPage = (Number(pagination?.page) || 1) + 1;
         setLoadingMore(true);
         setError("");
 
-        try {
-            const response = await fetchNewsList({
-                themeSlug,
-                themeName: activeThemeName,
-                themeId: activeThemeId,
-                page: nextPage,
-                pageSize: PAGE_SIZE,
+        fetchNewsList({
+            themeSlug,
+            themeName: activeThemeName,
+            themeId: activeThemeId,
+            page: nextPage,
+            pageSize: DESKTOP_PAGE_SIZE,
+            preferServerPagination: false,
+        })
+            .then((response) => {
+                setNewsItems((currentItems) =>
+                    mergeNewsItems(currentItems, response.items),
+                );
+                setPagination((current) => ({
+                    ...current,
+                    page: Number(response.pagination?.page) || nextPage,
+                    pageSize:
+                        Number(response.pagination?.pageSize) ||
+                        DESKTOP_PAGE_SIZE,
+                    pageCount: Math.max(
+                        1,
+                        Number(response.pagination?.pageCount) || 1,
+                    ),
+                    total: Math.max(
+                        0,
+                        Number(response.pagination?.total) ||
+                            current.total ||
+                            0,
+                    ),
+                }));
+            })
+            .catch((requestError) => {
+                console.error("Failed to load more news:", requestError);
+                const rawMessage = String(requestError?.message || "");
+                const friendlyMessage = rawMessage.includes("UNAUTHORIZED")
+                    ? "Немає доступу до News API. У Strapi увімкніть `find` для Public role."
+                    : "Не вдалося завантажити додаткові новини.";
+                const debugSuffix =
+                    import.meta.env.DEV && rawMessage ? ` [${rawMessage}]` : "";
+                setError(`${friendlyMessage}${debugSuffix}`);
+            })
+            .finally(() => {
+                setLoadingMore(false);
             });
-
-            setNewsItems((currentItems) =>
-                mergeNewsItems(currentItems, response.items),
-            );
-            setPage(nextPage);
-            setTotalNewsCount(response.pagination?.total || 0);
-        } catch (requestError) {
-            console.error("Failed to load more news:", requestError);
-            const rawMessage = String(requestError?.message || "");
-            const friendlyMessage = rawMessage.includes("UNAUTHORIZED")
-                ? "Немає доступу до News API. У Strapi увімкніть `find` для Public role."
-                : "Не вдалося завантажити додаткові новини.";
-            const debugSuffix =
-                import.meta.env.DEV && rawMessage ? ` [${rawMessage}]` : "";
-            setError(`${friendlyMessage}${debugSuffix}`);
-        } finally {
-            setLoadingMore(false);
-        }
     };
 
+    const handlePageChange = (nextPage) => {
+        const safeNextPage = Math.min(Math.max(1, nextPage), pageCount);
+        if (safeNextPage === currentPage) return;
+
+        setSearchParams((previous) => {
+            const params = new URLSearchParams(previous);
+
+            if (safeNextPage <= 1) {
+                params.delete("page");
+            } else {
+                params.set("page", String(safeNextPage));
+            }
+
+            return params;
+        });
+
+        scrollToNewsList();
+    };
+
+    const paginationItems = buildPaginationItems(currentPage, pageCount);
+    const canRevealMoreOnCurrentPage =
+        isMobileViewport && visibleNewsItems.length < newsItems.length;
+    const canLoadMoreDesktop =
+        !isMobileViewport && newsItems.length > 0 && newsItems.length < totalNewsCount;
     const shouldShowLoadMore =
+        !loading && !error && (canRevealMoreOnCurrentPage || canLoadMoreDesktop);
+    const shouldShowPagination =
         !loading &&
         !error &&
-        totalNewsCount > LOAD_MORE_THRESHOLD &&
-        newsItems.length < totalNewsCount;
+        isPaginationMode &&
+        pageCount > 1 &&
+        !canRevealMoreOnCurrentPage;
+    const prevButtonLabel = isMobileViewport ? "←" : "Попередня";
+    const nextButtonLabel = isMobileViewport ? "→" : "Наступна";
 
     return (
         <main className="news-page">
@@ -222,7 +491,7 @@ export default function NewsPage() {
                 </div>
             </section>
 
-            <section className="news-page__list">
+            <section className="news-page__list" ref={newsListSectionRef}>
                 <div className="news-page__container">
                     {loading ? (
                         <div className="news-page__state" role="status">
@@ -246,7 +515,7 @@ export default function NewsPage() {
                     ) : null}
 
                     {!loading && !error && newsItems.length > 0 ? (
-                        <NewsGrid items={newsItems} />
+                        <NewsGrid items={visibleNewsItems} />
                     ) : null}
 
                     {shouldShowLoadMore ? (
@@ -259,6 +528,71 @@ export default function NewsPage() {
                                 loadingLabel="Завантаження..."
                             />
                         </div>
+                    ) : null}
+
+                    {shouldShowPagination ? (
+                        <nav
+                            className="news-page__pagination"
+                            aria-label="Пагінація новин"
+                        >
+                            <button
+                                type="button"
+                                className="news-page__pagination-nav"
+                                onClick={() =>
+                                    handlePageChange(currentPage - 1)
+                                }
+                                disabled={currentPage <= 1}
+                                aria-label="Попередня сторінка"
+                            >
+                                {prevButtonLabel}
+                            </button>
+
+                            <div className="news-page__pagination-pages">
+                                {paginationItems.map((item) =>
+                                    typeof item === "number" ? (
+                                        <button
+                                            key={item}
+                                            type="button"
+                                            className={`news-page__pagination-page ${
+                                                item === currentPage
+                                                    ? "is-active"
+                                                    : ""
+                                            }`.trim()}
+                                            onClick={() =>
+                                                handlePageChange(item)
+                                            }
+                                            aria-current={
+                                                item === currentPage
+                                                    ? "page"
+                                                    : undefined
+                                            }
+                                        >
+                                            {item}
+                                        </button>
+                                    ) : (
+                                        <span
+                                            key={item}
+                                            className="news-page__pagination-ellipsis"
+                                            aria-hidden="true"
+                                        >
+                                            …
+                                        </span>
+                                    ),
+                                )}
+                            </div>
+
+                            <button
+                                type="button"
+                                className="news-page__pagination-nav"
+                                onClick={() =>
+                                    handlePageChange(currentPage + 1)
+                                }
+                                disabled={currentPage >= pageCount}
+                                aria-label="Наступна сторінка"
+                            >
+                                {nextButtonLabel}
+                            </button>
+                        </nav>
                     ) : null}
                 </div>
             </section>

@@ -3,6 +3,7 @@ const API_URL = (import.meta.env.VITE_STRAPI_URL || "")
     .replace(/\/$/, "");
 const NEWS_ENDPOINTS = ["/api/news", "/api/news-items"];
 const LOCAL_STRAPI_FALLBACK = "http://localhost:1337";
+const LOCAL_COLLECTION_FETCH_LIMIT = 1000;
 
 function normalizePath(path) {
     if (/^https?:\/\//i.test(path)) {
@@ -257,6 +258,34 @@ function normalizeCollection(payload) {
     return rows.map(normalizeNewsItem);
 }
 
+function extractStrapiPagination(payload) {
+    const pagination = payload?.meta?.pagination;
+    if (!pagination || typeof pagination !== "object") {
+        return null;
+    }
+
+    const page = Number(pagination.page);
+    const pageSize = Number(pagination.pageSize);
+    const pageCount = Number(pagination.pageCount);
+    const total = Number(pagination.total);
+
+    if (
+        !Number.isFinite(page) ||
+        !Number.isFinite(pageSize) ||
+        !Number.isFinite(pageCount) ||
+        !Number.isFinite(total)
+    ) {
+        return null;
+    }
+
+    return {
+        page: Math.max(1, page),
+        pageSize: Math.max(1, pageSize),
+        pageCount: Math.max(1, pageCount),
+        total: Math.max(0, total),
+    };
+}
+
 function getNewsIdentity(item, index = 0) {
     const documentId = toText(item?.documentId);
     if (documentId) return `doc:${documentId}`;
@@ -384,11 +413,11 @@ export async function fetchThemes({ signal } = {}) {
             paramsVariants: [
                 {
                     "sort[0]": "name:asc",
-                    "pagination[pageSize]": 100,
+                    "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
                 },
                 {
                     sort: "name:asc",
-                    "pagination[pageSize]": 100,
+                    "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
                 },
             ],
             signal,
@@ -411,11 +440,11 @@ export async function fetchThemes({ signal } = {}) {
                 paramsVariants: [
                     {
                         "populate[theme]": "*",
-                        "pagination[pageSize]": 100,
+                        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
                     },
                     {
                         populate: "*",
-                        "pagination[pageSize]": 100,
+                        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
                     },
                     {},
                 ],
@@ -448,6 +477,7 @@ export async function fetchNewsList({
     themeId = "",
     page = 1,
     pageSize = 9,
+    preferServerPagination = false,
     signal,
 } = {}) {
     const normalizeValue = (value) =>
@@ -460,8 +490,10 @@ export async function fetchNewsList({
         .toLocaleLowerCase("uk-UA");
     const normalizedThemeName = normalizeValue(themeName);
     const normalizedThemeId = normalizeId(themeId);
+    const requestedPage = Math.max(1, Number(page) || 1);
+    const safePageSize = Math.max(1, Number(pageSize) || 9);
     const populateParams = {
-        "pagination[pageSize]": 100,
+        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
     };
 
     const loadPopulatedNews = () =>
@@ -496,6 +528,126 @@ export async function fetchNewsList({
             (normalizedThemeName && itemThemeName === normalizedThemeName)
         );
     };
+    const hasServerMismatchedTheme = (items) =>
+        items.some((item) => {
+            const hasThemeInfo =
+                normalizeId(item.theme?.id) ||
+                normalizeValue(item.theme?.slug) ||
+                normalizeValue(item.theme?.name);
+
+            return hasThemeInfo && !matchesSelectedTheme(item);
+        });
+    const buildServerPaginatedParams = (extraParams = {}) => ({
+        "pagination[page]": requestedPage,
+        "pagination[pageSize]": safePageSize,
+        ...extraParams,
+    });
+    const buildServerPaginatedVariants = (filterVariants = [{}]) =>
+        filterVariants.flatMap((filterParams) => [
+            buildServerPaginatedParams({
+                ...filterParams,
+                populate: "*",
+                "sort[0]": "published_date:desc",
+                "sort[1]": "publishedAt:desc",
+            }),
+            buildServerPaginatedParams({
+                ...filterParams,
+                populate: "*",
+                "sort[0]": "publishedAt:desc",
+            }),
+            buildServerPaginatedParams({
+                ...filterParams,
+                "populate[0]": "cover_image",
+                "populate[1]": "theme",
+                "sort[0]": "publishedAt:desc",
+            }),
+            buildServerPaginatedParams({
+                ...filterParams,
+                "populate[cover_image]": "*",
+                "populate[theme]": "*",
+                "sort[0]": "publishedAt:desc",
+            }),
+        ]);
+    const mapServerPaginatedResponse = (payload) => {
+        const paginationMeta = extractStrapiPagination(payload);
+        if (!paginationMeta) return null;
+
+        const items = dedupeNewsItems(
+            filterPublishedNews(normalizeCollection(payload)),
+        );
+
+        // Some Strapi endpoints locally ignore requested pagination[pageSize].
+        // In that case we fallback to the client-side-compatible path so UI logic
+        // (mobile 18 / preview limits) stays deterministic.
+        const serverAppliedRequestedPageSize =
+            paginationMeta.pageSize === safePageSize && items.length <= safePageSize;
+
+        if (!serverAppliedRequestedPageSize) {
+            return null;
+        }
+
+        return {
+            items,
+            pagination: paginationMeta,
+            hasMore: paginationMeta.page < paginationMeta.pageCount,
+        };
+    };
+    const tryServerPaginatedFetch = async () => {
+        try {
+            const filterVariants = normalizedThemeSlug
+                ? [
+                      {
+                          "filters[theme][slug][$eq]": normalizedThemeSlug,
+                      },
+                      {
+                          "filters[theme][slug][$eqi]": normalizedThemeSlug,
+                      },
+                      ...(normalizedThemeId
+                          ? [
+                                {
+                                    "filters[theme][id][$eq]": normalizedThemeId,
+                                },
+                            ]
+                          : []),
+                      ...(normalizedThemeName
+                          ? [
+                                {
+                                    "filters[theme][name][$eqi]":
+                                        normalizedThemeName,
+                                },
+                            ]
+                          : []),
+                  ]
+                : [{}];
+
+            const payload = await fetchWithEndpointFallback({
+                endpoints: NEWS_ENDPOINTS,
+                paramsVariants: buildServerPaginatedVariants(filterVariants),
+                signal,
+            });
+            const mapped = mapServerPaginatedResponse(payload);
+            if (!mapped) return null;
+
+            if (
+                normalizedThemeSlug &&
+                mapped.items.length > 0 &&
+                hasServerMismatchedTheme(mapped.items)
+            ) {
+                return null;
+            }
+
+            return mapped;
+        } catch {
+            return null;
+        }
+    };
+
+    if (preferServerPagination) {
+        const serverPaginatedResult = await tryServerPaginatedFetch();
+        if (serverPaginatedResult) {
+            return serverPaginatedResult;
+        }
+    }
 
     let themeFiltered = [];
 
@@ -596,12 +748,11 @@ export async function fetchNewsList({
         return bTime - aTime;
     });
 
-    const safePage = Math.max(1, Number(page) || 1);
-    const safePageSize = Math.max(1, Number(pageSize) || 9);
+    const pageCount = Math.max(1, Math.ceil(sorted.length / safePageSize));
+    const safePage = Math.min(requestedPage, pageCount);
     const start = (safePage - 1) * safePageSize;
     const end = start + safePageSize;
     const items = sorted.slice(start, end);
-    const pageCount = Math.max(1, Math.ceil(sorted.length / safePageSize));
     const hasMore = safePage < pageCount;
     const pagination = {
         page: safePage,
@@ -623,12 +774,12 @@ export async function fetchNewsBySlug(slug, { signal } = {}) {
         paramsVariants: [
             {
                 populate: "*",
-                "pagination[pageSize]": 100,
+                "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
             },
             {
                 "populate[cover_image]": "*",
                 "populate[content][populate]": "*",
-                "pagination[pageSize]": 100,
+                "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
             },
             {},
         ],

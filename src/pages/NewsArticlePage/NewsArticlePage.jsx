@@ -170,12 +170,6 @@ export default function NewsArticlePage() {
                     <div className="news-article-page__state" role="status">
                         Новину не знайдено.
                     </div>
-
-                    <div className="news-article-page__actions">
-                        <Link to="/news" className="news-article-page__back-button">
-                            Повернутися до списку новин
-                        </Link>
-                    </div>
                 </div>
             </main>
         );
@@ -198,9 +192,11 @@ export default function NewsArticlePage() {
                     />
 
                     <header className="news-article-page__header">
-                        <h1 className="news-article-page__title">{newsItem.title}</h1>
+                        <h1 className="news-article-page__title">
+                            {newsItem.title}
+                        </h1>
                         {dateLabel ? (
-                            <time className="news-article-page__date">
+                            <time className="news-article-page__date news-article-page__date--header">
                                 {dateLabel}
                             </time>
                         ) : null}
@@ -225,23 +221,20 @@ export default function NewsArticlePage() {
                             </figure>
                         ) : null}
 
-                        <NewsContentRenderer content={newsItem.content} />
+                        {dateLabel ? (
+                            <time className="news-article-page__date news-article-page__date--after-cover">
+                                {dateLabel}
+                            </time>
+                        ) : null}
 
-                        <div className="news-article-page__actions">
-                            <Link
-                                to="/news"
-                                className="news-article-page__back-button"
-                            >
-                                Повернутися до списку новин
-                            </Link>
-                        </div>
+                        <NewsContentRenderer content={newsItem.content} />
                     </div>
                 </div>
             </article>
 
             <section className="news-article-page__form">
                 <ContactForm
-                    smallTitle="МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                    smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
                     subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
                 />
             </section>

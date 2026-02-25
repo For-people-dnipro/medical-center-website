@@ -13,9 +13,10 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .news-grid {
         grid-template-columns: 1fr;
-        row-gap: 20px;
+        column-gap: 0;
+        row-gap: 40px;
     }
 }
