@@ -251,6 +251,22 @@ function renderDynamicZoneItem(entry, index) {
     return null;
 }
 
+function isStrapiBlocksArray(content) {
+    return (
+        Array.isArray(content) &&
+        content.length > 0 &&
+        content.every((item) => {
+            if (!item || typeof item !== "object" || Array.isArray(item)) {
+                return false;
+            }
+
+            if (item.__component || item.component) return false;
+
+            return typeof item.type === "string" || Array.isArray(item.children);
+        })
+    );
+}
+
 export default function NewsContentRenderer({ content }) {
     if (!content) return null;
 
@@ -265,6 +281,16 @@ export default function NewsContentRenderer({ content }) {
     }
 
     if (Array.isArray(content)) {
+        if (isStrapiBlocksArray(content)) {
+            return (
+                <div className="news-content">
+                    <section className="news-content__text-block">
+                        {renderTextBlockBody(content, "blocks-array")}
+                    </section>
+                </div>
+            );
+        }
+
         return (
             <div className="news-content">
                 {content.map((entry, index) =>

@@ -19,6 +19,8 @@ import AnalysesPage from "./pages/AnalysesPage/AnalysesPage";
 import VacanciesPage from "./pages/VacanciesPage/VacanciesPage";
 import NewsPage from "./pages/NewsPage/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage/NewsArticlePage";
+import DoctorsPage from "./pages/DoctorsPage/DoctorsPage";
+import DoctorProfilePage from "./pages/DoctorProfilePage/DoctorProfilePage";
 import Footer from "./components/Footer/Footer";
 import CookieBanner from "./components/CookieBanner/CookieBanner";
 
@@ -110,6 +112,11 @@ function App() {
                         <Route path="/checkup" element={<TestPage />} />
                         <Route path="/check-up" element={<TestPage />} />
                         <Route path="/air-alert" element={<AirAlertPage />} />
+                        <Route path="/doctors" element={<DoctorsPage />} />
+                        <Route
+                            path="/doctors/:slug"
+                            element={<DoctorProfilePage />}
+                        />
                         <Route path="/branches" element={<BranchesPage />} />
                         <Route path="/analyses" element={<AnalysesPage />} />
                         <Route path="/vacancies" element={<VacanciesPage />} />

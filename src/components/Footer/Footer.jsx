@@ -129,7 +129,8 @@ export default function Footer() {
                 <div className="footer-nav desktop-menu">
                     {menuToRender.map((item, i) =>
                         item.href === "/air-alert" ||
-                        item.href === "/branches" ? (
+                        item.href === "/branches" ||
+                        item.href === "/doctors" ? (
                             <Link key={i} to={item.href}>
                                 {item.label}
                             </Link>
@@ -146,6 +147,10 @@ export default function Footer() {
                         {mobileLeft.map((item, i) =>
                             item === "Філії" ? (
                                 <Link key={i} to="/branches">
+                                    {item}
+                                </Link>
+                            ) : item === "Лікарі" ? (
+                                <Link key={i} to="/doctors">
                                     {item}
                                 </Link>
                             ) : (

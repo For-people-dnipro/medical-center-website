@@ -430,6 +430,38 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
+  collectionName: 'branches';
+  info: {
+    displayName: 'Branch';
+    pluralName: 'branches';
+    singularName: 'branch';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::branch.branch'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
   collectionName: 'doctors';
   info: {
@@ -441,11 +473,27 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    branch: Schema.Attribute.Relation<'manyToOne', 'api::branch.branch'>;
+    button1_link: Schema.Attribute.String;
+    button2_link: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    education: Schema.Attribute.Blocks;
     experience: Schema.Attribute.Integer & Schema.Attribute.Required;
+    experienceSection: Schema.Attribute.Blocks;
+    fullDescription: Schema.Attribute.Blocks;
+    fullName: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+        'content-type-builder': {
+          visible: false;
+        };
+      }>;
     homepage_priority: Schema.Attribute.Integer;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -456,11 +504,36 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     order: Schema.Attribute.Integer & Schema.Attribute.Required;
     photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required;
-    place: Schema.Attribute.String;
-    position: Schema.Attribute.String & Schema.Attribute.Required;
+    position: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+        'content-type-builder': {
+          visible: false;
+        };
+      }>;
+    positionLong: Schema.Attribute.String & Schema.Attribute.Required;
+    positionShort: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    quote: Schema.Attribute.Text;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    services: Schema.Attribute.Blocks;
+    shortDescription: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        'content-manager': {
+          visible: false;
+        };
+        'content-type-builder': {
+          visible: false;
+        };
+      }>;
     show_on_homepage: Schema.Attribute.Boolean;
-    slug: Schema.Attribute.UID & Schema.Attribute.Required;
+    slug: Schema.Attribute.UID<'fullName'> & Schema.Attribute.Required;
+    specialisations: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::specialisation.specialisation'
+    >;
     surname: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -654,6 +727,38 @@ export interface ApiServicePriceServicePrice
     priceForNonDeclarant: Schema.Attribute.Integer & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSpecialisationSpecialisation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'specialisations';
+  info: {
+    displayName: 'Specialisation';
+    pluralName: 'specialisations';
+    singularName: 'specialisation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::specialisation.specialisation'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1270,12 +1375,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::branch.branch': ApiBranchBranch;
       'api::doctor.doctor': ApiDoctorDoctor;
       'api::home-slider.home-slider': ApiHomeSliderHomeSlider;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::news.news-item': ApiNewsNewsItem;
       'api::service-price-item.service-price-item': ApiServicePriceItemServicePriceItem;
       'api::service-price.service-price': ApiServicePriceServicePrice;
+      'api::specialisation.specialisation': ApiSpecialisationSpecialisation;
       'api::theme.theme': ApiThemeTheme;
       'api::vacancy.vacancy': ApiVacancyVacancy;
       'api::vaccine.vaccine': ApiVaccineVaccine;

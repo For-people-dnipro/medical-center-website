@@ -1,7 +1,6 @@
 import ContactForm from "../../components/ContactForm/ContactForm";
-import BranchesMap from "../../components/BranchesMap";
-import MapPin from "../../components/MapPin";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import BranchCard from "../../components/BranchCard/BranchCard";
 import "./BranchesPage.css";
 
 const BRANCHES = [
@@ -89,49 +88,7 @@ export default function BranchesPage() {
                     <div className="branches-page__container">
                         <div className="branches-page__cards">
                             {BRANCHES.map((branch) => (
-                                <article
-                                    className="branches-page__card"
-                                    key={branch.id}
-                                >
-                                    <div className="branches-page__card-content">
-                                        <div className="branches-page__address-row">
-                                            <h2>{branch.address}</h2>
-                                        </div>
-
-                                        <div className="branches-page__meta">
-                                            <div className="branches-page__meta-item">
-                                                <p className="branches-page__meta-label">
-                                                    Графік роботи:
-                                                </p>
-                                                <p className="branches-page__meta-value">
-                                                    {branch.hours}
-                                                </p>
-                                            </div>
-
-                                            <div className="branches-page__meta-item">
-                                                <p className="branches-page__meta-label">
-                                                    Контактний номер:
-                                                </p>
-                                                <p className="branches-page__meta-value">
-                                                    <a
-                                                        href={`tel:${branch.phoneHref}`}
-                                                    >
-                                                        {branch.phoneDisplay}
-                                                    </a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="branches-page__map">
-                                        <BranchesMap
-                                            branches={branch.mapMarkers}
-                                            center={branch.mapCenter}
-                                            zoom={14}
-                                            borderRadius={0}
-                                        />
-                                    </div>
-                                </article>
+                                <BranchCard key={branch.id} branch={branch} />
                             ))}
                         </div>
                     </div>
