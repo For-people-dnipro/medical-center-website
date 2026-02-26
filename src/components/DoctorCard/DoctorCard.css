@@ -1,0 +1,140 @@
+.doctor-card {
+    min-width: 0;
+    height: 100%;
+}
+
+.doctor-card__link {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 10px;
+    height: 100%;
+    align-content: start;
+    color: inherit;
+    text-decoration: none;
+}
+
+.doctor-card__image-wrap {
+    position: relative;
+    aspect-ratio: 3 / 3;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.doctor-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition:
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.35s ease;
+}
+
+.doctor-card__image--placeholder {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #eaf2f3, #f7f8fa);
+    color: #4f6569;
+    font-size: 28px;
+    font-weight: var(--fw-semibold);
+}
+
+.doctor-card__link:hover .doctor-card__image {
+    transform: scale(1.02);
+}
+
+.doctor-card__experience {
+    position: absolute;
+    right: 12px;
+    bottom: 16px;
+    min-width: 55px;
+    padding: 5px 2px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    text-align: center;
+    transition:
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.35s ease;
+}
+
+.doctor-card__link:hover .doctor-card__experience {
+    transform: scale(1.02);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.doctor-card__experience-number {
+    font-size: 18px;
+    font-weight: var(--fw-medium);
+    line-height: 1;
+}
+
+.doctor-card__experience-line {
+    width: calc(100% - 8px);
+    height: 1px;
+    margin: 4px auto;
+    background: #d6dde4;
+}
+
+.doctor-card__experience-text {
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+    line-height: 1.1;
+    color: #141414;
+}
+
+.doctor-card__body {
+    display: grid;
+    gap: 4px;
+    padding: 0 2px;
+    min-height: 62px;
+    align-content: start;
+}
+
+.doctor-card__name {
+    margin: 0;
+    font-size: var(--font-body);
+    line-height: 1.25;
+    font-weight: var(--fw-semibold);
+    min-height: 2.6em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.doctor-card__name--split {
+    display: block;
+    overflow: hidden;
+}
+
+.doctor-card__name-line {
+    display: block;
+}
+
+.doctor-card__specialisation {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.25;
+    color: #1e1e1e;
+    min-height: 1.25em;
+    display: block;
+    overflow: visible;
+}
+
+@media (max-width: 768px) {
+    .doctor-card__image-wrap {
+        border-radius: 18px;
+    }
+
+    .doctor-card__experience {
+        right: 10px;
+        bottom: 12px;
+    }
+
+    .doctor-card__specialisation {
+        font-size: var(--font-body);
+    }
+}

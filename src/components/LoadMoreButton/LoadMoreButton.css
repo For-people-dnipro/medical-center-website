@@ -1,0 +1,16 @@
+.ui-button.load-more-button {
+    color: #111111;
+    padding: 4px 8px 4px 24px;
+    font-size: var(--font-body);
+    font-weight: var(--fw-medium);
+    margin-top: 0;
+}
+
+.ui-button.load-more-button .ui-button-arrow {
+    width: 34px;
+    height: 34px;
+}
+
+.ui-button.load-more-button:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}

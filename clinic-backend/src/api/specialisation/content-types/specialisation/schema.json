@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "specialisations",
+  "info": {
+    "singularName": "specialisation",
+    "pluralName": "specialisations",
+    "displayName": "Specialisation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

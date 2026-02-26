@@ -1,0 +1,167 @@
+.doctor-profile-tabs {
+    display: grid;
+    gap: 22px;
+}
+
+.doctor-profile-tabs__tablist {
+    display: flex;
+    justify-content: center;
+    gap: 42px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d7dee4;
+    flex-wrap: wrap;
+}
+
+.doctor-profile-tabs__tab {
+    position: relative;
+    background: transparent;
+    border: 0;
+    padding: 0 0 8px;
+    color: #787d82;
+    font: inherit;
+    line-height: 1.25;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.doctor-profile-tabs__tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -13px;
+    height: 2px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+}
+
+.doctor-profile-tabs__tab:hover {
+    color: #2f2f2f;
+}
+
+.doctor-profile-tabs__tab.is-active {
+    color: #131313;
+    font-weight: var(--fw-medium);
+}
+
+.doctor-profile-tabs__tab.is-active::after {
+    background: #6e767b;
+}
+
+.doctor-profile-tabs__panel {
+    animation: doctor-profile-tabs-fade 220ms ease;
+}
+
+.doctor-profile-tabs__content .news-content {
+    max-width: none;
+    gap: 18px;
+}
+
+.doctor-profile-tabs__content .news-content__text-block {
+    gap: 12px;
+}
+
+.doctor-profile-tabs__repeatable-list {
+    display: grid;
+    gap: 14px;
+}
+
+.doctor-profile-tabs__repeatable-item {
+    border: 1px solid #dde4ea;
+    border-radius: 14px;
+    padding: 14px 16px;
+    background: #ffffff;
+    display: grid;
+    gap: 10px;
+}
+
+.doctor-profile-tabs__repeatable-item p {
+    margin: 0;
+    line-height: 1.55;
+}
+
+.doctor-profile-tabs__repeatable-item ul {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 6px;
+}
+
+.doctor-profile-tabs__repeatable-title {
+    margin: 0;
+    font-size: var(--font-h3);
+    line-height: 1.3;
+    font-weight: var(--fw-semibold);
+}
+
+.doctor-profile-tabs__repeatable-extra {
+    display: grid;
+    gap: 4px;
+    line-height: 1.45;
+}
+
+.doctor-profile-tabs__repeatable-extra strong {
+    font-weight: var(--fw-semibold);
+}
+
+.doctor-profile-tabs__repeatable-html :first-child {
+    margin-top: 0;
+}
+
+.doctor-profile-tabs__repeatable-html :last-child {
+    margin-bottom: 0;
+}
+
+.doctor-profile-tabs__repeatable-json {
+    display: grid;
+    gap: 4px;
+    font-size: var(--font-body);
+}
+
+.doctor-profile-tabs__empty {
+    margin: 0;
+    border: 1px solid #d6dde4;
+    border-radius: 14px;
+    padding: 18px 16px;
+    line-height: 1.5;
+    color: #3e4347;
+}
+
+@keyframes doctor-profile-tabs-fade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .doctor-profile-tabs {
+        gap: 18px;
+    }
+
+    .doctor-profile-tabs__tablist {
+        gap: 18px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .doctor-profile-tabs__tablist::-webkit-scrollbar {
+        display: none;
+    }
+
+    .doctor-profile-tabs__tab {
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+
+    .doctor-profile-tabs__tab::after {
+        bottom: -13px;
+    }
+}
