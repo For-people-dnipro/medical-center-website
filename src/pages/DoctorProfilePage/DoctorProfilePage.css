@@ -164,6 +164,10 @@
     padding: 0;
 }
 
+.doctor-profile-page__contact {
+    padding: 0;
+}
+
 .doctor-profile-page__state {
     border: 1px solid #d6dde4;
     border-radius: 16px;

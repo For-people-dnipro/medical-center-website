@@ -61,7 +61,7 @@
 
 .doctors-page__list {
     padding: 0;
-    margin-top: -44px;
+    margin-top: -15px;
 }
 
 .doctors-page__grid {
@@ -154,13 +154,12 @@
     }
 
     .doctors-page__list {
-        margin-top: -30px;
+        margin-top: 16px;
     }
 
     .doctors-page__load-more {
         margin-top: 38px;
     }
-
 }
 
 @media (max-width: 576px) {

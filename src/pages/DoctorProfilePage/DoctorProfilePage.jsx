@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import BranchCard from "../../components/BranchCard/BranchCard";
 import Button from "../../components/Button/Button";
+import ContactForm from "../../components/ContactForm/ContactForm";
 import DoctorProfileTabs from "../../components/DoctorProfileTabs/DoctorProfileTabs";
 import MapPin from "../../components/MapPin";
 import RelatedDoctorsSection from "../../components/RelatedDoctorsSection/RelatedDoctorsSection";
@@ -270,6 +271,7 @@ export default function DoctorProfilePage() {
     const buttons = getProfileButtons(doctor);
     const doctorNameForAlt = String(doctor.fullName || "Лікар").trim();
     const doctorImageAlt = `Сімейний лікар ${doctorNameForAlt} — медичний центр Для Людей, Дніпро`;
+    const doctorPageSource = `Лікар: ${doctor.fullName || "Лікар"}`;
 
     return (
         <main className="doctor-profile-page">
@@ -394,6 +396,33 @@ export default function DoctorProfilePage() {
                     </div>
                 </section>
             ) : null}
+
+            <section className="doctor-profile-page__contact">
+                <ContactForm
+                    title="ВАША ДУМКА ВАЖЛИВА"
+                    subtitle="ЗАЛИШТЕ СВІЙ ВІДГУК ЩОДО ЯКОСТІ НАШИХ ПОСЛУГ"
+                    formType={doctorPageSource}
+                    detailsLabels={{ form: "Сторінка лікаря" }}
+                    placeholders={{
+                        name: "Ваше імʼя",
+                        phone: "Ваш номер телефону",
+                        email: "Ваша ел. пошта (за бажанням)",
+                        branch: "Оберіть філію",
+                        diagnostic: "Вкажіть назву процедури",
+                        checkupName: "Введіть назву CHECK-UP",
+                        message: "Залиште свій відгук",
+                    }}
+                    fields={{
+                        name: true,
+                        phone: true,
+                        email: true,
+                        branch: false,
+                        diagnostic: false,
+                        checkupName: false,
+                        message: true,
+                    }}
+                />
+            </section>
         </main>
     );
 }
