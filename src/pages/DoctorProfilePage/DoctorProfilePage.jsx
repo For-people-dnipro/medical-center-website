@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import BranchCard from "../../components/BranchCard/BranchCard";
@@ -6,21 +6,31 @@ import Button from "../../components/Button/Button";
 import DoctorProfileTabs from "../../components/DoctorProfileTabs/DoctorProfileTabs";
 import MapPin from "../../components/MapPin";
 import RelatedDoctorsSection from "../../components/RelatedDoctorsSection/RelatedDoctorsSection";
+import SeoHead from "../../components/Seo/SeoHead";
 import {
+    fetchDoctorBranches,
     fetchDoctorBySlug,
     fetchDoctorsList,
     formatExperienceYearsLabel,
     getBranchIdentity,
     getDoctorTabItems,
 } from "../../api/doctorsApi";
-import useSeoMeta from "../../hooks/useSeoMeta";
+import {
+    buildDoctorFallbackDescription,
+    buildDoctorFallbackTitle,
+    firstSeoText,
+    withSiteTitle,
+} from "../../seo/seoConfig";
 import "./DoctorProfilePage.css";
 
 function buildDescription(doctor) {
-    return (
-        doctor?.seoDescription ||
-        doctor?.shortDescription ||
-        `Профіль лікаря ${doctor?.fullName || ""} у медичному центрі “Для людей”.`.trim()
+    return firstSeoText(
+        doctor?.seoDescription,
+        doctor?.shortDescription,
+        buildDoctorFallbackDescription({
+            fullName: doctor?.fullName,
+            shortDescription: doctor?.shortDescription,
+        }),
     );
 }
 
@@ -56,6 +66,7 @@ function getInitials(name) {
 export default function DoctorProfilePage() {
     const { slug = "" } = useParams();
     const [doctor, setDoctor] = useState(null);
+    const [doctorBranch, setDoctorBranch] = useState(null);
     const [relatedDoctors, setRelatedDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -75,6 +86,7 @@ export default function DoctorProfilePage() {
             setError("");
             setNotFound(false);
             setDoctor(null);
+            setDoctorBranch(null);
             setRelatedDoctors([]);
 
             try {
@@ -90,6 +102,7 @@ export default function DoctorProfilePage() {
                 }
 
                 setDoctor(doctorData);
+                setDoctorBranch(doctorData.branch || null);
 
                 const branchIdentity = getBranchIdentity(doctorData.branch);
                 if (!branchIdentity) return;
@@ -109,6 +122,29 @@ export default function DoctorProfilePage() {
                     .slice(0, 4);
 
                 setRelatedDoctors(related);
+
+                try {
+                    const branchesList = await fetchDoctorBranches({
+                        signal: controller.signal,
+                    });
+
+                    if (controller.signal.aborted) return;
+
+                    const resolvedBranch = (branchesList || []).find(
+                        (branch) =>
+                            getBranchIdentity(branch) === branchIdentity,
+                    );
+
+                    if (resolvedBranch) {
+                        setDoctorBranch(resolvedBranch);
+                    }
+                } catch (branchRequestError) {
+                    if (branchRequestError?.name === "AbortError") return;
+                    console.error(
+                        "Failed to resolve doctor branch from branches list:",
+                        branchRequestError,
+                    );
+                }
             } catch (requestError) {
                 if (requestError?.name === "AbortError") return;
                 console.error("Failed to load doctor profile:", requestError);
@@ -130,30 +166,33 @@ export default function DoctorProfilePage() {
         return () => controller.abort();
     }, [slug]);
 
-    const pageTitle = useMemo(() => {
-        if (!doctor) return "Лікар | Для людей";
-        return `${doctor.seoTitle || doctor.fullName} | Для людей`;
-    }, [doctor]);
-
+    const pageTitle = withSiteTitle(
+        doctor?.seoTitle,
+        buildDoctorFallbackTitle(doctor?.fullName),
+    );
     const pageDescription = buildDescription(doctor);
-    const canonicalUrl =
-        typeof window !== "undefined" && slug
-            ? `${window.location.origin}/doctors/${slug}`
-            : "";
-
-    useSeoMeta({
+    const canonicalPath = slug ? `/doctors/${slug}` : "/doctors";
+    const fallbackTitle = buildDoctorFallbackTitle(doctor?.fullName);
+    const fallbackDescription = buildDoctorFallbackDescription({
+        fullName: doctor?.fullName,
+        shortDescription: doctor?.shortDescription,
+    });
+    const seoProps = {
         title: pageTitle,
         description: pageDescription,
-        ogTitle: doctor?.seoTitle || doctor?.fullName || "Лікар",
+        fallbackTitle,
+        fallbackDescription,
+        ogTitle: firstSeoText(doctor?.seoTitle, doctor?.fullName, "Лікар"),
         ogDescription: pageDescription,
+        ogType: "website",
         ogImage: doctor?.photo?.url || "",
-        canonicalUrl,
-        type: "website",
-    });
+        canonicalPath,
+    };
 
     if (loading) {
         return (
             <main className="doctor-profile-page">
+                <SeoHead {...seoProps} />
                 <div className="doctor-profile-page__container">
                     <div className="doctor-profile-page__state" role="status">
                         Завантажуємо сторінку лікаря...
@@ -166,6 +205,7 @@ export default function DoctorProfilePage() {
     if (error) {
         return (
             <main className="doctor-profile-page">
+                <SeoHead {...seoProps} />
                 <div className="doctor-profile-page__container">
                     <div
                         className="doctor-profile-page__state doctor-profile-page__state--error"
@@ -181,6 +221,7 @@ export default function DoctorProfilePage() {
     if (notFound || !doctor) {
         return (
             <main className="doctor-profile-page">
+                <SeoHead {...seoProps} />
                 <div className="doctor-profile-page__container">
                     <div className="doctor-profile-page__state" role="status">
                         Лікаря не знайдено.
@@ -193,11 +234,13 @@ export default function DoctorProfilePage() {
     const years = Number(doctor.experienceYears) || 0;
     const doctorPosition = doctor?.position || "";
     const tabItems = getDoctorTabItems(doctor);
-    const branchAddress = doctor.branch?.address || doctor.address || "";
+    const activeBranch = doctorBranch || doctor.branch || null;
+    const branchAddress = activeBranch?.address || doctor.address || "";
     const buttons = getProfileButtons(doctor);
 
     return (
         <main className="doctor-profile-page">
+            <SeoHead {...seoProps} />
             <section className="doctor-profile-page__hero">
                 <div className="doctor-profile-page__container">
                     <Breadcrumbs
@@ -300,10 +343,10 @@ export default function DoctorProfilePage() {
                 </div>
             </section>
 
-            {doctor.branch ? (
+            {activeBranch ? (
                 <section className="doctor-profile-page__branch">
                     <div className="doctor-profile-page__container">
-                        <BranchCard branch={doctor.branch} />
+                        <BranchCard branch={activeBranch} />
                     </div>
                 </section>
             ) : null}

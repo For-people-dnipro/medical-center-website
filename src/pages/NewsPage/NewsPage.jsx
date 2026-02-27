@@ -5,7 +5,8 @@ import NewsGrid from "../../components/NewsGrid/NewsGrid";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import { fetchNewsList, fetchThemes } from "../../api/newsApi";
-import useSeoMeta from "../../hooks/useSeoMeta";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./NewsPage.css";
 
 const MOBILE_BREAKPOINT = 768;
@@ -14,6 +15,7 @@ const SMALL_NEWS_INITIAL_COUNT = 4;
 const SMALL_NEWS_STEP = 4;
 const MOBILE_PAGE_SIZE = 18;
 const DESKTOP_PAGE_SIZE = 9;
+const PAGE_SEO = getStaticSeo("news");
 
 function getIsMobileViewport() {
     if (typeof window === "undefined") return false;
@@ -172,19 +174,6 @@ export default function NewsPage() {
               url: canonicalUrl,
           }
         : null;
-
-    useSeoMeta({
-        title: "Новини | Для людей",
-        description:
-            "Читайте актуальні новини медичного центру “Для людей”: події, корисні матеріали, акції та оновлення.",
-        ogTitle: "Новини | Для людей",
-        ogDescription:
-            "Актуальні новини медичного центру “Для людей”. Обирайте тему та переглядайте останні публікації.",
-        canonicalUrl,
-        type: "website",
-        robots: "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        jsonLd: listSchema,
-    });
 
     useEffect(() => {
         const controller = new AbortController();
@@ -466,6 +455,15 @@ export default function NewsPage() {
 
     return (
         <main className="news-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                ogTitle={PAGE_SEO.title}
+                ogDescription={PAGE_SEO.description}
+                canonicalUrl={canonicalUrl}
+                ogType="website"
+                jsonLd={listSchema}
+            />
             <section className="news-page__hero">
                 <div className="news-page__container">
                     <Breadcrumbs

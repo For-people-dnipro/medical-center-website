@@ -4,7 +4,11 @@ import CardTemplateServices from "../../components/CardTemplateServices/CardTemp
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 import SectionTypes from "../../components/SectionTypes/SectionTypes";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./DiagnosticsPage.css";
+
+const PAGE_SEO = getStaticSeo("diagnostics");
 
 export default function DiagnosticsPage() {
     const handleScrollToForm = (event) => {
@@ -17,6 +21,11 @@ export default function DiagnosticsPage() {
 
     return (
         <>
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/diagnostics"
+            />
             <main className="diagnostics-page">
                 {/* HERO */}
                 <ServicesCardHero

@@ -5,6 +5,8 @@ import ServicesCardHero from "../components/ServicesCardHero/ServicesCardHero";
 import Ticket from "../components/Ticket/Ticket";
 import FAQSection from "../sections/FaqSection";
 import InfoGridSection from "../components/InfoGridSection/InfoGridSection";
+import SeoHead from "../components/Seo/SeoHead";
+import { getStaticSeo } from "../seo/seoConfig";
 
 const benefits = [
     "Щоб мати свого лікаря, який знає історію вашого здоров'я.",
@@ -207,9 +209,16 @@ const declarationFaqs = [
     },
 ];
 
+const PAGE_SEO = getStaticSeo("declaration");
+
 export default function DeclarationPage() {
     return (
         <div className="declaration-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/declaration"
+            />
             <main className="declaration-page__main">
                 <ServicesCardHero
                     title="ДЕКЛАРАЦІЯ"

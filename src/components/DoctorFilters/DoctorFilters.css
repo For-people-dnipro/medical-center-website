@@ -221,9 +221,13 @@
 }
 
 @media (max-width: 768px) {
+    .doctor-filters {
+        gap: 4px;
+    }
+
     .doctor-filters__controls {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 4px;
     }
 
     .doctor-filters__search input,

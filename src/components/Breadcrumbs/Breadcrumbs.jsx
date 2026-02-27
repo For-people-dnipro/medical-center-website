@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./Breadcrumbs.css";
+import styles from "./Breadcrumbs.module.css";
 
 export default function Breadcrumbs({
     items = [],
@@ -7,34 +7,57 @@ export default function Breadcrumbs({
     ariaLabel = "Breadcrumb",
     separator = "›",
 }) {
-    const sanitizedItems = items.filter(
-        (item) => item && typeof item.label === "string" && item.label.trim(),
-    );
+    const sanitizedItems = items
+        .map((item) => {
+            if (!item || typeof item !== "object") return null;
+
+            const label =
+                (typeof item.label === "string" && item.label.trim()) ||
+                (typeof item.title === "string" && item.title.trim()) ||
+                "";
+            const to =
+                (typeof item.to === "string" && item.to.trim()) ||
+                (typeof item.link === "string" && item.link.trim()) ||
+                "";
+
+            if (!label) return null;
+
+            return {
+                ...item,
+                label,
+                to,
+            };
+        })
+        .filter(Boolean);
 
     if (sanitizedItems.length === 0) {
         return null;
     }
 
-    const rootClassName = ["breadcrumbs", className].filter(Boolean).join(" ");
+    const rootClassName = [styles.breadcrumbs, className]
+        .filter(Boolean)
+        .join(" ");
 
     return (
         <nav className={rootClassName} aria-label={ariaLabel}>
             {sanitizedItems.map((item, index) => {
                 const isLast = index === sanitizedItems.length - 1;
-                const key = `${item.to || "current"}-${item.label}-${index}`;
+                const key = `${item.to || item.link || "current"}-${item.label}-${index}`;
 
                 return (
-                    <span key={key} className="breadcrumbs__item">
+                    <span key={key} className={styles.item}>
                         {item.to && !isLast ? (
-                            <Link to={item.to}>{item.label}</Link>
+                            <Link to={item.to} className={styles.link}>
+                                {item.label}
+                            </Link>
                         ) : (
-                            <span className="current" aria-current="page">
+                            <span className={styles.current} aria-current="page">
                                 {item.label}
                             </span>
                         )}
 
                         {!isLast ? (
-                            <span className="crumb-separator" aria-hidden="true">
+                            <span className={styles.separator} aria-hidden="true">
                                 {separator}
                             </span>
                         ) : null}

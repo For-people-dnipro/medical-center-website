@@ -4,9 +4,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Heading3 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+
+function getDoctorCardPosition(attrs = {}) {
+    return (
+        attrs.positionShort ||
+        attrs.position_short ||
+        attrs.shortPosition ||
+        attrs.positionLong ||
+        attrs.position_long ||
+        attrs.position ||
+        ""
+    );
+}
 
 export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
@@ -74,6 +85,7 @@ export default function DoctorsSection({ doctors = [] }) {
                                 ? `${API_URL}${d.photo.url}`
                                 : "";
                             const years = computeExperience(d);
+                            const cardPosition = getDoctorCardPosition(d);
 
                             return (
                                 <div key={doc.id} className="card">
@@ -107,8 +119,8 @@ export default function DoctorsSection({ doctors = [] }) {
                                         {d.name}
                                     </p>
 
-                                    {d.position && (
-                                        <p className="position">{d.position}</p>
+                                    {cardPosition && (
+                                        <p className="position">{cardPosition}</p>
                                     )}
                                 </div>
                             );
@@ -135,6 +147,7 @@ export default function DoctorsSection({ doctors = [] }) {
                                 ? `${API_URL}${d.photo.url}`
                                 : "";
                             const years = computeExperience(d);
+                            const cardPosition = getDoctorCardPosition(d);
 
                             return (
                                 <SwiperSlide
@@ -191,9 +204,9 @@ export default function DoctorsSection({ doctors = [] }) {
                                             )}
                                         </h3>
 
-                                        {d.position && (
+                                        {cardPosition && (
                                             <p className="mobile-position">
-                                                {d.position}
+                                                {cardPosition}
                                             </p>
                                         )}
                                     </div>

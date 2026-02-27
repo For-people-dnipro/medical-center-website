@@ -9,8 +9,11 @@ import WhyChooseUsSection from "../sections/WhyChooseUsSection";
 import FAQSection from "../sections/FaqSection";
 import ContactForm from "../components/ContactForm/ContactForm";
 import Footer from "../components/Footer/Footer";
+import SeoHead from "../components/Seo/SeoHead";
+import { getStaticSeo } from "../seo/seoConfig";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const PAGE_SEO = getStaticSeo("home");
 const homeFaqTitle = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
 const homeFaqs = [
     {
@@ -184,6 +187,11 @@ export default function Home() {
 
     return (
         <div>
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/"
+            />
             <div className="page-home">
                 <Banner />
                 <DeclarationSection />

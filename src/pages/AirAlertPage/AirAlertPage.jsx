@@ -1,10 +1,19 @@
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./AirAlertPage.css";
+
+const PAGE_SEO = getStaticSeo("airAlert");
 
 export default function AirAlertPage() {
     return (
         <div className="air-alert-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/air-alert"
+            />
             <main className="air-alert-page__main">
                 <section className="air-alert-page__intro">
                     <div className="air-alert-page__container">

@@ -31,7 +31,7 @@ export default function ServicesCardHero({
                                     <img src={icon} alt="" />
                                 </span>
                             )}
-                            <h2>{title}</h2>
+                            <h1>{title}</h1>
                         </div>
 
                         <span className="services-card-hero__line" />

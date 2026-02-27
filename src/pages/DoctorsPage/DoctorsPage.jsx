@@ -11,9 +11,11 @@ import {
     fetchDoctorsList,
     getBranchIdentity,
 } from "../../api/doctorsApi";
-import useSeoMeta from "../../hooks/useSeoMeta";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./DoctorsPage.css";
 
+const MOBILE_BREAKPOINT = 768;
 const PAGE_TITLE = "НАША КОМАНДА";
 const PAGE_DESCRIPTION =
     "Знайомтесь із нашими лікарями — досвідченими фахівцями, які дбають про ваше здоров'я щодня. Оберіть свого лікаря за спеціалізацією або місцем прийому.";
@@ -22,12 +24,20 @@ const SEARCH_PLACEHOLDER = "Ім'я лікаря";
 const BRANCH_FILTER_LABEL = "Локація";
 const SPECIALISATION_FILTER_LABEL = "Спеціалізація";
 const LOAD_MORE_LABEL = "Показати більше";
-const INITIAL_VISIBLE_COUNT = 9;
-const LOAD_MORE_STEP = 9;
+const DESKTOP_INITIAL_VISIBLE_COUNT = 12;
+const DESKTOP_LOAD_MORE_STEP = 12;
+const MOBILE_INITIAL_VISIBLE_COUNT = 4;
+const MOBILE_LOAD_MORE_STEP = 4;
+const DOCTORS_FORM_TITLE_DESKTOP = "ВАША ДУМКА ВАЖЛИВА";
+const DOCTORS_FORM_SUBTITLE_DESKTOP =
+    "ЗАЛИШТЕ СВІЙ ВІДГУК ЩОДО ЯКОСТІ НАШИХ ПОСЛУГ";
+const DOCTORS_FORM_TITLE_MOBILE = "ВАША ДУМКА ВАЖЛИВА";
+const DOCTORS_FORM_SUBTITLE_MOBILE = "ЗАЛИШТЕ ВІДГУК ";
 const EMPTY_STATE_TITLE =
     "На жаль, ми не змогли знайти лікаря за вашим запитом.";
 const EMPTY_STATE_TEXT =
     "Будь ласка, змініть фільтри або скоригуйте пошуковий запит.";
+const PAGE_SEO = getStaticSeo("doctors");
 
 function toSearchText(value) {
     return String(value || "")
@@ -39,6 +49,11 @@ function branchLabel(branch) {
     return branch.shortAddress || branch.name || branch.address || "—";
 }
 
+function getIsMobileViewport() {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
+}
+
 export default function DoctorsPage() {
     const [doctors, setDoctors] = useState([]);
     const [branches, setBranches] = useState([]);
@@ -46,26 +61,18 @@ export default function DoctorsPage() {
     const [initialLoading, setInitialLoading] = useState(true);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isMobileViewport, setIsMobileViewport] =
+        useState(getIsMobileViewport);
 
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedSpecialisation, setSelectedSpecialisation] = useState("");
-    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
-
-    useSeoMeta({
-        title: "Лікарі | Для людей",
-        description:
-            "Наша команда лікарів: оберіть фахівця за спеціалізацією або локацією та запишіться на прийом.",
-        ogTitle: "Лікарі | Для людей",
-        ogDescription:
-            "Ознайомтеся з лікарями медичного центру “Для людей” та знайдіть свого фахівця.",
-        canonicalUrl:
-            typeof window !== "undefined"
-                ? `${window.location.origin}/doctors`
-                : "",
-        type: "website",
-    });
+    const [visibleCount, setVisibleCount] = useState(() =>
+        getIsMobileViewport()
+            ? MOBILE_INITIAL_VISIBLE_COUNT
+            : DESKTOP_INITIAL_VISIBLE_COUNT,
+    );
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -74,6 +81,27 @@ export default function DoctorsPage() {
 
         return () => clearTimeout(timer);
     }, [searchValue]);
+
+    useEffect(() => {
+        if (typeof window === "undefined") return undefined;
+
+        const mediaQuery = window.matchMedia(
+            `(max-width: ${MOBILE_BREAKPOINT}px)`,
+        );
+        const handleChange = (event) => {
+            setIsMobileViewport(event.matches);
+        };
+
+        setIsMobileViewport(mediaQuery.matches);
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleChange);
+            return () => mediaQuery.removeEventListener("change", handleChange);
+        }
+
+        mediaQuery.addListener(handleChange);
+        return () => mediaQuery.removeListener(handleChange);
+    }, []);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -148,9 +176,21 @@ export default function DoctorsPage() {
         return () => controller.abort();
     }, [debouncedSearchValue, selectedBranch, selectedSpecialisation]);
 
+    const initialVisibleCount = isMobileViewport
+        ? MOBILE_INITIAL_VISIBLE_COUNT
+        : DESKTOP_INITIAL_VISIBLE_COUNT;
+    const loadMoreStep = isMobileViewport
+        ? MOBILE_LOAD_MORE_STEP
+        : DESKTOP_LOAD_MORE_STEP;
+
     useEffect(() => {
-        setVisibleCount(INITIAL_VISIBLE_COUNT);
-    }, [debouncedSearchValue, selectedBranch, selectedSpecialisation]);
+        setVisibleCount(initialVisibleCount);
+    }, [
+        initialVisibleCount,
+        debouncedSearchValue,
+        selectedBranch,
+        selectedSpecialisation,
+    ]);
 
     const branchOptions = useMemo(() => {
         const sourceBranches =
@@ -198,11 +238,16 @@ export default function DoctorsPage() {
         !loading &&
         !initialLoading &&
         !error &&
-        doctors.length > INITIAL_VISIBLE_COUNT &&
+        doctors.length > initialVisibleCount &&
         visibleDoctors.length < doctors.length;
 
     return (
         <main className="doctors-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/doctors"
+            />
             <section className="doctors-page__hero">
                 <div className="doctors-page__container">
                     <Breadcrumbs
@@ -290,7 +335,7 @@ export default function DoctorsPage() {
                                             setVisibleCount((current) =>
                                                 Math.min(
                                                     doctors.length,
-                                                    current + LOAD_MORE_STEP,
+                                                    current + loadMoreStep,
                                                 ),
                                             )
                                         }
@@ -303,31 +348,37 @@ export default function DoctorsPage() {
             </section>
 
             <section className="doctors-page__contact">
-                <div className="doctors-page__container">
-                    <ContactForm
-                        title="ВАША ДУМКА ВАЖЛИВА"
-                        subtitle="ЗАЛИШТЕ СВІЙ ВІДГУК ЩОДО ЯКОСТІ НАШИХ ПОСЛУГ"
-                        formType="Відгук щодо якості послуг"
-                        placeholders={{
-                            name: "Ваше імʼя",
-                            phone: "Ваш номер телефону",
-                            email: "Ваша ел. пошта (за бажанням)",
-                            branch: "Оберіть філію",
-                            diagnostic: "Вкажіть назву процедури",
-                            checkupName: "Введіть назву CHECK-UP",
-                            message: "Залиште свій відгук",
-                        }}
-                        fields={{
-                            name: true,
-                            phone: true,
-                            email: true,
-                            branch: false,
-                            diagnostic: false,
-                            checkupName: false,
-                            message: true,
-                        }}
-                    />
-                </div>
+                <ContactForm
+                    title={
+                        isMobileViewport
+                            ? DOCTORS_FORM_TITLE_MOBILE
+                            : DOCTORS_FORM_TITLE_DESKTOP
+                    }
+                    subtitle={
+                        isMobileViewport
+                            ? DOCTORS_FORM_SUBTITLE_MOBILE
+                            : DOCTORS_FORM_SUBTITLE_DESKTOP
+                    }
+                    formType="Відгук щодо якості послуг"
+                    placeholders={{
+                        name: "Ваше імʼя",
+                        phone: "Ваш номер телефону",
+                        email: "Ваша ел. пошта (за бажанням)",
+                        branch: "Оберіть філію",
+                        diagnostic: "Вкажіть назву процедури",
+                        checkupName: "Введіть назву CHECK-UP",
+                        message: "Залиште свій відгук",
+                    }}
+                    fields={{
+                        name: true,
+                        phone: true,
+                        email: true,
+                        branch: false,
+                        diagnostic: false,
+                        checkupName: false,
+                        message: true,
+                    }}
+                />
             </section>
         </main>
     );

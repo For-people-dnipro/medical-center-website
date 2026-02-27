@@ -5,6 +5,10 @@ import VacanciesList from "../../components/VacanciesList/VacanciesList";
 import BenefitsSection from "../../components/BenefitsSection/BenefitsSection";
 import "./VacanciesPage.css";
 import Ticket from "../../components/Ticket/Ticket";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
+
+const PAGE_SEO = getStaticSeo("vacancies");
 
 export default function VacanciesPage() {
     const [setSelectedVacancy] = useState("");
@@ -27,6 +31,11 @@ export default function VacanciesPage() {
 
     return (
         <div className="vacancies-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/vacancies"
+            />
             <main className="vacancies-page__main">
                 <VacanciesHero onExploreClick={handleExploreVacancies} />
 

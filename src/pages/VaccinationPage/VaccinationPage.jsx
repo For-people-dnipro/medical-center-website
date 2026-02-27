@@ -6,6 +6,8 @@ import FAQSection from "../../sections/FaqSection";
 import "./VaccinationPage.css";
 import VaccinesStaticSection from "../../components/VaccinesStaticSection/VaccinesStaticSection";
 import VaccinationStandardsCarousel from "../../components/VaccinationStandardsCarousel/VaccinationStandardsCarousel";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 
 const vaccinationFaqs = [
     {
@@ -50,6 +52,8 @@ const vaccinationOfferItems = [
     "вакцинацію перед подорожами",
     "сезонні щеплення (наприклад, проти грипу)",
 ];
+
+const PAGE_SEO = getStaticSeo("vaccination");
 
 export default function VaccinationPage() {
     const pageRef = useRef(null);
@@ -181,6 +185,11 @@ export default function VaccinationPage() {
 
     return (
         <>
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/vaccination"
+            />
             <main className="vaccination-page" ref={pageRef}>
                 <ServicesCardHero
                     title="ВАКЦИНАЦІЯ"

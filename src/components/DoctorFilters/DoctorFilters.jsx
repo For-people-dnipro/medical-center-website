@@ -19,6 +19,7 @@ function DoctorFiltersDropdown({
     const selectedValue = String(value ?? "");
     const resolvedPlaceholder = placeholder || "Оберіть значення";
     const resolvedEmptyOptionLabel = emptyOptionLabel || resolvedPlaceholder;
+    const isMenuOpen = !disabled && isOpen;
 
     const items = useMemo(
         () => [
@@ -39,12 +40,6 @@ function DoctorFiltersDropdown({
     const activeItem =
         items.find((item) => item.value === selectedValue) || items[0];
     const triggerLabel = selectedValue ? activeItem.label : resolvedPlaceholder;
-
-    useEffect(() => {
-        if (disabled) {
-            setIsOpen(false);
-        }
-    }, [disabled]);
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -85,7 +80,7 @@ function DoctorFiltersDropdown({
         <div
             ref={rootRef}
             className={`doctor-filters__select-wrap doctor-filters__select${
-                isOpen ? " is-open" : ""
+                isMenuOpen ? " is-open" : ""
             }${disabled ? " is-disabled" : ""}`}
         >
             <button
@@ -95,7 +90,7 @@ function DoctorFiltersDropdown({
                 className="doctor-filters__select-trigger"
                 aria-label={ariaLabel || resolvedPlaceholder}
                 aria-haspopup="listbox"
-                aria-expanded={isOpen}
+                aria-expanded={isMenuOpen}
                 aria-controls={menuId}
                 disabled={disabled}
                 onClick={() => setIsOpen((state) => !state)}
@@ -112,17 +107,17 @@ function DoctorFiltersDropdown({
                     alt=""
                     aria-hidden="true"
                     className={`doctor-filters__select-arrow${
-                        isOpen ? " is-open" : ""
+                        isMenuOpen ? " is-open" : ""
                     }`}
                 />
             </button>
 
             <div
                 id={menuId}
-                className={`doctor-filters__select-menu${isOpen ? " is-open" : ""}`}
+                className={`doctor-filters__select-menu${isMenuOpen ? " is-open" : ""}`}
                 role="listbox"
                 aria-label={ariaLabel || resolvedPlaceholder}
-                aria-hidden={!isOpen}
+                aria-hidden={!isMenuOpen}
             >
                 {items.map((item) => {
                     const isActive = item.value === selectedValue;
@@ -133,7 +128,7 @@ function DoctorFiltersDropdown({
                             type="button"
                             role="option"
                             aria-selected={isActive}
-                            tabIndex={isOpen ? 0 : -1}
+                            tabIndex={isMenuOpen ? 0 : -1}
                             className={`doctor-filters__select-option${
                                 isActive ? " is-active" : ""
                             }`}

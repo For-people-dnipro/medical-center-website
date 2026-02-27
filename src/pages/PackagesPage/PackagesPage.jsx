@@ -5,6 +5,8 @@ import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
 import InfoGridSection from "../../components/InfoGridSection/InfoGridSection";
 import PackagesCardsGrid from "../../components/PackagesCardsGrid/PackagesCardsGrid";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./PackagesPage.css";
 
 const packageBenefits = [
@@ -45,6 +47,8 @@ const packageAudience = [
     </>,
 ];
 
+const PAGE_SEO = getStaticSeo("packages");
+
 export default function PackagesPage() {
     const handleScrollToForm = (event) => {
         event.preventDefault();
@@ -57,6 +61,11 @@ export default function PackagesPage() {
 
     return (
         <div className="packages-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/packages"
+            />
             <main className="packages-page__main">
                 <ServicesCardHero
                     title="ПАКЕТНІ ПОСЛУГИ"

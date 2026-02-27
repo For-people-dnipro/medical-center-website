@@ -35,7 +35,7 @@ export default function VacanciesHero({
                     </div>
 
                     <div className="vacancies-hero__card">
-                        <h2>{title}</h2>
+                        <h1>{title}</h1>
                         <p className="vacancies-hero__intro">
                             Ми шукаємо фахівців, які:
                         </p>

@@ -482,16 +482,6 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     education: Schema.Attribute.Blocks;
     experience: Schema.Attribute.Integer & Schema.Attribute.Required;
     experienceSection: Schema.Attribute.Blocks;
-    fullDescription: Schema.Attribute.Blocks;
-    fullName: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        'content-manager': {
-          visible: false;
-        };
-        'content-type-builder': {
-          visible: false;
-        };
-      }>;
     homepage_priority: Schema.Attribute.Integer;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -504,32 +494,14 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     order: Schema.Attribute.Integer & Schema.Attribute.Required;
     photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required;
-    position: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        'content-manager': {
-          visible: false;
-        };
-        'content-type-builder': {
-          visible: false;
-        };
-      }>;
     positionLong: Schema.Attribute.String & Schema.Attribute.Required;
     positionShort: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     quote: Schema.Attribute.Text;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     services: Schema.Attribute.Blocks;
-    shortDescription: Schema.Attribute.Text &
-      Schema.Attribute.SetPluginOptions<{
-        'content-manager': {
-          visible: false;
-        };
-        'content-type-builder': {
-          visible: false;
-        };
-      }>;
     show_on_homepage: Schema.Attribute.Boolean;
-    slug: Schema.Attribute.UID<'fullName'> & Schema.Attribute.Required;
+    slug: Schema.Attribute.UID & Schema.Attribute.Required;
     specialisations: Schema.Attribute.Relation<
       'manyToMany',
       'api::specialisation.specialisation'

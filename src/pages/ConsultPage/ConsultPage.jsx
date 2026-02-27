@@ -5,10 +5,19 @@ import "./ConsultPage.css";
 import Ticket from "../../components/Ticket/Ticket";
 import CardTemplateServices from "../../components/CardTemplateServices/CardTemplateServices";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
+
+const PAGE_SEO = getStaticSeo("consultation");
 
 export default function ConsultPage() {
     return (
         <div className="consult-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/consultation"
+            />
             <main className="consult-page__main">
                 <ServicesCardHero
                     title="КОНСУЛЬТАЦІЯ"

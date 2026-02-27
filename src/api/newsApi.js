@@ -216,6 +216,7 @@ function normalizeTheme(entry) {
 
 function normalizeNewsItem(entry, index = 0) {
     const source = pickSource(entry);
+    const seoSource = pickSource(source.seo);
     const title = toText(source.title, "Новина");
     const slug = toText(source.slug, `news-${entry?.id ?? source.id ?? index}`);
 
@@ -241,8 +242,18 @@ function normalizeNewsItem(entry, index = 0) {
             toText(source.published_date) ||
             toText(source.publishedAt) ||
             toText(source.createdAt),
-        seoTitle: toText(source.seo_title),
-        seoDescription: toText(source.seo_description),
+        seoTitle:
+            toText(source.seo_title) ||
+            toText(source.seoTitle) ||
+            toText(source.metaTitle) ||
+            toText(seoSource.metaTitle) ||
+            toText(seoSource.title),
+        seoDescription:
+            toText(source.seo_description) ||
+            toText(source.seoDescription) ||
+            toText(source.metaDescription) ||
+            toText(seoSource.metaDescription) ||
+            toText(seoSource.description),
     };
 }
 

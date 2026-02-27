@@ -3,8 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import NewsContentRenderer from "../../components/NewsContentRenderer/NewsContentRenderer";
+import SeoHead from "../../components/Seo/SeoHead";
 import { fetchNewsBySlug, formatNewsDate } from "../../api/newsApi";
-import useSeoMeta from "../../hooks/useSeoMeta";
+import { getStaticSeo, withSiteTitle } from "../../seo/seoConfig";
 import "./NewsArticlePage.css";
 
 function toIsoDate(value) {
@@ -18,6 +19,8 @@ function toIsoDate(value) {
     const parsed = new Date(value);
     return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString();
 }
+
+const PAGE_SEO = getStaticSeo("newsArticle");
 
 export default function NewsArticlePage() {
     const { slug = "" } = useParams();
@@ -74,21 +77,18 @@ export default function NewsArticlePage() {
         return () => controller.abort();
     }, [slug]);
 
-    const pageTitle = useMemo(() => {
-        if (!newsItem) return "Новина | Для людей";
-        return `${newsItem.seoTitle || newsItem.title} | Для людей`;
-    }, [newsItem]);
+    const pageTitle = useMemo(
+        () => withSiteTitle(newsItem?.seoTitle || newsItem?.title, PAGE_SEO.title),
+        [newsItem],
+    );
 
     const pageDescription =
         newsItem?.seoDescription ||
         newsItem?.shortDescription ||
-        "Новини медичного центру “Для людей”.";
+        PAGE_SEO.description;
     const heroImage = newsItem?.coverImageHero || newsItem?.coverImage || null;
 
-    const canonicalUrl =
-        typeof window !== "undefined"
-            ? `${window.location.origin}/news/${slug}`
-            : "";
+    const canonicalPath = slug ? `/news/${slug}` : "/news";
 
     const articlePublishedIso = toIsoDate(newsItem?.publishedDate);
     const articleModifiedIso = articlePublishedIso || toIsoDate(Date.now());
@@ -98,14 +98,17 @@ export default function NewsArticlePage() {
             : "";
 
     const articleSchema =
-        newsItem && canonicalUrl
+        newsItem && canonicalPath
             ? {
                   "@context": "https://schema.org",
                   "@type": "NewsArticle",
                   inLanguage: "uk-UA",
                   headline: newsItem.seoTitle || newsItem.title,
                   description: pageDescription,
-                  mainEntityOfPage: canonicalUrl,
+                  mainEntityOfPage:
+                      typeof window !== "undefined"
+                          ? `${window.location.origin}${canonicalPath}`
+                          : canonicalPath,
                   datePublished: articlePublishedIso || undefined,
                   dateModified: articleModifiedIso || undefined,
                   image: heroImage?.url ? [heroImage.url] : undefined,
@@ -121,24 +124,25 @@ export default function NewsArticlePage() {
                   },
               }
             : null;
-
-    useSeoMeta({
+    const seoProps = {
         title: pageTitle,
         description: pageDescription,
+        fallbackTitle: PAGE_SEO.title,
+        fallbackDescription: PAGE_SEO.description,
         ogTitle: newsItem?.seoTitle || newsItem?.title || "Новина",
         ogDescription: pageDescription,
         ogImage: heroImage?.url || "",
-        canonicalUrl,
-        type: "article",
-        robots: "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        ogType: "article",
+        canonicalPath,
         articlePublishedTime: articlePublishedIso,
         articleModifiedTime: articleModifiedIso,
         jsonLd: articleSchema,
-    });
+    };
 
     if (loading) {
         return (
             <main className="news-article-page">
+                <SeoHead {...seoProps} />
                 <div className="news-article-page__container">
                     <div className="news-article-page__state" role="status">
                         Завантажуємо новину...
@@ -151,6 +155,7 @@ export default function NewsArticlePage() {
     if (error) {
         return (
             <main className="news-article-page">
+                <SeoHead {...seoProps} />
                 <div className="news-article-page__container">
                     <div
                         className="news-article-page__state news-article-page__state--error"
@@ -166,6 +171,7 @@ export default function NewsArticlePage() {
     if (notFound || !newsItem) {
         return (
             <main className="news-article-page">
+                <SeoHead {...seoProps} />
                 <div className="news-article-page__container">
                     <div className="news-article-page__state" role="status">
                         Новину не знайдено.
@@ -179,6 +185,7 @@ export default function NewsArticlePage() {
 
     return (
         <main className="news-article-page">
+            <SeoHead {...seoProps} />
             <article className="news-article-page__article">
                 <div className="news-article-page__container">
                     <Breadcrumbs

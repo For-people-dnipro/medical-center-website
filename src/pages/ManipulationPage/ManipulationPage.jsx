@@ -1,11 +1,20 @@
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import Footer from "../../components/Footer/Footer";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./ManipulationPage.css";
+
+const PAGE_SEO = getStaticSeo("manipulation");
 
 export default function ManipulationPage() {
     return (
         <>
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/manipulation"
+            />
             <main className="manipulation-page">
                 <ServicesCardHero
                     title="МАНІПУЛЯЦІЇ"

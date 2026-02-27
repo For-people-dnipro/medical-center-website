@@ -2,6 +2,8 @@ import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero
 import InfoGridSection from "../../components/InfoGridSection/InfoGridSection";
 import FAQSection from "../../sections/FaqSection";
 import ContactForm from "../../components/ContactForm/ContactForm";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./AnalysesPage.css";
 
 const recommendationItems = [
@@ -97,9 +99,16 @@ const analysesFaqs = [
     },
 ];
 
+const PAGE_SEO = getStaticSeo("analyses");
+
 export default function AnalysesPage() {
     return (
         <div className="analyses-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/analyses"
+            />
             <main className="analyses-page__main">
                 <ServicesCardHero
                     title="АНАЛІЗИ"

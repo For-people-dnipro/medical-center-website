@@ -3,6 +3,8 @@ import CardTemplateServices from "../../components/CardTemplateServices/CardTemp
 import Ticket from "../../components/Ticket/Ticket";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
+import SeoHead from "../../components/Seo/SeoHead";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./TestPage.css";
 
 const checkupPackages = [
@@ -68,6 +70,7 @@ const corporateBenefits = [
 
 const checkupTopRow = checkupPackages.slice(0, 2);
 const checkupBottomRow = checkupPackages.slice(2);
+const PAGE_SEO = getStaticSeo("checkup");
 
 export default function TestPage() {
     const handleScrollToForm = (event) => {
@@ -81,6 +84,11 @@ export default function TestPage() {
 
     return (
         <div className="test-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/checkup"
+            />
             <main className="test-page__main">
                 <ServicesCardHero
                     title="CHECK-UP"

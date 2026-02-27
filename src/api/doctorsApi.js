@@ -72,10 +72,7 @@ function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
-function toMaybeText(value) {
-    const text = toText(value);
-    return text || "";
-}
+
 
 function toNumber(value) {
     const num = Number(value);
@@ -1195,7 +1192,7 @@ export function getDoctorTabItems(doctor) {
         {
             key: "experience",
             label: "Досвід",
-            content: doctor?.experienceSection || doctor?.fullDescription || "",
+            content: doctor?.experienceSection || "",
             emptyText: "Інформацію про досвід буде додано незабаром.",
         },
         {
