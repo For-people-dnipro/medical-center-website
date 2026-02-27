@@ -12,6 +12,11 @@ export default function RelatedDoctorsSection({
     if (!items.length) return null;
 
     const rootClassName = ["related-doctors", className].filter(Boolean).join(" ");
+    const countClass =
+        items.length < 4 ? `related-doctors__grid--count-${items.length}` : "";
+    const gridClassName = ["related-doctors__grid", countClass]
+        .filter(Boolean)
+        .join(" ");
 
     return (
         <section className={rootClassName}>
@@ -24,7 +29,7 @@ export default function RelatedDoctorsSection({
                 </p>
             </div>
 
-            <div className="related-doctors__grid">
+            <div className={gridClassName}>
                 {items.map((doctor) => (
                     <DoctorCard key={doctor.id || doctor.slug} doctor={doctor} />
                 ))}
@@ -36,4 +41,3 @@ export default function RelatedDoctorsSection({
         </section>
     );
 }
-

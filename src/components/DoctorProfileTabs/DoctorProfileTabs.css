@@ -6,10 +6,40 @@
 .doctor-profile-tabs__tablist {
     display: flex;
     justify-content: center;
-    gap: 42px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #d7dee4;
+    column-gap: 56px;
+    row-gap: 12px;
     flex-wrap: wrap;
+    position: relative;
+    margin: 0;
+    padding-bottom: 12px;
+}
+
+.doctor-profile-tabs__tablist::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: #d7dee4;
+}
+
+.doctor-profile-tabs__tablist::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transform: translateX(calc(var(--underline-left, 0px) - 10px));
+    width: calc(var(--underline-width, 0px) + 20px);
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
+}
+
+.doctor-profile-tabs__tablist.is-wrapped::after {
+    display: none;
 }
 
 .doctor-profile-tabs__tab {
@@ -21,7 +51,10 @@
     font: inherit;
     line-height: 1.25;
     cursor: pointer;
-    transition: color 0.2s ease;
+    opacity: 0.6;
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .doctor-profile-tabs__tab::after {
@@ -32,20 +65,27 @@
     bottom: -13px;
     height: 2px;
     background: transparent;
-    transition: background-color 0.2s ease;
+}
+
+.doctor-profile-tabs__tablist:not(.is-wrapped)
+    .doctor-profile-tabs__tab::after {
+    display: none;
+}
+
+.doctor-profile-tabs__tablist.is-wrapped
+    .doctor-profile-tabs__tab.is-active::after {
+    background: #6e767b;
 }
 
 .doctor-profile-tabs__tab:hover {
     color: #2f2f2f;
+    opacity: 0.85;
 }
 
 .doctor-profile-tabs__tab.is-active {
     color: #131313;
     font-weight: var(--fw-medium);
-}
-
-.doctor-profile-tabs__tab.is-active::after {
-    background: #6e767b;
+    opacity: 1;
 }
 
 .doctor-profile-tabs__panel {
@@ -144,21 +184,14 @@
     }
 
     .doctor-profile-tabs__tablist {
-        gap: 18px;
-        justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    .doctor-profile-tabs__tablist::-webkit-scrollbar {
-        display: none;
+        justify-content: center;
+        column-gap: 20px;
+        row-gap: 10px;
+        flex-wrap: wrap;
     }
 
     .doctor-profile-tabs__tab {
-        white-space: nowrap;
-        padding-bottom: 10px;
+        padding-bottom: 8px;
     }
 
     .doctor-profile-tabs__tab::after {

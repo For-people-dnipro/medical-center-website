@@ -29,7 +29,10 @@ export default function Header() {
                             onClick={handleLogoClick}
                             aria-label="На головну"
                         >
-                            <img src={logo} alt="Для людей" />
+                            <img
+                                src={logo}
+                                alt="Логотип медичного центру Для Людей"
+                            />
                         </Link>
 
                         <div className="header-right">

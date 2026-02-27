@@ -29,7 +29,7 @@ export default function DiagnosticsPage() {
             <main className="diagnostics-page">
                 {/* HERO */}
                 <ServicesCardHero
-                    title="ДІАГНОСТИКА"
+                    title="ДІАГНОСТИКА У ДНІПРІ"
                     subtitle="Бачити. Розуміти. Діяти з турботою."
                     icon="/icons/service-diagnostics.svg"
                     image="/images/diagnostics-hero.jpg"
@@ -77,7 +77,7 @@ export default function DiagnosticsPage() {
                             </>
                         }
                         image="/images/diagnostics-prepare.jpg"
-                        imageAlt="Підготовка до діагностики"
+                        imageAlt="Підготовка до діагностики в медичному центрі Для Людей, Дніпро"
                     />
                 </section>
                 <section

@@ -5,6 +5,8 @@ import "./NewsCard.css";
 export default function NewsCard({ item }) {
     const dateLabel = formatNewsDate(item.publishedDate);
     const cardImage = item.coverImageCard || item.coverImage;
+    const newsTitle = String(item?.title || "Новина").trim();
+    const newsImageAlt = `${newsTitle} — медичний центр Для Людей, Дніпро`;
 
     let dateTime = "";
     if (item.publishedDate) {
@@ -22,7 +24,7 @@ export default function NewsCard({ item }) {
                         <img
                             className="news-card__image"
                             src={cardImage.url}
-                            alt={cardImage.alt || item.title}
+                            alt={newsImageAlt}
                             width={cardImage.width}
                             height={cardImage.height}
                             loading="lazy"

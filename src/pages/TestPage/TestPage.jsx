@@ -91,7 +91,7 @@ export default function TestPage() {
             />
             <main className="test-page__main">
                 <ServicesCardHero
-                    title="CHECK-UP"
+                    title="CHECK-UP У ДНІПРІ"
                     subtitle="Перевірити здоров’я для власного спокою"
                     icon="/icons/service-checkup.svg"
                     image="/images/consultation.jpg"
@@ -219,7 +219,7 @@ export default function TestPage() {
                                 </>
                             }
                             image="/images/ambulance.jpg"
-                            imageAlt="Медичні працівники біля швидкої допомоги"
+                            imageAlt="Медична команда медичного центру Для Людей у Дніпрі, Україна"
                         />
                     </div>
                 </section>

@@ -19,6 +19,31 @@ function getDoctorCardPosition(attrs = {}) {
     );
 }
 
+function buildDoctorImageAlt(attrs = {}) {
+    const fullName = [attrs.surname, attrs.name].filter(Boolean).join(" ").trim();
+    const doctorName = fullName || attrs.fullName || "Лікар";
+    return `Сімейний лікар ${doctorName} — медичний центр Для Людей, Дніпро`;
+}
+
+function parseStartYear(value) {
+    const text = String(value ?? "").trim();
+    if (!text) return null;
+
+    const direct = Number(text.replace(",", "."));
+    const numeric =
+        Number.isFinite(direct)
+            ? direct
+            : Number(
+                  (text.match(/-?\d+(?:[.,]\d+)?/)?.[0] || "").replace(
+                      ",",
+                      ".",
+                  ),
+              );
+    const year = Math.trunc(numeric);
+    if (!Number.isFinite(year) || year <= 0) return null;
+    return year;
+}
+
 export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
     if (!limitedDoctors.length) return null;
@@ -49,20 +74,12 @@ export default function DoctorsSection({ doctors = [] }) {
 
     function computeExperience(attrs = {}) {
         const yearNow = new Date().getFullYear();
-        const startYear =
-            attrs.startYear ||
-            attrs.workStartYear ||
-            attrs.experienceStartYear ||
-            attrs.start_of_career ||
-            attrs.start_year;
+        const startYear = parseStartYear(attrs.startYear);
+        if (startYear === null) return null;
+        const yearsOfExperience = yearNow - startYear;
+        if (yearsOfExperience <= 0) return 1;
 
-        if (startYear && !isNaN(Number(startYear))) {
-            return Math.max(0, yearNow - Number(startYear));
-        }
-
-        const exp = Number(attrs.experience ?? attrs.years ?? attrs.experiance);
-        if (!isNaN(exp) && exp !== 0) return Math.max(0, Math.floor(exp));
-        return 0;
+        return yearsOfExperience;
     }
 
     return (
@@ -86,6 +103,7 @@ export default function DoctorsSection({ doctors = [] }) {
                                 : "";
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
+                            const doctorImageAlt = buildDoctorImageAlt(d);
 
                             return (
                                 <div key={doc.id} className="card">
@@ -93,12 +111,12 @@ export default function DoctorsSection({ doctors = [] }) {
                                         {imgSrc && (
                                             <img
                                                 src={imgSrc}
-                                                alt={d.name || "doctor"}
+                                                alt={doctorImageAlt}
                                                 className="image"
                                             />
                                         )}
 
-                                        {years > 0 && (
+                                        {years !== null && (
                                             <div className="experience">
                                                 <div className="exp-number">
                                                     {years}
@@ -148,6 +166,7 @@ export default function DoctorsSection({ doctors = [] }) {
                                 : "";
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
+                            const doctorImageAlt = buildDoctorImageAlt(d);
 
                             return (
                                 <SwiperSlide
@@ -159,12 +178,12 @@ export default function DoctorsSection({ doctors = [] }) {
                                             {imgSrc && (
                                                 <img
                                                     src={imgSrc}
-                                                    alt={d.name || "doctor"}
+                                                    alt={doctorImageAlt}
                                                     className="mobile-image"
                                                 />
                                             )}
 
-                                            {years > 0 && (
+                                            {years !== null && (
                                                 <div className="experience">
                                                     <div className="exp-number">
                                                         {years}

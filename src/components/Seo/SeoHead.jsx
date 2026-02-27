@@ -4,6 +4,7 @@ import {
     SEO_DEFAULT_DESCRIPTION,
     SEO_DEFAULT_LANGUAGE,
     SEO_DEFAULT_LOCALE,
+    SEO_DEFAULT_OG_IMAGE,
     SEO_DEFAULT_ROBOTS,
     SEO_DEFAULT_TITLE,
     SEO_SITE_NAME,
@@ -41,6 +42,68 @@ function buildCanonicalUrl({ canonicalUrl, canonicalPath, pathname, search }) {
     return `${origin}${normalized}`;
 }
 
+function ensureDniproInTitle(value) {
+    const text = firstSeoText(value);
+    if (!text) return "";
+    if (/дніпр/i.test(text)) return text;
+    return `${text} — Дніпро`;
+}
+
+function ensureDniproInDescription(value) {
+    const text = firstSeoText(value);
+    if (!text) return "";
+    if (/дніпр/i.test(text)) return text;
+
+    const normalized = text.trim();
+    const tail = /[.!?…]$/.test(normalized) ? "" : ".";
+    return `${normalized}${tail} Медичний центр "Для людей" у Дніпрі, Україна.`;
+}
+
+function normalizeJsonLd(jsonLd) {
+    if (!jsonLd) return [];
+    if (Array.isArray(jsonLd)) return jsonLd.filter(Boolean);
+    return [jsonLd];
+}
+
+function buildLocalBusinessSchema() {
+    const origin = getCurrentOrigin();
+    const siteUrl = firstSeoText(origin);
+    const logoUrl = toAbsoluteUrl(SEO_DEFAULT_OG_IMAGE);
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "MedicalClinic",
+        name: 'Медичний центр "Для Людей"',
+        url: siteUrl || undefined,
+        image: logoUrl || undefined,
+        telephone: "+380500671388",
+        openingHoursSpecification: [
+            {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                ],
+                opens: "09:00",
+                closes: "18:00",
+            },
+        ],
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: "вул. Данила Галицького, 34",
+            addressLocality: "Дніпро",
+            addressCountry: "UA",
+        },
+        areaServed: {
+            "@type": "Place",
+            name: "Дніпро, Україна",
+        },
+    };
+}
+
 export default function SeoHead({
     title = "",
     description = "",
@@ -62,16 +125,21 @@ export default function SeoHead({
 }) {
     const location = useLocation();
 
-    const resolvedTitle = firstSeoText(title, fallbackTitle, SEO_DEFAULT_TITLE);
-    const resolvedDescription = firstSeoText(
-        description,
-        fallbackDescription,
-        SEO_DEFAULT_DESCRIPTION,
+    const resolvedTitle = ensureDniproInTitle(
+        firstSeoText(title, fallbackTitle, SEO_DEFAULT_TITLE),
     );
-    const resolvedOgTitle = firstSeoText(ogTitle, resolvedTitle);
-    const resolvedOgDescription = firstSeoText(
-        ogDescription,
-        resolvedDescription,
+    const resolvedDescription = ensureDniproInDescription(
+        firstSeoText(
+            description,
+            fallbackDescription,
+            SEO_DEFAULT_DESCRIPTION,
+        ),
+    );
+    const resolvedOgTitle = ensureDniproInTitle(
+        firstSeoText(ogTitle, resolvedTitle),
+    );
+    const resolvedOgDescription = ensureDniproInDescription(
+        firstSeoText(ogDescription, resolvedDescription),
     );
     const resolvedCanonicalUrl = buildCanonicalUrl({
         canonicalUrl,
@@ -79,9 +147,15 @@ export default function SeoHead({
         pathname: location.pathname,
         search: location.search,
     });
-    const resolvedOgImage = toAbsoluteUrl(ogImage);
+    const resolvedOgImage = toAbsoluteUrl(
+        firstSeoText(ogImage, SEO_DEFAULT_OG_IMAGE),
+    );
     const resolvedRobots = firstSeoText(robots, SEO_DEFAULT_ROBOTS);
     const safeType = firstSeoText(ogType, "website");
+    const combinedJsonLd = [
+        buildLocalBusinessSchema(),
+        ...normalizeJsonLd(jsonLd),
+    ].filter(Boolean);
 
     return (
         <Helmet prioritizeSeoTags>
@@ -135,11 +209,11 @@ export default function SeoHead({
                 />
             ) : null}
 
-            {jsonLd ? (
-                <script type="application/ld+json">
-                    {JSON.stringify(jsonLd)}
+            {combinedJsonLd.map((entry, index) => (
+                <script key={`jsonld-${index}`} type="application/ld+json">
+                    {JSON.stringify(entry)}
                 </script>
-            ) : null}
+            ))}
         </Helmet>
     );
 }

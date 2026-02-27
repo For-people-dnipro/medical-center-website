@@ -20,6 +20,14 @@ function toIsoDate(value) {
     return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString();
 }
 
+function buildNewsArticleFallbackDescription() {
+    return (
+        "Актуальна новина медичного центру “Для людей” у Дніпрі: " +
+        "важливі події клініки, оновлення послуг, рекомендації лікарів та " +
+        "корисна інформація для пацієнтів."
+    );
+}
+
 const PAGE_SEO = getStaticSeo("newsArticle");
 
 export default function NewsArticlePage() {
@@ -85,7 +93,7 @@ export default function NewsArticlePage() {
     const pageDescription =
         newsItem?.seoDescription ||
         newsItem?.shortDescription ||
-        PAGE_SEO.description;
+        buildNewsArticleFallbackDescription();
     const heroImage = newsItem?.coverImageHero || newsItem?.coverImage || null;
 
     const canonicalPath = slug ? `/news/${slug}` : "/news";
@@ -182,6 +190,8 @@ export default function NewsArticlePage() {
     }
 
     const dateLabel = formatNewsDate(newsItem.publishedDate);
+    const newsTitleForAlt = String(newsItem.title || "Новина").trim();
+    const newsHeroAlt = `${newsTitleForAlt} — медичний центр Для Людей, Дніпро`;
 
     return (
         <main className="news-article-page">
@@ -219,7 +229,7 @@ export default function NewsArticlePage() {
                             >
                                 <img
                                     src={heroImage.url}
-                                    alt={heroImage.alt || newsItem.title}
+                                    alt={newsHeroAlt}
                                     width={heroImage.width}
                                     height={heroImage.height}
                                     loading="lazy"

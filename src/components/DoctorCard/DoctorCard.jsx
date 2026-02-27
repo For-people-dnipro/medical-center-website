@@ -41,6 +41,36 @@ function getSplitNameParts(doctor, displayName) {
     return null;
 }
 
+function parseStartYear(value) {
+    const text = String(value ?? "").trim();
+    if (!text) return null;
+
+    const direct = Number(text.replace(",", "."));
+    const numeric =
+        Number.isFinite(direct)
+            ? direct
+            : Number(
+                  (text.match(/-?\d+(?:[.,]\d+)?/)?.[0] || "").replace(
+                      ",",
+                      ".",
+                  ),
+              );
+    const year = Math.trunc(numeric);
+    if (!Number.isFinite(year) || year <= 0) return null;
+    return year;
+}
+
+function resolveExperienceYears(doctor) {
+    const currentYear = new Date().getFullYear();
+    const startYear = parseStartYear(doctor?.startYear);
+
+    if (startYear === null) return null;
+    const yearsOfExperience = currentYear - startYear;
+    if (yearsOfExperience <= 0) return 1;
+
+    return yearsOfExperience;
+}
+
 export default function DoctorCard({
     doctor,
     className = "",
@@ -53,9 +83,10 @@ export default function DoctorCard({
     const displayName = getDoctorDisplayName(doctor);
     const summaryLine = getDoctorCardSummary(doctor);
     const cardHref = href || `/doctors/${doctor.slug}`;
-    const years = Number(doctor.experienceYears) || 0;
-    const shouldShowBadge = years > 0;
+    const years = resolveExperienceYears(doctor);
+    const shouldShowBadge = years !== null;
     const splitName = getSplitNameParts(doctor, displayName);
+    const doctorImageAlt = `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
 
     return (
         <article className={cardClassName}>
@@ -65,7 +96,7 @@ export default function DoctorCard({
                         <img
                             className="doctor-card__image"
                             src={doctor.photo.url}
-                            alt={displayName}
+                            alt={doctorImageAlt}
                             width={doctor.photo.width || 720}
                             height={doctor.photo.height || 880}
                             loading="lazy"

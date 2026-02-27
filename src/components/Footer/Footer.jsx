@@ -91,7 +91,10 @@ export default function Footer() {
             <div className="footer-container">
                 <div className="footer-top">
                     <div className="footer-logo">
-                        <img src={logofooter} alt="Для людей" />
+                        <img
+                            src={logofooter}
+                            alt="Логотип медичного центру Для Людей"
+                        />
                     </div>
 
                     <div className="footer-mobile-addresses">

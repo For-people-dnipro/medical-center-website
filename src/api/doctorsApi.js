@@ -1,4 +1,5 @@
 import { resolveMedia } from "./newsApi";
+import { findBranchInCatalog } from "../data/branchesCatalog";
 
 const API_URL = (import.meta.env.VITE_STRAPI_URL || "")
     .trim()
@@ -79,6 +80,31 @@ function toNumber(value) {
     return Number.isFinite(num) ? num : null;
 }
 
+function extractNumericValue(value) {
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+    if (typeof value !== "string") return null;
+
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+
+    const direct = Number(trimmed.replace(",", "."));
+    if (Number.isFinite(direct)) return direct;
+
+    const match = trimmed.match(/-?\d+(?:[.,]\d+)?/);
+    if (!match) return null;
+
+    const parsed = Number(match[0].replace(",", "."));
+    return Number.isFinite(parsed) ? parsed : null;
+}
+
+function toYearNumber(value) {
+    const year = extractNumericValue(value);
+    if (year === null) return null;
+
+    const normalizedYear = Math.trunc(year);
+    return normalizedYear > 0 ? normalizedYear : null;
+}
+
 function toBoolean(value, fallback = true) {
     if (typeof value === "boolean") return value;
     if (value === 1 || value === "1") return true;
@@ -115,6 +141,22 @@ function normalizeInternalLink(value) {
     if (!href) return "";
     if (/^(https?:\/\/|mailto:|tel:|#)/i.test(href)) return href;
     return href.startsWith("/") ? href : `/${href}`;
+}
+
+function areCoordsClose(firstLat, firstLng, secondLat, secondLng) {
+    if (
+        firstLat === null ||
+        firstLng === null ||
+        secondLat === null ||
+        secondLng === null
+    ) {
+        return false;
+    }
+
+    return (
+        Math.abs(firstLat - secondLat) <= 0.2 &&
+        Math.abs(firstLng - secondLng) <= 0.2
+    );
 }
 
 function toPhoneHref(value) {
@@ -306,28 +348,72 @@ function normalizeBranch(entry, index = 0) {
         firstNonEmpty(source.phone_href, source.phone, source.contact_phone),
     );
 
-    const lat = toNumber(
+    const rawLat = toNumber(
         firstDefined(source.lat, source.latitude, source.map_lat, source.mapLatitude),
     );
-    const lng = toNumber(
+    const rawLng = toNumber(
         firstDefined(source.lng, source.longitude, source.map_lng, source.mapLongitude),
     );
+    const lat =
+        rawLat === 0 && rawLng === 0
+            ? null
+            : rawLat;
+    const lng =
+        rawLat === 0 && rawLng === 0
+            ? null
+            : rawLng;
     const mapLink = normalizeInternalLink(
         firstNonEmpty(source.map_link, source.mapLink, source.google_maps_link),
     );
+    const catalogBranch = findBranchInCatalog({
+        id,
+        slug,
+        address,
+        name,
+    });
 
-    const hasCoords = lat !== null && lng !== null;
-    const mapCenter = hasCoords ? { lat, lng } : null;
-    const mapMarkers = hasCoords
+    const finalAddress = firstNonEmpty(address, catalogBranch?.address, name);
+    const finalDescription = firstNonEmpty(description, catalogBranch?.description);
+    const finalHours = firstNonEmpty(hours, catalogBranch?.hours);
+    const finalPhoneDisplay = firstNonEmpty(phoneDisplay, catalogBranch?.phoneDisplay);
+    const finalPhoneHref = toPhoneHref(
+        firstNonEmpty(phoneHref, catalogBranch?.phoneHref, finalPhoneDisplay),
+    );
+    const finalMapLink = normalizeInternalLink(
+        firstNonEmpty(mapLink, catalogBranch?.mapLink),
+    );
+
+    const catalogLat = toNumber(catalogBranch?.lat);
+    const catalogLng = toNumber(catalogBranch?.lng);
+    const hasCatalogCoords = catalogLat !== null && catalogLng !== null;
+    const shouldUseCatalogCoords =
+        hasCatalogCoords &&
+        (lat === null || lng === null || !areCoordsClose(lat, lng, catalogLat, catalogLng));
+
+    const finalLat = shouldUseCatalogCoords ? catalogLat : lat;
+    const finalLng = shouldUseCatalogCoords ? catalogLng : lng;
+    const hasCoords = finalLat !== null && finalLng !== null;
+    const mapCenter = hasCoords
+        ? shouldUseCatalogCoords && catalogBranch?.mapCenter
+            ? catalogBranch.mapCenter
+            : { lat: finalLat, lng: finalLng }
+        : catalogBranch?.mapCenter || null;
+    const mapMarkers = shouldUseCatalogCoords &&
+        Array.isArray(catalogBranch?.mapMarkers) &&
+        catalogBranch.mapMarkers.length > 0
+        ? catalogBranch.mapMarkers
+        : hasCoords
         ? [
               {
                   id: String(id),
-                  lat,
-                  lng,
-                  link: mapLink || undefined,
+                  lat: finalLat,
+                  lng: finalLng,
+                  link: finalMapLink || undefined,
               },
           ]
-        : [];
+        : Array.isArray(catalogBranch?.mapMarkers)
+          ? catalogBranch.mapMarkers
+          : [];
 
     const isActive = toBoolean(source.isActive ?? source.is_active, true);
     const order = toNumber(firstDefined(source.order, source.sort_order));
@@ -340,58 +426,26 @@ function normalizeBranch(entry, index = 0) {
         id,
         documentId: toText(source.documentId || entry?.documentId),
         slug,
-        name: name || address || "",
-        address: address || name || "",
+        name: name || finalAddress || "",
+        address: finalAddress || name || "",
         shortAddress,
-        description,
-        hours,
-        phoneDisplay,
-        phoneHref,
-        mapLink,
+        description: finalDescription,
+        hours: finalHours,
+        phoneDisplay: finalPhoneDisplay,
+        phoneHref: finalPhoneHref,
+        mapLink: finalMapLink,
         mapCenter,
         mapMarkers,
-        lat,
-        lng,
+        lat: finalLat,
+        lng: finalLng,
         order: order ?? Number.MAX_SAFE_INTEGER,
         isActive,
         raw: source,
     };
 }
 
-function computeExperienceYears(source) {
-    const explicit = toNumber(
-        firstDefined(
-            source.experience_years,
-            source.experienceYears,
-            source.years_of_experience,
-            source.yearsExperience,
-            source.experience,
-            source.years,
-            source.experiance,
-        ),
-    );
-
-    if (explicit !== null) {
-        return Math.max(0, Math.floor(explicit));
-    }
-
-    const startYear = toNumber(
-        firstDefined(
-            source.startYear,
-            source.workStartYear,
-            source.experienceStartYear,
-            source.start_of_career,
-            source.start_year,
-            source.career_start_year,
-        ),
-    );
-
-    if (startYear !== null) {
-        const currentYear = new Date().getFullYear();
-        return Math.max(0, currentYear - startYear);
-    }
-
-    return 0;
+function getDoctorStartYear(source) {
+    return toYearNumber(source.startYear);
 }
 
 export function formatExperienceYearsLabel(years) {
@@ -520,7 +574,7 @@ function normalizeDoctor(entry, index = 0) {
     const quote = firstNonEmpty(source.quote, source.doctor_quote, source.tagline);
     const order = toNumber(firstDefined(source.order, source.sort_order, source.position_order));
     const isActive = toBoolean(source.isActive ?? source.is_active, true);
-    const experienceYears = computeExperienceYears(source);
+    const startYear = getDoctorStartYear(source);
     const position = firstNonEmpty(
         source.positionLong,
         source.position_long,
@@ -557,8 +611,7 @@ function normalizeDoctor(entry, index = 0) {
         positionShort,
         branch,
         address: firstNonEmpty(branch?.address, source.address, source.place),
-        experienceYears,
-        experienceLabel: formatExperienceYearsLabel(experienceYears),
+        startYear,
         experienceBadgeText,
         shortDescription,
         fullDescription,

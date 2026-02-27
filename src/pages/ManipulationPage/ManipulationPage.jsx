@@ -17,7 +17,7 @@ export default function ManipulationPage() {
             />
             <main className="manipulation-page">
                 <ServicesCardHero
-                    title="МАНІПУЛЯЦІЇ"
+                    title="МАНІПУЛЯЦІЇ У ДНІПРІ"
                     subtitle="Дбайливо. Безпечно. Професійно."
                     icon="/icons/service-manipulation.svg"
                     image="/images/manipulation-hero.jpg"

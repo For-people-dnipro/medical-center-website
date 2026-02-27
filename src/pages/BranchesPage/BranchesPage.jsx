@@ -1,73 +1,21 @@
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import BranchCard from "../../components/BranchCard/BranchCard";
+import SeoHead from "../../components/Seo/SeoHead";
+import { BRANCHES_CATALOG } from "../../data/branchesCatalog";
+import { getStaticSeo } from "../../seo/seoConfig";
 import "./BranchesPage.css";
 
-const BRANCHES = [
-    {
-        id: "slava",
-        address: "Дніпро, бульвар Слави, 8",
-        hours: "ПН-ПТ: з 9:00 до 18:00",
-        phoneDisplay: "+38 (066) 067-00-37",
-        phoneHref: "+380660670037",
-        lat: 48.414,
-        lng: 35.0659,
-        mapLink: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
-        mapCenter: { lat: 48.414, lng: 35.0659 },
-        mapMarkers: [
-            {
-                id: "slava",
-                lat: 48.414,
-                lng: 35.0659,
-                link: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
-            },
-        ],
-    },
-    {
-        id: "halytskoho",
-        address: "Дніпро, вул. Д. Галицького, 34",
-        hours: "ПН-ПТ: з 9:00 до 18:00",
-        phoneDisplay: "+38 (050) 067-13-88",
-        phoneHref: "+380500671388",
-        lat: 48.4613,
-        lng: 34.9384,
-        mapLink:
-            "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
-        mapCenter: { lat: 48.4613, lng: 34.9384 },
-        mapMarkers: [
-            {
-                id: "halytskoho",
-                lat: 48.4613,
-                lng: 34.9384,
-                link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
-            },
-        ],
-    },
-    {
-        id: "khmelnytskoho",
-        address: "Дніпро, просп. Б. Хмельницького, 127",
-        hours: "ПН-ПТ: з 9:00 до 18:00",
-        phoneDisplay: "+38 (050) 067-22-35",
-        phoneHref: "+380500672235",
-        lat: 48.4063,
-        lng: 35.0014,
-        mapLink:
-            "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
-        mapCenter: { lat: 48.4063, lng: 35.0014 },
-        mapMarkers: [
-            {
-                id: "khmelnytskoho",
-                lat: 48.4063,
-                lng: 35.0014,
-                link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
-            },
-        ],
-    },
-];
+const PAGE_SEO = getStaticSeo("branches");
 
 export default function BranchesPage() {
     return (
         <div className="branches-page">
+            <SeoHead
+                title={PAGE_SEO.title}
+                description={PAGE_SEO.description}
+                canonicalPath="/branches"
+            />
             <main className="branches-page__main">
                 <section className="branches-page__hero">
                     <div className="branches-page__container">
@@ -87,7 +35,7 @@ export default function BranchesPage() {
                 <section className="branches-page__list">
                     <div className="branches-page__container">
                         <div className="branches-page__cards">
-                            {BRANCHES.map((branch) => (
+                            {BRANCHES_CATALOG.map((branch) => (
                                 <BranchCard key={branch.id} branch={branch} />
                             ))}
                         </div>

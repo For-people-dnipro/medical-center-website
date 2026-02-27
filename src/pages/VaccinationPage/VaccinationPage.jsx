@@ -192,7 +192,7 @@ export default function VaccinationPage() {
             />
             <main className="vaccination-page" ref={pageRef}>
                 <ServicesCardHero
-                    title="ВАКЦИНАЦІЯ"
+                    title="ВАКЦИНАЦІЯ У ДНІПРІ"
                     subtitle="Прояв турботи про себе та близьких"
                     icon="/icons/service-vaccine.svg"
                     image="/images/vaccination-hero.jpg"
@@ -343,7 +343,7 @@ S900 20 986 3"
                             <div className="vaccination-page__offer-media">
                                 <img
                                     src="/images/vaccination-section-picture.jpg"
-                                    alt="Вакцинація в медичному центрі"
+                                    alt="Вакцинація в медичному центрі Для Людей, Дніпро, Україна"
                                 />
                             </div>
                         </div>

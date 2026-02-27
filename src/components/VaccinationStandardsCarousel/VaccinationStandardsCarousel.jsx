@@ -141,7 +141,7 @@ export default function VaccinationStandardsCarousel() {
                                     <figure className="vaccination-standards-carousel__image-card">
                                         <img
                                             src={slide.image}
-                                            alt={slide.title}
+                                            alt={`${slide.title} — вакцинація у медичному центрі Для Людей, Дніпро`}
                                             loading="eager"
                                         />
                                     </figure>

@@ -24,7 +24,7 @@ export default function VacanciesHero({
                     <div className="vacancies-hero__media">
                         <img
                             src={image}
-                            alt="Команда медичного центру за спільною роботою"
+                            alt="Команда медичного центру Для Людей у Дніпрі, Україна"
                             className="vacancies-hero__image"
                         />
                         {/* <img

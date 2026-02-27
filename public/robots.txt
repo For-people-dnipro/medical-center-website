@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /check-up
 
 Sitemap: /sitemap.xml

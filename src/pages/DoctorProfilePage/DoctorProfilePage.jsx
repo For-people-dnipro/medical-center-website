@@ -63,6 +63,36 @@ function getInitials(name) {
         .toUpperCase();
 }
 
+function parseStartYear(value) {
+    const text = String(value ?? "").trim();
+    if (!text) return null;
+
+    const direct = Number(text.replace(",", "."));
+    const numeric =
+        Number.isFinite(direct)
+            ? direct
+            : Number(
+                  (text.match(/-?\d+(?:[.,]\d+)?/)?.[0] || "").replace(
+                      ",",
+                      ".",
+                  ),
+              );
+    const year = Math.trunc(numeric);
+    if (!Number.isFinite(year) || year <= 0) return null;
+    return year;
+}
+
+function resolveExperienceYears(doctor) {
+    const currentYear = new Date().getFullYear();
+    const startYear = parseStartYear(doctor?.startYear);
+
+    if (startYear === null) return null;
+    const yearsOfExperience = currentYear - startYear;
+    if (yearsOfExperience <= 0) return 1;
+
+    return yearsOfExperience;
+}
+
 export default function DoctorProfilePage() {
     const { slug = "" } = useParams();
     const [doctor, setDoctor] = useState(null);
@@ -231,12 +261,15 @@ export default function DoctorProfilePage() {
         );
     }
 
-    const years = Number(doctor.experienceYears) || 0;
+    const years = resolveExperienceYears(doctor);
+    const hasStartYear = years !== null;
     const doctorPosition = doctor?.position || "";
     const tabItems = getDoctorTabItems(doctor);
     const activeBranch = doctorBranch || doctor.branch || null;
     const branchAddress = activeBranch?.address || doctor.address || "";
     const buttons = getProfileButtons(doctor);
+    const doctorNameForAlt = String(doctor.fullName || "Лікар").trim();
+    const doctorImageAlt = `Сімейний лікар ${doctorNameForAlt} — медичний центр Для Людей, Дніпро`;
 
     return (
         <main className="doctor-profile-page">
@@ -259,7 +292,7 @@ export default function DoctorProfilePage() {
                                 <img
                                     className="doctor-profile-page__photo"
                                     src={doctor.photo.url}
-                                    alt={doctor.fullName}
+                                    alt={doctorImageAlt}
                                     width={doctor.photo.width || 760}
                                     height={doctor.photo.height || 960}
                                     loading="lazy"
@@ -271,7 +304,7 @@ export default function DoctorProfilePage() {
                                 </div>
                             )}
 
-                            {years > 0 ? (
+                            {hasStartYear ? (
                                 <div
                                     className="doctor-profile-page__experience-badge"
                                     aria-hidden="true"

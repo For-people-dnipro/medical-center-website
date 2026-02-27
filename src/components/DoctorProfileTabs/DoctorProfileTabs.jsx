@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useTabsUnderline from "../../hooks/useTabsUnderline";
 import NewsContentRenderer from "../NewsContentRenderer/NewsContentRenderer";
 import "./DoctorProfileTabs.css";
 
@@ -164,16 +165,30 @@ export default function DoctorProfileTabs({
     initialTabKey = "",
     className = "",
 }) {
-    const availableTabs = tabs.filter(Boolean);
-    const firstTabKey = availableTabs[0]?.key || "";
-    const requestedKey = initialTabKey || firstTabKey;
+    const availableTabs = useMemo(
+        () => tabs.filter((tab) => tab && tab.key),
+        [tabs],
+    );
+    const availableTabKeys = useMemo(
+        () => availableTabs.map((tab) => tab.key),
+        [availableTabs],
+    );
+    const firstTabKey = availableTabKeys[0] || "";
+    const requestedKey =
+        initialTabKey && availableTabKeys.includes(initialTabKey)
+            ? initialTabKey
+            : firstTabKey;
     const [activeKey, setActiveKey] = useState(requestedKey);
+    const { tabListRef, setTabRef } = useTabsUnderline({
+        activeKey,
+        tabKeys: availableTabKeys,
+    });
 
     useEffect(() => {
-        if (!availableTabs.some((tab) => tab.key === activeKey)) {
-            setActiveKey(initialTabKey || availableTabs[0]?.key || "");
+        if (!availableTabKeys.includes(activeKey)) {
+            setActiveKey(requestedKey);
         }
-    }, [activeKey, availableTabs, initialTabKey]);
+    }, [activeKey, availableTabKeys, requestedKey]);
 
     if (availableTabs.length === 0) return null;
 
@@ -185,24 +200,37 @@ export default function DoctorProfileTabs({
 
     return (
         <section className={rootClassName}>
-            <div className="doctor-profile-tabs__tablist" role="tablist">
+            <div
+                className="doctor-profile-tabs__tablist"
+                role="tablist"
+                ref={tabListRef}
+            >
                 {availableTabs.map((tab) => (
                     <button
                         key={tab.key}
+                        id={`doctor-profile-tab-${tab.key}`}
                         type="button"
                         role="tab"
                         aria-selected={activeTab.key === tab.key}
+                        aria-controls={`doctor-profile-panel-${tab.key}`}
                         className={`doctor-profile-tabs__tab ${
                             activeTab.key === tab.key ? "is-active" : ""
                         }`}
                         onClick={() => setActiveKey(tab.key)}
+                        ref={setTabRef(tab.key)}
                     >
                         {tab.label}
                     </button>
                 ))}
             </div>
 
-            <div className="doctor-profile-tabs__panel" role="tabpanel">
+            <div
+                key={activeTab.key}
+                className="doctor-profile-tabs__panel"
+                role="tabpanel"
+                id={`doctor-profile-panel-${activeTab.key}`}
+                aria-labelledby={`doctor-profile-tab-${activeTab.key}`}
+            >
                 {activeTab.content ? (
                     <div className="doctor-profile-tabs__content">
                         {Array.isArray(activeTab.content) &&

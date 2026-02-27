@@ -1,10 +1,5 @@
-import {
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { useState } from "react";
+import useTabsUnderline from "../../hooks/useTabsUnderline";
 import "./SectionTypes.css";
 
 const TABS = [
@@ -12,6 +7,8 @@ const TABS = [
     { key: "uzd", labelLines: ["УЗД", "діагностика"] },
     { key: "func", labelLines: ["Функціональна", "діагностика"] },
 ];
+
+const TAB_KEYS = TABS.map((tab) => tab.key);
 
 const DATA = {
     lab: {
@@ -85,50 +82,10 @@ const DATA = {
 export default function SectionTypes() {
     const [active, setActive] = useState("uzd");
     const content = DATA[active];
-    const tabsRef = useRef(null);
-    const tabRefs = useRef({});
-
-    const setTabRef = useCallback(
-        (key) => (el) => {
-            if (el) {
-                tabRefs.current[key] = el;
-            }
-        },
-        [],
-    );
-
-    const updateUnderline = useCallback(() => {
-        const container = tabsRef.current;
-        const activeEl = tabRefs.current[active];
-        if (!container || !activeEl) return;
-
-        const containerRect = container.getBoundingClientRect();
-        const activeRect = activeEl.getBoundingClientRect();
-        const left = activeRect.left - containerRect.left;
-        const width = activeRect.width;
-
-        container.style.setProperty("--underline-left", `${left}px`);
-        container.style.setProperty("--underline-width", `${width}px`);
-
-        const buttons = Object.values(tabRefs.current).filter(Boolean);
-        if (buttons.length > 0) {
-            const firstTop = buttons[0].offsetTop;
-            const isWrapped = buttons.some(
-                (button) => button.offsetTop !== firstTop,
-            );
-            container.classList.toggle("is-wrapped", isWrapped);
-        }
-    }, [active]);
-
-    useLayoutEffect(() => {
-        const frame = requestAnimationFrame(updateUnderline);
-        return () => cancelAnimationFrame(frame);
-    }, [updateUnderline]);
-
-    useEffect(() => {
-        window.addEventListener("resize", updateUnderline);
-        return () => window.removeEventListener("resize", updateUnderline);
-    }, [updateUnderline]);
+    const { tabListRef, setTabRef } = useTabsUnderline({
+        activeKey: active,
+        tabKeys: TAB_KEYS,
+    });
 
     return (
         <section className="section-types">
@@ -140,7 +97,7 @@ export default function SectionTypes() {
                 <div
                     className="section-types__tabs"
                     role="tablist"
-                    ref={tabsRef}
+                    ref={tabListRef}
                 >
                     {TABS.map((tab) => (
                         <button

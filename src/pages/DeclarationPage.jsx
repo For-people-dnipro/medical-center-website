@@ -221,7 +221,7 @@ export default function DeclarationPage() {
             />
             <main className="declaration-page__main">
                 <ServicesCardHero
-                    title="ДЕКЛАРАЦІЯ"
+                    title="ДЕКЛАРАЦІЯ У ДНІПРІ"
                     subtitle="Турбота починається з довіри"
                     icon="/icons/service-declaration.svg"
                     image="/images/declaration-hero.jpg"

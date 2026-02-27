@@ -23,6 +23,24 @@
     "address": {
       "type": "string"
     },
+    "description": {
+      "type": "text"
+    },
+    "hours": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "map_link": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "decimal"
+    },
+    "lng": {
+      "type": "decimal"
+    },
     "order": {
       "type": "integer"
     },

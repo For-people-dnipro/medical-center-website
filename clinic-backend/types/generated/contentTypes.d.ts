@@ -445,15 +445,21 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    hours: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lat: Schema.Attribute.Decimal;
+    lng: Schema.Attribute.Decimal;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::branch.branch'
     > &
       Schema.Attribute.Private;
+    map_link: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     order: Schema.Attribute.Integer;
+    phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -480,7 +486,6 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     education: Schema.Attribute.Blocks;
-    experience: Schema.Attribute.Integer & Schema.Attribute.Required;
     experienceSection: Schema.Attribute.Blocks;
     homepage_priority: Schema.Attribute.Integer;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -506,6 +511,7 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::specialisation.specialisation'
     >;
+    startYear: Schema.Attribute.Integer & Schema.Attribute.Required;
     surname: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

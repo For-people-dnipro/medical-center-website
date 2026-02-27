@@ -111,7 +111,7 @@ export default function AnalysesPage() {
             />
             <main className="analyses-page__main">
                 <ServicesCardHero
-                    title="АНАЛІЗИ"
+                    title="АНАЛІЗИ У ДНІПРІ"
                     subtitle="Точна лабораторна діагностика"
                     icon="/icons/service-tests.svg"
                     image="/images/analyses-hero.jpg"
@@ -146,7 +146,7 @@ export default function AnalysesPage() {
                     rightTitle="Для точних результатів:"
                     rightItems={recommendationItems}
                     imageSrc="/images/analysesInfo.jpg"
-                    imageAlt="Лікар під час консультації"
+                    imageAlt="Лабораторна діагностика в медичному центрі Для Людей, Дніпро"
                 />
 
                 <section className="analyses-page__faq">

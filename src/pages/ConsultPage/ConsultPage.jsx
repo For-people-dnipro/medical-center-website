@@ -20,7 +20,7 @@ export default function ConsultPage() {
             />
             <main className="consult-page__main">
                 <ServicesCardHero
-                    title="КОНСУЛЬТАЦІЯ"
+                    title="КОНСУЛЬТАЦІЯ У ДНІПРІ"
                     subtitle="Турбота, що починається з розмови"
                     icon="/icons/service-consult.svg"
                     image="/images/consult-hero.jpg"
@@ -113,7 +113,7 @@ export default function ConsultPage() {
                         </>
                     }
                     image="/images/consultation-other-doctor.png"
-                    imageAlt="Лікар консультує пацієнта"
+                    imageAlt="Консультація лікаря в медичному центрі Для Людей, Дніпро"
                 />
 
                 <section id="consult-form" className="consult-page__contact">

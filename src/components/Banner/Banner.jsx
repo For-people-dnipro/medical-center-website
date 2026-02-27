@@ -45,14 +45,14 @@ export default function Banner() {
             >
                 {/* arrows — тільки для desktop */}
                 <button className="banner-arrow banner-arrow-left">
-                    <img src="/icons/arrow-left.svg" alt="prev" />
+                    <img src="/icons/arrow-left.svg" alt="" />
                 </button>
 
                 <button className="banner-arrow banner-arrow-right">
-                    <img src="/icons/arrow-right.svg" alt="next" />
+                    <img src="/icons/arrow-right.svg" alt="" />
                 </button>
 
-                {slides.map((slide) => (
+                {slides.map((slide, index) => (
                     <SwiperSlide key={slide.id}>
                         <div className="banner-slide">
                             <picture>
@@ -73,7 +73,7 @@ export default function Banner() {
                                             ? `http://localhost:1337${slide.photodesktop.url}`
                                             : ""
                                     }
-                                    alt="banner"
+                                    alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
                                     className="banner-image"
                                 />
                             </picture>

@@ -104,7 +104,7 @@ function renderBodyNode(node, key) {
     if (node.type === "heading") {
         const level = Number(node.level);
         const safeLevel =
-            Number.isFinite(level) && level >= 1 && level <= 6 ? level : 2;
+            Number.isFinite(level) && level >= 2 && level <= 6 ? level : 2;
         const Tag = `h${safeLevel}`;
 
         return (

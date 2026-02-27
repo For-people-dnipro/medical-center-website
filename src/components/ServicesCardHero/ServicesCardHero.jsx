@@ -13,6 +13,10 @@ export default function ServicesCardHero({
     buttonClassName = "",
     buttonOnClick,
 }) {
+    const heroImageAlt = title
+        ? `${title} — медичний центр Для Людей, Дніпро, Україна`
+        : "Медичний центр Для Людей, Дніпро, Україна";
+
     return (
         <section className="services-card-hero">
             <div className="services-card-hero__container">
@@ -56,7 +60,7 @@ export default function ServicesCardHero({
                     {/* RIGHT */}
                     {image && (
                         <div className="services-card-hero__right">
-                            <img src={image} alt={title} />
+                            <img src={image} alt={heroImageAlt} />
                         </div>
                     )}
                 </div>

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import emailjs from "@emailjs/browser";
+import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import "./ContactForm.css";
 
 const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
 const DEFAULT_MOBILE_TITLE = "ПОРУЧ, ЩОБ ДОПОМОГТИ";
 const DEFAULT_SUBTITLE = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ";
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactForm({
     title,
@@ -101,7 +103,38 @@ export default function ContactForm({
     const [formData, setFormData] = useState(initialData);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [submitError, setSubmitError] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState({});
+
+    const clearFieldError = (fieldName) => {
+        setFieldErrors((prev) => {
+            if (!prev[fieldName]) return prev;
+            const next = { ...prev };
+            delete next[fieldName];
+            return next;
+        });
+    };
+
+    const branchDropdownOptions = useMemo(
+        () =>
+            (branchOptions || [])
+                .map((option) => {
+                    if (option && typeof option === "object") {
+                        const value = String(
+                            option.value ?? option.label ?? "",
+                        ).trim();
+                        const label = String(
+                            option.label ?? option.value ?? "—",
+                        ).trim();
+                        return value ? { value, label } : null;
+                    }
+
+                    const value = String(option ?? "").trim();
+                    return value ? { value, label: value } : null;
+                })
+                .filter(Boolean),
+        [branchOptions],
+    );
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -109,23 +142,71 @@ export default function ContactForm({
             ...prev,
             [name]: type === "checkbox" ? checked : value,
         }));
+        clearFieldError(name);
+    };
+
+    const validateForm = (values) => {
+        const errors = {};
+        const getText = (candidate) => String(candidate || "").trim();
+
+        if (fields.name && !getText(values.name)) {
+            errors.name = "Введіть, будь ласка, імʼя.";
+        }
+
+        if (fields.phone && !getText(values.phone)) {
+            errors.phone = "Введіть, будь ласка, номер телефону.";
+        }
+
+        if (fields.email && getText(values.email)) {
+            if (!EMAIL_PATTERN.test(getText(values.email))) {
+                errors.email = "Вкажіть коректну електронну пошту.";
+            }
+        }
+
+        if (fields.branch && !getText(values.branch)) {
+            errors.branch = "Оберіть, будь ласка, філію.";
+        }
+
+        if (fields.diagnostic && !getText(values.diagnostic)) {
+            errors.diagnostic = "Вкажіть, будь ласка, назву процедури.";
+        }
+
+        if (
+            !fields.email &&
+            !fields.diagnostic &&
+            fields.checkupName &&
+            !getText(values.checkupName)
+        ) {
+            errors.checkupName = "Введіть, будь ласка, назву CHECK-UP.";
+        }
+
+        if (fields.message && !getText(values.message)) {
+            errors.message = "Введіть, будь ласка, повідомлення.";
+        }
+
+        if (!values.consent) {
+            errors.consent =
+                "Потрібно надати згоду на обробку персональних даних.";
+        }
+
+        return errors;
     };
 
     useEffect(() => {
-        if (success || error) {
+        if (success || submitError) {
             const timer = setTimeout(() => {
                 setSuccess(false);
-                setError(false);
+                setSubmitError(false);
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [success, error]);
+    }, [success, submitError]);
 
     useEffect(() => {
         const handleEsc = (e) => {
             if (e.key === "Escape") {
                 setSuccess(false);
-                setError(false);
+                setSubmitError(false);
             }
         };
         window.addEventListener("keydown", handleEsc);
@@ -137,9 +218,16 @@ export default function ContactForm({
 
         if (formData.company) return;
 
+        const errors = validateForm(formData);
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
+            return;
+        }
+
         setLoading(true);
-        setError(false);
+        setSubmitError(false);
         setSuccess(false);
+        setFieldErrors({});
 
         const details = [];
 
@@ -184,7 +272,7 @@ export default function ContactForm({
             setFormData(initialData);
         } catch (err) {
             console.error("EmailJS error:", err);
-            setError(true);
+            setSubmitError(true);
         } finally {
             setLoading(false);
         }
@@ -192,7 +280,12 @@ export default function ContactForm({
 
     return (
         <>
-            <form className={formClassName} onSubmit={handleSubmit}>
+            <form
+                className={formClassName}
+                onSubmit={handleSubmit}
+                onInvalid={(event) => event.preventDefault()}
+                noValidate
+            >
                 <input
                     type="text"
                     name="company"
@@ -230,7 +323,8 @@ export default function ContactForm({
                             value={formData.name}
                             onChange={handleChange}
                             placeholder={placeholders.name}
-                            required
+                            aria-required="true"
+                            aria-invalid={Boolean(fieldErrors.name)}
                         />
                     </div>
                 )}
@@ -244,7 +338,8 @@ export default function ContactForm({
                             value={formData.phone}
                             onChange={handleChange}
                             placeholder={placeholders.phone}
-                            required
+                            aria-required="true"
+                            aria-invalid={Boolean(fieldErrors.phone)}
                         />
                     </div>
                 )}
@@ -258,6 +353,7 @@ export default function ContactForm({
                             value={formData.email}
                             onChange={handleChange}
                             placeholder={placeholders.email}
+                            aria-invalid={Boolean(fieldErrors.email)}
                         />
                     </div>
                 )}
@@ -265,21 +361,24 @@ export default function ContactForm({
                 {fields.branch && (
                     <div className="form-group form-branch">
                         <label>{labels.branch}</label>
-                        <select
-                            name="branch"
+                        <CustomDropdown
+                            id="contact-form-branch"
                             value={formData.branch}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="" disabled hidden>
-                                {placeholders.branch}
-                            </option>
-                            {branchOptions.map((opt) => (
-                                <option key={opt} value={opt}>
-                                    {opt}
-                                </option>
-                            ))}
-                        </select>
+                            onChange={(nextValue) => {
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    branch: nextValue,
+                                }));
+                                clearFieldError("branch");
+                            }}
+                            options={branchDropdownOptions}
+                            placeholder={placeholders.branch}
+                            ariaLabel={labels.branch}
+                            allowEmptyOption={false}
+                            className="contact-form__branch-dropdown"
+                            ariaRequired="true"
+                            ariaInvalid={Boolean(fieldErrors.branch)}
+                        />
                     </div>
                 )}
 
@@ -292,7 +391,8 @@ export default function ContactForm({
                             value={formData.diagnostic}
                             onChange={handleChange}
                             placeholder={placeholders.diagnostic}
-                            required
+                            aria-required="true"
+                            aria-invalid={Boolean(fieldErrors.diagnostic)}
                         />
                     </div>
                 )}
@@ -306,7 +406,8 @@ export default function ContactForm({
                             value={formData.checkupName}
                             onChange={handleChange}
                             placeholder={placeholders.checkupName}
-                            required
+                            aria-required="true"
+                            aria-invalid={Boolean(fieldErrors.checkupName)}
                         />
                     </div>
                 )}
@@ -319,7 +420,8 @@ export default function ContactForm({
                             value={formData.message}
                             onChange={handleChange}
                             placeholder={placeholders.message}
-                            required
+                            aria-required="true"
+                            aria-invalid={Boolean(fieldErrors.message)}
                         />
                     </div>
                 )}
@@ -330,10 +432,11 @@ export default function ContactForm({
                         name="consent"
                         checked={formData.consent}
                         onChange={handleChange}
-                        required
+                        aria-required="true"
+                        aria-invalid={Boolean(fieldErrors.consent)}
                     />
                     <span className="custom-checkbox" />
-                    <span>{labels.consent}</span>
+                    <span className="form-consent__label">{labels.consent}</span>
                 </label>
 
                 <div className="form-button">
@@ -352,13 +455,13 @@ export default function ContactForm({
                 </div>
             </form>
 
-            {(success || error) &&
+            {(success || submitError) &&
                 createPortal(
                     <div
                         className="popup-overlay"
                         onClick={() => {
                             setSuccess(false);
-                            setError(false);
+                            setSubmitError(false);
                         }}
                     >
                         <div
@@ -370,7 +473,7 @@ export default function ContactForm({
                                 aria-label="Закрити"
                                 onClick={() => {
                                     setSuccess(false);
-                                    setError(false);
+                                    setSubmitError(false);
                                 }}
                             >
                                 ×

@@ -68,7 +68,7 @@ export default function PackagesPage() {
             />
             <main className="packages-page__main">
                 <ServicesCardHero
-                    title="ПАКЕТНІ ПОСЛУГИ"
+                    title="ПАКЕТНІ ПОСЛУГИ У ДНІПРІ"
                     subtitle="Турбота, спланована заздалегідь"
                     image="/images/packages-hero-nurse.jpg"
                     icon="/icons/service-packages.svg"
@@ -87,7 +87,7 @@ export default function PackagesPage() {
                         title="ЩО ТАКЕ ПАКЕТНІ ПОСЛУГИ"
                         text="Пакет — це комплекс медичних послуг, об’єднаних за темою або потребою. Ви отримуєте не окремі консультації, а повний супровід у певній сфері медицини. Кожен пакет включає перелік обстежень, консультацій та аналізів, підібраних лікарями так, щоб ви отримали цілісну допомогу без зайвих клопотів."
                         image="/images/package-services.jpg"
-                        imageAlt="Медична процедура"
+                        imageAlt="Пакетні медичні послуги в медичному центрі Для Людей, Дніпро"
                     />
                 </section>{" "}
                 <section className="packages-page__warning">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AllServices from "./pages/AllServices";
 import DeclarationPage from "./pages/DeclarationPage";
@@ -110,7 +110,10 @@ function App() {
                         />
                         <Route path="/packages" element={<PackagesPage />} />
                         <Route path="/checkup" element={<TestPage />} />
-                        <Route path="/check-up" element={<TestPage />} />
+                        <Route
+                            path="/check-up"
+                            element={<Navigate to="/checkup" replace />}
+                        />
                         <Route path="/air-alert" element={<AirAlertPage />} />
                         <Route path="/doctors" element={<DoctorsPage />} />
                         <Route
