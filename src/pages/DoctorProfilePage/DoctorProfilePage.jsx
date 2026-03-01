@@ -5,7 +5,6 @@ import BranchCard from "../../components/BranchCard/BranchCard";
 import Button from "../../components/Button/Button";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import DoctorProfileTabs from "../../components/DoctorProfileTabs/DoctorProfileTabs";
-import MapPin from "../../components/MapPin";
 import RelatedDoctorsSection from "../../components/RelatedDoctorsSection/RelatedDoctorsSection";
 import SeoHead from "../../components/Seo/SeoHead";
 import {
@@ -22,6 +21,7 @@ import {
     firstSeoText,
     withSiteTitle,
 } from "../../seo/seoConfig";
+import "../BranchesPage/BranchesPage.css";
 import "./DoctorProfilePage.css";
 
 function buildDescription(doctor) {
@@ -277,7 +277,7 @@ export default function DoctorProfilePage() {
         <main className="doctor-profile-page">
             <SeoHead {...seoProps} />
             <section className="doctor-profile-page__hero">
-                <div className="doctor-profile-page__container">
+                <div className="doctor-profile-page__container doctor-profile-page__container--hero">
                     <Breadcrumbs
                         className="doctor-profile-page__crumbs"
                         ariaLabel="Breadcrumb"
@@ -288,86 +288,95 @@ export default function DoctorProfilePage() {
                         ]}
                     />
 
-                    <div className="doctor-profile-page__hero-card">
-                        <div className="doctor-profile-page__photo-wrap">
-                            {doctor.photo?.url ? (
-                                <img
-                                    className="doctor-profile-page__photo"
-                                    src={doctor.photo.url}
-                                    alt={doctorImageAlt}
-                                    width={doctor.photo.width || 760}
-                                    height={doctor.photo.height || 960}
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            ) : (
-                                <div className="doctor-profile-page__photo doctor-profile-page__photo--placeholder">
-                                    <span>{getInitials(doctor.fullName) || "Л"}</span>
-                                </div>
-                            )}
-
-                            {hasStartYear ? (
-                                <div
-                                    className="doctor-profile-page__experience-badge"
-                                    aria-hidden="true"
-                                >
-                                    <div className="doctor-profile-page__experience-number">
-                                        {years}
+                    <div className="doctor-profile-page__hero-layout">
+                        <div className="doctor-profile-page__photo-card">
+                            <div className="doctor-profile-page__photo-wrap">
+                                {doctor.photo?.url ? (
+                                    <img
+                                        className="doctor-profile-page__photo"
+                                        src={doctor.photo.url}
+                                        alt={doctorImageAlt}
+                                        width={doctor.photo.width || 760}
+                                        height={doctor.photo.height || 960}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                ) : (
+                                    <div className="doctor-profile-page__photo doctor-profile-page__photo--placeholder">
+                                        <span>{getInitials(doctor.fullName) || "Л"}</span>
                                     </div>
-                                    <div className="doctor-profile-page__experience-line" />
-                                    <div className="doctor-profile-page__experience-text">
-                                        {formatExperienceYearsLabel(years)}
-                                        <br />
-                                        досвіду
+                                )}
+
+                                {hasStartYear ? (
+                                    <div
+                                        className="doctor-profile-page__experience-badge"
+                                        aria-hidden="true"
+                                    >
+                                        <div className="doctor-profile-page__experience-number">
+                                            {years}
+                                        </div>
+                                        <div className="doctor-profile-page__experience-line" />
+                                        <div className="doctor-profile-page__experience-text">
+                                            {formatExperienceYearsLabel(years)}
+                                            <br />
+                                            досвіду
+                                        </div>
                                     </div>
-                                </div>
-                            ) : null}
-                        </div>
-
-                        <div className="doctor-profile-page__hero-content">
-                            <div className="doctor-profile-page__hero-top">
-                                <h1 className="doctor-profile-page__name">
-                                    {doctor.fullName}
-                                </h1>
-
-                                {doctorPosition ? (
-                                    <p className="doctor-profile-page__specialisation">
-                                        {doctorPosition}
-                                    </p>
-                                ) : null}
-
-                                {branchAddress ? (
-                                    <div className="doctor-profile-page__address-row">
-                                        <p className="doctor-profile-page__address-label">
-                                            Приймає за адресою:
-                                        </p>
-                                        <p className="doctor-profile-page__address">
-                                            <MapPin size={18} />
-                                            <span>{branchAddress}</span>
-                                        </p>
-                                    </div>
-                                ) : null}
-
-                                {doctor.quote ? (
-                                    <blockquote className="doctor-profile-page__quote">
-                                        “{doctor.quote}”
-                                    </blockquote>
                                 ) : null}
                             </div>
-
-                            {buttons.length > 0 ? (
-                                <div className="doctor-profile-page__actions">
-                                    {buttons.slice(0, 2).map((button) => (
-                                        <Button
-                                            key={button.id || button.href}
-                                            href={button.href}
-                                        >
-                                            {button.text}
-                                        </Button>
-                                    ))}
-                                </div>
-                            ) : null}
                         </div>
+
+                        <article className="doctor-profile-page__info-card">
+                            <div className="doctor-profile-page__hero-content">
+                                <div className="doctor-profile-page__hero-top">
+                                    <h1 className="doctor-profile-page__name">
+                                        {doctor.fullName}
+                                    </h1>
+
+                                    {doctorPosition ? (
+                                        <p className="doctor-profile-page__specialisation">
+                                            {doctorPosition}
+                                        </p>
+                                    ) : null}
+
+                                    {branchAddress ? (
+                                        <div className="doctor-profile-page__address-row">
+                                            <p className="doctor-profile-page__address-label">
+                                                Приймає за адресою:
+                                            </p>
+                                            <p className="doctor-profile-page__address">
+                                                <img
+                                                    className="doctor-profile-page__address-icon"
+                                                    src="/icons/map-point-green.svg"
+                                                    alt=""
+                                                    aria-hidden="true"
+                                                />
+                                                <span>{branchAddress}</span>
+                                            </p>
+                                        </div>
+                                    ) : null}
+
+                                    {doctor.quote ? (
+                                        <blockquote className="doctor-profile-page__quote">
+                                            {doctor.quote}
+                                        </blockquote>
+                                    ) : null}
+                                </div>
+
+                                {buttons.length > 0 ? (
+                                    <div className="doctor-profile-page__actions">
+                                        {buttons.slice(0, 2).map((button) => (
+                                            <Button
+                                                key={button.id || button.href}
+                                                href={button.href}
+                                            >
+                                                {button.text}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </article>
                     </div>
                 </div>
             </section>
@@ -379,9 +388,11 @@ export default function DoctorProfilePage() {
             </section>
 
             {activeBranch ? (
-                <section className="doctor-profile-page__branch">
-                    <div className="doctor-profile-page__container">
-                        <BranchCard branch={activeBranch} />
+                <section className="doctor-profile-page__branch branches-page__list">
+                    <div className="branches-page__container">
+                        <div className="branches-page__cards">
+                            <BranchCard branch={activeBranch} />
+                        </div>
                     </div>
                 </section>
             ) : null}

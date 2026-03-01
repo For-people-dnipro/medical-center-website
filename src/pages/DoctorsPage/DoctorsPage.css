@@ -125,11 +125,11 @@
 
 @media (max-width: 767px) {
     .doctors-page {
-        gap: 80px;
+        gap: 0;
     }
 
     .doctors-page__container {
-        padding: 0 20px;
+        padding: 0 16px;
     }
 
     .doctors-page__hero {
@@ -154,7 +154,29 @@
     }
 
     .doctors-page__list {
-        margin-top: 16px;
+        margin-top: 40px;
+    }
+
+    .doctors-page .doctor-card__name {
+        font-size: 16px;
+    }
+
+    .doctors-page__contact {
+        margin-top: 70px;
+    }
+
+    .doctors-page__empty-title,
+    .doctors-page__empty-text {
+        display: inline;
+        font-weight: var(--fw-regular);
+    }
+
+    .doctors-page__empty-title {
+        margin-right: 4px;
+    }
+
+    .doctors-page__empty-text {
+        margin-top: 0;
     }
 
     .doctors-page__load-more {
@@ -165,6 +187,10 @@
 @media (max-width: 576px) {
     .doctors-page__grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 25px;
+    }
+
+    .doctors-page__state {
+        padding: 24px 30px;
     }
 }

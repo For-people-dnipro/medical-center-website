@@ -76,6 +76,7 @@ export default function DoctorCard({
     className = "",
     href,
     showSpecialisation = true,
+    asLink = true,
 }) {
     if (!doctor) return null;
 
@@ -88,67 +89,73 @@ export default function DoctorCard({
     const splitName = getSplitNameParts(doctor, displayName);
     const doctorImageAlt = `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
 
+    const cardContent = (
+        <>
+            <div className="doctor-card__image-wrap">
+                {doctor.photo?.url ? (
+                    <img
+                        className="doctor-card__image"
+                        src={doctor.photo.url}
+                        alt={doctorImageAlt}
+                        width={doctor.photo.width || 720}
+                        height={doctor.photo.height || 880}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                ) : (
+                    <div className="doctor-card__image doctor-card__image--placeholder">
+                        <span>{getInitials(displayName) || "Л"}</span>
+                    </div>
+                )}
+
+                {shouldShowBadge ? (
+                    <div className="doctor-card__experience" aria-hidden="true">
+                        <div className="doctor-card__experience-number">{years}</div>
+                        <div className="doctor-card__experience-line" />
+                        <div className="doctor-card__experience-text">
+                            {formatExperienceYearsLabel(years)}
+                            <br />
+                            досвіду
+                        </div>
+                    </div>
+                ) : null}
+            </div>
+
+            <div className="doctor-card__body">
+                <h3
+                    className={`doctor-card__name${
+                        splitName ? " doctor-card__name--split" : ""
+                    }`}
+                >
+                    {splitName ? (
+                        <>
+                            <span className="doctor-card__name-line">
+                                {splitName.firstLine}
+                            </span>
+                            <span className="doctor-card__name-line">
+                                {splitName.secondLine}
+                            </span>
+                        </>
+                    ) : (
+                        displayName
+                    )}
+                </h3>
+                {showSpecialisation && summaryLine ? (
+                    <p className="doctor-card__specialisation">{summaryLine}</p>
+                ) : null}
+            </div>
+        </>
+    );
+
     return (
         <article className={cardClassName}>
-            <Link className="doctor-card__link" to={cardHref}>
-                <div className="doctor-card__image-wrap">
-                    {doctor.photo?.url ? (
-                        <img
-                            className="doctor-card__image"
-                            src={doctor.photo.url}
-                            alt={doctorImageAlt}
-                            width={doctor.photo.width || 720}
-                            height={doctor.photo.height || 880}
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    ) : (
-                        <div className="doctor-card__image doctor-card__image--placeholder">
-                            <span>{getInitials(displayName) || "Л"}</span>
-                        </div>
-                    )}
-
-                    {shouldShowBadge ? (
-                        <div className="doctor-card__experience" aria-hidden="true">
-                            <div className="doctor-card__experience-number">
-                                {years}
-                            </div>
-                            <div className="doctor-card__experience-line" />
-                            <div className="doctor-card__experience-text">
-                                {formatExperienceYearsLabel(years)}
-                                <br />
-                                досвіду
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-
-                <div className="doctor-card__body">
-                    <h3
-                        className={`doctor-card__name${
-                            splitName ? " doctor-card__name--split" : ""
-                        }`}
-                    >
-                        {splitName ? (
-                            <>
-                                <span className="doctor-card__name-line">
-                                    {splitName.firstLine}
-                                </span>
-                                <span className="doctor-card__name-line">
-                                    {splitName.secondLine}
-                                </span>
-                            </>
-                        ) : (
-                            displayName
-                        )}
-                    </h3>
-                    {showSpecialisation && summaryLine ? (
-                        <p className="doctor-card__specialisation">
-                            {summaryLine}
-                        </p>
-                    ) : null}
-                </div>
-            </Link>
+            {asLink ? (
+                <Link className="doctor-card__link" to={cardHref}>
+                    {cardContent}
+                </Link>
+            ) : (
+                <div className="doctor-card__link">{cardContent}</div>
+            )}
         </article>
     );
 }

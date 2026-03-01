@@ -1,5 +1,8 @@
 import Button from "../Button/Button";
 import DoctorCard from "../DoctorCard/DoctorCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
 import "./RelatedDoctorsSection.css";
 
 export default function RelatedDoctorsSection({
@@ -33,6 +36,30 @@ export default function RelatedDoctorsSection({
                 {items.map((doctor) => (
                     <DoctorCard key={doctor.id || doctor.slug} doctor={doctor} />
                 ))}
+            </div>
+
+            <div className="related-doctors__mobile">
+                <Swiper
+                    modules={[Autoplay]}
+                    slidesPerView="auto"
+                    centeredSlides
+                    spaceBetween={20}
+                    loop
+                    autoplay={{
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    }}
+                    grabCursor
+                >
+                    {items.map((doctor) => (
+                        <SwiperSlide
+                            key={`${doctor.id || doctor.slug}-mobile`}
+                            className="related-doctors__slide"
+                        >
+                            <DoctorCard doctor={doctor} asLink={false} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
 
             <div className="related-doctors__actions">
