@@ -1,7 +1,105 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./WhyChooseUsSection.css";
 import Button from "../components/Button/Button";
 
+const STATS = [
+    {
+        id: "patients",
+        target: 20,
+        format: (value) => `${value}k+`,
+        text: "задоволених пацієнтів",
+    },
+    {
+        id: "specialists",
+        target: 15,
+        format: (value) => `${value}`,
+        text: "досвідчених спеціалістів",
+    },
+    {
+        id: "reviews",
+        target: 98,
+        format: (value) => `${value}%`,
+        text: "позитивних відгуків",
+    },
+    {
+        id: "availability",
+        target: 24,
+        format: (value) => `${value}/7`,
+        text: "зручний онлайн-запис",
+    },
+];
+
 export default function WhyChooseUsSection() {
+    const statsRef = useRef(null);
+    const hasAnimatedRef = useRef(false);
+    const [hasStarted, setHasStarted] = useState(false);
+    const initialValues = useMemo(
+        () =>
+            STATS.reduce((acc, stat) => {
+                acc[stat.id] = 0;
+                return acc;
+            }, {}),
+        [],
+    );
+    const [animatedValues, setAnimatedValues] = useState(initialValues);
+
+    useEffect(() => {
+        const target = statsRef.current;
+        if (!target || hasAnimatedRef.current) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry?.isIntersecting || hasAnimatedRef.current) return;
+                hasAnimatedRef.current = true;
+                setHasStarted(true);
+                observer.disconnect();
+            },
+            { threshold: 0.35 },
+        );
+
+        observer.observe(target);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!hasStarted) return undefined;
+
+        const durationMs = 1400;
+        let rafId = 0;
+        let startTime = 0;
+
+        const easeOutCubic = (progress) => 1 - (1 - progress) ** 3;
+
+        const tick = (timestamp) => {
+            if (!startTime) {
+                startTime = timestamp;
+            }
+
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / durationMs, 1);
+            const easedProgress = easeOutCubic(progress);
+
+            setAnimatedValues(
+                STATS.reduce((acc, stat) => {
+                    acc[stat.id] = Math.round(stat.target * easedProgress);
+                    return acc;
+                }, {}),
+            );
+
+            if (progress < 1) {
+                rafId = window.requestAnimationFrame(tick);
+            }
+        };
+
+        rafId = window.requestAnimationFrame(tick);
+
+        return () => {
+            if (rafId) {
+                window.cancelAnimationFrame(rafId);
+            }
+        };
+    }, [hasStarted]);
+
     return (
         <section className="why-section">
             <div className="why-container">
@@ -39,50 +137,26 @@ export default function WhyChooseUsSection() {
                 </div>
 
                 {/* STATS */}
-                <div className="why-stats">
-                    <div className="stat stat-shift-left">
-                        <span className="stat-number stat-number-shift">
-                            20k+
-                        </span>
-
-                        <div className="stat-text-wrap">
-                            <span className="stat-line"></span>
-                            <span className="stat-text">
-                                задоволених пацієнтів
+                <div className="why-stats" ref={statsRef}>
+                    {STATS.map((stat, index) => (
+                        <div
+                            key={stat.id}
+                            className={`stat ${index === 0 ? "stat-shift-left" : ""}`.trim()}
+                        >
+                            <span
+                                className={`stat-number ${
+                                    index === 0 ? "stat-number-shift" : ""
+                                }`.trim()}
+                            >
+                                {stat.format(animatedValues[stat.id] ?? 0)}
                             </span>
-                        </div>
-                    </div>
 
-                    <div className="stat">
-                        <span className="stat-number">15</span>
-                        <div className="stat-text-wrap">
-                            <span className="stat-line"></span>
-                            <span className="stat-text">
-                                досвідчених спеціалістів
-                            </span>
+                            <div className="stat-text-wrap">
+                                <span className="stat-line"></span>
+                                <span className="stat-text">{stat.text}</span>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="stat">
-                        <span className="stat-number">98%</span>
-                        <div className="stat-text-wrap">
-                            <span className="stat-line"></span>
-                            <span className="stat-text">
-                                позитивних відгуків
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="stat">
-                        <span className="stat-number">24/7</span>
-                        <div className="stat-text-wrap">
-                            <span className="stat-line"></span>
-
-                            <span className="stat-text">
-                                зручний онлайн-запис
-                            </span>
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <h2 className="why-subtitle">Наші Переваги:</h2>
                 <div className="why-features-wrapper">

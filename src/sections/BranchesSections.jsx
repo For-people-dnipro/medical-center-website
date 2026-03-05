@@ -2,19 +2,20 @@ import "./BranchesSection.css";
 import Button from "../components/Button/Button";
 import MapPin from "../components/MapPin";
 import BranchesMap from "../components/BranchesMap";
+import { Link } from "react-router-dom";
 
 const branches = [
     {
+        id: "halytskoho",
         name: "вул. Данила Галицького, 34",
-        link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
     },
     {
+        id: "khmelnytskoho",
         name: "просп. Б. Хмельницького, 127",
-        link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
     },
     {
+        id: "slava",
         name: "бульвар Слави, 8",
-        link: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
     },
 ];
 
@@ -39,19 +40,15 @@ export default function BranchesSection() {
                                 <span className="icon">
                                     <MapPin size={30} /> {/* ⬅ компактний */}
                                 </span>
-                                <a
-                                    href={b.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <Link to={`/branches#branch-${b.id}`}>
                                     {b.name}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
                     {/* ✅ DESKTOP BUTTON */}
                     <div className="branches-button-wrapper desktop-only">
-                        <Button href="/doctors">Детальніше</Button>
+                        <Button href="/branches">Детальніше</Button>
                     </div>
                 </div>
 
@@ -62,7 +59,7 @@ export default function BranchesSection() {
 
                 {/* ✅ MOBILE BUTTON */}
                 <div className="branches-button-wrapper mobile-only">
-                    <Button href="/doctors">Детальніше</Button>
+                    <Button href="/branches">Детальніше</Button>
                 </div>
             </div>
         </section>

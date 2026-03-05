@@ -47,6 +47,9 @@ function parseStartYear(value) {
 export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
     if (!limitedDoctors.length) return null;
+    const gridCountClass =
+        limitedDoctors.length < 4 ? `grid--count-${limitedDoctors.length}` : "";
+    const gridClassName = ["grid", gridCountClass].filter(Boolean).join(" ");
 
     const mobileNameRefs = useRef([]);
     const [forceSplit, setForceSplit] = useState(false);
@@ -95,7 +98,7 @@ export default function DoctorsSection({ doctors = [] }) {
                 </h3>
 
                 <div className="doctors-scroll">
-                    <div className="grid">
+                    <div className={gridClassName}>
                         {limitedDoctors.map((doc) => {
                             const d = doc.attributes || doc || {};
                             const imgSrc = d.photo?.url

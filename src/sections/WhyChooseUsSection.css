@@ -39,6 +39,7 @@
     font-size: 56px;
     font-weight: 500;
     color: var(--color-text-main);
+    font-variant-numeric: tabular-nums;
 }
 .stat-number {
     display: inline-block;

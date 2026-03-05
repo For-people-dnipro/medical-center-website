@@ -42,6 +42,26 @@
     justify-content: center;
 }
 
+@media (min-width: 993px) {
+    .grid--count-1,
+    .grid--count-2,
+    .grid--count-3 {
+        justify-content: center;
+    }
+
+    .grid--count-1 {
+        grid-template-columns: repeat(1, minmax(0, calc((100% - 48px) / 4)));
+    }
+
+    .grid--count-2 {
+        grid-template-columns: repeat(2, minmax(0, calc((100% - 48px) / 4)));
+    }
+
+    .grid--count-3 {
+        grid-template-columns: repeat(3, minmax(0, calc((100% - 48px) / 4)));
+    }
+}
+
 .card {
     background: white;
     border-radius: 24px;

@@ -1,39 +1,12 @@
 import { useEffect, useState } from "react";
 import "./CookieBanner.css";
+import { initializeGoogleAnalytics, trackPageView } from "../../lib/analytics";
 
 const CONSENT_STORAGE_KEY = "cookie-consent";
 const CONSENT_ACCEPTED = "accepted";
 const CONSENT_DECLINED = "declined";
 const CONSENT_UNSET = "unset";
 const CONSENT_LOADING = "loading";
-
-function initializeGoogleAnalytics(measurementId) {
-    if (typeof window === "undefined" || !measurementId) {
-        return;
-    }
-
-    if (window.__gaInitialized === measurementId) {
-        return;
-    }
-
-    const scriptSelector = `script[data-ga-id="${measurementId}"]`;
-    if (!document.querySelector(scriptSelector)) {
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-        script.dataset.gaId = measurementId;
-        document.head.appendChild(script);
-    }
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || function gtag() {
-        window.dataLayer.push(arguments);
-    };
-
-    window.gtag("js", new Date());
-    window.gtag("config", measurementId, { anonymize_ip: true });
-    window.__gaInitialized = measurementId;
-}
 
 export default function CookieBanner({
     measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || "",
@@ -69,6 +42,10 @@ export default function CookieBanner({
         } catch {
             // no-op
         }
+        const initialized = initializeGoogleAnalytics(measurementId);
+        if (initialized) {
+            trackPageView();
+        }
         setConsent(CONSENT_ACCEPTED);
     };
 
@@ -90,7 +67,8 @@ export default function CookieBanner({
             <div className="cookie-banner__content">
                 <p className="cookie-banner__text">
                     Ми використовуємо cookies для покращення роботи сайту та
-                    аналітики. Оберіть, чи дозволяєте ви аналітичні cookies.
+                    аналітики. Оберіть, чи погоджуєтесь ви на використання
+                    аналітичних cookies.
                 </p>
 
                 <div className="cookie-banner__actions">

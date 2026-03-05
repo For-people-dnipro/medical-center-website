@@ -59,6 +59,10 @@
     gap: 32px;
 }
 
+.branches-page__card-anchor {
+    scroll-margin-top: 120px;
+}
+
 .branches-page__card {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AllServices from "./pages/AllServices";
@@ -23,11 +23,18 @@ import DoctorsPage from "./pages/DoctorsPage/DoctorsPage";
 import DoctorProfilePage from "./pages/DoctorProfilePage/DoctorProfilePage";
 import Footer from "./components/Footer/Footer";
 import CookieBanner from "./components/CookieBanner/CookieBanner";
+import {
+    hasAnalyticsConsent,
+    initializeGoogleAnalytics,
+    trackPageView,
+} from "./lib/analytics";
 
 function App() {
     const location = useLocation();
+    const trackedPathRef = useRef("");
     const [isLoaderVisible, setIsLoaderVisible] = useState(true);
     const [isLoaderExiting, setIsLoaderExiting] = useState(false);
+    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
 
     useEffect(() => {
         const showTimer = window.setTimeout(() => {
@@ -38,19 +45,37 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const setBlankTarget = (anchor) => {
+        const setLinkTarget = (anchor) => {
             const href = anchor.getAttribute("href") || "";
 
             if (!href || href.startsWith("#") || href.startsWith("javascript:")) {
                 return;
             }
 
-            anchor.setAttribute("target", "_blank");
-            anchor.setAttribute("rel", "noopener noreferrer");
+            let url;
+
+            try {
+                url = new URL(href, window.location.origin);
+            } catch {
+                return;
+            }
+
+            const isHttpLink =
+                url.protocol === "http:" || url.protocol === "https:";
+            const isExternal = isHttpLink && url.origin !== window.location.origin;
+
+            if (isExternal) {
+                anchor.setAttribute("target", "_blank");
+                anchor.setAttribute("rel", "noopener noreferrer");
+                return;
+            }
+
+            anchor.removeAttribute("target");
+            anchor.removeAttribute("rel");
         };
 
         const updateAnchors = (root = document) => {
-            root.querySelectorAll("a[href]").forEach(setBlankTarget);
+            root.querySelectorAll("a[href]").forEach(setLinkTarget);
         };
 
         updateAnchors();
@@ -61,7 +86,7 @@ function App() {
                     if (!(node instanceof Element)) return;
 
                     if (node.matches("a[href]")) {
-                        setBlankTarget(node);
+                        setLinkTarget(node);
                     }
 
                     updateAnchors(node);
@@ -73,6 +98,27 @@ function App() {
 
         return () => observer.disconnect();
     }, [location.pathname, isLoaderVisible]);
+
+    useEffect(() => {
+        const currentPath = `${location.pathname}${location.search}`;
+        if (!currentPath || currentPath === trackedPathRef.current) {
+            return;
+        }
+
+        if (!hasAnalyticsConsent()) {
+            trackedPathRef.current = currentPath;
+            return;
+        }
+
+        const initialized = initializeGoogleAnalytics(measurementId);
+        if (!initialized) {
+            trackedPathRef.current = currentPath;
+            return;
+        }
+
+        trackPageView();
+        trackedPathRef.current = currentPath;
+    }, [location.pathname, location.search, measurementId]);
 
     return (
         <>

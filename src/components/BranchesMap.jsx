@@ -20,11 +20,7 @@ const DEFAULT_BRANCHES = [
 ];
 
 const PIN_PATH =
-    "M0,-18 \
-   C-6,-18 -10,-14 -10,-8 \
-   C-10,0 0,14 0,14 \
-   C0,14 10,0 10,-8 \
-   C10,-14 6,-18 0,-18 Z";
+    "M0,-18 C-6,-18 -10,-14 -10,-8 C-10,0 0,14 0,14 C0,14 10,0 10,-8 C10,-14 6,-18 0,-18 Z";
 
 const WHITE_DOT_PATH =
     "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0";
@@ -45,6 +41,7 @@ const MAP_OPTIONS = {
         },
     ],
 };
+
 function normalizeBranch(branch, index) {
     const lat = Number(branch?.lat);
     const lng = Number(branch?.lng);

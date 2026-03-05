@@ -150,30 +150,115 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        function extractFeaturedDoctors(payload) {
+            const data = payload?.data;
+
+            if (data?.attributes?.featured_doctors?.data) {
+                return data.attributes.featured_doctors.data;
+            }
+
+            if (Array.isArray(data) && data[0]?.attributes?.featured_doctors?.data) {
+                return data[0].attributes.featured_doctors.data;
+            }
+
+            return [];
+        }
+
+        function toNumberOrNull(value) {
+            const num = Number(value);
+            return Number.isFinite(num) ? num : null;
+        }
+
+        function pickHomepageDoctors(items = []) {
+            if (!Array.isArray(items)) return [];
+
+            const selected = items
+                .map((item, index) => {
+                    const attrs = item?.attributes || item || {};
+                    const homepagePriority = toNumberOrNull(
+                        attrs.homepage_priority ?? attrs.homepagePriority,
+                    );
+
+                    if (homepagePriority === null) {
+                        return null;
+                    }
+
+                    return {
+                        item,
+                        homepagePriority,
+                        order: toNumberOrNull(attrs.order),
+                        index,
+                    };
+                })
+                .filter(Boolean)
+                .sort((a, b) => {
+                    if (a.homepagePriority !== b.homepagePriority) {
+                        return a.homepagePriority - b.homepagePriority;
+                    }
+
+                    const orderA = Number.isFinite(a.order)
+                        ? a.order
+                        : Number.MAX_SAFE_INTEGER;
+                    const orderB = Number.isFinite(b.order)
+                        ? b.order
+                        : Number.MAX_SAFE_INTEGER;
+                    if (orderA !== orderB) {
+                        return orderA - orderB;
+                    }
+
+                    return a.index - b.index;
+                })
+                .map((entry) => entry.item);
+
+            return selected;
+        }
+
+        async function fetchJson(url) {
+            const res = await fetch(url);
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            return res.json();
+        }
+
         async function load() {
             try {
-                // Змініть endpoint якщо у вас інший (наприклад /api/homepage?populate=featured_doctors)
-                const res = await fetch(`${API_URL}/api/doctors?populate=*`);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                console.log("Doctors API response:", data);
-
-                // Підтримуємо кілька можливих структур відповіді
                 let items = [];
-                if (Array.isArray(data.data)) {
-                    // випадок: /api/doctors?populate=*
-                    items = data.data;
-                }
-                // випадок: /api/homepage?populate=featured_doctors
-                if (
-                    !items.length &&
-                    data.data &&
-                    data.data[0]?.attributes?.featured_doctors
-                ) {
-                    items = data.data[0].attributes.featured_doctors.data || [];
+
+                const homepageEndpoints = [
+                    `${API_URL}/api/homepage?populate[featured_doctors][populate]=*`,
+                    `${API_URL}/api/homepage?populate=featured_doctors`,
+                    `${API_URL}/api/homepages?populate[featured_doctors][populate]=*`,
+                    `${API_URL}/api/homepages?populate=featured_doctors`,
+                ];
+
+                for (const endpoint of homepageEndpoints) {
+                    try {
+                        const payload = await fetchJson(endpoint);
+                        const featuredDoctors = extractFeaturedDoctors(payload);
+                        if (featuredDoctors.length > 0) {
+                            items = featuredDoctors;
+                            break;
+                        }
+                    } catch {
+                        // silently try the next endpoint
+                    }
                 }
 
-                setDoctors(items);
+                if (!items.length) {
+                    const doctorsPayload = await fetchJson(
+                        `${API_URL}/api/doctors?populate=*&pagination[pageSize]=100&sort[0]=order:asc&sort[1]=name:asc`,
+                    );
+                    const allDoctors = Array.isArray(doctorsPayload?.data)
+                        ? doctorsPayload.data
+                        : [];
+                    const selectedHomepageDoctors = pickHomepageDoctors(allDoctors);
+                    items = selectedHomepageDoctors.length
+                        ? selectedHomepageDoctors
+                        : allDoctors;
+                }
+
+                setDoctors(items.slice(0, 4));
             } catch (err) {
                 console.error("Failed to load doctors:", err);
                 setDoctors([]);
