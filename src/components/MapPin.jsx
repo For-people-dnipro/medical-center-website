@@ -1,6 +1,11 @@
-export default function MapPin({ size = 22, color = "#0c8a87" }) {
+export default function MapPin({
+    size = 22,
+    color = "#0c8a87",
+    className = "",
+}) {
     return (
         <svg
+            className={className}
             width={size}
             height={size}
             viewBox="0 0 24 24"

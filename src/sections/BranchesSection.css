@@ -236,15 +236,24 @@
     .branches-section {
         padding: 70px 16px;
     }
+
+    .branches-container {
+        gap: 20px;
+    }
+
     .branches-title {
         margin-bottom: 30px;
+    }
+
+    .branches-description {
+        margin-bottom: 28px;
     }
 }
 @media (max-width: 576px) {
     .branches-container {
         display: flex;
         flex-direction: column;
-        gap: 32px;
+        gap: 20px;
     }
 
     .branches-text {
@@ -297,7 +306,7 @@
     .branches-container {
         display: flex;
         flex-direction: column;
-        gap: 32px;
+        gap: 20px;
     }
 }
 @media (max-width: 358px) {

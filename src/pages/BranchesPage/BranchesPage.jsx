@@ -207,56 +207,70 @@ export default function BranchesPage() {
                 <section className="branches-page__list">
                     <div className="branches-page__container">
                         <div className="branches-page__cards">
-                            {BRANCHES.map((branch) => (
-                                <article
-                                    className="branches-page__card"
-                                    key={branch.id}
-                                    id={`branch-${branch.id}`}
-                                >
-                                    <div className="branches-page__card-content">
-                                        <div className="branches-page__address-row">
-                                            <MapPin
-                                                className="branches-page__pin"
-                                                size={28}
+                            {BRANCHES.map((branch, index) => {
+                                const isFirstCard = index === 0;
+
+                                return (
+                                    <article
+                                        className={`branches-page__card${
+                                            isFirstCard
+                                                ? " branches-page__card--first"
+                                                : ""
+                                        }`}
+                                        key={branch.id}
+                                        id={`branch-${branch.id}`}
+                                    >
+                                        <div className="branches-page__card-content">
+                                            <div className="branches-page__address-row">
+                                                <MapPin
+                                                    className="branches-page__pin"
+                                                    size={28}
+                                                />
+                                                <h2>{branch.address}</h2>
+                                            </div>
+
+                                            <div className="branches-page__meta">
+                                                <div className="branches-page__meta-item">
+                                                    <p className="branches-page__meta-label">
+                                                        Графік роботи:
+                                                    </p>
+                                                    <p className="branches-page__meta-value">
+                                                        {branch.hours}
+                                                    </p>
+                                                </div>
+
+                                                <div className="branches-page__meta-item">
+                                                    <p className="branches-page__meta-label">
+                                                        Контактний номер:
+                                                    </p>
+                                                    <p className="branches-page__meta-value">
+                                                        <a
+                                                            href={`tel:${branch.phoneHref}`}
+                                                        >
+                                                            {branch.phoneDisplay}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className={`branches-page__map${
+                                                isFirstCard
+                                                    ? " branches-page__map--first"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <BranchesMap
+                                                branches={branch.mapMarkers}
+                                                center={branch.mapCenter}
+                                                zoom={14}
+                                                borderRadius="var(--radius-none)"
                                             />
-                                            <h2>{branch.address}</h2>
                                         </div>
-
-                                        <div className="branches-page__meta">
-                                            <div className="branches-page__meta-item">
-                                                <p className="branches-page__meta-label">
-                                                    Графік роботи:
-                                                </p>
-                                                <p className="branches-page__meta-value">
-                                                    {branch.hours}
-                                                </p>
-                                            </div>
-
-                                            <div className="branches-page__meta-item">
-                                                <p className="branches-page__meta-label">
-                                                    Контактний номер:
-                                                </p>
-                                                <p className="branches-page__meta-value">
-                                                    <a
-                                                        href={`tel:${branch.phoneHref}`}
-                                                    >
-                                                        {branch.phoneDisplay}
-                                                    </a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="branches-page__map">
-                                        <BranchesMap
-                                            branches={branch.mapMarkers}
-                                            center={branch.mapCenter}
-                                            zoom={14}
-                                            borderRadius="var(--radius-none)"
-                                        />
-                                    </div>
-                                </article>
-                            ))}
+                                    </article>
+                                );
+                            })}
                         </div>
                     </div>
                 </section>

@@ -34,11 +34,12 @@ const MAP_OPTIONS = {
     streetViewControl: false,
     mapTypeControl: false,
     fullscreenControl: false,
+    clickableIcons: false,
     styles: [
         {
             featureType: "landscape",
             elementType: "geometry",
-            stylers: [{ color: "#f5f7f9" }], // світліший фон
+            stylers: [{ color: "#f5f7f9" }],
         },
     ],
 };
@@ -192,6 +193,7 @@ function BranchesMap({
                         options={{
                             zIndex: 10,
                             optimized: false,
+                            title: "",
                         }}
                         onMouseOver={() => setHoveredId(branch.id)}
                         onMouseOut={() => setHoveredId(null)}
@@ -209,6 +211,7 @@ function BranchesMap({
                             zIndex: 11,
                             clickable: false,
                             optimized: false,
+                            title: "",
                         }}
                     />
                 </Fragment>
