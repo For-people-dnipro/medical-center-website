@@ -6,24 +6,28 @@ const STATS = [
     {
         id: "patients",
         target: 20,
+        sample: "20k+",
         format: (value) => `${value}k+`,
         text: "задоволених пацієнтів",
     },
     {
         id: "specialists",
         target: 15,
+        sample: "15",
         format: (value) => `${value}`,
         text: "досвідчених спеціалістів",
     },
     {
         id: "reviews",
         target: 98,
+        sample: "98%",
         format: (value) => `${value}%`,
         text: "позитивних відгуків",
     },
     {
         id: "availability",
         target: 24,
+        sample: "24/7",
         format: (value) => `${value}/7`,
         text: "зручний онлайн-запис",
     },
@@ -64,7 +68,7 @@ export default function WhyChooseUsSection() {
     useEffect(() => {
         if (!hasStarted) return undefined;
 
-        const durationMs = 1400;
+        const durationMs = 900;
         let rafId = 0;
         let startTime = 0;
 
@@ -147,6 +151,7 @@ export default function WhyChooseUsSection() {
                                 className={`stat-number ${
                                     index === 0 ? "stat-number-shift" : ""
                                 }`.trim()}
+                                style={{ "--stat-sample-length": stat.sample.length }}
                             >
                                 {stat.format(animatedValues[stat.id] ?? 0)}
                             </span>

@@ -1,4 +1,6 @@
 .ticket-wrapper {
+    --ticket-gap: 80px;
+    --ticket-font-size: 20px;
     width: 100%;
     overflow: hidden;
     background: #008b96;
@@ -9,18 +11,21 @@
 
 .ticket-track {
     display: inline-flex;
+    align-items: center;
+    width: max-content;
     white-space: nowrap;
-    animation: marquee var(--duration, 100s) linear infinite;
+    gap: var(--ticket-gap);
+    animation: marquee var(--duration, 14s) linear infinite;
     will-change: transform;
 }
 
 /* кожен елемент */
 .ticket-item {
-    font-size: 20px;
+    flex: 0 0 auto;
+    font-size: var(--ticket-font-size);
     font-weight: 700;
     color: var(--color-bg-main);
     text-transform: uppercase;
-    margin-right: 80px;
     letter-spacing: 0.6px;
 }
 
@@ -31,5 +36,17 @@
     }
     100% {
         transform: translateX(var(--move-distance));
+    }
+}
+
+@media (max-width: 768px) {
+    .ticket-wrapper {
+        --ticket-gap: 56px;
+        --ticket-font-size: 16px;
+        padding: 10px 0;
+    }
+
+    .ticket-item {
+        letter-spacing: 0.45px;
     }
 }

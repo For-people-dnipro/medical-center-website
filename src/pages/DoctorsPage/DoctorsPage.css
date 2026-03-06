@@ -161,6 +161,10 @@
         font-size: 16px;
     }
 
+    .doctors-page .doctor-card__image {
+        object-position: center 20%;
+    }
+
     .doctors-page__contact {
         margin-top: 70px;
     }

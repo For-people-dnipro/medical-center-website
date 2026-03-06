@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import BranchesMap from "../../components/BranchesMap";
@@ -74,20 +74,89 @@ const PAGE_SEO = getStaticSeo("branches");
 export default function BranchesPage() {
     const location = useLocation();
 
+    const targetBranchId = useMemo(() => {
+        const stateBranchId =
+            typeof location.state?.scrollToBranchId === "string"
+                ? location.state.scrollToBranchId
+                : "";
+
+        let hashBranchId = "";
+        let hash = location.hash || "";
+        if (hash) {
+            try {
+                hash = decodeURIComponent(hash);
+            } catch {
+                hash = "";
+            }
+
+            if (hash.startsWith("#branch-")) {
+                hashBranchId = hash.replace("#branch-", "");
+            }
+        }
+
+        return stateBranchId || hashBranchId || "";
+    }, [location.hash, location.state]);
+
+    useLayoutEffect(() => {
+        if (!targetBranchId) return;
+
+        // Route has already changed; set top position before first paint.
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }, [targetBranchId, location.key]);
+
     useEffect(() => {
-        const hash = location.hash;
-        if (!hash) return;
+        if (!targetBranchId) return;
 
-        const target = document.querySelector(hash);
-        if (!target) return;
+        let delayId = 0;
+        let rafId = 0;
+        let attempts = 0;
 
-        requestAnimationFrame(() => {
-            target.scrollIntoView({
+        const scrollToBranchWhenReady = () => {
+            const branchCard = document.getElementById(
+                `branch-${targetBranchId}`,
+            );
+            if (
+                !branchCard ||
+                branchCard.getBoundingClientRect().height === 0
+            ) {
+                if (attempts < 60) {
+                    attempts += 1;
+                    rafId = window.requestAnimationFrame(
+                        scrollToBranchWhenReady,
+                    );
+                }
+                return;
+            }
+
+            const headerHeight =
+                document.querySelector(".header")?.getBoundingClientRect()
+                    .height || 0;
+            const rect = branchCard.getBoundingClientRect();
+            const absoluteTop = window.scrollY + rect.top;
+            const targetTop = Math.max(
+                absoluteTop -
+                    headerHeight -
+                    Math.max(window.innerHeight * 0.06, 18),
+                0,
+            );
+
+            window.scrollTo({
+                top: targetTop,
+                left: 0,
                 behavior: "smooth",
-                block: "start",
             });
-        });
-    }, [location.hash]);
+        };
+
+        // Wait briefly so users clearly see page change, then scroll down.
+        delayId = window.setTimeout(() => {
+            rafId = window.requestAnimationFrame(scrollToBranchWhenReady);
+        }, 520);
+
+        return () => {
+            window.clearTimeout(delayId);
+            window.cancelAnimationFrame(rafId);
+        };
+    }, [targetBranchId, location.key]);
 
     return (
         <div className="branches-page">

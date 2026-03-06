@@ -51,6 +51,24 @@
     padding: 0 42px 0 16px;
 }
 
+.doctor-filters__dropdown--specialisation .custom-dropdown__trigger-label {
+    line-height: 1.42;
+    letter-spacing: 0.048em;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+}
+
+.doctor-filters__dropdown--specialisation .custom-dropdown__option {
+    line-height: 1.44;
+}
+
+.doctor-filters__dropdown--specialisation .custom-dropdown__option > span {
+    line-height: 1.44;
+    letter-spacing: 0.05em;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+}
+
 .doctor-filters__select-trigger {
     padding: 0 10px 0 16px;
     cursor: pointer;
@@ -234,5 +252,11 @@
     .doctor-filters__select-trigger,
     .doctor-filters__reset {
         min-height: 40px;
+    }
+
+    .doctor-filters__dropdown--specialisation .custom-dropdown__trigger-label,
+    .doctor-filters__dropdown--specialisation .custom-dropdown__option > span {
+        line-height: 1.48;
+        letter-spacing: 0.056em;
     }
 }

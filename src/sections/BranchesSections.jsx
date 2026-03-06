@@ -40,7 +40,10 @@ export default function BranchesSection() {
                                 <span className="icon">
                                     <MapPin size={30} /> {/* ⬅ компактний */}
                                 </span>
-                                <Link to={`/branches#branch-${b.id}`}>
+                                <Link
+                                    to="/branches"
+                                    state={{ scrollToBranchId: b.id }}
+                                >
                                     {b.name}
                                 </Link>
                             </li>

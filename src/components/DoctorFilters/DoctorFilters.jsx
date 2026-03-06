@@ -70,6 +70,7 @@ export default function DoctorFilters({
                     ariaLabel={branchAriaLabel || resolvedBranchLabel}
                     disabled={branchDisabled}
                     allowEmptyOption
+                    className="doctor-filters__dropdown doctor-filters__dropdown--branch"
                 />
 
                 <label
@@ -90,6 +91,7 @@ export default function DoctorFilters({
                     }
                     disabled={specialisationDisabled}
                     allowEmptyOption
+                    className="doctor-filters__dropdown doctor-filters__dropdown--specialisation"
                 />
 
                 {showReset ? (

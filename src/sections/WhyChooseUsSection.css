@@ -39,10 +39,13 @@
     font-size: 56px;
     font-weight: 500;
     color: var(--color-text-main);
-    font-variant-numeric: tabular-nums;
+    font-feature-settings:
+        "tnum" 1,
+        "lnum" 1;
 }
 .stat-number {
     display: inline-block;
+    min-width: calc(var(--stat-sample-length, 2) * 0.62em);
 }
 .stat-text-wrap {
     max-width: 130px;
