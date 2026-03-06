@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { formatNewsDate } from "../../api/newsApi";
 import "./NewsCard.css";
 
-export default function NewsCard({ item }) {
+export default function NewsCard({ item, priority = false }) {
     const dateLabel = formatNewsDate(item.publishedDate);
     const cardImage = item.coverImageCard || item.coverImage;
     const newsTitle = String(item?.title || "Новина").trim();
     const newsImageAlt = `${newsTitle} — медичний центр Для Людей, Дніпро`;
+    const imageLoading = priority ? "eager" : "lazy";
+    const imageFetchPriority = priority ? "high" : "auto";
 
     let dateTime = "";
     if (item.publishedDate) {
@@ -27,7 +29,8 @@ export default function NewsCard({ item }) {
                             alt={newsImageAlt}
                             width={cardImage.width}
                             height={cardImage.height}
-                            loading="lazy"
+                            loading={imageLoading}
+                            fetchPriority={imageFetchPriority}
                             decoding="async"
                         />
                     ) : (

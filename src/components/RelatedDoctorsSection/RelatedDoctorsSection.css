@@ -85,7 +85,8 @@
 
     .related-doctors__mobile {
         display: block;
-        overflow: visible;
+        overflow-x: hidden;
+        overflow-y: visible;
     }
 
     .related-doctors__mobile .swiper {

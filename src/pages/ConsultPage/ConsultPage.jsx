@@ -30,7 +30,7 @@ export default function ConsultPage() {
                         { label: "Консультація" },
                     ]}
                     buttonText="Обрати лікаря"
-                    buttonHref="#contact-form"
+                    buttonHref="/doctors"
                 />
 
                 <section className="services-text-under-card__intro">

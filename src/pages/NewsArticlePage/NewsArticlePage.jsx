@@ -232,7 +232,8 @@ export default function NewsArticlePage() {
                                     alt={newsHeroAlt}
                                     width={heroImage.width}
                                     height={heroImage.height}
-                                    loading="lazy"
+                                    loading="eager"
+                                    fetchPriority="high"
                                     decoding="async"
                                 />
                             </figure>

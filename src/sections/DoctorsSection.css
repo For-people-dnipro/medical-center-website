@@ -238,6 +238,8 @@
 
     .doctors-mobile {
         display: block;
+        overflow-x: hidden;
+        overflow-y: visible;
     }
 
     .doctor-slide {

@@ -50,6 +50,7 @@ const BRANCHES = [
     {
         id: "khmelnytskoho",
         address: "Дніпро, просп. Б. Хмельницького, 127",
+        mobileAddress: "Дніпро, пр. Б. Хмельницького, 127",
         hours: "ПН-ПТ: з 9:00 до 18:00",
         phoneDisplay: "+38 (050) 067-22-35",
         phoneHref: "+380500672235",
@@ -70,6 +71,26 @@ const BRANCHES = [
 ];
 
 const PAGE_SEO = getStaticSeo("branches");
+
+function renderAddressWithCityBreak(value) {
+    const text = String(value || "").trim();
+    if (!text) return "";
+
+    const commaIndex = text.indexOf(",");
+    if (commaIndex === -1) return text;
+
+    const cityPart = text.slice(0, commaIndex + 1).trim();
+    const restPart = text.slice(commaIndex + 1).trim();
+
+    if (!restPart) return cityPart;
+
+    return (
+        <>
+            {cityPart} <wbr />
+            {restPart}
+        </>
+    );
+}
 
 function forceInstantScrollToTop() {
     const html = document.documentElement;
@@ -226,7 +247,17 @@ export default function BranchesPage() {
                                                     className="branches-page__pin"
                                                     size={28}
                                                 />
-                                                <h2>{branch.address}</h2>
+                                                <h2>
+                                                    <span className="branches-page__address-desktop">
+                                                        {branch.address}
+                                                    </span>
+                                                    <span className="branches-page__address-mobile">
+                                                        {renderAddressWithCityBreak(
+                                                            branch.mobileAddress ||
+                                                                branch.address,
+                                                        )}
+                                                    </span>
+                                                </h2>
                                             </div>
 
                                             <div className="branches-page__meta">

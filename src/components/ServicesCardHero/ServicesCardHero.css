@@ -95,6 +95,30 @@
 .services-card-hero__right {
     border-radius: var(--radius-xl);
     overflow: hidden;
+    position: relative;
+    background:
+        linear-gradient(120deg, rgba(241, 248, 249, 0.92), rgba(228, 241, 244, 0.86)),
+        linear-gradient(90deg, rgba(237, 245, 247, 0.72), rgba(249, 252, 253, 0.82));
+}
+
+.services-card-hero__right::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.28) 45%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    transform: translateX(-120%);
+    animation: services-card-hero-shimmer 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.services-card-hero__right.is-loaded::after {
+    opacity: 0;
+    animation: none;
 }
 
 .services-card-hero__right img {
@@ -102,6 +126,20 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    opacity: 0;
+    transition: opacity 180ms ease-out;
+    position: relative;
+    z-index: 1;
+}
+
+.services-card-hero__right.is-loaded img {
+    opacity: 1;
+}
+
+@keyframes services-card-hero-shimmer {
+    to {
+        transform: translateX(120%);
+    }
 }
 
 /* ================================

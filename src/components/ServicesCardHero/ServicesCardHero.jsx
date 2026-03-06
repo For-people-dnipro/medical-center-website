@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 import { toUiServiceTitle } from "../../lib/serviceTitle";
@@ -15,6 +16,12 @@ export default function ServicesCardHero({
     buttonOnClick,
 }) {
     const uiTitle = toUiServiceTitle(title);
+    const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
+
+    useEffect(() => {
+        setIsHeroImageLoaded(false);
+    }, [image]);
+
     const heroImageAlt = title
         ? `${title} — медичний центр Для Людей, Дніпро, Україна`
         : "Медичний центр Для Людей, Дніпро, Україна";
@@ -61,13 +68,20 @@ export default function ServicesCardHero({
 
                     {/* RIGHT */}
                     {image && (
-                        <div className="services-card-hero__right">
+                        <div
+                            className={`services-card-hero__right${
+                                isHeroImageLoaded ? " is-loaded" : ""
+                            }`}
+                        >
                             <img
                                 src={image}
                                 alt={heroImageAlt}
                                 loading="eager"
                                 fetchPriority="high"
                                 decoding="async"
+                                data-route-nonblocking="true"
+                                onLoad={() => setIsHeroImageLoaded(true)}
+                                onError={() => setIsHeroImageLoaded(true)}
                             />
                         </div>
                     )}

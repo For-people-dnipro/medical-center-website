@@ -3,17 +3,23 @@ import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
 import arrowIcon from "../../public/icons/arrow-down.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
+    const location = useLocation();
     const openInNewTab = (url) => {
         window.open(url, "_blank", "noopener,noreferrer");
     };
 
-    const handleLogoClick = () => {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const handleLogoClick = (event) => {
+        // Only logo re-click on home should scroll.
+        // From other routes we keep immediate navigation behavior.
+        if (location.pathname === "/") {
+            event.preventDefault();
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }
         setMenuOpen(false);
         setServicesOpen(false);
     };

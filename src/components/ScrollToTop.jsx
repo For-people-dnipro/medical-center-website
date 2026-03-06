@@ -45,15 +45,5 @@ export default function ScrollToTop() {
         scrollToPageTop();
     }, [location.pathname, shouldSkipScrollReset]);
 
-    useEffect(() => {
-        const handleBeforeUnload = () => {
-            scrollToPageTop();
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return () =>
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-    }, []);
-
     return null;
 }

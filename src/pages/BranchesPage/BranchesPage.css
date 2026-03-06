@@ -99,6 +99,10 @@
     overflow-wrap: anywhere;
 }
 
+.branches-page__address-mobile {
+    display: none;
+}
+
 .branches-page__meta {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -230,6 +234,16 @@
 
     .branches-page__address-row h2 {
         font-size: var(--font-h2);
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+    .branches-page__address-desktop {
+        display: none;
+    }
+
+    .branches-page__address-mobile {
+        display: inline;
     }
 
     .branches-page__address-row {

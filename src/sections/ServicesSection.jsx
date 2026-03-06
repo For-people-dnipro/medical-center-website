@@ -116,6 +116,9 @@ export default function ServicesSection() {
                                             prioritizeImages ? "high" : "auto"
                                         }
                                         decoding="async"
+                                        data-route-critical={
+                                            prioritizeImages ? "true" : undefined
+                                        }
                                     />
                                 </div>
                                 <span>{item.uiLabel}</span>
@@ -143,6 +146,9 @@ export default function ServicesSection() {
                                 loading={prioritizeImages ? "eager" : "lazy"}
                                 fetchPriority={prioritizeImages ? "high" : "auto"}
                                 decoding="async"
+                                data-route-critical={
+                                    prioritizeImages ? "true" : undefined
+                                }
                             />
                         </div>
                     </Link>
@@ -197,6 +203,11 @@ export default function ServicesSection() {
                                                                     : "auto"
                                                             }
                                                             decoding="async"
+                                                            data-route-critical={
+                                                                prioritizeImages
+                                                                    ? "true"
+                                                                    : undefined
+                                                            }
                                                         />
                                                     </div>
                                                     <span>{item.uiLabel}</span>
@@ -217,6 +228,11 @@ export default function ServicesSection() {
                                                             : "auto"
                                                     }
                                                     decoding="async"
+                                                    data-route-critical={
+                                                        prioritizeImages
+                                                            ? "true"
+                                                            : undefined
+                                                    }
                                                 />
                                             </>
                                         );

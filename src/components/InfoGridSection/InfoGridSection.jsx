@@ -25,14 +25,19 @@ export default function InfoGridSection({
                     <div className="info-grid-section__grid info-grid-section__grid--analyses">
                         <article className="info-grid-section__card info-grid-section__card--analyses-media">
                             {imageSrc ? (
-                                <img src={imageSrc} alt={imageAlt} />
+                                <img
+                                    src={imageSrc}
+                                    alt={imageAlt}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
                             ) : null}
                         </article>
 
                         <article className="info-grid-section__card info-grid-section__card--analyses-text">
-                            <h2 className="info-grid-section__title">
+                            <h3 className="info-grid-section__title">
                                 {rightTitle}
-                            </h2>
+                            </h3>
                             <ul className="info-grid-section__list info-grid-section__list--analyses">
                                 {rightItems.map((item, index) => (
                                     <li key={`${item}-${index}`}>{item}</li>
@@ -51,7 +56,9 @@ export default function InfoGridSection({
                 <div className="info-grid-section__container services-text-under-card__container">
                     <div className="info-grid-section__grid declaration-page__info-grid">
                         <article className="info-grid-section__card declaration-page__info-card">
-                            <h2 className="info-grid-section__title">{leftTitle}</h2>
+                            <h3 className="info-grid-section__title">
+                                {leftTitle}
+                            </h3>
 
                             <ul className="info-grid-section__list declaration-page__list">
                                 {leftItems.map((item, index) => (
@@ -64,7 +71,9 @@ export default function InfoGridSection({
                         </article>
 
                         <article className="info-grid-section__card declaration-page__info-card">
-                            <h2 className="info-grid-section__title">{rightTitle}</h2>
+                            <h3 className="info-grid-section__title">
+                                {rightTitle}
+                            </h3>
 
                             <ol className="info-grid-section__steps declaration-page__steps">
                                 {rightItems.map((item, index) => {
@@ -121,7 +130,9 @@ export default function InfoGridSection({
             <div className="info-grid-section__container services-text-under-card__container">
                 <div className="info-grid-section__grid">
                     <article className="info-grid-section__card">
-                        <h2 className="info-grid-section__title">{leftTitle}</h2>
+                        <h2 className="info-grid-section__title">
+                            {leftTitle}
+                        </h2>
                         <ul className="info-grid-section__list info-grid-section__list--check">
                             {leftItems.map((item, index) => (
                                 <li key={`${item}-${index}`}>{item}</li>
@@ -130,7 +141,9 @@ export default function InfoGridSection({
                     </article>
 
                     <article className="info-grid-section__card">
-                        <h2 className="info-grid-section__title">{rightTitle}</h2>
+                        <h2 className="info-grid-section__title">
+                            {rightTitle}
+                        </h2>
                         <ul className="info-grid-section__list info-grid-section__list--check">
                             {rightItems.map((item, index) => (
                                 <li key={`${item}-${index}`}>{item}</li>

@@ -344,6 +344,8 @@ S900 20 986 3"
                                 <img
                                     src="/images/vaccination-section-picture.jpg"
                                     alt="Вакцинація в медичному центрі Для Людей, Дніпро, Україна"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                         </div>

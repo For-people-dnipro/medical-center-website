@@ -1,9 +1,22 @@
+import { useEffect, useRef } from "react";
 import Button from "../Button/Button";
 import DoctorCard from "../DoctorCard/DoctorCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "./RelatedDoctorsSection.css";
+
+function buildLoopItems(items, minSlides = 6) {
+    if (!Array.isArray(items) || items.length === 0) return [];
+    if (items.length >= minSlides) return items;
+
+    const result = [];
+    while (result.length < minSlides) {
+        result.push(...items);
+    }
+
+    return result.slice(0, minSlides);
+}
 
 export default function RelatedDoctorsSection({
     doctors = [],
@@ -15,6 +28,22 @@ export default function RelatedDoctorsSection({
 }) {
     const items = doctors.slice(0, 4);
     const hasMobileCarousel = items.length > 1;
+    const mobileItems = hasMobileCarousel ? buildLoopItems(items, 6) : items;
+    const mobileSwiperRef = useRef(null);
+
+    useEffect(() => {
+        if (!hasMobileCarousel) return undefined;
+
+        const intervalId = window.setInterval(() => {
+            const swiper = mobileSwiperRef.current;
+            if (!swiper || swiper.destroyed) return;
+            if (swiper.autoplay?.running) return;
+            swiper.slideNext(650);
+        }, 3200);
+
+        return () => window.clearInterval(intervalId);
+    }, [hasMobileCarousel, mobileItems.length]);
+
     if (!items.length) return null;
 
     const rootClassName = ["related-doctors", className].filter(Boolean).join(" ");
@@ -54,20 +83,36 @@ export default function RelatedDoctorsSection({
                     centeredSlides={hasMobileCarousel}
                     spaceBetween={20}
                     loop={hasMobileCarousel}
+                    watchOverflow={!hasMobileCarousel}
+                    observer={hasMobileCarousel}
+                    observeParents={hasMobileCarousel}
+                    speed={650}
                     autoplay={
                         hasMobileCarousel
                             ? {
-                                  delay: 4000,
+                                  delay: 3200,
                                   disableOnInteraction: false,
+                                  pauseOnMouseEnter: false,
+                                  waitForTransition: false,
                               }
                             : false
                     }
                     grabCursor={hasMobileCarousel}
                     allowTouchMove={hasMobileCarousel}
+                    onSwiper={(swiper) => {
+                        mobileSwiperRef.current = swiper;
+                        if (
+                            hasMobileCarousel &&
+                            swiper.autoplay &&
+                            !swiper.autoplay.running
+                        ) {
+                            swiper.autoplay.start();
+                        }
+                    }}
                 >
-                    {items.map((doctor) => (
+                    {mobileItems.map((doctor, index) => (
                         <SwiperSlide
-                            key={`${doctor.id || doctor.slug}-mobile`}
+                            key={`${doctor.id || doctor.slug}-mobile-${index}`}
                             className="related-doctors__slide"
                         >
                             <DoctorCard doctor={doctor} />

@@ -127,7 +127,7 @@ export default function VaccinationStandardsCarousel() {
                             swiper.navigation.update();
                         }}
                     >
-                        {slides.map((slide) => (
+                        {slides.map((slide, index) => (
                             <SwiperSlide
                                 className="vaccination-standards-carousel__slide"
                                 key={slide.title}
@@ -142,7 +142,11 @@ export default function VaccinationStandardsCarousel() {
                                         <img
                                             src={slide.image}
                                             alt={`${slide.title} — вакцинація у медичному центрі Для Людей, Дніпро`}
-                                            loading="eager"
+                                            loading={index === 0 ? "eager" : "lazy"}
+                                            fetchPriority={
+                                                index === 0 ? "high" : "auto"
+                                            }
+                                            decoding="async"
                                         />
                                     </figure>
                                 </article>

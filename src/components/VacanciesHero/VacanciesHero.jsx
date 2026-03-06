@@ -26,6 +26,9 @@ export default function VacanciesHero({
                             src={image}
                             alt="Команда медичного центру Для Людей у Дніпрі, Україна"
                             className="vacancies-hero__image"
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="async"
                         />
                         {/* <img
                             src={logoMain}

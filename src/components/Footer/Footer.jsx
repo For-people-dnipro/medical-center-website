@@ -39,23 +39,23 @@ export default function Footer() {
     ];
 
     const mobileLeft = [
-        "Про клініку",
-        "Лікарі",
-        "Послуги",
-        "Філії",
-        "Вакансії",
-        "Новини",
-        "Контакти",
+        { label: "Про клініку", href: "/about" },
+        { label: "Лікарі", href: "/doctors" },
+        { label: "Послуги", href: "/services" },
+        { label: "Філії", href: "/branches" },
+        { label: "Вакансії", href: "/vacancies" },
+        { label: "Новини", href: "/news" },
+        { label: "Контакти", href: "/contacts" },
     ];
 
     const mobileRight = [
-        "Документи",
-        "Публічна оферта",
-        "Політика конфіденційності",
-        "Захист персональних даних",
-        "Перелік безкоштовних послуг (ПМГ)",
-        "Правила повітряної тривоги",
-        "Правила внутрішнього розпорядку",
+        { label: "Документи", href: "/documents" },
+        { label: "Публічна оферта", href: "/offer" },
+        { label: "Політика конфіденційності", href: "/privacy" },
+        { label: "Захист персональних даних", href: "/data-protection" },
+        { label: "Перелік безкоштовних послуг (ПМГ)", href: "/free-services" },
+        { label: "Правила повітряної тривоги", href: "/air-alert" },
+        { label: "Правила внутрішнього розпорядку", href: "/rules" },
     ];
 
     const desktopMenu = [
@@ -85,6 +85,8 @@ export default function Footer() {
     ];
 
     const menuToRender = isRulesInMenu ? desktopMenuWithRules : desktopMenu;
+    const isInternalRoute = (href) =>
+        typeof href === "string" && href.startsWith("/") && !href.startsWith("//");
 
     return (
         <footer className={`footer ${isRulesInMenu ? "rules-in-menu" : ""}`}>
@@ -131,9 +133,7 @@ export default function Footer() {
 
                 <div className="footer-nav desktop-menu">
                     {menuToRender.map((item, i) =>
-                        item.href === "/air-alert" ||
-                        item.href === "/branches" ||
-                        item.href === "/doctors" ? (
+                        isInternalRoute(item.href) ? (
                             <Link key={i} to={item.href}>
                                 {item.label}
                             </Link>
@@ -148,17 +148,13 @@ export default function Footer() {
                 <div className="footer-mobile-menu">
                     <div className="footer-mobile-col">
                         {mobileLeft.map((item, i) =>
-                            item === "Філії" ? (
-                                <Link key={i} to="/branches">
-                                    {item}
-                                </Link>
-                            ) : item === "Лікарі" ? (
-                                <Link key={i} to="/doctors">
-                                    {item}
+                            isInternalRoute(item.href) ? (
+                                <Link key={i} to={item.href}>
+                                    {item.label}
                                 </Link>
                             ) : (
-                                <a key={i} href="#">
-                                    {item}
+                                <a key={i} href={item.href}>
+                                    {item.label}
                                 </a>
                             ),
                         )}
@@ -166,13 +162,13 @@ export default function Footer() {
 
                     <div className="footer-mobile-col">
                         {mobileRight.map((item, i) =>
-                            item === "Правила повітряної тривоги" ? (
-                                <Link key={i} to="/air-alert">
-                                    {item}
+                            isInternalRoute(item.href) ? (
+                                <Link key={i} to={item.href}>
+                                    {item.label}
                                 </Link>
                             ) : (
-                                <a key={i} href="#">
-                                    {item}
+                                <a key={i} href={item.href}>
+                                    {item.label}
                                 </a>
                             ),
                         )}
@@ -185,9 +181,9 @@ export default function Footer() {
                     © 2025 Для людей. Всі права захищені
                 </span>
 
-                <a href="/rules" className="footer-rules">
+                <Link to="/rules" className="footer-rules">
                     Правила внутрішнього розпорядку
-                </a>
+                </Link>
 
                 <div className="footer-socials" aria-label="Соцмережі">
                     <Instagram aria-label="Instagram" className="footer-icon" />

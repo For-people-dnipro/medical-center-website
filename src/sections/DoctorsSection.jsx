@@ -3,10 +3,22 @@ import Button from "../components/Button/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+
+function buildLoopItems(items, minSlides = 6) {
+    if (!Array.isArray(items) || items.length === 0) return [];
+    if (items.length >= minSlides) return items;
+
+    const result = [];
+    while (result.length < minSlides) {
+        result.push(...items);
+    }
+
+    return result.slice(0, minSlides);
+}
 
 function getDoctorCardPosition(attrs = {}) {
     return (
@@ -53,12 +65,29 @@ function resolveDoctorSlug(entry, attrs = {}) {
 
 export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
+    const hasMobileCarousel = limitedDoctors.length > 1;
+    const mobileDoctors = hasMobileCarousel
+        ? buildLoopItems(limitedDoctors, 6)
+        : limitedDoctors;
     const gridCountClass =
         limitedDoctors.length < 4 ? `grid--count-${limitedDoctors.length}` : "";
     const gridClassName = ["grid", gridCountClass].filter(Boolean).join(" ");
 
     const mobileNameRefs = useRef([]);
+    const mobileSwiperRef = useRef(null);
     const [forceSplit, setForceSplit] = useState(false);
+
+    useEffect(() => {
+        if (!hasMobileCarousel) return undefined;
+
+        const intervalId = window.setInterval(() => {
+            const swiper = mobileSwiperRef.current;
+            if (!swiper || swiper.destroyed) return;
+            swiper.slideNext(650);
+        }, 3200);
+
+        return () => window.clearInterval(intervalId);
+    }, [hasMobileCarousel, mobileDoctors.length]);
 
     useLayoutEffect(() => {
         // тільки для mobile
@@ -174,18 +203,39 @@ export default function DoctorsSection({ doctors = [] }) {
 
                 <div className="doctors-mobile">
                     <Swiper
-                        modules={[Autoplay]}
+                        modules={hasMobileCarousel ? [Autoplay] : []}
                         slidesPerView="auto"
-                        centeredSlides
+                        centeredSlides={hasMobileCarousel}
                         spaceBetween={20}
-                        loop
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
+                        loop={hasMobileCarousel}
+                        watchOverflow={!hasMobileCarousel}
+                        observer={hasMobileCarousel}
+                        observeParents={hasMobileCarousel}
+                        speed={650}
+                        autoplay={
+                            hasMobileCarousel
+                                ? {
+                                      delay: 3200,
+                                      disableOnInteraction: false,
+                                      pauseOnMouseEnter: false,
+                                      waitForTransition: false,
+                                  }
+                                : false
+                        }
+                        grabCursor={hasMobileCarousel}
+                        allowTouchMove={hasMobileCarousel}
+                        onSwiper={(swiper) => {
+                            mobileSwiperRef.current = swiper;
+                            if (
+                                hasMobileCarousel &&
+                                swiper.autoplay &&
+                                !swiper.autoplay.running
+                            ) {
+                                swiper.autoplay.start();
+                            }
                         }}
-                        grabCursor
                     >
-                        {limitedDoctors.map((doc, index) => {
+                        {mobileDoctors.map((doc, index) => {
                             const d = doc.attributes || doc || {};
                             const imgSrc = d.photo?.url
                                 ? `${API_URL}${d.photo.url}`
@@ -258,7 +308,7 @@ export default function DoctorsSection({ doctors = [] }) {
 
                             return (
                                 <SwiperSlide
-                                    key={doc.id}
+                                    key={`${doc.id || doc.slug || index}-home-mobile-${index}`}
                                     className="doctor-slide"
                                 >
                                     {cardHref ? (
