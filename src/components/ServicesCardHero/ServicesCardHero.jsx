@@ -1,5 +1,6 @@
 import Button from "../Button/Button";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
+import { toUiServiceTitle } from "../../lib/serviceTitle";
 import "./ServicesCardHero.css";
 
 export default function ServicesCardHero({
@@ -13,6 +14,7 @@ export default function ServicesCardHero({
     buttonClassName = "",
     buttonOnClick,
 }) {
+    const uiTitle = toUiServiceTitle(title);
     const heroImageAlt = title
         ? `${title} — медичний центр Для Людей, Дніпро, Україна`
         : "Медичний центр Для Людей, Дніпро, Україна";
@@ -35,7 +37,7 @@ export default function ServicesCardHero({
                                     <img src={icon} alt="" />
                                 </span>
                             )}
-                            <h1>{title}</h1>
+                            <h1>{uiTitle}</h1>
                         </div>
 
                         <span className="services-card-hero__line" />
@@ -60,7 +62,13 @@ export default function ServicesCardHero({
                     {/* RIGHT */}
                     {image && (
                         <div className="services-card-hero__right">
-                            <img src={image} alt={heroImageAlt} />
+                            <img
+                                src={image}
+                                alt={heroImageAlt}
+                                loading="eager"
+                                fetchPriority="high"
+                                decoding="async"
+                            />
                         </div>
                     )}
                 </div>

@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./ServicesSection.css";
 import Button from "../components/Button/Button";
+import { toUiServiceTitle } from "../lib/serviceTitle";
 
 export default function ServicesSection() {
+    const location = useLocation();
+    const normalizedPathname =
+        typeof location.pathname === "string"
+            ? location.pathname.replace(/\/+$/, "") || "/"
+            : "/";
+    const prioritizeImages = normalizedPathname === "/services";
+
     const services = [
         {
             icon: "/icons/service-declaration.svg",
@@ -59,6 +67,11 @@ export default function ServicesSection() {
         //     label: "Косметологія",
         // },
     ];
+    const servicesWithUiLabels = services.map((item) => ({
+        ...item,
+        uiLabel: toUiServiceTitle(item.label),
+    }));
+
     const getExtraClass = (label) => {
         if (label === "Аналізи") return "card-analizy";
         if (label === "Пакетні послуги") return "card-packages";
@@ -70,10 +83,13 @@ export default function ServicesSection() {
 
     const [search, setSearch] = useState("");
 
-    const mobileServices = [...services.slice(1), services[0]];
+    const mobileServices = [
+        ...servicesWithUiLabels.slice(1),
+        servicesWithUiLabels[0],
+    ];
 
     const filteredServices = mobileServices.filter((item) =>
-        item.label.toLowerCase().includes(search.toLowerCase()),
+        item.uiLabel.toLowerCase().includes(search.toLowerCase()),
     );
 
     return (
@@ -85,16 +101,24 @@ export default function ServicesSection() {
                 </div>
 
                 <div className="services-grid">
-                    {services.map((item, i) => {
+                    {servicesWithUiLabels.map((item, i) => {
                         const cardClass = `service-card ${getExtraClass(
-                            item.label,
+                            item.uiLabel,
                         )}`;
                         const content = (
                             <>
                                 <div className="service-icon-wrap">
-                                    <img src={item.icon} alt="" />
+                                    <img
+                                        src={item.icon}
+                                        alt=""
+                                        loading={prioritizeImages ? "eager" : "lazy"}
+                                        fetchPriority={
+                                            prioritizeImages ? "high" : "auto"
+                                        }
+                                        decoding="async"
+                                    />
                                 </div>
-                                <span>{item.label}</span>
+                                <span>{item.uiLabel}</span>
                             </>
                         );
 
@@ -109,16 +133,19 @@ export default function ServicesSection() {
                         );
                     })}
 
-                    <a className="service-card more-btn" href="/services">
+                    <Link className="service-card more-btn" to="/services">
                         <span>ВСІ ПОСЛУГИ</span>
                         <div className="arrow-circle">
                             <img
                                 src="/icons/arrow-right.svg"
                                 alt=""
                                 className="service-arrow"
+                                loading={prioritizeImages ? "eager" : "lazy"}
+                                fetchPriority={prioritizeImages ? "high" : "auto"}
+                                decoding="async"
                             />
                         </div>
-                    </a>
+                    </Link>
                 </div>
             </div>
 
@@ -159,15 +186,37 @@ export default function ServicesSection() {
                                                                 item.iconMobile
                                                             }
                                                             alt=""
+                                                            loading={
+                                                                prioritizeImages
+                                                                    ? "eager"
+                                                                    : "lazy"
+                                                            }
+                                                            fetchPriority={
+                                                                prioritizeImages
+                                                                    ? "high"
+                                                                    : "auto"
+                                                            }
+                                                            decoding="async"
                                                         />
                                                     </div>
-                                                    <span>{item.label}</span>
+                                                    <span>{item.uiLabel}</span>
                                                 </div>
 
                                                 <img
                                                     src="/icons/arrow-right.svg"
                                                     alt=""
                                                     className="service-arrow"
+                                                    loading={
+                                                        prioritizeImages
+                                                            ? "eager"
+                                                            : "lazy"
+                                                    }
+                                                    fetchPriority={
+                                                        prioritizeImages
+                                                            ? "high"
+                                                            : "auto"
+                                                    }
+                                                    decoding="async"
                                                 />
                                             </>
                                         );

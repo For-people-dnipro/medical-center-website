@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { toUiServiceTitle } from "../../lib/serviceTitle";
 import "./ServicesPriceSection.css";
 
 const API_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
@@ -56,7 +57,7 @@ function normalizeServicePriceItem(item, index) {
 
     return {
         id: item?.id ?? source.id ?? `service-price-${index}`,
-        title: typeof source.title === "string" ? source.title.trim() : "",
+        title: toUiServiceTitle(source.title),
         priceForDeclarant: toNumber(source.priceForDeclarant),
         priceForNonDeclarant: toNumber(source.priceForNonDeclarant),
         isFreeForDeclarant: Boolean(source.isFreeForDeclarant),
