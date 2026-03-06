@@ -124,6 +124,12 @@
     overflow: visible;
 }
 
+@media (max-width: 992px) {
+    .doctor-card__image {
+        object-position: center 18%;
+    }
+}
+
 @media (max-width: 768px) {
     .doctor-card__image-wrap {
         aspect-ratio: 6 / 5;

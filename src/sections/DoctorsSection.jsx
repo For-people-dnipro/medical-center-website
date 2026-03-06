@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useLayoutEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
@@ -44,9 +45,14 @@ function parseStartYear(value) {
     return year;
 }
 
+function resolveDoctorSlug(entry, attrs = {}) {
+    const normalized = String(attrs.slug || entry?.slug || "").trim();
+    if (normalized) return normalized;
+    return "";
+}
+
 export default function DoctorsSection({ doctors = [] }) {
     const limitedDoctors = doctors?.slice(0, 4) || [];
-    if (!limitedDoctors.length) return null;
     const gridCountClass =
         limitedDoctors.length < 4 ? `grid--count-${limitedDoctors.length}` : "";
     const gridClassName = ["grid", gridCountClass].filter(Boolean).join(" ");
@@ -56,14 +62,16 @@ export default function DoctorsSection({ doctors = [] }) {
 
     useLayoutEffect(() => {
         // тільки для mobile
-        if (window.innerWidth > 576) return;
+        if (window.innerWidth > 576 || limitedDoctors.length === 0) return;
 
         const hasOverflow = mobileNameRefs.current.some(
             (el) => el && el.scrollWidth > el.clientWidth,
         );
 
         setForceSplit(hasOverflow);
-    }, []);
+    }, [limitedDoctors.length]);
+
+    if (!limitedDoctors.length) return null;
 
     function pluralizeYears(n) {
         const abs = Math.abs(Number(n) || 0);
@@ -107,9 +115,12 @@ export default function DoctorsSection({ doctors = [] }) {
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
                             const doctorImageAlt = buildDoctorImageAlt(d);
-
-                            return (
-                                <div key={doc.id} className="card">
+                            const doctorSlug = resolveDoctorSlug(doc, d);
+                            const cardHref = doctorSlug
+                                ? `/doctors/${doctorSlug}`
+                                : "";
+                            const cardContent = (
+                                <>
                                     <div className="imageWrapper">
                                         {imgSrc && (
                                             <img
@@ -143,6 +154,18 @@ export default function DoctorsSection({ doctors = [] }) {
                                     {cardPosition && (
                                         <p className="position">{cardPosition}</p>
                                     )}
+                                </>
+                            );
+
+                            return (
+                                <div key={doc.id} className="card">
+                                    {cardHref ? (
+                                        <Link className="card-link" to={cardHref}>
+                                            {cardContent}
+                                        </Link>
+                                    ) : (
+                                        <div className="card-link">{cardContent}</div>
+                                    )}
                                 </div>
                             );
                         })}
@@ -170,68 +193,86 @@ export default function DoctorsSection({ doctors = [] }) {
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
                             const doctorImageAlt = buildDoctorImageAlt(d);
+                            const doctorSlug = resolveDoctorSlug(doc, d);
+                            const cardHref = doctorSlug
+                                ? `/doctors/${doctorSlug}`
+                                : "";
+                            const cardContent = (
+                                <div className="mobile-card">
+                                    <div className="imageWrapper">
+                                        {imgSrc && (
+                                            <img
+                                                src={imgSrc}
+                                                alt={doctorImageAlt}
+                                                className="mobile-image"
+                                            />
+                                        )}
+
+                                        {years !== null && (
+                                            <div className="experience">
+                                                <div className="exp-number">
+                                                    {years}
+                                                </div>
+                                                <div className="exp-line" />
+                                                <div className="exp-text">
+                                                    {pluralizeYears(years)}
+                                                    <br />
+                                                    досвіду
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <h3
+                                        ref={(el) =>
+                                            (mobileNameRefs.current[index] =
+                                                el)
+                                        }
+                                        className={`smart-name ${
+                                            forceSplit ? "split" : ""
+                                        }`}
+                                    >
+                                        {forceSplit ? (
+                                            <>
+                                                <span className="surname">
+                                                    {d.surname}
+                                                </span>
+                                                <span className="rest">
+                                                    {d.name}
+                                                </span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                {d.surname} {d.name}
+                                            </>
+                                        )}
+                                    </h3>
+
+                                    {cardPosition && (
+                                        <p className="mobile-position">
+                                            {cardPosition}
+                                        </p>
+                                    )}
+                                </div>
+                            );
 
                             return (
                                 <SwiperSlide
                                     key={doc.id}
                                     className="doctor-slide"
                                 >
-                                    <div className="mobile-card">
-                                        <div className="imageWrapper">
-                                            {imgSrc && (
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={doctorImageAlt}
-                                                    className="mobile-image"
-                                                />
-                                            )}
-
-                                            {years !== null && (
-                                                <div className="experience">
-                                                    <div className="exp-number">
-                                                        {years}
-                                                    </div>
-                                                    <div className="exp-line" />
-                                                    <div className="exp-text">
-                                                        {pluralizeYears(years)}
-                                                        <br />
-                                                        досвіду
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <h3
-                                            ref={(el) =>
-                                                (mobileNameRefs.current[index] =
-                                                    el)
-                                            }
-                                            className={`smart-name ${
-                                                forceSplit ? "split" : ""
-                                            }`}
+                                    {cardHref ? (
+                                        <Link
+                                            className="mobile-card-link"
+                                            to={cardHref}
                                         >
-                                            {forceSplit ? (
-                                                <>
-                                                    <span className="surname">
-                                                        {d.surname}
-                                                    </span>
-                                                    <span className="rest">
-                                                        {d.name}
-                                                    </span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    {d.surname} {d.name}
-                                                </>
-                                            )}
-                                        </h3>
-
-                                        {cardPosition && (
-                                            <p className="mobile-position">
-                                                {cardPosition}
-                                            </p>
-                                        )}
-                                    </div>
+                                            {cardContent}
+                                        </Link>
+                                    ) : (
+                                        <div className="mobile-card-link">
+                                            {cardContent}
+                                        </div>
+                                    )}
                                 </SwiperSlide>
                             );
                         })}

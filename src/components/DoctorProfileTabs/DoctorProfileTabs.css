@@ -1,13 +1,15 @@
 .doctor-profile-tabs {
     display: grid;
     gap: 22px;
+    width: 100%;
 }
 
 .doctor-profile-tabs__tablist {
     --active-underline-bleed: 10px;
     display: flex;
+    width: 100%;
     justify-content: center;
-    column-gap: 56px;
+    column-gap: 0;
     row-gap: 12px;
     flex-wrap: wrap;
     position: relative;
@@ -49,12 +51,16 @@
 
 .doctor-profile-tabs__tab {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: 0;
-    padding: 0 0 8px;
+    padding: 0 25px 8px;
     color: #787d82;
     font: inherit;
     line-height: 1.25;
+    text-align: center;
     cursor: pointer;
     opacity: 0.6;
     transition:
@@ -190,13 +196,9 @@
 
     .doctor-profile-tabs__tablist {
         justify-content: center;
-        column-gap: 20px;
+        column-gap: 0;
         row-gap: 10px;
         flex-wrap: wrap;
-    }
-
-    .doctor-profile-tabs__tab {
-        padding-bottom: 8px;
     }
 
     .doctor-profile-tabs__tab::after {
@@ -212,13 +214,13 @@
     .doctor-profile-tabs__tablist {
         --active-underline-bleed: -2px;
         display: flex;
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        margin-right: -16px;
         padding-left: 0;
         padding-right: 0;
         justify-content: center;
-        column-gap: 12px;
+        column-gap: 0;
         row-gap: 0;
         flex-wrap: nowrap;
         align-items: end;
@@ -233,6 +235,6 @@
         white-space: nowrap;
         font-size: clamp(11px, 3.2vw, 13px);
         text-align: center;
-        padding: 0 0 8px;
+        padding: 0 25px 8px;
     }
 }
