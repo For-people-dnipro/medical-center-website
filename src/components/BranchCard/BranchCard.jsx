@@ -72,11 +72,10 @@ export default function BranchCard({ branch, className = "" }) {
                         branches={branch.mapMarkers}
                         center={branch.mapCenter}
                         zoom={14}
-                        borderRadius={0}
+                        borderRadius="var(--radius-none)"
                     />
                 </div>
             ) : null}
         </article>
     );
 }
-

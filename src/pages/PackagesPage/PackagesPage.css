@@ -4,7 +4,7 @@
 
 .packages-page__about .service-template__card {
     background: var(--color-bg-main);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     grid-template-columns: 1fr 1fr;
     align-items: center; /* ← ось це головне */
 }
@@ -15,7 +15,7 @@
 
 .packages-page__about .service-template__image img {
     height: 100%;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     object-fit: cover;
     object-position: center;
 }
@@ -51,7 +51,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 0;
     background: var(--color-bg-main);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     margin-top: 80px;
@@ -100,7 +100,7 @@
     left: 0;
     width: 10px;
     height: 10px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: var(--color-primary);
     transform: translateY(-50%);
 }

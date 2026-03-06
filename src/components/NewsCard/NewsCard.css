@@ -6,7 +6,7 @@
 .news-card__link {
     gap: 14px;
     padding: 10px;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     background: #ffffff;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
     color: #000000;
@@ -26,7 +26,7 @@
 
 .news-card__media {
     position: relative;
-    border-radius: 14px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     aspect-ratio: 16 / 10;
     background: #e8edf1;
@@ -112,14 +112,14 @@
 
 @media (max-width: 768px) {
     .news-card__link {
-        border-radius: 20px;
+        border-radius: var(--radius-xl);
         gap: 12px;
         padding: 10px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .news-card__media {
-        border-radius: 16px;
+        border-radius: var(--radius-xl);
     }
 
     .news-card__body {

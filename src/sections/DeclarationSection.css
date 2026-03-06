@@ -131,7 +131,7 @@
 
     .decl-list-mobile li {
         background: #fff;
-        border-radius: 18px;
+        border-radius: var(--radius-xl);
         padding: 16px 15px;
         display: flex;
         gap: 16px;

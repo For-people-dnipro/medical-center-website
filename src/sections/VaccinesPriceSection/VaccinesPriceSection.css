@@ -13,7 +13,7 @@
 
 .vaccines-price-section__card {
     border: 1px solid #e5e8ec;
-    border-radius: 28px;
+    border-radius: var(--radius-xl);
     background: #f5f7f9;
     box-shadow: 0 4px 16px rgba(23, 33, 43, 0.08);
     padding: 34px 28px 28px;
@@ -47,8 +47,8 @@
         rgba(245, 247, 249, 0.88) 74%,
         #f5f7f9 100%
     );
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: var(--radius-xl);
+    border-bottom-right-radius: var(--radius-xl);
 }
 
 .vaccines-price-section__list {
@@ -74,12 +74,12 @@
 
 .vaccines-price-section__list--scrollable::-webkit-scrollbar-track {
     background: rgba(42, 60, 71, 0.1);
-    border-radius: 999px;
+    border-radius: var(--radius-full);
 }
 
 .vaccines-price-section__list--scrollable::-webkit-scrollbar-thumb {
     background: #02a9b4;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
 }
 
 .vaccines-price-section__list--scrollable {
@@ -94,7 +94,7 @@
     min-height: var(--vaccine-row-height);
     gap: 18px;
     padding: 14px 24px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     border: 1px solid #e3e7ed;
     background: #ffffff;
     box-shadow: 0 3px 10px rgba(23, 33, 43, 0.09);
@@ -132,7 +132,7 @@
 .vaccines-price-section__dot {
     width: 12px;
     height: 12px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: #25a875;
 }
 
@@ -142,7 +142,7 @@
     justify-content: center;
     min-height: 34px;
     padding: 6px 14px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-size: clamp(16px, 1.15vw, 18px);
     line-height: 1;
     font-weight: var(--fw-medium);
@@ -177,7 +177,7 @@
 .vaccines-price-section__badge--loading {
     display: block;
     height: 22px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     background: linear-gradient(90deg, #eef1f3 25%, #e3e8ec 50%, #eef1f3 75%);
     background-size: 200% 100%;
     animation: vaccinesPricePulse 1.2s ease-in-out infinite;
@@ -212,7 +212,7 @@
     }
 
     .vaccines-price-section__card {
-        border-radius: 24px;
+        border-radius: var(--radius-xl);
         padding: 28px 20px 22px;
     }
 }
@@ -230,7 +230,7 @@
     }
 
     .vaccines-price-section__card {
-        border-radius: 20px;
+        border-radius: var(--radius-xl);
         padding: 20px 12px 14px;
     }
 

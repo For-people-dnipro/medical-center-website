@@ -131,7 +131,7 @@
     top: 0.55em;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: #008b96;
 }
 

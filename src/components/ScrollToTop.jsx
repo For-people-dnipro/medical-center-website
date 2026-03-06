@@ -2,11 +2,31 @@ import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function scrollToPageTop() {
-    window.scrollTo(0, 0);
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlBehavior = html?.style.scrollBehavior || "";
+    const previousBodyBehavior = body?.style.scrollBehavior || "";
+
+    if (html) {
+        html.style.scrollBehavior = "auto";
+    }
+    if (body) {
+        body.style.scrollBehavior = "auto";
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    if (html) {
+        html.style.scrollBehavior = previousHtmlBehavior;
+    }
+    if (body) {
+        body.style.scrollBehavior = previousBodyBehavior;
+    }
 }
 
 export default function ScrollToTop() {
-    const { pathname } = useLocation();
+    const location = useLocation();
+    const shouldSkipScrollReset = location.state?.disableScrollReset === true;
 
     useEffect(() => {
         const { history } = window;
@@ -21,8 +41,9 @@ export default function ScrollToTop() {
     }, []);
 
     useLayoutEffect(() => {
+        if (shouldSkipScrollReset) return;
         scrollToPageTop();
-    }, [pathname]);
+    }, [location.pathname, shouldSkipScrollReset]);
 
     useEffect(() => {
         const handleBeforeUnload = () => {

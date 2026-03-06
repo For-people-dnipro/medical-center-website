@@ -56,7 +56,7 @@
 .vaccination-standards-carousel__arrow:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
 }
 
 .vaccination-standards-carousel__viewport {
@@ -93,7 +93,7 @@
 .vaccination-standards-carousel__image-card {
     margin: 0;
     background: #ffffff;
-    border-radius: 22px;
+    border-radius: var(--radius-xl);
     box-shadow: none;
     border: 1px solid rgba(15, 24, 34, 0.08);
     transition:
@@ -191,7 +191,7 @@
 
     .vaccination-standards-carousel__text-card,
     .vaccination-standards-carousel__image-card {
-        border-radius: 18px;
+        border-radius: var(--radius-xl);
     }
 
     .vaccination-standards-carousel__text-card {

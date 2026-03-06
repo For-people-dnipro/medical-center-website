@@ -1,7 +1,7 @@
 .branch-card {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     background: var(--color-bg-main);
@@ -124,7 +124,7 @@
 @media (max-width: 768px) {
     .branch-card {
         grid-template-columns: 1fr;
-        border-radius: 22px;
+        border-radius: var(--radius-xl);
     }
 
     .branch-card__content {

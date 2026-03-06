@@ -86,7 +86,7 @@
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar-thumb {
     background: #008b96;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
 }
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar-track {

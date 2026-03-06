@@ -8,7 +8,7 @@
 }
 
 .benefits-section__surface {
-    border-radius: 36px;
+    border-radius: var(--radius-xxl);
     padding: 58px 54px 50px;
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
 }
@@ -44,7 +44,7 @@
 
 .benefits-section__card {
     background: #ffffff;
-    border-radius: 22px;
+    border-radius: var(--radius-xl);
     min-height: 104px;
     padding: 20px 18px;
     display: flex;
@@ -63,7 +63,7 @@
 @media (max-width: 992px) {
     .benefits-section__surface {
         padding: 46px 28px 38px;
-        border-radius: 30px;
+        border-radius: var(--radius-xxl);
     }
 
     .benefits-section__grid {
@@ -79,7 +79,7 @@
 
     .benefits-section__surface {
         padding: 44px 14px 24px;
-        border-radius: 36px;
+        border-radius: var(--radius-xxl);
     }
 
     .benefits-section__title {
@@ -109,7 +109,7 @@
 
     .benefits-section__card {
         min-height: 92px;
-        border-radius: 20px;
+        border-radius: var(--radius-xl);
         padding: 14px 30px;
     }
 
@@ -122,7 +122,7 @@
 @media (max-width: 768px) {
     .benefits-section__card {
         min-height: 92px;
-        border-radius: 20px;
+        border-radius: var(--radius-xl);
         padding: 15px;
     }
 }

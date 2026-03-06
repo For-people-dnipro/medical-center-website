@@ -4,6 +4,7 @@
 }
 
 .doctor-profile-tabs__tablist {
+    --active-underline-bleed: 10px;
     display: flex;
     justify-content: center;
     column-gap: 56px;
@@ -31,8 +32,12 @@
     bottom: 0;
     height: 2px;
     background: var(--color-primary);
-    transform: translateX(calc(var(--underline-left, 0px) - 10px));
-    width: calc(var(--underline-width, 0px) + 20px);
+    transform: translateX(
+        calc(var(--underline-left, 0px) - var(--active-underline-bleed))
+    );
+    width: calc(
+        var(--underline-width, 0px) + (var(--active-underline-bleed) * 2)
+    );
     transition:
         transform 0.3s ease,
         width 0.3s ease;
@@ -108,7 +113,7 @@
 
 .doctor-profile-tabs__repeatable-item {
     border: 1px solid #dde4ea;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     padding: 14px 16px;
     background: #ffffff;
     display: grid;
@@ -161,7 +166,7 @@
 .doctor-profile-tabs__empty {
     margin: 0;
     border: 1px solid #d6dde4;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     padding: 18px 16px;
     line-height: 1.5;
     color: #3e4347;
@@ -196,5 +201,38 @@
 
     .doctor-profile-tabs__tab::after {
         bottom: -13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .doctor-profile-tabs {
+        width: 100%;
+    }
+
+    .doctor-profile-tabs__tablist {
+        --active-underline-bleed: -2px;
+        display: flex;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        justify-content: center;
+        column-gap: 12px;
+        row-gap: 0;
+        flex-wrap: nowrap;
+        align-items: end;
+    }
+
+    .doctor-profile-tabs__tab {
+        width: auto;
+        min-width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        font-size: clamp(11px, 3.2vw, 13px);
+        text-align: center;
+        padding: 0 0 8px;
     }
 }

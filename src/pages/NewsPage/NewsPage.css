@@ -36,7 +36,7 @@
 
 .news-page__state {
     border: 1px solid #d6dde4;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     padding: 24px 20px;
     text-align: center;
     font-size: var(--font-body);
@@ -78,7 +78,7 @@
     border: 1.5px solid #c9d4db;
     background: #ffffff;
     color: #131313;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     min-height: 40px;
     padding: 8px 14px;
     font-size: var(--font-body);
@@ -181,14 +181,14 @@
         flex: 0 0 38px;
         min-height: 38px;
         padding: 0;
-        border-radius: 12px;
+        border-radius: var(--radius-md);
     }
 
     .news-page__pagination-page {
         min-width: 34px;
         min-height: 34px;
         padding: 6px 8px;
-        border-radius: 10px;
+        border-radius: var(--radius-md);
     }
 }
 

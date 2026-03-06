@@ -2,7 +2,7 @@ import "./BranchesSection.css";
 import Button from "../components/Button/Button";
 import MapPin from "../components/MapPin";
 import BranchesMap from "../components/BranchesMap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const branches = [
     {
@@ -20,6 +20,30 @@ const branches = [
 ];
 
 export default function BranchesSection() {
+    const navigate = useNavigate();
+
+    const handleBranchClick = (event, branchId) => {
+        // Keep native browser new-tab/window behavior for modified clicks.
+        if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.altKey ||
+            event.ctrlKey ||
+            event.shiftKey
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        navigate("/branches", {
+            state: {
+                scrollToBranchId: branchId,
+                disableScrollReset: true,
+                skipPageTransition: true,
+            },
+        });
+    };
+
     return (
         <section className="branches-section">
             <div className="branches-container">
@@ -42,7 +66,14 @@ export default function BranchesSection() {
                                 </span>
                                 <Link
                                     to="/branches"
-                                    state={{ scrollToBranchId: b.id }}
+                                    onClick={(event) =>
+                                        handleBranchClick(event, b.id)
+                                    }
+                                    state={{
+                                        scrollToBranchId: b.id,
+                                        disableScrollReset: true,
+                                        skipPageTransition: true,
+                                    }}
                                 >
                                     {b.name}
                                 </Link>

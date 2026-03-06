@@ -11,7 +11,7 @@
 .test-page .services-card-hero__card,
 .test-page .services-card-hero__right,
 .test-page .services-card-hero__right img {
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
 }
 
 .test-page__intro {
@@ -63,7 +63,7 @@
 
 .test-page__package-card {
     background: var(--color-bg-main);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     padding: 35px;
     box-shadow: 0 8px 22px
         color-mix(in srgb, var(--color-text-main) 8%, transparent);
@@ -110,7 +110,7 @@
     top: 0.7em;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: var(--color-primary);
     transform: translateY(-50%);
 }
@@ -146,7 +146,7 @@
 }
 
 .test-page__corporate-card .service-template__card {
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     padding: 28px 32px;
     align-items: stretch;
 }
@@ -194,7 +194,7 @@
 .test-page__corporate-card .service-template__image img {
     height: 100%;
     min-height: 260px;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     object-fit: cover;
     object-position: center;
 }

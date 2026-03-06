@@ -38,7 +38,7 @@
 }
 
 .vacancies-list__skeleton-line {
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     background: linear-gradient(90deg, #eceff3 25%, #f6f7f9 37%, #eceff3 63%);
     background-size: 400% 100%;
     animation: vacancies-list-skeleton 1.4s ease infinite;

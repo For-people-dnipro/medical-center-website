@@ -72,7 +72,7 @@
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     object-fit: cover;
 }
 

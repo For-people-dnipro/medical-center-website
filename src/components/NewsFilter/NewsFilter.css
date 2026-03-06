@@ -26,7 +26,7 @@
     width: 100%;
     box-sizing: border-box;
     border: 2px solid #008b96;
-    border-radius: 26px;
+    border-radius: var(--radius-xxl);
     background-color: transparent;
     color: #111111;
     padding: 8px 12px 8px 18px;
@@ -78,7 +78,7 @@
     box-sizing: border-box;
     background: #ffffff;
     border: 1px solid #d5dde3;
-    border-radius: 18px;
+    border-radius: var(--radius-xl);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
     padding: 8px;
     z-index: 20;
@@ -104,7 +104,7 @@
     width: 100%;
     border: 0;
     background: transparent;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 9px 10px;
     display: flex;
     align-items: center;

@@ -16,7 +16,7 @@
 .doctor-card__image-wrap {
     position: relative;
     aspect-ratio: 3 / 3;
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     background: #f3f4f6;
 }
@@ -51,7 +51,7 @@
     bottom: 16px;
     min-width: 55px;
     padding: 5px 2px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.96);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
     text-align: center;
@@ -127,7 +127,7 @@
 @media (max-width: 768px) {
     .doctor-card__image-wrap {
         aspect-ratio: 6 / 5;
-        border-radius: 18px;
+        border-radius: var(--radius-xl);
     }
 
     .doctor-card__experience {

@@ -78,7 +78,7 @@
 
 .doctors-page__state {
     border: 1px solid #d6dde4;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     padding: 24px 20px;
     text-align: center;
     font-size: var(--font-body);

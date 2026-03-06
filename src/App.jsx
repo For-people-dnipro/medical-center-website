@@ -120,6 +120,9 @@ function App() {
         trackedPathRef.current = currentPath;
     }, [location.pathname, location.search, measurementId]);
 
+    const shouldSkipPageTransition =
+        location.state?.skipPageTransition === true;
+
     return (
         <>
             {isLoaderVisible ? (
@@ -133,7 +136,10 @@ function App() {
                 className={`app-shell ${!isLoaderVisible ? "app-shell--ready" : ""}`}
             >
                 <Header />
-                <div className="page-fade" key={location.pathname}>
+                <div
+                    className={shouldSkipPageTransition ? "" : "page-fade"}
+                    key={location.pathname}
+                >
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/services" element={<AllServices />} />

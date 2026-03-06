@@ -13,7 +13,7 @@
 .mobile-btn {
     flex: 1;
     height: 48px;
-    border-radius: 28px;
+    border-radius: var(--radius-xxl);
     font-size: 15px;
     font-weight: 500;
     background: none;

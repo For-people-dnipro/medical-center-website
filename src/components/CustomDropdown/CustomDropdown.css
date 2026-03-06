@@ -6,7 +6,7 @@
 .custom-dropdown__trigger {
     width: 100%;
     min-height: 42px;
-    border-radius: 22px;
+    border-radius: var(--radius-xl);
     border: 2px solid #008b96;
     background: #ffffff;
     color: #141414;
@@ -76,7 +76,7 @@
     box-sizing: border-box;
     background: #ffffff;
     border: 1px solid #d5dde3;
-    border-radius: 18px;
+    border-radius: var(--radius-xl);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
     padding: 8px;
     z-index: 24;
@@ -102,7 +102,7 @@
     width: 100%;
     border: 0;
     background: transparent;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 9px 10px;
     display: flex;
     align-items: center;

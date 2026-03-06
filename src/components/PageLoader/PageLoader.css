@@ -20,7 +20,7 @@
 .page-loader__spinner {
     width: 55px;
     height: 55px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     border: 5px solid rgba(0, 139, 150, 0.16);
     border-top-color: #008b96;
     animation: page-loader-spin 0.5s linear infinite;

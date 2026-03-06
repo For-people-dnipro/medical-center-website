@@ -26,6 +26,7 @@ const WHITE_DOT_PATH =
     "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0";
 
 const DEFAULT_CENTER = { lat: 48.4272, lng: 35.0019 };
+const DEFAULT_BORDER_RADIUS = "var(--radius-xl)";
 const SCRIPT_ID = "branches-google-maps-script";
 const MAP_OPTIONS = {
     scrollwheel: false,
@@ -103,7 +104,7 @@ function BranchesMap({
     branches = DEFAULT_BRANCHES,
     center = DEFAULT_CENTER,
     zoom = 11,
-    borderRadius = 20,
+    borderRadius = DEFAULT_BORDER_RADIUS,
 }) {
     const [hoveredId, setHoveredId] = useState(null);
 
@@ -141,7 +142,10 @@ function BranchesMap({
         () => ({
             width: "100%",
             height: "100%",
-            borderRadius: `${borderRadius}px`,
+            borderRadius:
+                typeof borderRadius === "number"
+                    ? `${borderRadius}px`
+                    : borderRadius,
         }),
         [borderRadius],
     );

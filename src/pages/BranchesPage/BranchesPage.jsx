@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import BranchesMap from "../../components/BranchesMap";
@@ -71,6 +71,29 @@ const BRANCHES = [
 
 const PAGE_SEO = getStaticSeo("branches");
 
+function forceInstantScrollToTop() {
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlBehavior = html?.style.scrollBehavior || "";
+    const previousBodyBehavior = body?.style.scrollBehavior || "";
+
+    if (html) {
+        html.style.scrollBehavior = "auto";
+    }
+    if (body) {
+        body.style.scrollBehavior = "auto";
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    if (html) {
+        html.style.scrollBehavior = previousHtmlBehavior;
+    }
+    if (body) {
+        body.style.scrollBehavior = previousBodyBehavior;
+    }
+}
+
 export default function BranchesPage() {
     const location = useLocation();
 
@@ -97,17 +120,17 @@ export default function BranchesPage() {
         return stateBranchId || hashBranchId || "";
     }, [location.hash, location.state]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!targetBranchId) return;
 
-        // Route has already changed; set top position before first paint.
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        // Run after destination route is mounted so previous page never scrolls.
+        forceInstantScrollToTop();
     }, [targetBranchId, location.key]);
 
     useEffect(() => {
         if (!targetBranchId) return;
 
-        let delayId = 0;
+        let startRafId = 0;
         let rafId = 0;
         let attempts = 0;
 
@@ -147,13 +170,13 @@ export default function BranchesPage() {
             });
         };
 
-        // Wait briefly so users clearly see page change, then scroll down.
-        delayId = window.setTimeout(() => {
+        // Start one frame later so users land on the destination first.
+        startRafId = window.requestAnimationFrame(() => {
             rafId = window.requestAnimationFrame(scrollToBranchWhenReady);
-        }, 520);
+        });
 
         return () => {
-            window.clearTimeout(delayId);
+            window.cancelAnimationFrame(startRafId);
             window.cancelAnimationFrame(rafId);
         };
     }, [targetBranchId, location.key]);
@@ -229,7 +252,7 @@ export default function BranchesPage() {
                                             branches={branch.mapMarkers}
                                             center={branch.mapCenter}
                                             zoom={14}
-                                            borderRadius={0}
+                                            borderRadius="var(--radius-none)"
                                         />
                                     </div>
                                 </article>
