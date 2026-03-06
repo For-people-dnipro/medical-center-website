@@ -268,6 +268,12 @@ export default function DoctorProfilePage() {
     const tabItems = getDoctorTabItems(doctor);
     const activeBranch = doctorBranch || doctor.branch || null;
     const branchAddress = activeBranch?.address || doctor.address || "";
+    const branchFilterValue = String(
+        activeBranch?.id ?? getBranchIdentity(activeBranch),
+    ).trim();
+    const doctorsByBranchHref = branchFilterValue
+        ? `/doctors?branch=${encodeURIComponent(branchFilterValue)}`
+        : "/doctors";
     const buttons = getProfileButtons(doctor);
     const doctorNameForAlt = String(doctor.fullName || "Лікар").trim();
     const doctorImageAlt = `Сімейний лікар ${doctorNameForAlt} — медичний центр Для Людей, Дніпро`;
@@ -298,7 +304,8 @@ export default function DoctorProfilePage() {
                                         alt={doctorImageAlt}
                                         width={doctor.photo.width || 760}
                                         height={doctor.photo.height || 960}
-                                        loading="lazy"
+                                        loading="eager"
+                                        fetchPriority="high"
                                         decoding="async"
                                     />
                                 ) : (
@@ -403,6 +410,8 @@ export default function DoctorProfilePage() {
                         <RelatedDoctorsSection
                             doctors={relatedDoctors}
                             branchAddress={branchAddress}
+                            allDoctorsHref={doctorsByBranchHref}
+                            allDoctorsLabel="Дивитися всіх"
                         />
                     </div>
                 </section>

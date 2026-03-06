@@ -9,9 +9,12 @@ export default function RelatedDoctorsSection({
     doctors = [],
     branchAddress = "",
     title = "ЛІКАРІ",
+    allDoctorsHref = "/doctors",
+    allDoctorsLabel = "Наша команда",
     className = "",
 }) {
     const items = doctors.slice(0, 4);
+    const hasMobileCarousel = items.length > 1;
     if (!items.length) return null;
 
     const rootClassName = ["related-doctors", className].filter(Boolean).join(" ");
@@ -38,32 +41,43 @@ export default function RelatedDoctorsSection({
                 ))}
             </div>
 
-            <div className="related-doctors__mobile">
+            <div
+                className={`related-doctors__mobile ${
+                    hasMobileCarousel
+                        ? "related-doctors__mobile--carousel"
+                        : "related-doctors__mobile--single"
+                }`}
+            >
                 <Swiper
-                    modules={[Autoplay]}
+                    modules={hasMobileCarousel ? [Autoplay] : []}
                     slidesPerView="auto"
-                    centeredSlides
+                    centeredSlides={hasMobileCarousel}
                     spaceBetween={20}
-                    loop
-                    autoplay={{
-                        delay: 4000,
-                        disableOnInteraction: false,
-                    }}
-                    grabCursor
+                    loop={hasMobileCarousel}
+                    autoplay={
+                        hasMobileCarousel
+                            ? {
+                                  delay: 4000,
+                                  disableOnInteraction: false,
+                              }
+                            : false
+                    }
+                    grabCursor={hasMobileCarousel}
+                    allowTouchMove={hasMobileCarousel}
                 >
                     {items.map((doctor) => (
                         <SwiperSlide
                             key={`${doctor.id || doctor.slug}-mobile`}
                             className="related-doctors__slide"
                         >
-                            <DoctorCard doctor={doctor} asLink={false} />
+                            <DoctorCard doctor={doctor} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
 
             <div className="related-doctors__actions">
-                <Button href="/doctors">Наша команда</Button>
+                <Button href={allDoctorsHref}>{allDoctorsLabel}</Button>
             </div>
         </section>
     );

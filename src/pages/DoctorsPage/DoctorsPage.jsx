@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import DoctorCard from "../../components/DoctorCard/DoctorCard";
@@ -45,6 +46,10 @@ function toSearchText(value) {
         .trim();
 }
 
+function toFilterParam(value) {
+    return String(value ?? "").trim();
+}
+
 function branchLabel(branch) {
     return branch.shortAddress || branch.name || branch.address || "—";
 }
@@ -55,6 +60,8 @@ function getIsMobileViewport() {
 }
 
 export default function DoctorsPage() {
+    const [searchParams] = useSearchParams();
+    const branchFromQuery = toFilterParam(searchParams.get("branch"));
     const [doctors, setDoctors] = useState([]);
     const [branches, setBranches] = useState([]);
     const [specialisations, setSpecialisations] = useState([]);
@@ -66,13 +73,17 @@ export default function DoctorsPage() {
 
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState(branchFromQuery);
     const [selectedSpecialisation, setSelectedSpecialisation] = useState("");
     const [visibleCount, setVisibleCount] = useState(() =>
         getIsMobileViewport()
             ? MOBILE_INITIAL_VISIBLE_COUNT
             : DESKTOP_INITIAL_VISIBLE_COUNT,
     );
+
+    useEffect(() => {
+        setSelectedBranch(branchFromQuery);
+    }, [branchFromQuery]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -319,10 +330,11 @@ export default function DoctorsPage() {
                     {!error && visibleDoctors.length > 0 ? (
                         <>
                             <div className="doctors-page__grid">
-                                {visibleDoctors.map((doctor) => (
+                                {visibleDoctors.map((doctor, index) => (
                                     <DoctorCard
                                         key={doctor.id || doctor.slug}
                                         doctor={doctor}
+                                        priority={index < 6}
                                     />
                                 ))}
                             </div>

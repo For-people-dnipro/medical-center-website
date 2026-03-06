@@ -77,6 +77,7 @@ export default function DoctorCard({
     href,
     showSpecialisation = true,
     asLink = true,
+    priority = false,
 }) {
     if (!doctor) return null;
 
@@ -88,6 +89,8 @@ export default function DoctorCard({
     const shouldShowBadge = years !== null;
     const splitName = getSplitNameParts(doctor, displayName);
     const doctorImageAlt = `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
+    const imageLoading = priority ? "eager" : "lazy";
+    const imageFetchPriority = priority ? "high" : "auto";
 
     const cardContent = (
         <>
@@ -99,7 +102,8 @@ export default function DoctorCard({
                         alt={doctorImageAlt}
                         width={doctor.photo.width || 720}
                         height={doctor.photo.height || 880}
-                        loading="lazy"
+                        loading={imageLoading}
+                        fetchPriority={imageFetchPriority}
                         decoding="async"
                     />
                 ) : (
