@@ -1,6 +1,7 @@
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import Footer from "../../components/Footer/Footer";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
+import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 import "./ManipulationPage.css";
@@ -31,21 +32,18 @@ export default function ManipulationPage() {
                     buttonClassName="arrow-down"
                 />
 
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            Уколи, перев’язки, крапельниці та інші маніпуляції є
-                            важливою частиною лікування й профілактики. Деякі
-                            процедури можна виконувати вдома, однак без медичної
-                            підготовки та стерильних умов це може бути
-                            небезпечно. У клініці всі маніпуляції проводять
-                            досвідчені медсестри з використанням стерильного
-                            обладнання та під контролем лікаря — для вашої
-                            безпеки, спокою й максимальної ефективності
-                            лікування.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        Уколи, перев’язки, крапельниці та інші маніпуляції є
+                        важливою частиною лікування й профілактики. Деякі
+                        процедури можна виконувати вдома, однак без медичної
+                        підготовки та стерильних умов це може бути небезпечно.
+                        У клініці всі маніпуляції проводять досвідчені
+                        медсестри з використанням стерильного обладнання та під
+                        контролем лікаря — для вашої безпеки, спокою й
+                        максимальної ефективності лікування.
+                    </p>
+                </ServicesIntroText>
 
                 <section className="manipulation-list">
                     <div className="manipulation-container card">

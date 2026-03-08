@@ -5,6 +5,7 @@ import "./ConsultPage.css";
 import Ticket from "../../components/Ticket/Ticket";
 import CardTemplateServices from "../../components/CardTemplateServices/CardTemplateServices";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
+import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 
@@ -33,18 +34,15 @@ export default function ConsultPage() {
                     buttonHref="/doctors"
                 />
 
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            Консультація у лікарів в Медичному центрі «Для
-                            людей» — це зустріч із лікарем, який слухає, пояснює
-                            і допомагає знайти рішення без поспіху та зайвих
-                            формальностей. Ми поруч, щоб підтримати вас у
-                            будь-якій ситуації — від першого питання до повного
-                            одужання.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        Консультація у лікарів в Медичному центрі «Для людей» —
+                        це зустріч із лікарем, який слухає, пояснює і допомагає
+                        знайти рішення без поспіху та зайвих формальностей. Ми
+                        поруч, щоб підтримати вас у будь-якій ситуації — від
+                        першого питання до повного одужання.
+                    </p>
+                </ServicesIntroText>
 
                 <section className="consult-page__specialists">
                     <div className="services-text-under-card__container">

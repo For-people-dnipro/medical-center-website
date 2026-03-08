@@ -15,7 +15,7 @@
     border: 1px solid #e5e8ec;
     border-radius: var(--radius-xl);
     background: #f5f7f9;
-    box-shadow: 0 4px 16px rgba(23, 33, 43, 0.08);
+    box-shadow: var(--shadow-card);
     padding: 34px 28px 28px;
 }
 
@@ -97,7 +97,7 @@
     border-radius: var(--radius-md);
     border: 1px solid #e3e7ed;
     background: #ffffff;
-    box-shadow: 0 3px 10px rgba(23, 33, 43, 0.09);
+    box-shadow: var(--shadow-card);
 }
 
 .vaccines-price-section__item + .vaccines-price-section__item {

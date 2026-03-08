@@ -5,6 +5,7 @@ import ServicesCardHero from "../components/ServicesCardHero/ServicesCardHero";
 import Ticket from "../components/Ticket/Ticket";
 import FAQSection from "../sections/FaqSection";
 import InfoGridSection from "../components/InfoGridSection/InfoGridSection";
+import ServicesIntroText from "../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../components/Seo/SeoHead";
 import { getStaticSeo } from "../seo/seoConfig";
 
@@ -234,16 +235,14 @@ export default function DeclarationPage() {
                     buttonHref="#"
                 />
 
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            Декларація — це перший крок до вашого сімейного
-                            лікаря, який турбується про ваше здоров’я
-                            безкоштовно. Це не формальність, а домовленість про
-                            турботу — між вами та вашим лікарем.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        Декларація — це перший крок до вашого сімейного лікаря,
+                        який турбується про ваше здоров’я безкоштовно. Це не
+                        формальність, а домовленість про турботу — між вами та
+                        вашим лікарем.
+                    </p>
+                </ServicesIntroText>
 
                 <InfoGridSection
                     type="declaration"

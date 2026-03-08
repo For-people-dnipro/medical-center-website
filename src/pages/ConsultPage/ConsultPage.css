@@ -8,17 +8,6 @@
     flex-direction: column;
 }
 
-.consult-page .services-card-hero {
-    padding-bottom: 20px;
-}
-
-.consult-page .services-text-under-card__intro {
-    margin-top: 0;
-}
-
-.consult-page .services-text-under-card__intro p {
-    margin-top: 0;
-}
 .consult-page__specialists {
     padding: 80px 0;
 }
@@ -47,7 +36,7 @@
     background: #ffffff;
     border-radius: var(--radius-xl);
     padding: 32px 60px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card);
     text-align: center;
     min-height: 120px;
     justify-content: center;
@@ -99,10 +88,6 @@
 }
 
 @media (max-width: 768px) {
-    .consult-page .services-card-hero {
-        padding-bottom: 12px;
-    }
-
     .consult-page__specialists {
         padding: 70px 0;
     }
@@ -111,9 +96,6 @@
         gap: 20px;
     }
 
-    .services-text-under-card__container {
-        padding: 0 16px;
-    }
     .consult-page__card {
         padding: 32px 30px;
     }

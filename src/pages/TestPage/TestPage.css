@@ -22,29 +22,10 @@
     margin: 0;
     text-align: justify;
 }
-.test-page .services-text-under-card__intro {
-    margin: 0;
-}
-
-.test-page .services-text-under-card__intro p {
-    margin: 0;
-}
-
-.test-page .services-text-under-card__container {
-    margin-bottom: 0;
-}
-
-.test-page .services-text-under-card__intro p {
-    margin-bottom: 0;
-}
 
 .test-page__packages {
     padding: 0 0 80px;
 }
-.test-page .services-text-under-card__intro {
-    margin-bottom: 0px;
-}
-
 .test-page__packages--top {
     padding: 0;
 }
@@ -65,8 +46,7 @@
     background: var(--color-bg-main);
     border-radius: var(--radius-xl);
     padding: 35px;
-    box-shadow: 0 8px 22px
-        color-mix(in srgb, var(--color-text-main) 8%, transparent);
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
 }

@@ -135,7 +135,7 @@
         padding: 16px 15px;
         display: flex;
         gap: 16px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        box-shadow: var(--shadow-card);
     }
 }
 @media (max-width: 673px) {

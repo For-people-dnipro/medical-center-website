@@ -117,12 +117,12 @@
     flex-direction: column;
     gap: 35px;
     justify-content: center;
-    box-shadow: 0 6px 16px rgba(15, 24, 34, 0.08);
+    box-shadow: var(--shadow-card);
 }
 
 .vaccination-standards-carousel__slide-inner:hover
     .vaccination-standards-carousel__text-card {
-    box-shadow: 0 10px 22px rgba(15, 24, 34, 0.11);
+    box-shadow: var(--shadow-card);
 }
 
 .vaccination-standards-carousel__text-card h3 {

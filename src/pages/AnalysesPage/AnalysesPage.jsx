@@ -2,6 +2,7 @@ import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero
 import InfoGridSection from "../../components/InfoGridSection/InfoGridSection";
 import FAQSection from "../../sections/FaqSection";
 import ContactForm from "../../components/ContactForm/ContactForm";
+import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 import "./AnalysesPage.css";
@@ -125,20 +126,17 @@ export default function AnalysesPage() {
                     buttonClassName="arrow-right"
                 />
 
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            У нашому медичному центрі ви можете здати аналізи
-                            безоплатно (для пацієнтів із декларацією) або за
-                            власною потребою — за направленням лікаря чи за
-                            вашим запитом. Ми виконуємо широкий спектр
-                            лабораторних досліджень для точної діагностики та
-                            контролю стану здоров’я. Повний перелік доступних
-                            аналізів і актуальні умови можна уточнити у
-                            адміністратора.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        У нашому медичному центрі ви можете здати аналізи
+                        безоплатно (для пацієнтів із декларацією) або за
+                        власною потребою — за направленням лікаря чи за вашим
+                        запитом. Ми виконуємо широкий спектр лабораторних
+                        досліджень для точної діагностики та контролю стану
+                        здоров’я. Повний перелік доступних аналізів і актуальні
+                        умови можна уточнити у адміністратора.
+                    </p>
+                </ServicesIntroText>
 
                 <InfoGridSection
                     type="analyses"

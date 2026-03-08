@@ -9,7 +9,7 @@
 
 .vaccines-static__card {
     border-radius: var(--radius-xl);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card);
     padding: 45px 18px 40px;
     overflow: hidden;
 }
@@ -83,7 +83,7 @@
     background: #ffffff;
     border: 0.8px solid #e8edf1;
     border-radius: var(--radius-md);
-    box-shadow: 0 2px 9px rgba(15, 24, 34, 0.05);
+    box-shadow: var(--shadow-card);
     transition:
         transform 0.22s ease,
         box-shadow 0.22s ease;

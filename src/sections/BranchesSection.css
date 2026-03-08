@@ -67,8 +67,7 @@
     border-radius: var(--radius-xl);
     background: #fff;
     box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.12),
-        0 2px 8px rgba(0, 0, 0, 0.06);
+        var(--shadow-card);
 }
 .branches-map iframe {
     width: 100%;
@@ -204,7 +203,7 @@
     }
     .branches-map {
         border-radius: var(--radius-lg);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        box-shadow: var(--shadow-card);
         overflow: hidden;
     }
     .branches-button-wrapper {
@@ -285,7 +284,7 @@
     }
     .branches-map {
         border-radius: var(--radius-lg);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        box-shadow: var(--shadow-card);
         overflow: hidden;
     }
     .branches-button-wrapper {

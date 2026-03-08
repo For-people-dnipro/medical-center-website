@@ -94,7 +94,7 @@
 }
 
 .outline-btn:hover {
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-card);
 }
 
 .header-mobile-icons {
@@ -182,7 +182,7 @@
     height: 100vh;
 
     background: #fff;
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-card);
 
     transform: translateX(100%);
     transition: transform 0.35s ease;

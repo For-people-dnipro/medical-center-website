@@ -45,7 +45,7 @@
 
 .news-filter__trigger:hover {
     transform: translateY(-1px);
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
 }
 
 .news-filter__trigger-label {
@@ -79,7 +79,7 @@
     background: #ffffff;
     border: 1px solid #d5dde3;
     border-radius: var(--radius-xl);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-card);
     padding: 8px;
     z-index: 20;
     display: grid;

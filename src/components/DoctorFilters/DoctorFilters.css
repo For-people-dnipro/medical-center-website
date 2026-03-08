@@ -82,7 +82,7 @@
 }
 
 .doctor-filters__select:not(.is-disabled) .doctor-filters__select-trigger:hover {
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
 }
 
 .doctor-filters__select-trigger-label {
@@ -119,7 +119,7 @@
     background: #ffffff;
     border: 1px solid #d5dde3;
     border-radius: var(--radius-xl);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-card);
     padding: 8px;
     z-index: 24;
     display: grid;
@@ -177,7 +177,7 @@
 .doctor-filters__search input:focus,
 .doctor-filters__select-trigger:focus,
 .doctor-filters__select-trigger:focus-visible {
-    box-shadow: 0 0 0 4px rgba(0, 139, 150, 0.12);
+    box-shadow: var(--shadow-card);
 }
 
 .doctor-filters__search svg {

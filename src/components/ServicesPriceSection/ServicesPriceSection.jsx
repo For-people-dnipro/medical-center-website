@@ -111,6 +111,8 @@ export default function ServicesPriceSection({
 }) {
     const listRef = useRef(null);
     const scrollbarThumbRef = useRef(null);
+    const requestIdRef = useRef(0);
+    const lastStableItemsRef = useRef([]);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -119,20 +121,32 @@ export default function ServicesPriceSection({
 
     useEffect(() => {
         const controller = new AbortController();
+        const requestId = requestIdRef.current + 1;
+        requestIdRef.current = requestId;
         const filterField = page ? "page" : visitType ? "visitType" : "";
         const filterValue = page || visitType;
 
         async function fetchItems() {
+            const requestUrl = buildRequestUrl(endpoint, {
+                filterField,
+                filterValue,
+            });
+
+            console.info("[ServicesPriceSection] fetch:start", {
+                endpoint,
+                page,
+                visitType,
+                requestId,
+                requestUrl,
+            });
+
             setLoading(true);
             setError("");
 
             try {
-                const requestUrl = buildRequestUrl(endpoint, {
-                    filterField,
-                    filterValue,
-                });
                 const response = await fetch(requestUrl, {
                     signal: controller.signal,
+                    cache: "no-store",
                 });
 
                 if (!response.ok) {
@@ -140,17 +154,79 @@ export default function ServicesPriceSection({
                 }
 
                 const payload = await response.json();
-                setItems(normalizeServicePriceItems(payload));
+                const normalizedItems = normalizeServicePriceItems(payload);
+
+                if (requestId !== requestIdRef.current) {
+                    console.warn(
+                        "[ServicesPriceSection] fetch:stale-response:ignored",
+                        { requestId, latestRequestId: requestIdRef.current },
+                    );
+                    return;
+                }
+
+                console.info("[ServicesPriceSection] fetch:success", {
+                    requestId,
+                    itemsCount: normalizedItems.length,
+                });
+
+                if (normalizedItems.length > 0) {
+                    lastStableItemsRef.current = normalizedItems;
+                    setItems(normalizedItems);
+                    return;
+                }
+
+                if (lastStableItemsRef.current.length > 0) {
+                    console.warn(
+                        "[ServicesPriceSection] fetch:empty-response:keeping-last-stable-items",
+                        {
+                            requestId,
+                            keptItemsCount: lastStableItemsRef.current.length,
+                        },
+                    );
+                    setItems(lastStableItemsRef.current);
+                    return;
+                }
+
+                console.warn("[ServicesPriceSection] fetch:empty-response", {
+                    requestId,
+                });
+                setItems([]);
             } catch (err) {
                 if (err?.name === "AbortError") {
+                    console.info("[ServicesPriceSection] fetch:aborted", {
+                        requestId,
+                    });
                     return;
                 }
 
                 console.error("Failed to load service prices:", err);
+
+                if (requestId !== requestIdRef.current) {
+                    return;
+                }
+
+                if (lastStableItemsRef.current.length > 0) {
+                    console.warn(
+                        "[ServicesPriceSection] fetch:error:keeping-last-stable-items",
+                        {
+                            requestId,
+                            keptItemsCount: lastStableItemsRef.current.length,
+                        },
+                    );
+                    setItems(lastStableItemsRef.current);
+                    setError("");
+                    return;
+                }
+
                 setItems([]);
                 setError("Не вдалося завантажити ціни. Спробуйте пізніше.");
             } finally {
-                setLoading(false);
+                if (
+                    requestId === requestIdRef.current &&
+                    !controller.signal.aborted
+                ) {
+                    setLoading(false);
+                }
             }
         }
 
@@ -158,6 +234,27 @@ export default function ServicesPriceSection({
 
         return () => controller.abort();
     }, [endpoint, page, visitType]);
+
+    useEffect(() => {
+        if (items.length > 0) {
+            lastStableItemsRef.current = items;
+        }
+
+        console.info("[ServicesPriceSection] items:changed", {
+            endpoint,
+            page,
+            visitType,
+            itemsCount: items.length,
+        });
+
+        if (items.length === 0) {
+            console.warn("[ServicesPriceSection] items:empty", {
+                endpoint,
+                page,
+                visitType,
+            });
+        }
+    }, [items, endpoint, page, visitType]);
 
     useEffect(() => {
         const listElement = listRef.current;
@@ -232,7 +329,7 @@ export default function ServicesPriceSection({
     }, []);
 
     const content = useMemo(() => {
-        if (loading) {
+        if (loading && items.length === 0) {
             return <SkeletonRows />;
         }
 

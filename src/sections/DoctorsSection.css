@@ -101,7 +101,7 @@
 
 .card:hover .experience {
     transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(13, 38, 48, 0.08);
+    box-shadow: var(--shadow-card);
 }
 
 .experience {
@@ -111,7 +111,7 @@
     background: #ffffff;
     padding: 5px 2px;
     border-radius: var(--radius-sm);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-card);
     text-align: center;
     min-width: 55px;
 

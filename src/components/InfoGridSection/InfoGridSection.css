@@ -9,7 +9,7 @@
     gap: 0;
     background: #ffffff;
     border-radius: var(--radius-xl);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
 }
 
@@ -61,7 +61,7 @@
     gap: 0;
     background: #ffffff;
     border-radius: var(--radius-xl);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
 }
 
@@ -168,9 +168,6 @@
         padding-right: 0;
     }
 
-    .info-grid-section__container .services-text-under-card__container {
-        padding: 0px;
-    }
     .info-grid-section--vaccination .info-grid-section__list {
         gap: 12px;
     }

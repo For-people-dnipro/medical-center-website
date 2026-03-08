@@ -4,6 +4,7 @@ import CardTemplateServices from "../../components/CardTemplateServices/CardTemp
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 import SectionTypes from "../../components/SectionTypes/SectionTypes";
+import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 import "./DiagnosticsPage.css";
@@ -43,18 +44,16 @@ export default function DiagnosticsPage() {
                     buttonClassName="arrow-down"
                     buttonOnClick={handleScrollToForm}
                 />
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            Діагностика — це перший крок до розуміння вашого
-                            стану здоров’я. Ми поєднуємо професійність лікарів,
-                            сучасні методи та обладнання для обстеження,
-                            партнерські лабораторії, щоб ви могли пройти всі
-                            необхідні дослідження в одному місці — швидко,
-                            зручно і з турботою.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        Діагностика — це перший крок до розуміння вашого стану
+                        здоров’я. Ми поєднуємо професійність лікарів, сучасні
+                        методи та обладнання для обстеження, партнерські
+                        лабораторії, щоб ви могли пройти всі необхідні
+                        дослідження в одному місці — швидко, зручно і з
+                        турботою.
+                    </p>
+                </ServicesIntroText>
                 <SectionTypes />
 
                 <ServicesPriceSection

@@ -48,3 +48,11 @@ body::-webkit-scrollbar {
     opacity: 1;
     transform: translateY(0);
 }
+
+.services-text-under-card__intro {
+    margin-top: 0;
+}
+
+.services-text-under-card__intro p {
+    margin-top: 0;
+}

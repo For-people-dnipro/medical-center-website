@@ -40,6 +40,9 @@
     --radius-xxl: 28px;
     --radius-full: 999px;
     --radius-circle: 50%;
+
+    /* Unified shadow token */
+    --shadow-card: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================

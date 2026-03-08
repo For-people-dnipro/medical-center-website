@@ -25,7 +25,7 @@
 
 .ui-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-card);
 }
 
 .ui-button:disabled {

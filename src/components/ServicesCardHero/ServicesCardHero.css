@@ -3,7 +3,7 @@
 ================================ */
 
 .services-card-hero {
-    padding: 20px 0 32px;
+    padding: 20px 0px;
     background: transparent;
 }
 
@@ -24,7 +24,7 @@
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: 32px;
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card);
     min-height: 240px;
     margin-top: 30px;
 }
@@ -97,8 +97,16 @@
     overflow: hidden;
     position: relative;
     background:
-        linear-gradient(120deg, rgba(241, 248, 249, 0.92), rgba(228, 241, 244, 0.86)),
-        linear-gradient(90deg, rgba(237, 245, 247, 0.72), rgba(249, 252, 253, 0.82));
+        linear-gradient(
+            120deg,
+            rgba(241, 248, 249, 0.92),
+            rgba(228, 241, 244, 0.86)
+        ),
+        linear-gradient(
+            90deg,
+            rgba(237, 245, 247, 0.72),
+            rgba(249, 252, 253, 0.82)
+        );
 }
 
 .services-card-hero__right::after {

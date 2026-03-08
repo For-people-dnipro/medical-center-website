@@ -3,6 +3,7 @@ import CardTemplateServices from "../../components/CardTemplateServices/CardTemp
 import Ticket from "../../components/Ticket/Ticket";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
+import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 import "./TestPage.css";
@@ -106,17 +107,15 @@ export default function TestPage() {
                     buttonOnClick={handleScrollToForm}
                 />
 
-                <section className="services-text-under-card__intro">
-                    <div className="services-text-under-card__container">
-                        <p>
-                            Регулярні профілактичні обстеження допомагають
-                            помічати зміни ще до появи симптомів. Ми створили
-                            прості програми перевірки здоров’я, які можна пройти
-                            швидко, зручно та отримати показники, що дійсно
-                            покажуть стан вашого здоров’я.
-                        </p>
-                    </div>
-                </section>
+                <ServicesIntroText>
+                    <p>
+                        Регулярні профілактичні обстеження допомагають помічати
+                        зміни ще до появи симптомів. Ми створили прості
+                        програми перевірки здоров’я, які можна пройти швидко,
+                        зручно та отримати показники, що дійсно покажуть стан
+                        вашого здоров’я.
+                    </p>
+                </ServicesIntroText>
 
                 <section className="test-page__packages test-page__packages--top">
                     <div className="test-page__container">
