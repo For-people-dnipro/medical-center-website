@@ -7,6 +7,7 @@ import CardTemplateServices from "../../components/CardTemplateServices/CardTemp
 import ServicesPriceSection from "../../components/ServicesPriceSection/ServicesPriceSection";
 import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
+import Button from "../../components/Button/Button";
 import { getStaticSeo } from "../../seo/seoConfig";
 
 const PAGE_SEO = getStaticSeo("consultation");
@@ -46,10 +47,15 @@ export default function ConsultPage() {
 
                 <section className="consult-page__specialists">
                     <div className="services-text-under-card__container">
-                        <h2>НАШІ СПЕЦІАЛІСТИ</h2>
+                        <h2 className="consult-page__title">НАШІ СПЕЦІАЛІСТИ</h2>
                         <h3 className="consult-page__subtitle">
-                            У нашій клініці ви можете отримати консультацію
-                            досвідчених фахівців:
+                            <span className="consult-page__subtitle-desktop">
+                                У нашій клініці ви можете отримати консультацію
+                                досвідчених фахівців:
+                            </span>
+                            <span className="consult-page__subtitle-mobile">
+                                Консультації доступні у таких спеціалістів:
+                            </span>
                         </h3>
 
                         <div className="consult-page__grid">
@@ -84,6 +90,10 @@ export default function ConsultPage() {
                                     відновлення після перевантажень.
                                 </p>
                             </article>
+                        </div>
+
+                        <div className="consult-page__team-button">
+                            <Button href="/doctors">Наша команда</Button>
                         </div>
                     </div>
                 </section>

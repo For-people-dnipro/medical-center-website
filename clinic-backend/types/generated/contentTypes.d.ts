@@ -626,49 +626,6 @@ export interface ApiNewsNewsItem extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiServicePriceItemServicePriceItem
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'service_price_items';
-  info: {
-    displayName: 'Service Price Item';
-    pluralName: 'service-price-items';
-    singularName: 'service-price-item';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    isActive: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<true>;
-    isFreeForDeclarant: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::service-price-item.service-price-item'
-    > &
-      Schema.Attribute.Private;
-    order: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    priceForDeclarant: Schema.Attribute.Decimal;
-    priceForNonDeclarant: Schema.Attribute.Decimal;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    visitType: Schema.Attribute.Enumeration<
-      ['consultation', 'gynecologist', 'endocrinologist', 'ultrasound', 'other']
-    >;
-  };
-}
-
 export interface ApiServicePriceServicePrice
   extends Struct.CollectionTypeSchema {
   collectionName: 'service_prices';
@@ -1358,7 +1315,6 @@ declare module '@strapi/strapi' {
       'api::home-slider.home-slider': ApiHomeSliderHomeSlider;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::news.news-item': ApiNewsNewsItem;
-      'api::service-price-item.service-price-item': ApiServicePriceItemServicePriceItem;
       'api::service-price.service-price': ApiServicePriceServicePrice;
       'api::specialisation.specialisation': ApiSpecialisationSpecialisation;
       'api::theme.theme': ApiThemeTheme;
