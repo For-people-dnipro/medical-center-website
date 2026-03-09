@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import InfoGridSection from "../../components/InfoGridSection/InfoGridSection";
 import FAQSection from "../../sections/FaqSection";
@@ -101,8 +102,41 @@ const analysesFaqs = [
 ];
 
 const PAGE_SEO = getStaticSeo("analyses");
+const MOBILE_BREAKPOINT = 768;
+
+const isMobileViewport = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
+};
 
 export default function AnalysesPage() {
+    const [isMobileFormHeading, setIsMobileFormHeading] =
+        useState(isMobileViewport);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia(
+            `(max-width: ${MOBILE_BREAKPOINT}px)`,
+        );
+
+        const handleMediaQueryChange = (event) => {
+            setIsMobileFormHeading(event.matches);
+        };
+
+        setIsMobileFormHeading(mediaQuery.matches);
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleMediaQueryChange);
+            return () =>
+                mediaQuery.removeEventListener(
+                    "change",
+                    handleMediaQueryChange,
+                );
+        }
+
+        mediaQuery.addListener(handleMediaQueryChange);
+        return () => mediaQuery.removeListener(handleMediaQueryChange);
+    }, []);
+
     return (
         <div className="analyses-page">
             <SeoHead
@@ -123,18 +157,18 @@ export default function AnalysesPage() {
                     ]}
                     buttonText="Записатися на аналізи"
                     buttonHref="#analyses-contact"
-                    buttonClassName="arrow-right"
+                    buttonClassName="arrow-down"
                 />
 
                 <ServicesIntroText>
                     <p>
                         У нашому медичному центрі ви можете здати аналізи
-                        безоплатно (для пацієнтів із декларацією) або за
-                        власною потребою — за направленням лікаря чи за вашим
-                        запитом. Ми виконуємо широкий спектр лабораторних
-                        досліджень для точної діагностики та контролю стану
-                        здоров’я. Повний перелік доступних аналізів і актуальні
-                        умови можна уточнити у адміністратора.
+                        безоплатно (для пацієнтів із декларацією) або за власною
+                        потребою — за направленням лікаря чи за вашим запитом.
+                        Ми виконуємо широкий спектр лабораторних досліджень для
+                        точної діагностики та контролю стану здоров’я. Повний
+                        перелік доступних аналізів і актуальні умови можна
+                        уточнити у адміністратора.
                     </p>
                 </ServicesIntroText>
 
@@ -160,8 +194,12 @@ export default function AnalysesPage() {
                 >
                     <ContactForm
                         title="ПОТРІБНО ЗАПИСАТИСЯ?"
-                        subtitle="ЗАЛИШТЕ ЗАЯВКУ — МИ ЗВ’ЯЖЕМОСЯ З ВАМИ"
-                        formType="Форма: Аналізи"
+                        subtitle={
+                            isMobileFormHeading
+                                ? "ЗАЛИШТЕ ЗАЯВКУ"
+                                : "ЗАЛИШТЕ ЗАЯВКУ — МИ ЗВ’ЯЖЕМОСЯ З ВАМИ"
+                        }
+                        formType="Форма: запис на аналіз"
                     />
                 </section>
             </main>

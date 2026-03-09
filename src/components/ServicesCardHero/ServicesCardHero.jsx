@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../Button/Button";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 import { toUiServiceTitle } from "../../lib/serviceTitle";
@@ -16,15 +16,36 @@ export default function ServicesCardHero({
     buttonOnClick,
 }) {
     const uiTitle = toUiServiceTitle(title);
-    const [isHeroImageLoaded, setIsHeroImageLoaded] = useState(false);
-
-    useEffect(() => {
-        setIsHeroImageLoaded(false);
-    }, [image]);
+    const [loadedImageSrc, setLoadedImageSrc] = useState("");
+    const safeButtonHref =
+        typeof buttonHref === "string" ? buttonHref.trim() : "";
+    const isSamePageAnchorLink =
+        safeButtonHref.startsWith("#") && safeButtonHref.length > 1;
+    const isHeroImageLoaded = !!image && loadedImageSrc === image;
 
     const heroImageAlt = title
         ? `${title} — медичний центр Для Людей, Дніпро, Україна`
         : "Медичний центр Для Людей, Дніпро, Україна";
+
+    const handleHeroButtonClick = (event) => {
+        if (typeof buttonOnClick === "function") {
+            buttonOnClick(event);
+        }
+
+        if (event.defaultPrevented || !isSamePageAnchorLink) {
+            return;
+        }
+
+        const targetId = decodeURIComponent(safeButtonHref.slice(1));
+        const target = targetId ? document.getElementById(targetId) : null;
+
+        if (!target) {
+            return;
+        }
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
 
     return (
         <section className="services-card-hero">
@@ -59,7 +80,7 @@ export default function ServicesCardHero({
                             <Button
                                 href={buttonHref}
                                 className={`services-card-hero__button ${buttonClassName}`}
-                                onClick={buttonOnClick}
+                                onClick={handleHeroButtonClick}
                             >
                                 {buttonText}
                             </Button>
@@ -80,8 +101,8 @@ export default function ServicesCardHero({
                                 fetchPriority="high"
                                 decoding="async"
                                 data-route-nonblocking="true"
-                                onLoad={() => setIsHeroImageLoaded(true)}
-                                onError={() => setIsHeroImageLoaded(true)}
+                                onLoad={() => setLoadedImageSrc(image)}
+                                onError={() => setLoadedImageSrc(image)}
                             />
                         </div>
                     )}

@@ -6,7 +6,11 @@
 .analyses-page__main {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 80px;
+}
+
+.analyses-page .services-card-hero {
+    padding-bottom: 0;
 }
 
 .analyses-page__container {
@@ -27,12 +31,11 @@
 
 .analyses-page__recommendation {
     padding: 0 20px;
-    margin-top: 80px;
 }
 
 .analyses-page__faq .faq-section {
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .analyses-page__contact {
@@ -45,6 +48,10 @@
 }
 
 @media (max-width: 992px) {
+    .analyses-page__main {
+        gap: 79px;
+    }
+
     .analyses-page__intro {
         padding: 0;
     }
@@ -65,12 +72,6 @@
 
     .analyses-page__recommendation {
         padding: 0;
-        margin-top: 70px;
-    }
-
-    .analyses-page__faq .faq-section {
-        padding-top: 70px;
-        padding-bottom: 70px;
     }
 
     .analyses-page__contact {

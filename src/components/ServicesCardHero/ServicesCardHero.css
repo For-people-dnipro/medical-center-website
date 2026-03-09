@@ -182,9 +182,6 @@
     .services-card-hero__right img {
         height: 220px;
     }
-    .services-card-hero__button {
-        margin-left: 10px;
-    }
 }
 @media (max-width: 768px) {
     .services-card-hero__title h1 {
@@ -193,16 +190,6 @@
 
     .services-card-hero__subtitle {
         font-size: 16px;
-    }
-    .services-card-hero__button {
-        width: fit-content;
-        display: inline-flex;
-        margin-bottom: 24px;
-        align-items: center;
-        gap: 10px;
-        margin-top: 24px;
-        border-radius: var(--radius-full);
-        margin-left: 6px;
     }
     .services-card-hero {
         padding: 10px 0 32px;
@@ -254,30 +241,6 @@
     .services-card-hero__subtitle {
         font-size: 14px;
         line-height: 1.4;
-    }
-    .services-card-hero__button {
-        display: flex; /* ❌ не inline-flex */
-        width: 100%;
-        max-width: 100%;
-
-        box-sizing: border-box; /* ⬅️ КРИТИЧНО */
-
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-        font-size: 14px;
-
-        white-space: normal; /* ⬅️ дозволяє перенос */
-        text-align: center;
-        line-height: 1.2;
-
-        margin: 16px 0 20px 0; /* ❌ без margin-left */
-    }
-
-    /* якщо Button — це <a> або <button> */
-    .services-card-hero__button,
-    .services-card-hero__button * {
-        max-width: 100%;
     }
 
     /* IMAGE — SMALLER */

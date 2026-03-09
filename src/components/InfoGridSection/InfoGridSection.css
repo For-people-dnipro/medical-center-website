@@ -35,9 +35,10 @@
 }
 
 .info-grid-section--analyses .info-grid-section__title {
-    margin: 30px 0 0;
+    margin: 16px 0 0;
     text-transform: uppercase;
     text-align: center;
+    font-weight: 600;
 }
 
 .info-grid-section--analyses .info-grid-section__list--analyses {

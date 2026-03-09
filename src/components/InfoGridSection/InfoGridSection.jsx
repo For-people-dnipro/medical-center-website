@@ -35,9 +35,9 @@ export default function InfoGridSection({
                         </article>
 
                         <article className="info-grid-section__card info-grid-section__card--analyses-text">
-                            <h3 className="info-grid-section__title">
+                            <h2 className="info-grid-section__title">
                                 {rightTitle}
-                            </h3>
+                            </h2>
                             <ul className="info-grid-section__list info-grid-section__list--analyses">
                                 {rightItems.map((item, index) => (
                                     <li key={`${item}-${index}`}>{item}</li>
