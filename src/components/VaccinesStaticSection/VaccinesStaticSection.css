@@ -22,6 +22,10 @@
     font-weight: var(--fw-semibold);
 }
 
+.vaccines-static__title-mobile {
+    display: none;
+}
+
 .vaccines-static__subtitle {
     margin: 10px 0 0;
     text-align: center;
@@ -81,9 +85,9 @@
     align-items: center;
     padding: 8px 16px 8px 20px;
     background: #ffffff;
-    border: 0.8px solid #e8edf1;
+    border: 0;
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 2px 8px rgba(16, 39, 63, 0.06);
     transition:
         transform 0.22s ease,
         box-shadow 0.22s ease;
@@ -201,5 +205,15 @@
 
     .vaccines-static__note {
         font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .vaccines-static__title-desktop {
+        display: none;
+    }
+
+    .vaccines-static__title-mobile {
+        display: inline;
     }
 }

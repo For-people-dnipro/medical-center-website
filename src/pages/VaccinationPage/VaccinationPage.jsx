@@ -372,8 +372,14 @@ S900 20 986 3"
 
                         <div className="vaccination-visit__grid">
                             <article className="vaccination-visit__card">
-                                <h3 className="vaccination-visit__card-title">
-                                    НАША КОМАНДА ПРИЙДЕ ДО ВАС З УСІМ НЕОБХІДНИМ
+                                <h3 className="vaccination-visit__card-title vaccination-visit__card-title--first">
+                                    <span className="vaccination-visit__card-title-full">
+                                        НАША КОМАНДА ПРИЙДЕ ДО ВАС З УСІМ
+                                        НЕОБХІДНИМ
+                                    </span>
+                                    <span className="vaccination-visit__card-title-mobile">
+                                        НАША КОМАНДА ПРИЙДЕ ДО ВАС
+                                    </span>
                                 </h3>
 
                                 <ul className="vaccination-visit__list">
@@ -392,8 +398,13 @@ S900 20 986 3"
                             </article>
 
                             <article className="vaccination-visit__card vaccination-visit__card--border">
-                                <h3 className="vaccination-visit__card-title">
-                                    ЦЕ РІШЕННЯ ІДЕАЛЬНО ПІДХОДИТЬ ДЛЯ
+                                <h3 className="vaccination-visit__card-title vaccination-visit__card-title--second">
+                                    <span className="vaccination-visit__card-title-full">
+                                        ЦЕ РІШЕННЯ ІДЕАЛЬНО ПІДХОДИТЬ ДЛЯ
+                                    </span>
+                                    <span className="vaccination-visit__card-title-mobile">
+                                        ЦЕ РІШЕННЯ ПІДХОДИТЬ ДЛЯ
+                                    </span>
                                 </h3>
 
                                 <ul className="vaccination-visit__list">

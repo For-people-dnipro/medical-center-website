@@ -67,6 +67,9 @@ export default function VaccinationStandardsCarousel() {
                         <span className="vaccination-standards-carousel__title-desktop">
                             Наші стандарти безпеки та якості
                         </span>
+                        <span className="vaccination-standards-carousel__title-mobile">
+                            Стандарти якості
+                        </span>
                     </h2>
 
                     <div className="vaccination-standards-carousel__controls">

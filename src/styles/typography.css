@@ -37,6 +37,7 @@
     --radius-lg: 14px;
     /* Unified radius token for card components */
     --radius-xl: 20px;
+    --radius-card: var(--radius-xl);
     --radius-xxl: 28px;
     --radius-full: 999px;
     --radius-circle: 50%;

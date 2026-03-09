@@ -11,6 +11,53 @@ const DEFAULT_ENDPOINT = "/api/service-prices";
 const DEFAULT_NOTE_TEXT =
     "Не знайшли потрібну консультацію? Напишіть нам — ми обов’язково допоможемо.";
 const SKELETON_ROWS = 6;
+const SERVICE_PRICES_CACHE = new Map();
+const SERVICE_PRICES_STORAGE_KEY = "services-price-section-cache.v1";
+
+function readStorageCacheMap() {
+    if (typeof window === "undefined") {
+        return {};
+    }
+
+    try {
+        const raw = window.localStorage.getItem(SERVICE_PRICES_STORAGE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+        return {};
+    }
+}
+
+function readCachedItems(cacheKey) {
+    const inMemory = SERVICE_PRICES_CACHE.get(cacheKey);
+    if (Array.isArray(inMemory) && inMemory.length > 0) {
+        return inMemory;
+    }
+
+    const storageMap = readStorageCacheMap();
+    const storedItems = storageMap?.[cacheKey];
+    return Array.isArray(storedItems) ? storedItems : [];
+}
+
+function writeCachedItems(cacheKey, items) {
+    SERVICE_PRICES_CACHE.set(cacheKey, items);
+
+    if (typeof window === "undefined") {
+        return;
+    }
+
+    try {
+        const storageMap = readStorageCacheMap();
+        storageMap[cacheKey] = items;
+        window.localStorage.setItem(
+            SERVICE_PRICES_STORAGE_KEY,
+            JSON.stringify(storageMap),
+        );
+    } catch {
+        // Ignore storage write errors and keep in-memory cache only.
+    }
+}
 
 function toAbsoluteUrl(endpoint) {
     if (/^https?:\/\//i.test(endpoint)) {
@@ -109,22 +156,35 @@ export default function ServicesPriceSection({
     visitType = "",
     noteText = DEFAULT_NOTE_TEXT,
 }) {
+    const filterField = page ? "page" : visitType ? "visitType" : "";
+    const filterValue = page || visitType;
+    const cacheKey = `${endpoint}::${filterField}::${filterValue}`;
+    const initialCachedItems = readCachedItems(cacheKey);
+
     const listRef = useRef(null);
     const scrollbarThumbRef = useRef(null);
     const requestIdRef = useRef(0);
-    const lastStableItemsRef = useRef([]);
-    const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const lastStableItemsRef = useRef(initialCachedItems);
+    const itemsRef = useRef(initialCachedItems);
+    const [items, setItems] = useState(initialCachedItems);
+    const [loading, setLoading] = useState(initialCachedItems.length === 0);
     const [error, setError] = useState("");
     const [isAtBottom, setIsAtBottom] = useState(false);
     const [isScrollable, setIsScrollable] = useState(false);
 
     useEffect(() => {
+        const cachedItems = readCachedItems(cacheKey);
+        lastStableItemsRef.current = cachedItems;
+        itemsRef.current = cachedItems;
+        setItems(cachedItems);
+        setError("");
+        setLoading(cachedItems.length === 0);
+    }, [cacheKey]);
+
+    useEffect(() => {
         const controller = new AbortController();
         const requestId = requestIdRef.current + 1;
         requestIdRef.current = requestId;
-        const filterField = page ? "page" : visitType ? "visitType" : "";
-        const filterValue = page || visitType;
 
         async function fetchItems() {
             const requestUrl = buildRequestUrl(endpoint, {
@@ -170,20 +230,29 @@ export default function ServicesPriceSection({
                 });
 
                 if (normalizedItems.length > 0) {
+                    writeCachedItems(cacheKey, normalizedItems);
                     lastStableItemsRef.current = normalizedItems;
+                    itemsRef.current = normalizedItems;
                     setItems(normalizedItems);
                     return;
                 }
 
-                if (lastStableItemsRef.current.length > 0) {
+                const fallbackItems =
+                    lastStableItemsRef.current.length > 0
+                        ? lastStableItemsRef.current
+                        : itemsRef.current.length > 0
+                          ? itemsRef.current
+                          : readCachedItems(cacheKey);
+
+                if (fallbackItems.length > 0) {
                     console.warn(
-                        "[ServicesPriceSection] fetch:empty-response:keeping-last-stable-items",
+                        "[ServicesPriceSection] fetch:empty-response:keeping-existing-items",
                         {
                             requestId,
-                            keptItemsCount: lastStableItemsRef.current.length,
+                            keptItemsCount: fallbackItems.length,
                         },
                     );
-                    setItems(lastStableItemsRef.current);
+                    setItems(fallbackItems);
                     return;
                 }
 
@@ -205,15 +274,22 @@ export default function ServicesPriceSection({
                     return;
                 }
 
-                if (lastStableItemsRef.current.length > 0) {
+                const fallbackItems =
+                    lastStableItemsRef.current.length > 0
+                        ? lastStableItemsRef.current
+                        : itemsRef.current.length > 0
+                          ? itemsRef.current
+                          : readCachedItems(cacheKey);
+
+                if (fallbackItems.length > 0) {
                     console.warn(
-                        "[ServicesPriceSection] fetch:error:keeping-last-stable-items",
+                        "[ServicesPriceSection] fetch:error:keeping-existing-items",
                         {
                             requestId,
-                            keptItemsCount: lastStableItemsRef.current.length,
+                            keptItemsCount: fallbackItems.length,
                         },
                     );
-                    setItems(lastStableItemsRef.current);
+                    setItems(fallbackItems);
                     setError("");
                     return;
                 }
@@ -233,10 +309,13 @@ export default function ServicesPriceSection({
         fetchItems();
 
         return () => controller.abort();
-    }, [endpoint, page, visitType]);
+    }, [cacheKey, endpoint, filterField, filterValue, page, visitType]);
 
     useEffect(() => {
+        itemsRef.current = items;
+
         if (items.length > 0) {
+            writeCachedItems(cacheKey, items);
             lastStableItemsRef.current = items;
         }
 
@@ -254,7 +333,7 @@ export default function ServicesPriceSection({
                 visitType,
             });
         }
-    }, [items, endpoint, page, visitType]);
+    }, [cacheKey, items, endpoint, page, visitType]);
 
     useEffect(() => {
         const listElement = listRef.current;

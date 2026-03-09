@@ -28,6 +28,13 @@
     transform: translateY(0);
 }
 
+/* Keep the section frame visible immediately; animate only timeline items. */
+.vaccination-page__steps.scroll-reveal,
+.vaccination-page__steps.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
 /* =========================
    HERO FIXES
    ========================= */
@@ -340,8 +347,12 @@
     font-weight: 600;
 }
 
+.vaccination-visit__card-title-mobile {
+    display: none;
+}
+
 .vaccination-visit__list {
-    margin-top: 20px;
+    margin: 20px 0 0;
     list-style: none;
     padding: 0;
     display: flex;
@@ -415,6 +426,10 @@
     text-align: center;
 }
 @media (max-width: 1065px) {
+    .vaccination-page__offer .vaccination-page__container {
+        padding: 0 20px;
+    }
+
     .vaccination-visit__card-title {
         text-align: center;
         margin: 0px;
@@ -551,6 +566,10 @@
         padding: 0px;
     }
 
+    .vaccination-page__offer .vaccination-page__container {
+        padding: 0 16px;
+    }
+
     .vaccination-page__contact .form-subtitle {
         display: none;
     }
@@ -628,6 +647,14 @@
         padding: 24px 16px;
     }
 
+    .vaccination-visit__card:first-child {
+        padding-bottom: 36px;
+    }
+
+    .vaccination-visit__card--border {
+        padding-top: 36px;
+    }
+
     .vaccination-visit__list {
         gap: 12px;
         padding: 0px 15px 0 0;
@@ -662,6 +689,14 @@
     .vaccination-visit__card {
         padding: 24px 20px;
     }
+
+    .vaccination-visit__card:first-child {
+        padding-bottom: 36px;
+    }
+
+    .vaccination-visit__card--border {
+        padding-top: 36px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -684,7 +719,23 @@
         transform: translate(-50%, -50%);
     }
 }
-@media (max-width: 516px) {
+@media (max-width: 576px) {
+    .vaccination-visit__card-title--first .vaccination-visit__card-title-full {
+        display: none;
+    }
+
+    .vaccination-visit__card-title--first .vaccination-visit__card-title-mobile {
+        display: inline;
+    }
+
+    .vaccination-visit__card-title--second .vaccination-visit__card-title-full {
+        display: none;
+    }
+
+    .vaccination-visit__card-title--second .vaccination-visit__card-title-mobile {
+        display: inline;
+    }
+
     .vaccination-page__timeline-step {
         padding-left: 32px;
     }

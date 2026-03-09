@@ -23,3 +23,10 @@
         scroll-margin-top: 90px;
     }
 }
+
+@media (max-width: 576px) {
+    .vacancies-page__form {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

@@ -184,7 +184,12 @@ export default function VaccinesStaticSection() {
             <div className="vaccines-static__container">
                 <div className="vaccines-static__card">
                     <h2 className="vaccines-static__title">
-                        ПЕРЕЛІК ВАКЦИН, ДОСТУПНИХ ДЛЯ ЗАМОВЛЕННЯ
+                        <span className="vaccines-static__title-desktop">
+                            ПЕРЕЛІК ВАКЦИН, ДОСТУПНИХ ДЛЯ ЗАМОВЛЕННЯ
+                        </span>
+                        <span className="vaccines-static__title-mobile">
+                            ПЕРЕЛІК ДОСТУПНИХ ВАКЦИН
+                        </span>
                     </h2>
 
                     <p className="vaccines-static__subtitle">

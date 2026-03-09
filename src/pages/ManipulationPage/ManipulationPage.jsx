@@ -190,7 +190,7 @@ export default function ManipulationPage() {
                                         className="contact-icon"
                                     />
                                     <a
-                                        href="tel:+380997654321"
+                                        href="tel:+380500671388"
                                         className="contact-link text-body-lg"
                                     >
                                         050-067-13-88
@@ -225,7 +225,7 @@ export default function ManipulationPage() {
                                         className="contact-icon"
                                     />
                                     <a
-                                        href="tel:+380997654321"
+                                        href="tel:+380500672235"
                                         className="contact-link text-body-lg"
                                     >
                                         050-067-22-35
@@ -260,7 +260,7 @@ export default function ManipulationPage() {
                                         className="contact-icon"
                                     />
                                     <a
-                                        href="tel:+380997654321"
+                                        href="tel:+380660670037"
                                         className="contact-link text-body-lg"
                                     >
                                         066-067-00-37

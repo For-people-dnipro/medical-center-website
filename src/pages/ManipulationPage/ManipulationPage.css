@@ -1,11 +1,24 @@
 .manipulation-page {
     color: var(--color-text-primary);
+    --manipulation-section-spacing: 80px;
 }
 
 .manipulation-container {
     max-width: 1080px;
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+.manipulation-page .services-card-hero {
+    padding-bottom: 0;
+}
+
+.manipulation-page .services-text-under-card__intro {
+    padding-top: var(--manipulation-section-spacing);
+}
+
+.manipulation-page .services-price-section {
+    padding-top: var(--manipulation-section-spacing);
 }
 
 .manipulation-intro {
@@ -19,7 +32,7 @@
 }
 
 .manipulation-list {
-    padding: 70px 20px 0;
+    padding: var(--manipulation-section-spacing) 20px 0;
 }
 
 .manipulation-list .card {
@@ -75,7 +88,8 @@
 
 /* SAFETY */
 .manipulation-safety {
-    padding: 80px 20px;
+    padding: var(--manipulation-section-spacing) 20px
+        var(--manipulation-section-spacing);
 }
 
 .manipulation-safety h2 {
@@ -157,9 +171,15 @@
     color: inherit;
     text-decoration: none;
     text-align: left;
+    transition: color 0.2s ease;
 }
 
-.manipulation-contacts .manipulation-container .contact-link:hover {
+.manipulation-contacts .manipulation-container .contact-link:visited {
+    color: inherit;
+}
+
+.manipulation-contacts .manipulation-container .contact-link:hover,
+.manipulation-contacts .manipulation-container .contact-link:focus-visible {
     color: var(--color-primary);
 }
 
@@ -197,7 +217,7 @@
         padding: 40px 0;
     }
     .manipulation-list {
-        padding: 20px 16px 0;
+        padding: var(--manipulation-section-spacing) 16px 0;
     }
 
     .manipulation-list .card {
@@ -214,7 +234,8 @@
     }
 
     .manipulation-safety {
-        padding: 60px 16px;
+        padding: var(--manipulation-section-spacing) 16px
+            var(--manipulation-section-spacing);
     }
     .manipulation-list h2 {
         text-align: center;
@@ -251,6 +272,10 @@
 }
 
 @media (max-width: 768px) {
+    .manipulation-page {
+        --manipulation-section-spacing: 70px;
+    }
+
     .manipulation-contacts {
         scroll-margin-top: 200px;
     }

@@ -3,7 +3,7 @@
     margin: 0 auto;
     padding: 40px 55px 60px 55px;
     background: #ffffff;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
     box-sizing: border-box;
     display: grid;

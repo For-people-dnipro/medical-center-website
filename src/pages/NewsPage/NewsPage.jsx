@@ -450,11 +450,15 @@ export default function NewsPage() {
         isPaginationMode &&
         pageCount > 1 &&
         !canRevealMoreOnCurrentPage;
+    const isEmptyState = !loading && !error && newsItems.length === 0;
     const prevButtonLabel = isMobileViewport ? "←" : "Попередня";
     const nextButtonLabel = isMobileViewport ? "→" : "Наступна";
+    const emptyNewsMessage = themeSlug
+        ? "Наразі новин за цією темою немає."
+        : "Наразі новин немає.";
 
     return (
-        <main className="news-page">
+        <main className={`news-page ${isEmptyState ? "news-page--empty" : ""}`.trim()}>
             <SeoHead
                 title={PAGE_SEO.title}
                 description={PAGE_SEO.description}
@@ -506,10 +510,10 @@ export default function NewsPage() {
                         </div>
                     ) : null}
 
-                    {!loading && !error && newsItems.length === 0 ? (
-                        <div className="news-page__state" role="status">
-                            Новин за вибраною темою поки немає.
-                        </div>
+                    {isEmptyState ? (
+                        <p className="news-page__empty-text" role="status">
+                            {emptyNewsMessage}
+                        </p>
                     ) : null}
 
                     {!loading && !error && newsItems.length > 0 ? (
