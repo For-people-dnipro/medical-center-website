@@ -7,6 +7,16 @@
     margin-top: 80px;
 }
 
+body.route-contacts .footer {
+    margin-top: 80px;
+}
+
+@media (max-width: 992px) {
+    body.route-contacts .footer {
+        margin-top: 70px;
+    }
+}
+
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;

@@ -117,6 +117,11 @@ export const STATIC_PAGE_SEO = Object.freeze({
         description:
             "Актуальні вакансії медичного центру “Для людей” у Дніпрі. Приєднуйтесь до команди професіоналів.",
     },
+    contacts: {
+        title: withSiteTitle("Контакти"),
+        description:
+            "Контакти медичного центру “Для людей” у Дніпрі: телефон контакт-центру, онлайн-зв'язок і форми зворотного зв'язку.",
+    },
     news: {
         title: withSiteTitle("Новини"),
         description:

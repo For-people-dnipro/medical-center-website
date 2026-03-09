@@ -21,6 +21,7 @@ import NewsPage from "./pages/NewsPage/NewsPage";
 import NewsArticlePage from "./pages/NewsArticlePage/NewsArticlePage";
 import DoctorsPage from "./pages/DoctorsPage/DoctorsPage";
 import DoctorProfilePage from "./pages/DoctorProfilePage/DoctorProfilePage";
+import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import Footer from "./components/Footer/Footer";
 import CookieBanner from "./components/CookieBanner/CookieBanner";
 import {
@@ -103,6 +104,15 @@ function App() {
 
         return () => window.clearTimeout(showTimer);
     }, []);
+
+    useEffect(() => {
+        const isContactsRoute = normalizedPathname === "/contacts";
+        document.body.classList.toggle("route-contacts", isContactsRoute);
+
+        return () => {
+            document.body.classList.remove("route-contacts");
+        };
+    }, [normalizedPathname]);
 
     useEffect(() => {
         const setLinkTarget = (anchor) => {
@@ -458,6 +468,7 @@ function App() {
                             <Route path="/vacancies" element={<VacanciesPage />} />
                             <Route path="/news" element={<NewsPage />} />
                             <Route path="/news/:slug" element={<NewsArticlePage />} />
+                            <Route path="/contacts" element={<ContactsPage />} />
                             <Route path="*" element={<Home />} />
                         </Routes>
                     </div>

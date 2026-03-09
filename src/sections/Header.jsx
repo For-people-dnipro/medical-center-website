@@ -111,84 +111,89 @@ export default function Header() {
                         Лікарі
                     </Link>
 
-                    <button
-                        className="mobile-dropdown-toggle"
-                        onClick={() => setServicesOpen((v) => !v)}
-                    >
-                        <span>Послуги</span>
-                        <img
-                            src={arrowIcon}
-                            alt=""
-                            className={`arrow-icon ${servicesOpen ? "open" : ""}`}
-                        />
-                    </button>
+                    <div className="mobile-services-group">
+                        <button
+                            className="mobile-dropdown-toggle"
+                            onClick={() => setServicesOpen((v) => !v)}
+                        >
+                            <span>Послуги</span>
+                            <img
+                                src={arrowIcon}
+                                alt=""
+                                className={`arrow-icon ${servicesOpen ? "open" : ""}`}
+                            />
+                        </button>
 
-                    {servicesOpen && (
-                        <div className="mobile-submenu">
-                            <Link
-                                to="/services"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Всі послуги
-                            </Link>
+                        <div
+                            className={`mobile-submenu ${servicesOpen ? "open" : ""}`}
+                            aria-hidden={!servicesOpen}
+                        >
+                            <div className="mobile-submenu__inner">
+                                <Link
+                                    to="/services"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Всі послуги
+                                </Link>
 
-                            <Link
-                                to="/declaration"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Декларація
-                            </Link>
+                                <Link
+                                    to="/declaration"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Декларація
+                                </Link>
 
-                            <Link
-                                to="/consultation"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Консультація
-                            </Link>
+                                <Link
+                                    to="/consultation"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Консультація
+                                </Link>
 
-                            <Link
-                                to="/analyses"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Аналізи
-                            </Link>
+                                <Link
+                                    to="/analyses"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Аналізи
+                                </Link>
 
-                            <Link
-                                to="/vaccination"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Вакцинація
-                            </Link>
+                                <Link
+                                    to="/vaccination"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Вакцинація
+                                </Link>
 
-                            <Link
-                                to="/diagnostics"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Діагностика
-                            </Link>
+                                <Link
+                                    to="/diagnostics"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Діагностика
+                                </Link>
 
-                            <Link
-                                to="/manipulation"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Маніпуляції
-                            </Link>
+                                <Link
+                                    to="/manipulation"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Маніпуляції
+                                </Link>
 
-                            {/* <Link
-                                to="/packages"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Пакетні послуги
-                            </Link>
+                                {/* <Link
+                                    to="/packages"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Пакетні послуги
+                                </Link>
 
-                            <Link
-                                to="/checkup"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                Check-up{" "}
-                            </Link> */}
+                                <Link
+                                    to="/checkup"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Check-up{" "}
+                                </Link> */}
+                            </div>
                         </div>
-                    )}
+                    </div>
 
                     <Link to="/branches" onClick={() => setMenuOpen(false)}>
                         Філії

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 import MapPin from "../MapPin";
+import { SOCIAL_LINKS } from "../../constants/socialLinks";
 
 export default function Footer() {
     const [isRulesInMenu, setIsRulesInMenu] = useState(false);
@@ -186,8 +187,22 @@ export default function Footer() {
                 </Link>
 
                 <div className="footer-socials" aria-label="Соцмережі">
-                    <Instagram aria-label="Instagram" className="footer-icon" />
-                    <Facebook aria-label="Facebook" className="footer-icon" />
+                    <a
+                        href={SOCIAL_LINKS.instagram}
+                        aria-label="Instagram"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <Instagram className="footer-icon" />
+                    </a>
+                    <a
+                        href={SOCIAL_LINKS.facebook}
+                        aria-label="Facebook"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <Facebook className="footer-icon" />
+                    </a>
                 </div>
 
                 <a
