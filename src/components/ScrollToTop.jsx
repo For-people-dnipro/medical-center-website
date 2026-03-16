@@ -24,6 +24,15 @@ function scrollToPageTop() {
     }
 }
 
+function normalizePathname(pathname = "/") {
+    const normalized = String(pathname || "/").trim();
+    const withLeadingSlash = normalized.startsWith("/")
+        ? normalized
+        : `/${normalized}`;
+    const withoutTrailingSlash = withLeadingSlash.replace(/\/+$/, "");
+    return withoutTrailingSlash || "/";
+}
+
 export default function ScrollToTop() {
     const location = useLocation();
     const shouldSkipScrollReset = location.state?.disableScrollReset === true;
@@ -44,6 +53,61 @@ export default function ScrollToTop() {
         if (shouldSkipScrollReset) return;
         scrollToPageTop();
     }, [location.pathname, shouldSkipScrollReset]);
+
+    useEffect(() => {
+        const handleSameRouteClick = (event) => {
+            if (event.defaultPrevented) return;
+            if (event.button !== 0) return;
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                return;
+            }
+
+            const anchor = event.target?.closest?.("a[href]");
+            if (!anchor) return;
+            if (anchor.hasAttribute("download")) return;
+
+            const targetAttr = anchor.getAttribute("target");
+            if (targetAttr && targetAttr.toLowerCase() !== "_self") return;
+
+            const href = anchor.getAttribute("href") || "";
+            if (
+                !href ||
+                href.startsWith("#") ||
+                href.startsWith("javascript:") ||
+                href.startsWith("mailto:") ||
+                href.startsWith("tel:")
+            ) {
+                return;
+            }
+
+            let nextUrl;
+            try {
+                nextUrl = new URL(href, window.location.origin);
+            } catch {
+                return;
+            }
+
+            if (nextUrl.origin !== window.location.origin) return;
+            if (nextUrl.hash) return;
+
+            const currentUrl = new URL(window.location.href);
+            const isSamePath =
+                normalizePathname(nextUrl.pathname) ===
+                normalizePathname(currentUrl.pathname);
+            const isSameQuery = nextUrl.search === currentUrl.search;
+
+            if (!isSamePath || !isSameQuery) return;
+
+            event.preventDefault();
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        };
+
+        document.addEventListener("click", handleSameRouteClick, true);
+
+        return () => {
+            document.removeEventListener("click", handleSameRouteClick, true);
+        };
+    }, []);
 
     return null;
 }

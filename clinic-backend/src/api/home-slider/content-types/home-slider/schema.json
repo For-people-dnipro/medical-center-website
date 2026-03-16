@@ -20,7 +20,7 @@
         "files"
       ]
     },
-    "showButton": {
+    "buttonEnabled": {
       "type": "boolean",
       "default": false
     },
@@ -30,6 +30,11 @@
     },
     "buttonLink": {
       "type": "string"
+    },
+    "buttonColor": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "maxLength": 20
     },
     "order": {
       "type": "integer",

@@ -11,17 +11,15 @@ const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
     .trim()
     .replace(/\/$/, "");
 const HOME_SLIDES_ENDPOINT = `${STRAPI_URL}/api/home-sliders?populate=*`;
+const DEFAULT_BUTTON_COLOR = "#302528";
+const MOZ_SOURCE_URL = "https://moz.gov.ua";
+const MOZ_ATTRIBUTION_ASSET_MARKERS = [
+    "Vam_40_Projdit_Skrining_zdorov_ya_40",
+    "1850_3_401a7bac50",
+];
 
 let cachedSlides = null;
 let pendingSlidesRequest = null;
-
-function normalizeSlides(payload) {
-    const rows = Array.isArray(payload?.data) ? payload.data : [];
-
-    return rows
-        .slice()
-        .sort((a, b) => (a?.order || 0) - (b?.order || 0));
-}
 
 function resolveMediaUrl(path) {
     const raw = String(path || "").trim();
@@ -29,6 +27,73 @@ function resolveMediaUrl(path) {
     if (/^https?:\/\//i.test(raw)) return raw;
     if (raw.startsWith("//")) return `https:${raw}`;
     return raw.startsWith("/") ? `${STRAPI_URL}${raw}` : `${STRAPI_URL}/${raw}`;
+}
+
+function pickSource(entry) {
+    return entry?.attributes ?? entry ?? {};
+}
+
+function toText(value, fallback = "") {
+    return typeof value === "string" && value.trim() ? value.trim() : fallback;
+}
+
+function toBoolean(value, fallback = false) {
+    if (typeof value === "boolean") return value;
+    if (value === 1 || value === "1") return true;
+    if (value === 0 || value === "0") return false;
+    return fallback;
+}
+
+function pickMediaPath(media) {
+    const source = pickSource(media?.data ?? media);
+    return toText(source?.url);
+}
+
+function normalizeBannerLink(value) {
+    const href = toText(value);
+    if (!href) return "";
+    if (/^(https?:\/\/|mailto:|tel:|#)/i.test(href)) return href;
+    return href.startsWith("/") ? href : `/${href}`;
+}
+
+function normalizeButtonColor(value) {
+    return toText(value, DEFAULT_BUTTON_COLOR);
+}
+
+function isExternalLink(href) {
+    return /^https?:\/\//i.test(href);
+}
+
+function shouldShowMozAttribution(slide) {
+    const paths = [slide.photodesktop, slide.photomobile].filter(Boolean);
+
+    return paths.some((path) =>
+        MOZ_ATTRIBUTION_ASSET_MARKERS.some((marker) => path.includes(marker)),
+    );
+}
+
+function normalizeSlides(payload) {
+    const rows = Array.isArray(payload?.data) ? payload.data : [];
+
+    return rows
+        .map((entry, index) => {
+            const source = pickSource(entry);
+
+            return {
+                id: entry?.id ?? source.documentId ?? index,
+                order: Number(source.order) || 0,
+                photodesktop: pickMediaPath(source.photodesktop),
+                photomobile: pickMediaPath(source.photomobile),
+                buttonEnabled: toBoolean(
+                    source.buttonEnabled ?? source.showButton,
+                    false,
+                ),
+                buttonText: toText(source.buttonText),
+                buttonLink: normalizeBannerLink(source.buttonLink),
+                buttonColor: normalizeButtonColor(source.buttonColor),
+            };
+        })
+        .sort((a, b) => a.order - b.order);
 }
 
 async function loadSlides() {
@@ -103,6 +168,7 @@ export default function Banner() {
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, Keyboard]}
                 loop={slides.length > 1}
+                autoHeight
                 autoplay={{
                     delay: 4000,
                     disableOnInteraction: false,
@@ -127,37 +193,84 @@ export default function Banner() {
                     <img src="/icons/arrow-right.svg" alt="" />
                 </button>
 
-                {slides.map((slide, index) => (
-                    <SwiperSlide key={slide.id}>
-                        <div className="banner-slide">
-                            <picture>
-                                {/* MOBILE IMAGE */}
-                                <source
-                                    media="(max-width: 768px)"
-                                    srcSet={
-                                        slide.photomobile?.url
-                                            ? resolveMediaUrl(slide.photomobile.url)
-                                            : undefined
-                                    }
-                                />
+                {slides.map((slide, index) => {
+                    const hasButton =
+                        slide.buttonEnabled &&
+                        slide.buttonText &&
+                        slide.buttonLink;
+                    const hasMozAttribution = shouldShowMozAttribution(slide);
+                    const buttonStyle = {
+                        "--banner-button-accent": slide.buttonColor,
+                    };
+                    const isExternal = isExternalLink(slide.buttonLink);
 
-                                {/* DESKTOP IMAGE */}
-                                <img
-                                    src={
-                                        slide.photodesktop?.url
-                                            ? resolveMediaUrl(slide.photodesktop.url)
-                                            : ""
-                                    }
-                                    alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
-                                    className="banner-image"
-                                    loading={index === 0 ? "eager" : "lazy"}
-                                    fetchPriority={index === 0 ? "high" : "auto"}
-                                    decoding="async"
-                                />
-                            </picture>
-                        </div>
-                    </SwiperSlide>
-                ))}
+                    return (
+                        <SwiperSlide key={slide.id}>
+                            <div className="banner-slide">
+                                <picture>
+                                    {/* MOBILE IMAGE */}
+                                    <source
+                                        media="(max-width: 768px)"
+                                        srcSet={
+                                            slide.photomobile
+                                                ? resolveMediaUrl(slide.photomobile)
+                                                : undefined
+                                        }
+                                    />
+
+                                    {/* DESKTOP IMAGE */}
+                                    <img
+                                        src={
+                                            slide.photodesktop
+                                                ? resolveMediaUrl(slide.photodesktop)
+                                                : ""
+                                        }
+                                        alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
+                                        className="banner-image"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        fetchPriority={index === 0 ? "high" : "auto"}
+                                        decoding="async"
+                                    />
+                                </picture>
+
+                                {hasButton ? (
+                                    <a
+                                        className="banner-button"
+                                        href={slide.buttonLink}
+                                        style={buttonStyle}
+                                        target={isExternal ? "_blank" : undefined}
+                                        rel={
+                                            isExternal
+                                                ? "noopener noreferrer"
+                                                : undefined
+                                        }
+                                    >
+                                        <span className="banner-button__label">
+                                            {slide.buttonText}
+                                        </span>
+                                        <span
+                                            className="banner-button__icon"
+                                            aria-hidden="true"
+                                        />
+                                    </a>
+                                ) : null}
+
+                                {hasMozAttribution ? (
+                                    <p className="banner-attribution">
+                                        Джерело:{" "}
+                                        <a
+                                            href={MOZ_SOURCE_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            МОЗ України
+                                        </a>
+                                    </p>
+                                ) : null}
+                            </div>
+                        </SwiperSlide>
+                    );
+                })}
             </Swiper>
 
             <div className="mobile-slogan">

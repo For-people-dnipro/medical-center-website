@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
+import AboutUs from "./pages/AboutUs/AboutUs";
 import AllServices from "./pages/AllServices";
 import DeclarationPage from "./pages/DeclarationPage";
 import Header from "./sections/Header";
@@ -13,7 +14,12 @@ import ManipulationPage from "./pages/ManipulationPage/ManipulationPage";
 import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
 import PackagesPage from "./pages/PackagesPage/PackagesPage";
 import TestPage from "./pages/TestPage/TestPage";
+import Screening40Page from "./pages/Screening40Page/Screening40Page";
 import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
+import OfferPage from "./pages/OfferPage/OfferPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
+import DataProtectionPage from "./pages/DataProtectionPage/DataProtectionPage";
+import FreeServicesPage from "./pages/FreeServicesPage/FreeServicesPage";
 import BranchesPage from "./pages/BranchesPage/BranchesPage";
 import AnalysesPage from "./pages/AnalysesPage/AnalysesPage";
 import VacanciesPage from "./pages/VacanciesPage/VacanciesPage";
@@ -433,6 +439,7 @@ function App() {
                     >
                         <Routes>
                             <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<AboutUs />} />
                             <Route path="/services" element={<AllServices />} />
                             <Route
                                 path="/declaration"
@@ -454,10 +461,27 @@ function App() {
                             <Route path="/packages" element={<PackagesPage />} />
                             <Route path="/checkup" element={<TestPage />} />
                             <Route
+                                path="/screening-40-plus"
+                                element={<Screening40Page />}
+                            />
+                            <Route
                                 path="/check-up"
                                 element={<Navigate to="/checkup" replace />}
                             />
                             <Route path="/air-alert" element={<AirAlertPage />} />
+                            <Route path="/offer" element={<OfferPage />} />
+                            <Route
+                                path="/privacy"
+                                element={<PrivacyPolicyPage />}
+                            />
+                            <Route
+                                path="/data-protection"
+                                element={<DataProtectionPage />}
+                            />
+                            <Route
+                                path="/free-services"
+                                element={<FreeServicesPage />}
+                            />
                             <Route path="/doctors" element={<DoctorsPage />} />
                             <Route
                                 path="/doctors/:slug"

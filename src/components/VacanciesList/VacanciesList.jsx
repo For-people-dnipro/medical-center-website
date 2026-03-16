@@ -220,8 +220,10 @@ function normalizeVacancy(entry, index) {
             source.scheduleFull,
             source.schedule,
         ]),
-        responsibilities: normalizeListField(source.responsibilities),
-        requirements: normalizeListField(source.requirements),
+        importantForUs: normalizeListField(
+            source.importantForUs ?? source.responsibilities,
+        ),
+        weProvide: normalizeListField(source.weProvide ?? source.requirements),
         description: normalizeTextField(source.description),
         isActive: typeof source.isActive === "boolean" ? source.isActive : true,
         order: Number.isFinite(order) ? order : index,

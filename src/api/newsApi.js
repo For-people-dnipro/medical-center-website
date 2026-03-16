@@ -1,190 +1,16 @@
-const API_URL = (import.meta.env.VITE_STRAPI_URL || "")
-    .trim()
-    .replace(/\/$/, "");
+import {
+    fetchWithEndpointFallback,
+    pickSource,
+    resolveMedia,
+} from "./foundation";
+
+export { resolveMedia } from "./foundation";
+
 const NEWS_ENDPOINTS = ["/api/news", "/api/news-items"];
-const LOCAL_STRAPI_FALLBACK = "http://localhost:1337";
 const LOCAL_COLLECTION_FETCH_LIMIT = 1000;
-
-function normalizePath(path) {
-    if (/^https?:\/\//i.test(path)) {
-        return path;
-    }
-
-    return path.startsWith("/") ? path : `/${path}`;
-}
-
-function buildApiUrl(path, params = {}) {
-    const isAbsolutePath = /^https?:\/\//i.test(path);
-    const normalizedPath = normalizePath(path);
-    const baseUrl = isAbsolutePath
-        ? path
-        : API_URL
-          ? `${API_URL}${normalizedPath}`
-          : normalizedPath;
-
-    const url =
-        isAbsolutePath || API_URL
-            ? new URL(baseUrl)
-            : new URL(
-                  baseUrl,
-                  typeof window !== "undefined"
-                      ? window.location.origin
-                      : "http://localhost:5173",
-              );
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value === undefined || value === null || value === "") {
-            return;
-        }
-        url.searchParams.set(key, String(value));
-    });
-
-    return url.toString();
-}
-
-function buildCandidateUrls(path, params = {}) {
-    const normalizedPath = normalizePath(path);
-    const urls = [buildApiUrl(path, params)];
-
-    if (
-        !/^https?:\/\//i.test(path) &&
-        !API_URL &&
-        typeof window !== "undefined"
-    ) {
-        const fallbackUrl = new URL(normalizedPath, LOCAL_STRAPI_FALLBACK);
-        Object.entries(params).forEach(([key, value]) => {
-            if (value === undefined || value === null || value === "") return;
-            fallbackUrl.searchParams.set(key, String(value));
-        });
-        urls.push(fallbackUrl.toString());
-    }
-
-    return [...new Set(urls)];
-}
-
-function pickSource(entry) {
-    return entry?.attributes ?? entry ?? {};
-}
 
 function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
-}
-
-function toAbsoluteMediaUrl(url) {
-    if (!url || typeof url !== "string") return "";
-    if (/^https?:\/\//i.test(url)) return url;
-    if (url.startsWith("//")) return `https:${url}`;
-    if (url.startsWith("/")) {
-        return API_URL ? `${API_URL}${url}` : `${LOCAL_STRAPI_FALLBACK}${url}`;
-    }
-    return API_URL ? `${API_URL}/${url}` : `${LOCAL_STRAPI_FALLBACK}/${url}`;
-}
-
-function pickMediaSource(media) {
-    if (!media) return null;
-
-    if (Array.isArray(media?.data)) {
-        return pickSource(media.data[0]);
-    }
-
-    return pickSource(media?.data ?? media);
-}
-
-const MEDIA_FORMAT_PRIORITY = {
-    hero: ["large", "xlarge"],
-    card: ["medium", "large", "xlarge", "small", "thumbnail"],
-    default: ["medium", "large", "xlarge", "small", "thumbnail"],
-};
-
-const MEDIA_MIN_WIDTH = {
-    hero: 1080,
-    card: 640,
-    default: 0,
-};
-
-function isUsableFormat(format) {
-    return Boolean(format && typeof format === "object" && format.url);
-}
-
-function pickBestFormat(formats, variant = "default") {
-    const priority =
-        MEDIA_FORMAT_PRIORITY[variant] || MEDIA_FORMAT_PRIORITY.default;
-    const minWidth = MEDIA_MIN_WIDTH[variant] ?? MEDIA_MIN_WIDTH.default;
-
-    const orderedFormats = priority
-        .map((name) => formats[name])
-        .filter((format) => isUsableFormat(format));
-
-    if (orderedFormats.length === 0) {
-        return null;
-    }
-
-    if (minWidth <= 0) {
-        return orderedFormats[0];
-    }
-
-    const sizedFormat = orderedFormats.find((format) => {
-        const width = Number(format.width);
-        return Number.isFinite(width) && width >= minWidth;
-    });
-
-    return sizedFormat || orderedFormats[0];
-}
-
-function makeResolvedMedia(source, preferred = null) {
-    const mediaSource = preferred && typeof preferred === "object" ? preferred : source;
-    const url = toAbsoluteMediaUrl(mediaSource?.url);
-    if (!url) {
-        return null;
-    }
-
-    const width = Number(mediaSource.width || source?.width);
-    const height = Number(mediaSource.height || source?.height);
-
-    return {
-        url,
-        width: Number.isFinite(width) && width > 0 ? width : 1200,
-        height: Number.isFinite(height) && height > 0 ? height : 680,
-        alt: toText(
-            source?.alternativeText || source?.alt || source?.caption,
-            toText(source?.name, "Зображення новини"),
-        ),
-        caption: toText(source?.caption),
-    };
-}
-
-export function resolveMedia(media, options = {}) {
-    const variant = toText(options.variant, "default");
-    const source = pickMediaSource(media);
-    if (!source || typeof source !== "object") {
-        return null;
-    }
-
-    const formats =
-        source.formats && typeof source.formats === "object"
-            ? source.formats
-            : {};
-    const selectedFormat = pickBestFormat(formats, variant);
-    const minWidth = MEDIA_MIN_WIDTH[variant] ?? MEDIA_MIN_WIDTH.default;
-    const selectedWidth = Number(selectedFormat?.width);
-    const originalWidth = Number(source.width);
-    const shouldUseOriginalForHero =
-        variant === "hero" &&
-        (!selectedFormat ||
-            (!Number.isNaN(selectedWidth) &&
-                !Number.isNaN(originalWidth) &&
-                selectedWidth < minWidth &&
-                originalWidth > selectedWidth));
-
-    if (shouldUseOriginalForHero) {
-        return makeResolvedMedia(source);
-    }
-
-    if (selectedFormat) {
-        return makeResolvedMedia(source, selectedFormat);
-    }
-
-    return makeResolvedMedia(source);
 }
 
 function normalizeTheme(entry) {
@@ -222,9 +48,13 @@ function normalizeNewsItem(entry, index = 0) {
 
     const coverImageCard = resolveMedia(source.cover_image, {
         variant: "card",
+        fallbackAlt: "Зображення новини",
     });
     const coverImageHero =
-        resolveMedia(source.cover_image, { variant: "hero" }) || coverImageCard;
+        resolveMedia(source.cover_image, {
+            variant: "hero",
+            fallbackAlt: "Зображення новини",
+        }) || coverImageCard;
 
     return {
         id: entry?.id ?? source.id ?? source.documentId ?? `news-${index}`,
@@ -349,74 +179,6 @@ function filterPublishedNews(items) {
     return items.filter((item) => Boolean(item?.publishedDate));
 }
 
-async function fetchJson(url, { signal } = {}) {
-    const response = await fetch(url, { signal });
-
-    if (!response.ok) {
-        let message = `HTTP ${response.status}`;
-        try {
-            const payload = await response.json();
-            message = payload?.error?.message || payload?.message || message;
-        } catch {
-            // ignore parse errors
-        }
-        const error = new Error(message);
-        error.status = response.status;
-        throw error;
-    }
-
-    return response.json();
-}
-
-async function fetchWithEndpointFallback({
-    endpoints,
-    paramsVariants,
-    signal,
-}) {
-    let lastError = null;
-    let unauthorizedError = null;
-
-    for (const endpoint of endpoints) {
-        for (const params of paramsVariants) {
-            const requestUrls = buildCandidateUrls(endpoint, params);
-
-            for (const requestUrl of requestUrls) {
-                try {
-                    return await fetchJson(requestUrl, { signal });
-                } catch (requestError) {
-                    if (requestError?.name === "AbortError") {
-                        throw requestError;
-                    }
-
-                    const status = Number(requestError?.status);
-                    if (status === 401 || status === 403) {
-                        unauthorizedError =
-                            unauthorizedError ||
-                            new Error(
-                                "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
-                            );
-                        continue;
-                    }
-
-                    // Try next endpoint/variant on invalid query or missing route.
-                    if (status === 400 || status === 404) {
-                        lastError = requestError;
-                        continue;
-                    }
-
-                    lastError = requestError;
-                }
-            }
-        }
-    }
-
-    if (unauthorizedError) {
-        throw unauthorizedError;
-    }
-
-    throw lastError || new Error("NO_VALID_ENDPOINT");
-}
-
 export async function fetchThemes({ signal } = {}) {
     try {
         const payload = await fetchWithEndpointFallback({
@@ -432,6 +194,8 @@ export async function fetchThemes({ signal } = {}) {
                 },
             ],
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
         });
         const entries = Array.isArray(payload?.data)
             ? payload.data
@@ -460,6 +224,8 @@ export async function fetchThemes({ signal } = {}) {
                     {},
                 ],
                 signal,
+                unauthorizedMessage:
+                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
             });
 
             const fromNews = normalizeCollection(newsPayload)
@@ -635,6 +401,8 @@ export async function fetchNewsList({
                 endpoints: NEWS_ENDPOINTS,
                 paramsVariants: buildServerPaginatedVariants(filterVariants),
                 signal,
+                unauthorizedMessage:
+                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
             });
             const mapped = mapServerPaginatedResponse(payload);
             if (!mapped) return null;
@@ -673,6 +441,8 @@ export async function fetchNewsList({
                 ],
                 paramsVariants: [{}],
                 signal,
+                unauthorizedMessage:
+                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
             });
             const byThemeItems = dedupeNewsItems(
                 filterPublishedNews(normalizeCollection(byThemePayload)),
@@ -723,6 +493,8 @@ export async function fetchNewsList({
                         : []),
                 ],
                 signal,
+                unauthorizedMessage:
+                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
             });
             const backendItems = dedupeNewsItems(
                 filterPublishedNews(normalizeCollection(filteredPayload)),

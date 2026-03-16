@@ -283,15 +283,10 @@
         gap: 18px;
     }
 
-<<<<<<< ours
     .doctor-profile-page__photo-card,
     .doctor-profile-page__info-card {
         width: 100%;
         max-width: 520px;
-=======
-    .doctor-profile-page__photo-card {
-        width: min(100%, 520px);
->>>>>>> theirs
         margin: 0 auto;
     }
 

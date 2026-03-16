@@ -102,13 +102,13 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
                 style={{ maxHeight: isOpen ? `${contentHeight}px` : "0px" }}
             >
                 <div ref={contentRef} className="vacancy-item__content">
-                    {vacancy.responsibilities.length > 0 ? (
+                    {vacancy.importantForUs.length > 0 ? (
                         <section className="vacancy-item__section">
                             <p className="vacancy-item__section-title">
-                                Обов&apos;язки:
+                                Для нас важливо:
                             </p>
                             <ul className="vacancy-item__list">
-                                {vacancy.responsibilities.map((item, index) => (
+                                {vacancy.importantForUs.map((item, index) => (
                                     <li key={`${vacancy.id}-resp-${index}`}>
                                         {item}
                                     </li>
@@ -117,13 +117,13 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
                         </section>
                     ) : null}
 
-                    {vacancy.requirements.length > 0 ? (
+                    {vacancy.weProvide.length > 0 ? (
                         <section className="vacancy-item__section">
                             <p className="vacancy-item__section-title">
-                                Необхідні навички та вміння:
+                                Ми забезпечуємо:
                             </p>
                             <ul className="vacancy-item__list">
-                                {vacancy.requirements.map((item, index) => (
+                                {vacancy.weProvide.map((item, index) => (
                                     <li key={`${vacancy.id}-req-${index}`}>
                                         {item}
                                     </li>

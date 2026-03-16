@@ -1,0 +1,110 @@
+.screening-40-page {
+    min-height: 100vh;
+    color: var(--color-text-main);
+}
+
+.screening-40-page__main {
+    padding-bottom: 80px;
+}
+
+.screening-40-page .services-card-hero__card,
+.screening-40-page .services-card-hero__right,
+.screening-40-page .services-card-hero__right img {
+    border-radius: var(--radius-xl);
+}
+
+.screening-40-page__info-section {
+    padding: 80px 20px 0;
+}
+
+.screening-40-page__info-section--compact {
+    padding-top: 32px;
+}
+
+.screening-40-page__cta {
+    padding: 80px 20px 0;
+}
+
+.screening-40-page__container {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.screening-40-page__cta-card {
+    background: linear-gradient(
+        135deg,
+        var(--color-primary-opacity),
+        var(--color-bg-main)
+    );
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.screening-40-page__cta-content h2 {
+    margin: 0;
+    font-size: var(--font-h2);
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+}
+
+.screening-40-page__cta-content p {
+    margin: 16px 0 0;
+    max-width: 640px;
+    line-height: var(--lh-body);
+}
+
+.screening-40-page__cta-button {
+    flex-shrink: 0;
+}
+
+.screening-40-page__form-section {
+    padding: 80px 20px 0;
+    scroll-margin-top: 150px;
+}
+
+.screening-40-page__form-section .form-subtitle {
+    font-weight: var(--fw-semibold);
+}
+
+@media (max-width: 900px) {
+    .screening-40-page__cta-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .screening-40-page__cta-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .screening-40-page__main {
+        padding-bottom: 70px;
+    }
+
+    .screening-40-page__info-section {
+        padding: 70px 16px 0;
+    }
+
+    .screening-40-page__info-section--compact {
+        padding-top: 24px;
+    }
+
+    .screening-40-page__cta {
+        padding: 70px 16px 0;
+    }
+
+    .screening-40-page__cta-card {
+        padding: 24px 20px;
+    }
+
+    .screening-40-page__form-section {
+        padding: 70px 16px 0;
+    }
+}

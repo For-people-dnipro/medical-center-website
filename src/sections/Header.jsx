@@ -1,16 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
 import arrowIcon from "../../public/icons/arrow-down.svg";
 import { Link, useLocation } from "react-router-dom";
+import { SERVICE_MENU_ITEMS } from "../data/servicesCatalog";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
     const location = useLocation();
+
     const openInNewTab = (url) => {
         window.open(url, "_blank", "noopener,noreferrer");
+    };
+
+    const closeMobileMenus = () => {
+        setMenuOpen(false);
+        setServicesOpen(false);
+    };
+
+    useEffect(() => {
+        if (!menuOpen) {
+            setServicesOpen(false);
+        }
+    }, [menuOpen]);
+
+    const toggleMobileMenu = () => {
+        setMenuOpen((current) => {
+            if (current) {
+                setServicesOpen(false);
+            }
+
+            return !current;
+        });
     };
 
     const handleLogoClick = (event) => {
@@ -45,7 +68,22 @@ export default function Header() {
                             <nav className="header-nav">
                                 <Link to="/about">Про нас</Link>
                                 <Link to="/doctors">Лікарі</Link>
-                                <Link to="/services">Послуги</Link>
+                                <div className="header-services-group">
+                                    <Link
+                                        to="/services"
+                                        className="header-services-link"
+                                    >
+                                        Послуги
+                                    </Link>
+
+                                    <div className="header-services-dropdown">
+                                        {SERVICE_MENU_ITEMS.map((item) => (
+                                            <Link key={item.href} to={item.href}>
+                                                {item.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
                                 <Link to="/branches">Філії</Link>
                                 <Link to="/vacancies">Вакансії</Link>
                                 <Link to="/news">Новини</Link>
@@ -86,7 +124,7 @@ export default function Header() {
             </header>{" "}
             <button
                 className={`burger global-burger ${menuOpen ? "open" : ""}`}
-                onClick={() => setMenuOpen((v) => !v)}
+                onClick={toggleMobileMenu}
                 aria-label="Toggle menu"
             >
                 <span className="burger-icon">
@@ -96,18 +134,15 @@ export default function Header() {
                 </span>
             </button>
             {menuOpen && (
-                <div
-                    className="menu-overlay"
-                    onClick={() => setMenuOpen(false)}
-                />
+                <div className="menu-overlay" onClick={closeMobileMenus} />
             )}
             <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
                 <nav className="mobile-nav">
-                    <Link to="/about" onClick={() => setMenuOpen(false)}>
+                    <Link to="/about" onClick={closeMobileMenus}>
                         Про нас
                     </Link>
 
-                    <Link to="/doctors" onClick={() => setMenuOpen(false)}>
+                    <Link to="/doctors" onClick={closeMobileMenus}>
                         Лікарі
                     </Link>
 
@@ -129,85 +164,32 @@ export default function Header() {
                             aria-hidden={!servicesOpen}
                         >
                             <div className="mobile-submenu__inner">
-                                <Link
-                                    to="/services"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Всі послуги
-                                </Link>
-
-                                <Link
-                                    to="/declaration"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Декларація
-                                </Link>
-
-                                <Link
-                                    to="/consultation"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Консультація
-                                </Link>
-
-                                <Link
-                                    to="/analyses"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Аналізи
-                                </Link>
-
-                                <Link
-                                    to="/vaccination"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Вакцинація
-                                </Link>
-
-                                <Link
-                                    to="/diagnostics"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Діагностика
-                                </Link>
-
-                                <Link
-                                    to="/manipulation"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Маніпуляції
-                                </Link>
-
-                                {/* <Link
-                                    to="/packages"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Пакетні послуги
-                                </Link>
-
-                                <Link
-                                    to="/checkup"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Check-up{" "}
-                                </Link> */}
+                                {SERVICE_MENU_ITEMS.map((item) => (
+                                    <Link
+                                        key={item.href}
+                                        to={item.href}
+                                        onClick={closeMobileMenus}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
                             </div>
                         </div>
                     </div>
 
-                    <Link to="/branches" onClick={() => setMenuOpen(false)}>
+                    <Link to="/branches" onClick={closeMobileMenus}>
                         Філії
                     </Link>
 
-                    <Link to="/vacancies" onClick={() => setMenuOpen(false)}>
+                    <Link to="/vacancies" onClick={closeMobileMenus}>
                         Вакансії
                     </Link>
 
-                    <Link to="/news" onClick={() => setMenuOpen(false)}>
+                    <Link to="/news" onClick={closeMobileMenus}>
                         Новини
                     </Link>
 
-                    <Link to="/contacts" onClick={() => setMenuOpen(false)}>
+                    <Link to="/contacts" onClick={closeMobileMenus}>
                         Контакти
                     </Link>
                 </nav>

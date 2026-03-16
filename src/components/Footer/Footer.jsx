@@ -40,7 +40,7 @@ export default function Footer() {
     ];
 
     const mobileLeft = [
-        { label: "Про клініку", href: "/about" },
+        { label: "Про нас", href: "/about" },
         { label: "Лікарі", href: "/doctors" },
         { label: "Послуги", href: "/services" },
         { label: "Філії", href: "/branches" },
@@ -60,7 +60,7 @@ export default function Footer() {
     ];
 
     const desktopMenu = [
-        { label: "Про клініку", href: "/about" },
+        { label: "Про нас", href: "/about" },
         { label: "Лікарі", href: "/doctors" },
         { label: "Послуги", href: "/services" },
         { label: "Філії", href: "/branches" },

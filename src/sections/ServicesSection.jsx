@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./ServicesSection.css";
 import Button from "../components/Button/Button";
+import { SERVICE_CARDS } from "../data/servicesCatalog";
 import { toUiServiceTitle } from "../lib/serviceTitle";
 
 export default function ServicesSection() {
@@ -12,62 +13,7 @@ export default function ServicesSection() {
             : "/";
     const prioritizeImages = normalizedPathname === "/services";
 
-    const services = [
-        {
-            icon: "/icons/service-declaration.svg",
-            iconMobile: "/icons/service-declaration-mobile.svg",
-            label: "Декларація",
-            href: "/declaration",
-        },
-        {
-            icon: "/icons/service-consult.svg",
-            iconMobile: "/icons/service-consult-mobile.svg",
-            label: "Консультація",
-            href: "/consultation",
-        },
-        {
-            icon: "/icons/service-tests.svg",
-            iconMobile: "/icons/service-tests-mobile.svg",
-            label: "Аналізи",
-            href: "/analyses",
-        },
-        {
-            icon: "/icons/service-vaccine.svg",
-            iconMobile: "/icons/service-vaccine-mobile.svg",
-            label: "Вакцинація",
-            href: "/vaccination",
-        },
-        {
-            icon: "/icons/service-diagnostics.svg",
-            iconMobile: "/icons/service-diagnostics-mobile.svg",
-            label: "Діагностика",
-            href: "/diagnostics",
-        },
-        {
-            icon: "/icons/service-manipulation.svg",
-            iconMobile: "/icons/service-manipulation-mobile.svg",
-            label: "Маніпуляції",
-            href: "/manipulation",
-        },
-        // {
-        //     icon: "/icons/service-packages.svg",
-        //     iconMobile: "/icons/service-packages-mobile.svg",
-        //     label: "Пакетні послуги",
-        //     href: "/packages",
-        // },
-        // {
-        //     icon: "/icons/service-checkup.svg",
-        //     iconMobile: "/icons/service-checkup-mobile.svg",
-        //     label: "Check-up",
-        //     href: "/checkup",
-        // },
-        // {
-        //     icon: "/icons/service-cosmetology.svg",
-        //     iconMobile: "/icons/service-cosmetology-mobile.svg",
-        //     label: "Косметологія",
-        // },
-    ];
-    const servicesWithUiLabels = services.map((item) => ({
+    const servicesWithUiLabels = SERVICE_CARDS.map((item) => ({
         ...item,
         uiLabel: toUiServiceTitle(item.label),
     }));
@@ -78,6 +24,7 @@ export default function ServicesSection() {
         if (label === "Check-up") return "card-checkup";
         if (label === "Косметологія") return "card-cosmetology";
         if (label === "Консультація") return "card-consultation";
+        if (label === "Скринінг 40+") return "card-screening";
         return "";
     };
 

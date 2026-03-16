@@ -1,10 +1,9 @@
-import { resolveMedia } from "./newsApi";
+import {
+    fetchWithEndpointFallback,
+    pickSource,
+    resolveMedia,
+} from "./foundation";
 import { findBranchInCatalog } from "../data/branchesCatalog";
-
-const API_URL = (import.meta.env.VITE_STRAPI_URL || "")
-    .trim()
-    .replace(/\/$/, "");
-const LOCAL_STRAPI_FALLBACK = "http://localhost:1337";
 
 const DOCTORS_ENDPOINTS = ["/api/doctors"];
 const BRANCHES_ENDPOINTS = ["/api/branches"];
@@ -13,61 +12,6 @@ const DOCTORS_PAGE_ENDPOINTS = ["/api/doctors-page"];
 const DOCTORS_FETCH_LIMIT = 1000;
 const BRANCHES_FETCH_LIMIT = 200;
 const SPECIALISATIONS_FETCH_LIMIT = 300;
-
-function normalizePath(path) {
-    if (/^https?:\/\//i.test(path)) return path;
-    return path.startsWith("/") ? path : `/${path}`;
-}
-
-function buildApiUrl(path, params = {}) {
-    const isAbsolute = /^https?:\/\//i.test(path);
-    const normalizedPath = normalizePath(path);
-    const baseUrl = isAbsolute
-        ? path
-        : API_URL
-          ? `${API_URL}${normalizedPath}`
-          : normalizedPath;
-
-    const url =
-        isAbsolute || API_URL
-            ? new URL(baseUrl)
-            : new URL(
-                  baseUrl,
-                  typeof window !== "undefined"
-                      ? window.location.origin
-                      : "http://localhost:5173",
-              );
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value === undefined || value === null || value === "") return;
-        url.searchParams.set(key, String(value));
-    });
-
-    return url.toString();
-}
-
-function buildCandidateUrls(path, params = {}) {
-    const urls = [buildApiUrl(path, params)];
-
-    if (
-        !/^https?:\/\//i.test(path) &&
-        !API_URL &&
-        typeof window !== "undefined"
-    ) {
-        const fallback = new URL(normalizePath(path), LOCAL_STRAPI_FALLBACK);
-        Object.entries(params).forEach(([key, value]) => {
-            if (value === undefined || value === null || value === "") return;
-            fallback.searchParams.set(key, String(value));
-        });
-        urls.push(fallback.toString());
-    }
-
-    return [...new Set(urls)];
-}
-
-function pickSource(entry) {
-    return entry?.attributes ?? entry ?? {};
-}
 
 function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -536,7 +480,7 @@ function normalizeDoctor(entry, index = 0) {
                 source.avatar ||
                 source.doctor_photo ||
                 source.cover_image,
-            { variant: "card" },
+            { variant: "card", fallbackAlt: "Фото лікаря" },
         ) || null;
 
     const seoSource = pickSource(source.seo);
@@ -776,64 +720,6 @@ function extractSingleRow(payload) {
     return null;
 }
 
-async function fetchJson(url, { signal } = {}) {
-    const response = await fetch(url, { signal });
-
-    if (!response.ok) {
-        let message = `HTTP ${response.status}`;
-        try {
-            const payload = await response.json();
-            message = payload?.error?.message || payload?.message || message;
-        } catch {
-            // ignore
-        }
-        const error = new Error(message);
-        error.status = response.status;
-        throw error;
-    }
-
-    return response.json();
-}
-
-async function fetchWithEndpointFallback({ endpoints, paramsVariants, signal }) {
-    let lastError = null;
-    let unauthorizedError = null;
-
-    for (const endpoint of endpoints) {
-        for (const params of paramsVariants) {
-            const urls = buildCandidateUrls(endpoint, params);
-
-            for (const url of urls) {
-                try {
-                    return await fetchJson(url, { signal });
-                } catch (error) {
-                    if (error?.name === "AbortError") throw error;
-
-                    const status = Number(error?.status);
-                    if (status === 401 || status === 403) {
-                        unauthorizedError =
-                            unauthorizedError ||
-                            new Error(
-                                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
-                            );
-                        continue;
-                    }
-
-                    if (status === 400 || status === 404) {
-                        lastError = error;
-                        continue;
-                    }
-
-                    lastError = error;
-                }
-            }
-        }
-    }
-
-    if (unauthorizedError) throw unauthorizedError;
-    throw lastError || new Error("NO_VALID_ENDPOINT");
-}
-
 export const DEFAULT_DOCTORS_PAGE_SETTINGS = {
     pageTitle: "НАША КОМАНДА",
     pageDescription:
@@ -915,6 +801,8 @@ export async function fetchDoctorsPageSettings({ signal } = {}) {
             endpoints: DOCTORS_PAGE_ENDPOINTS,
             paramsVariants,
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
         });
         const row = extractSingleRow(payload);
         if (!row) {
@@ -961,6 +849,8 @@ export async function fetchDoctorSpecialisations({ signal } = {}) {
             endpoints: SPECIALISATIONS_ENDPOINTS,
             paramsVariants,
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
         });
 
         const list = extractCollectionRows(payload)
@@ -1062,6 +952,8 @@ export async function fetchDoctorsList({
         endpoints: DOCTORS_ENDPOINTS,
         paramsVariants,
         signal,
+        unauthorizedMessage:
+            "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
     });
 
     let items = extractCollectionRows(payload)
@@ -1120,6 +1012,8 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
             endpoints: DOCTORS_ENDPOINTS,
             paramsVariants: slugParamsVariants,
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
         });
 
         const item = extractCollectionRows(payload).map(normalizeDoctor).find(Boolean);
@@ -1196,6 +1090,8 @@ export async function fetchDoctorBranches({ signal } = {}) {
             endpoints: BRANCHES_ENDPOINTS,
             paramsVariants: filteredParamsVariants,
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
         });
 
         const branches = normalizeAndSortBranches(payload);
@@ -1212,6 +1108,8 @@ export async function fetchDoctorBranches({ signal } = {}) {
             endpoints: BRANCHES_ENDPOINTS,
             paramsVariants: unfilteredParamsVariants,
             signal,
+            unauthorizedMessage:
+                "UNAUTHORIZED: У Strapi увімкніть find/findOne permission для Public role (Doctor/Branch).",
         });
 
         const branches = normalizeAndSortBranches(payload);

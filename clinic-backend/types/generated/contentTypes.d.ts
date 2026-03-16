@@ -530,6 +530,12 @@ export interface ApiHomeSliderHomeSlider extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    buttonColor: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 20;
+      }> &
+      Schema.Attribute.DefaultTo<'#FFFFFF'>;
+    buttonEnabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     buttonLink: Schema.Attribute.String;
     buttonText: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
@@ -550,7 +556,6 @@ export interface ApiHomeSliderHomeSlider extends Struct.CollectionTypeSchema {
     photomobile: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    showButton: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -743,6 +748,7 @@ export interface ApiVacancyVacancy extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
     fullSchedule: Schema.Attribute.String;
+    importantForUs: Schema.Attribute.Blocks & Schema.Attribute.Required;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -753,50 +759,12 @@ export interface ApiVacancyVacancy extends Struct.CollectionTypeSchema {
     location: Schema.Attribute.String & Schema.Attribute.Required;
     order: Schema.Attribute.Integer & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    requirements: Schema.Attribute.Blocks & Schema.Attribute.Required;
-    responsibilities: Schema.Attribute.Blocks & Schema.Attribute.Required;
     shortSchedule: Schema.Attribute.String & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-  };
-}
-
-export interface ApiVaccineVaccine extends Struct.CollectionTypeSchema {
-  collectionName: 'vaccines';
-  info: {
-    displayName: 'Vaccine';
-    pluralName: 'vaccines';
-    singularName: 'vaccine';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    availability: Schema.Attribute.Enumeration<['in_stock', 'expected']> &
-      Schema.Attribute.Required;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    currency: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'\u0433\u0440\u043D'>;
-    isActive: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<true>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::vaccine.vaccine'
-    > &
-      Schema.Attribute.Private;
-    order: Schema.Attribute.Integer & Schema.Attribute.Required;
-    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
+    weProvide: Schema.Attribute.Blocks & Schema.Attribute.Required;
   };
 }
 
@@ -1319,7 +1287,6 @@ declare module '@strapi/strapi' {
       'api::specialisation.specialisation': ApiSpecialisationSpecialisation;
       'api::theme.theme': ApiThemeTheme;
       'api::vacancy.vacancy': ApiVacancyVacancy;
-      'api::vaccine.vaccine': ApiVaccineVaccine;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -119,6 +119,10 @@
     padding-left: 15px;
 }
 
+.card-screening span {
+    font-size: 15px;
+}
+
 .arrow-circle {
     width: 42px;
     height: 42px;

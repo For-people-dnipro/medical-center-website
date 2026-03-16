@@ -26,11 +26,11 @@
     "fullSchedule": {
       "type": "string"
     },
-    "responsibilities": {
+    "importantForUs": {
       "type": "blocks",
       "required": true
     },
-    "requirements": {
+    "weProvide": {
       "type": "blocks",
       "required": true
     },
