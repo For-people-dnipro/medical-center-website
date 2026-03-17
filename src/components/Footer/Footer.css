@@ -11,9 +11,17 @@ body.route-contacts .footer {
     margin-top: 80px;
 }
 
+body.route-screening-40-plus .footer {
+    margin-top: 0;
+}
+
 @media (max-width: 992px) {
     body.route-contacts .footer {
         margin-top: 70px;
+    }
+
+    body.route-screening-40-plus .footer {
+        margin-top: 0;
     }
 }
 

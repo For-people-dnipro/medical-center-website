@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
@@ -19,12 +19,6 @@ export default function Header() {
         setMenuOpen(false);
         setServicesOpen(false);
     };
-
-    useEffect(() => {
-        if (!menuOpen) {
-            setServicesOpen(false);
-        }
-    }, [menuOpen]);
 
     const toggleMobileMenu = () => {
         setMenuOpen((current) => {
@@ -68,22 +62,7 @@ export default function Header() {
                             <nav className="header-nav">
                                 <Link to="/about">Про нас</Link>
                                 <Link to="/doctors">Лікарі</Link>
-                                <div className="header-services-group">
-                                    <Link
-                                        to="/services"
-                                        className="header-services-link"
-                                    >
-                                        Послуги
-                                    </Link>
-
-                                    <div className="header-services-dropdown">
-                                        {SERVICE_MENU_ITEMS.map((item) => (
-                                            <Link key={item.href} to={item.href}>
-                                                {item.label}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
+                                <Link to="/services">Послуги</Link>
                                 <Link to="/branches">Філії</Link>
                                 <Link to="/vacancies">Вакансії</Link>
                                 <Link to="/news">Новини</Link>

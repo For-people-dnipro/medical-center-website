@@ -135,7 +135,7 @@
     font-size: 16px;
     line-height: var(--lh-body-snug);
     font-weight: var(--fw-regular);
-    color: var(--color-text-main);
+    color: var(--color-text-muted);
     opacity: 1;
 }
 

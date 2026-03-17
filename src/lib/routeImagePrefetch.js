@@ -25,7 +25,7 @@ const ROUTE_CRITICAL_IMAGES = Object.freeze({
     "/vaccination": ["/images/vaccination-hero.jpg"],
     "/packages": ["/images/packages-hero-nurse.jpg"],
     "/checkup": ["/images/consultation.jpg"],
-    "/screening-40-plus": ["/images/package-services.jpg"],
+    "/screening-40-plus": ["/images/consultation.jpg"],
     "/analyses": ["/images/analyses-hero.jpg"],
     "/vacancies": ["/images/vacancy-hero.jpg"],
 });

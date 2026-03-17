@@ -113,10 +113,16 @@ function App() {
 
     useEffect(() => {
         const isContactsRoute = normalizedPathname === "/contacts";
+        const isScreening40Route = normalizedPathname === "/screening-40-plus";
         document.body.classList.toggle("route-contacts", isContactsRoute);
+        document.body.classList.toggle(
+            "route-screening-40-plus",
+            isScreening40Route,
+        );
 
         return () => {
             document.body.classList.remove("route-contacts");
+            document.body.classList.remove("route-screening-40-plus");
         };
     }, [normalizedPathname]);
 

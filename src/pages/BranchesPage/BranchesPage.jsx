@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import BranchesMap from "../../components/BranchesMap";
 import MapPin from "../../components/MapPin";
@@ -212,14 +213,14 @@ export default function BranchesPage() {
             <main className="branches-page__main">
                 <section className="branches-page__hero">
                     <div className="branches-page__container">
-                        <nav
+                        <Breadcrumbs
                             className="branches-page__crumbs"
-                            aria-label="Breadcrumb"
-                        >
-                            <Link to="/">Головна</Link>
-                            <span className="crumb-separator">›</span>
-                            <span className="current">Філії</span>
-                        </nav>
+                            ariaLabel="Breadcrumb"
+                            items={[
+                                { label: "Головна", to: "/" },
+                                { label: "Філії" },
+                            ]}
+                        />
 
                         <h1>НАШІ ФІЛІЇ</h1>
                     </div>

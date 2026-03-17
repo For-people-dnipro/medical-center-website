@@ -24,7 +24,6 @@ export default function ServicesSection() {
         if (label === "Check-up") return "card-checkup";
         if (label === "Косметологія") return "card-cosmetology";
         if (label === "Консультація") return "card-consultation";
-        if (label === "Скринінг 40+") return "card-screening";
         return "";
     };
 
