@@ -10,35 +10,7 @@
 
 .page-fade {
     will-change: opacity, transform;
-}
-
-.route-viewport.is-ready .page-fade {
     animation: pageFadeIn 110ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.route-viewport.is-loading .page-content {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.route-asset-placeholder {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background:
-        linear-gradient(120deg, rgba(247, 250, 251, 0.92), rgba(238, 246, 248, 0.9)),
-        linear-gradient(90deg, rgba(234, 243, 246, 0.7), rgba(247, 251, 252, 0.8));
-    animation: routePlaceholderPulse 900ms ease-in-out infinite alternate;
-}
-
-@keyframes routePlaceholderPulse {
-    from {
-        opacity: 0.72;
-    }
-    to {
-        opacity: 0.92;
-    }
 }
 
 @keyframes pageFadeIn {
@@ -54,10 +26,6 @@
 
 @media (prefers-reduced-motion: reduce) {
     .page-fade {
-        animation: none;
-    }
-
-    .route-asset-placeholder {
         animation: none;
     }
 }

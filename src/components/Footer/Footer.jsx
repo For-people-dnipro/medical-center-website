@@ -26,16 +26,19 @@ export default function Footer() {
             address: "м. Дніпро, вул. Данила Галицького, 34",
             hours: "ПН–ПТ з 9:00 до 18:00",
             phone: "+38 (050) 067-13-88",
+            phoneHref: "tel:+380500671388",
         },
         {
             address: "м. Дніпро, просп. Б. Хмельницького, 127",
             hours: "ПН–ПТ з 9:00 до 18:00",
             phone: "+38 (050) 067-22-35",
+            phoneHref: "tel:+380500672235",
         },
         {
             address: "м. Дніпро, бульвар Слави, 8",
             hours: "ПН–ПТ з 9:00 до 18:00",
             phone: "+38 (066) 067-00-37",
+            phoneHref: "tel:+380660670037",
         },
     ];
 
@@ -125,7 +128,7 @@ export default function Footer() {
                                 </p>
                                 <p>
                                     <img src="/icons/icon-phone.svg" alt="" />
-                                    <span>{b.phone}</span>
+                                    <a href={b.phoneHref}>{b.phone}</a>
                                 </p>
                             </div>
                         ))}

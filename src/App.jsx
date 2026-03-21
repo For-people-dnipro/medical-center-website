@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs/AboutUs";
@@ -31,6 +31,7 @@ import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import Footer from "./components/Footer/Footer";
 import CookieBanner from "./components/CookieBanner/CookieBanner";
 import {
+    getGoogleAnalyticsId,
     hasAnalyticsConsent,
     initializeGoogleAnalytics,
     trackPageView,
@@ -41,9 +42,7 @@ import {
     warmCriticalRouteImageCache,
 } from "./lib/routeImagePrefetch";
 
-const ROUTE_ASSET_MAX_WAIT_MS = 1600;
-const ROUTE_ASSET_SETTLE_MS = 70;
-const ROUTES_WITH_SMALL_CRITICAL_MEDIA = new Set(["/services"]);
+const INITIAL_LOADER_DISPLAY_MS = 300;
 
 function normalizePathname(pathname = "/") {
     const raw = String(pathname || "/").trim();
@@ -52,61 +51,18 @@ function normalizePathname(pathname = "/") {
     return withoutTrailing || "/";
 }
 
-function isRouteCriticalImage(image, pathname = "/") {
-    if (!(image instanceof HTMLImageElement)) return false;
-
-    const normalizedPathname = normalizePathname(pathname);
-    const isExplicitNonBlocking = image.dataset.routeNonblocking === "true";
-    const isExplicitCritical = image.dataset.routeCritical === "true";
-
-    if (isExplicitNonBlocking) {
-        return false;
-    }
-
-    if (isExplicitCritical) {
-        return true;
-    }
-
-    const rect = image.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || 900;
-    const viewportWidth = window.innerWidth || 1440;
-    const widthHint =
-        Number(image.getAttribute("width")) || image.naturalWidth || 0;
-    const heightHint =
-        Number(image.getAttribute("height")) || image.naturalHeight || 0;
-    const visualWidth = rect.width || widthHint;
-    const visualHeight = rect.height || heightHint;
-
-    const areaThreshold = ROUTES_WITH_SMALL_CRITICAL_MEDIA.has(normalizedPathname)
-        ? 64
-        : 3600;
-    if (visualWidth * visualHeight < areaThreshold) return false;
-
-    const nearTopViewportMultiplier =
-        normalizedPathname === "/services" ? 2 : 1.2;
-
-    const isInsideHorizontalViewport =
-        rect.right > -40 && rect.left < viewportWidth + 40;
-    const isNearTopViewport =
-        rect.bottom > -120 &&
-        rect.top < viewportHeight * nearTopViewportMultiplier;
-
-    return isInsideHorizontalViewport && isNearTopViewport;
-}
-
 function App() {
     const location = useLocation();
     const normalizedPathname = normalizePathname(location.pathname);
     const trackedPathRef = useRef("");
     const [isLoaderVisible, setIsLoaderVisible] = useState(true);
     const [isLoaderExiting, setIsLoaderExiting] = useState(false);
-    const [isRouteAssetsReady, setIsRouteAssetsReady] = useState(true);
-    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
+    const measurementId = getGoogleAnalyticsId();
 
     useEffect(() => {
         const showTimer = window.setTimeout(() => {
             setIsLoaderExiting(true);
-        }, 1500);
+        }, INITIAL_LOADER_DISPLAY_MS);
 
         return () => window.clearTimeout(showTimer);
     }, []);
@@ -202,155 +158,6 @@ function App() {
         trackedPathRef.current = currentPath;
     }, [location.pathname, location.search, measurementId]);
 
-    useLayoutEffect(() => {
-        setIsRouteAssetsReady(false);
-    }, [normalizedPathname]);
-
-    useEffect(() => {
-        let isCancelled = false;
-        let settleTimerId = 0;
-        const cleanupImageListeners = new Set();
-        const trackedImages = new WeakSet();
-        let pendingImagesCount = 0;
-        let hasSeenCriticalImage = false;
-
-        const contentNode = document.querySelector(".page-content");
-        if (!contentNode) {
-            setIsRouteAssetsReady(true);
-            return undefined;
-        }
-
-        const revealFallbackTimer = window.setTimeout(() => {
-            if (!isCancelled) {
-                setIsRouteAssetsReady(true);
-            }
-        }, ROUTE_ASSET_MAX_WAIT_MS);
-
-        const clearSettleTimer = () => {
-            if (settleTimerId) {
-                window.clearTimeout(settleTimerId);
-                settleTimerId = 0;
-            }
-        };
-
-        const revealWhenSettled = () => {
-            clearSettleTimer();
-            settleTimerId = window.setTimeout(() => {
-                if (!isCancelled && pendingImagesCount === 0) {
-                    setIsRouteAssetsReady(true);
-                }
-            }, ROUTE_ASSET_SETTLE_MS);
-        };
-
-        const hasLoadingIndicator = () =>
-            Boolean(
-                contentNode.querySelector(
-                    '[role="status"], [aria-busy="true"], .news-page__state, .doctors-page__state',
-                ),
-            );
-
-        const trackImage = (image) => {
-            if (!(image instanceof HTMLImageElement)) return;
-            if (trackedImages.has(image)) return;
-            if (!isRouteCriticalImage(image, normalizedPathname)) return;
-            if (!image.currentSrc && !image.src) return;
-
-            trackedImages.add(image);
-            hasSeenCriticalImage = true;
-
-            if (image.loading === "lazy") {
-                image.loading = "eager";
-            }
-            if (!image.getAttribute("fetchpriority")) {
-                image.fetchPriority = "high";
-            }
-            if (!image.getAttribute("decoding")) {
-                image.decoding = "async";
-            }
-
-            const imageSource = String(image.currentSrc || image.src || "").toLowerCase();
-            const isSvgAsset =
-                imageSource.includes(".svg") ||
-                imageSource.startsWith("data:image/svg+xml");
-
-            if (image.complete && (image.naturalWidth > 0 || isSvgAsset)) {
-                revealWhenSettled();
-                return;
-            }
-
-            pendingImagesCount += 1;
-
-            const finishImage = () => {
-                image.removeEventListener("load", finishImage);
-                image.removeEventListener("error", finishImage);
-                pendingImagesCount = Math.max(0, pendingImagesCount - 1);
-                if (pendingImagesCount === 0) {
-                    revealWhenSettled();
-                }
-            };
-
-            cleanupImageListeners.add(() => {
-                image.removeEventListener("load", finishImage);
-                image.removeEventListener("error", finishImage);
-            });
-            image.addEventListener("load", finishImage);
-            image.addEventListener("error", finishImage);
-        };
-
-        const scanCriticalImages = () => {
-            const images = contentNode.querySelectorAll("img");
-            images.forEach(trackImage);
-
-            if (hasSeenCriticalImage) {
-                if (pendingImagesCount === 0) {
-                    revealWhenSettled();
-                }
-                return;
-            }
-
-            if (!hasLoadingIndicator()) {
-                revealWhenSettled();
-            }
-        };
-
-        const observer = new MutationObserver(() => {
-            if (isCancelled) return;
-            scanCriticalImages();
-        });
-
-        observer.observe(contentNode, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ["src", "srcset", "loading", "fetchpriority"],
-        });
-
-        const rafId = window.requestAnimationFrame(() => {
-            if (isCancelled) return;
-            scanCriticalImages();
-        });
-        const followupScanId = window.setTimeout(() => {
-            if (isCancelled) return;
-            scanCriticalImages();
-        }, 90);
-        const lateFollowupScanId = window.setTimeout(() => {
-            if (isCancelled) return;
-            scanCriticalImages();
-        }, 220);
-
-        return () => {
-            isCancelled = true;
-            window.clearTimeout(revealFallbackTimer);
-            window.cancelAnimationFrame(rafId);
-            window.clearTimeout(followupScanId);
-            window.clearTimeout(lateFollowupScanId);
-            clearSettleTimer();
-            observer.disconnect();
-            cleanupImageListeners.forEach((cleanup) => cleanup());
-            cleanupImageListeners.clear();
-        };
-    }, [normalizedPathname]);
-
     useEffect(() => {
         prefetchRouteImages(normalizedPathname, { highPriority: true });
     }, [normalizedPathname]);
@@ -432,11 +239,7 @@ function App() {
                 className={`app-shell ${!isLoaderVisible ? "app-shell--ready" : ""}`}
             >
                 <Header />
-                <div
-                    className={`route-viewport ${
-                        isRouteAssetsReady ? "is-ready" : "is-loading"
-                    }`}
-                >
+                <div className="route-viewport">
                     <div
                         key={routeTransitionKey}
                         className={`page-content ${
@@ -502,13 +305,6 @@ function App() {
                             <Route path="*" element={<Home />} />
                         </Routes>
                     </div>
-
-                    {!isRouteAssetsReady ? (
-                        <div
-                            className="route-asset-placeholder"
-                            aria-hidden="true"
-                        />
-                    ) : null}
                 </div>
                 <MobileCTA />
             </div>

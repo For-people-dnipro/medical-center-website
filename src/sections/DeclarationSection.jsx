@@ -2,6 +2,10 @@ import "./DeclarationSection.css";
 import check from "../../public/icons/check.svg";
 import nszulogo from "../assets/nszu.png";
 import Button from "../components/Button/Button";
+import { Link } from "react-router-dom";
+
+const FREE_SERVICES_HREF = "/free-services";
+const DECLARATION_HREF = "/doctors";
 
 export default function DeclarationSection() {
     return (
@@ -73,23 +77,29 @@ export default function DeclarationSection() {
                         </ul>
 
                         <div className="decl-actions">
-                            <Button href="/doctors">
+                            <Button href={DECLARATION_HREF}>
                                 Підписати декларацію
                             </Button>
-                            <Button href="/doctors">
+                            <Button href={FREE_SERVICES_HREF}>
                                 Перелік безкоштовних послуг
                             </Button>
                         </div>
                     </div>
 
                     <div className="decl-actions-mobile">
-                        <Button href="/doctors">
+                        <Button href={FREE_SERVICES_HREF}>
                             Перелік безкоштовних послуг
                         </Button>
                     </div>
 
                     <div className="decl-image">
-                        <img src={nszulogo} alt="НСЗУ" />
+                        <Link
+                            to={FREE_SERVICES_HREF}
+                            className="decl-image-link"
+                            aria-label="Перейти до переліку безкоштовних послуг (ПМГ)"
+                        >
+                            <img src={nszulogo} alt="НСЗУ" />
+                        </Link>
                     </div>
                 </div>
             </div>

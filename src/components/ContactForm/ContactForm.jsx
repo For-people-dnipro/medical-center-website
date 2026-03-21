@@ -258,6 +258,7 @@ export default function ContactForm({
         const payload = {
             details: details.join("\n"),
             formType,
+            to_email: import.meta.env.VITE_EMAIL_TO,
         };
 
         try {

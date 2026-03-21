@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./PageLoader.css";
 
-const EXIT_DURATION_MS = 420;
+const EXIT_DURATION_MS = 320;
 
 export default function PageLoader({ isExiting = false, onExited }) {
     useEffect(() => {

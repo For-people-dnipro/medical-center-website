@@ -10,7 +10,7 @@
 .faq-title {
     text-align: center;
     font-size: var(--font-h2);
-    margin-bottom: 40px;
+    margin: 0 0 40px;
 }
 
 .faq-list {

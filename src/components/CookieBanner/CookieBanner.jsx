@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./CookieBanner.css";
-import { initializeGoogleAnalytics, trackPageView } from "../../lib/analytics";
+import {
+    getGoogleAnalyticsId,
+    initializeGoogleAnalytics,
+    trackPageView,
+} from "../../lib/analytics";
 
 const CONSENT_STORAGE_KEY = "cookie-consent";
 const CONSENT_ACCEPTED = "accepted";
@@ -9,7 +13,7 @@ const CONSENT_UNSET = "unset";
 const CONSENT_LOADING = "loading";
 
 export default function CookieBanner({
-    measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || "",
+    measurementId = getGoogleAnalyticsId(),
 }) {
     const [consent, setConsent] = useState(CONSENT_LOADING);
 

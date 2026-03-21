@@ -1,6 +1,15 @@
 const CONSENT_STORAGE_KEY = "cookie-consent";
 const CONSENT_ACCEPTED = "accepted";
 
+export function getGoogleAnalyticsId() {
+    const gaId =
+        import.meta.env.VITE_GA_ID ||
+        import.meta.env.VITE_GA_MEASUREMENT_ID ||
+        "";
+
+    return typeof gaId === "string" ? gaId.trim() : "";
+}
+
 export function hasAnalyticsConsent() {
     if (typeof window === "undefined") {
         return false;

@@ -393,8 +393,8 @@ body.route-screening-40-plus .footer {
     }
 }
 @media (max-width: 768px) {
-    .page-home {
-        padding-bottom: 40px;
+    body:has(.page-home) .footer {
+        margin-top: 70px;
     }
 }
 @media (max-width: 715px) {
@@ -424,9 +424,6 @@ body.route-screening-40-plus .footer {
         display: none;
     }
 
-    .page-home {
-        padding-bottom: 40px;
-    }
     .footer-bottom {
         flex-wrap: wrap;
         row-gap: 5px;
@@ -472,9 +469,6 @@ body.route-screening-40-plus .footer {
     }
     .footer-rules {
         display: none;
-    }
-    .page-home {
-        padding-bottom: 40px;
     }
     .footer-mobile-menu {
         column-gap: 20px;

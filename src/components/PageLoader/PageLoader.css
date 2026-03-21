@@ -8,8 +8,8 @@
     opacity: 1;
     visibility: visible;
     transition:
-        opacity 420ms ease,
-        visibility 420ms ease;
+        opacity 320ms ease,
+        visibility 320ms ease;
 }
 
 .page-loader--exit {

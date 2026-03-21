@@ -23,11 +23,10 @@
     text-align: center;
 }
 
-.title h1 {
-    font-size: var(--font-h1);
+.title {
+    font-size: var(--font-h2);
     font-weight: 600;
-    margin-bottom: 10px;
-    margin-top: 0px;
+    margin: 0 0 10px;
 }
 
 .subtitle-desktop {

@@ -183,19 +183,19 @@ export default function ManipulationPage() {
                                         ПН-ПТ з 9:00 до 18:00
                                     </p>
                                 </div>{" "}
-                                <div className="contact-row">
+                                <a
+                                    href="tel:+380500671388"
+                                    className="contact-row contact-row--phone"
+                                >
                                     <img
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
                                     />
-                                    <a
-                                        href="tel:+380500671388"
-                                        className="contact-link text-body-lg"
-                                    >
-                                        050-067-13-88
-                                    </a>
-                                </div>
+                                    <span className="contact-link text-body-lg">
+                                        +38 (050) 067-13-88
+                                    </span>
+                                </a>
                             </div>{" "}
                             <div className="contacts-card">
                                 <div className="contact-row">
@@ -218,19 +218,19 @@ export default function ManipulationPage() {
                                         ПН-ПТ з 9:00 до 18:00
                                     </p>
                                 </div>{" "}
-                                <div className="contact-row">
+                                <a
+                                    href="tel:+380500672235"
+                                    className="contact-row contact-row--phone"
+                                >
                                     <img
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
                                     />
-                                    <a
-                                        href="tel:+380500672235"
-                                        className="contact-link text-body-lg"
-                                    >
-                                        050-067-22-35
-                                    </a>
-                                </div>
+                                    <span className="contact-link text-body-lg">
+                                        +38 (050) 067-22-35
+                                    </span>
+                                </a>
                             </div>
                             <div className="contacts-card">
                                 <div className="contact-row">
@@ -253,19 +253,19 @@ export default function ManipulationPage() {
                                         ПН-ПТ з 9:00 до 18:00
                                     </p>
                                 </div>{" "}
-                                <div className="contact-row">
+                                <a
+                                    href="tel:+380660670037"
+                                    className="contact-row contact-row--phone"
+                                >
                                     <img
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
                                     />
-                                    <a
-                                        href="tel:+380660670037"
-                                        className="contact-link text-body-lg"
-                                    >
-                                        066-067-00-37
-                                    </a>
-                                </div>
+                                    <span className="contact-link text-body-lg">
+                                        +38 (066) 067-00-37
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>
