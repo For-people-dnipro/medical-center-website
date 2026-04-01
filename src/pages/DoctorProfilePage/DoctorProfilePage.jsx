@@ -390,7 +390,10 @@ export default function DoctorProfilePage() {
 
             <section className="doctor-profile-page__tabs">
                 <div className="doctor-profile-page__container">
-                    <DoctorProfileTabs tabs={tabItems} />
+                    <DoctorProfileTabs
+                        tabs={tabItems}
+                        initialTabKey="education"
+                    />
                 </div>
             </section>
 

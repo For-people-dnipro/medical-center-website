@@ -16,6 +16,7 @@ import PackagesPage from "./pages/PackagesPage/PackagesPage";
 import TestPage from "./pages/TestPage/TestPage";
 import Screening40Page from "./pages/Screening40Page/Screening40Page";
 import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
+import RulesPage from "./pages/RulesPage/RulesPage";
 import OfferPage from "./pages/OfferPage/OfferPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import DataProtectionPage from "./pages/DataProtectionPage/DataProtectionPage";
@@ -278,6 +279,7 @@ function App() {
                                 element={<Navigate to="/checkup" replace />}
                             />
                             <Route path="/air-alert" element={<AirAlertPage />} />
+                            <Route path="/rules" element={<RulesPage />} />
                             <Route path="/offer" element={<OfferPage />} />
                             <Route
                                 path="/privacy"

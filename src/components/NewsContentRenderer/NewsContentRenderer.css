@@ -60,6 +60,8 @@
 .news-content a {
     color: #008b96;
     text-decoration: underline;
+    text-decoration-skip-ink: none;
+    text-underline-offset: 0.08em;
 }
 
 .news-content__figure {
