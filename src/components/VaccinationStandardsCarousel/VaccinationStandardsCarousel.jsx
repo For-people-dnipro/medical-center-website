@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import WebPImage from "../WebPImage/WebPImage";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard } from "swiper/modules";
 import "swiper/css";
@@ -146,7 +147,7 @@ export default function VaccinationStandardsCarousel() {
                                     </div>
 
                                     <figure className="vaccination-standards-carousel__image-card">
-                                        <img
+                                        <WebPImage
                                             src={slide.image}
                                             alt={`${slide.title} — вакцинація у медичному центрі Для Людей, Дніпро`}
                                             loading={index === 0 ? "eager" : "lazy"}

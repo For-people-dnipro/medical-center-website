@@ -1,4 +1,5 @@
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
+import WebPImage from "../WebPImage/WebPImage";
 // import logoMain from "../../assets/logo_main.svg";
 import "./VacanciesHero.css";
 
@@ -22,7 +23,7 @@ export default function VacanciesHero({
 
                 <div className="vacancies-hero__layout">
                     <div className="vacancies-hero__media">
-                        <img
+                        <WebPImage
                             src={image}
                             alt="Команда медичного центру Для Людей у Дніпрі, Україна"
                             className="vacancies-hero__image"

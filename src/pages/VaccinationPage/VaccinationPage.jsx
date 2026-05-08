@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import WebPImage from "../../components/WebPImage/WebPImage";
 import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Footer from "../../components/Footer/Footer";
@@ -338,7 +339,7 @@ S900 20 986 3"
                             </div>
 
                             <div className="vaccination-page__offer-media">
-                                <img
+                                <WebPImage
                                     src="/images/vaccination-section-picture.jpg"
                                     alt="Вакцинація в медичному центрі Для Людей, Дніпро, Україна"
                                     loading="lazy"

@@ -11,6 +11,22 @@ export default defineConfig(({ mode }) => {
 
     return {
         plugins: [react()],
+        build: {
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        "vendor-react": ["react", "react-dom", "react-router-dom"],
+                        "vendor-maps": ["@react-google-maps/api"],
+                        "vendor-swiper": ["swiper"],
+                        "vendor-ui": ["lucide-react", "react-helmet-async"],
+                    },
+                },
+            },
+            minify: "esbuild",
+        },
+        esbuild: {
+            drop: mode === "production" ? ["console", "debugger"] : [],
+        },
         server: {
             host: "localhost",
             port: 5173,

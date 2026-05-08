@@ -1,3 +1,4 @@
+import WebPImage from "../WebPImage/WebPImage";
 import "./InfoGridSection.css";
 
 export default function InfoGridSection({
@@ -25,7 +26,7 @@ export default function InfoGridSection({
                     <div className="info-grid-section__grid info-grid-section__grid--analyses">
                         <article className="info-grid-section__card info-grid-section__card--analyses-media">
                             {imageSrc ? (
-                                <img
+                                <WebPImage
                                     src={imageSrc}
                                     alt={imageAlt}
                                     loading="lazy"

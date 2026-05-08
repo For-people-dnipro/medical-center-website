@@ -11,9 +11,15 @@ function decodeHtmlEntities(value) {
             .replace(/&#39;/gi, "'");
     }
 
-    const textarea = document.createElement("textarea");
-    textarea.innerHTML = value;
-    return textarea.value;
+    return value
+        .replace(/&amp;/gi, "&")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+        .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
 export function htmlToPlainText(value) {

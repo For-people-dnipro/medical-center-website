@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../Button/Button";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
+import WebPImage from "../WebPImage/WebPImage";
 import { toUiServiceTitle } from "../../lib/serviceTitle";
 import { scrollToElementWithOffset } from "../../lib/smoothScroll";
 import "./ServicesCardHero.css";
@@ -95,7 +96,7 @@ export default function ServicesCardHero({
                                 isHeroImageLoaded ? " is-loaded" : ""
                             }`}
                         >
-                            <img
+                            <WebPImage
                                 src={image}
                                 alt={heroImageAlt}
                                 loading="eager"
