@@ -24,17 +24,20 @@ export default function Footer() {
         {
             address: "м. Дніпро, вул. Данила Галицького, 34",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+050-067-13-88",
+            phoneDisplay: "+38 (050) 067-13-88",
+            phoneHref: "+380500671388",
         },
         {
             address: "м. Дніпро, просп. Б. Хмельницького, 127",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+050-067-22-35",
+            phoneDisplay: "+38 (050) 067-22-35",
+            phoneHref: "+380500672235",
         },
         {
             address: "м. Дніпро, бульвар Слави, 8",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+066-067-00-37",
+            phoneDisplay: "+38 (066) 067-00-37",
+            phoneHref: "+380660670037",
         },
     ];
 
@@ -119,7 +122,7 @@ export default function Footer() {
                                 </p>
                                 <p>
                                     <img src="/icons/icon-phone.svg" alt="" />
-                                    <a href={`tel:${b.phone}`}>{b.phone}</a>
+                                    <a href={`tel:${b.phoneHref}`}>{b.phoneDisplay}</a>
                                 </p>
                             </div>
                         ))}
@@ -190,8 +193,12 @@ export default function Footer() {
                 </a>
 
                 <div className="footer-socials" aria-label="Соцмережі">
-                    <Instagram aria-label="Instagram" className="footer-icon" />
-                    <Facebook aria-label="Facebook" className="footer-icon" />
+                    <a href="https://www.instagram.com/medcentr_dl?igsh=MXFjN3dsOWxneHhrYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <Instagram className="footer-icon" />
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61582468588174" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <Facebook className="footer-icon" />
+                    </a>
                 </div>
 
                 <a
