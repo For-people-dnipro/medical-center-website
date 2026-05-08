@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Ticket.css";
 
 const ITEMS_PER_LOOP = 8;
@@ -15,7 +15,7 @@ export default function Ticket({ text }) {
 
     useEffect(() => {
         const el = trackRef.current;
-        if (!el) return;
+        if (!el) return undefined;
 
         const update = () => {
             const halfWidth = el.scrollWidth / 2;
@@ -36,6 +36,7 @@ export default function Ticket({ text }) {
         };
 
         update();
+
         const resizeObserver = new ResizeObserver(update);
         resizeObserver.observe(el);
         window.addEventListener("resize", update);

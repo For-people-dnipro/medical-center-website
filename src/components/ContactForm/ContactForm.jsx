@@ -454,17 +454,18 @@ export default function ContactForm({
                         </span>
                     </button>
                 </div>
+
             </form>
 
             {(success || submitError) &&
                 createPortal(
                     <div
                         className="popup-overlay"
-                        onClick={() => {
-                            setSuccess(false);
-                            setSubmitError(false);
-                        }}
-                    >
+                            onClick={() => {
+                                setSuccess(false);
+                                setSubmitError(false);
+                            }}
+                        >
                         <div
                             className="popup"
                             onClick={(e) => e.stopPropagation()}

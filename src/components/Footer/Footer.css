@@ -393,8 +393,8 @@ body.route-screening-40-plus .footer {
     }
 }
 @media (max-width: 768px) {
-    body:has(.page-home) .footer {
-        margin-top: 70px;
+    body.route-home .footer {
+        padding-bottom: calc(var(--mobile-cta-height, 0px) - 4px);
     }
 }
 @media (max-width: 715px) {

@@ -109,6 +109,63 @@
     transform: rotate(-45deg);
 }
 
+.info-grid-section--packages .info-grid-section__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--color-bg-main);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.info-grid-section--packages .info-grid-section__card {
+    padding: 50px 42px;
+}
+
+.info-grid-section--packages .info-grid-section__card + .info-grid-section__card {
+    border-left: 1px solid var(--color-border);
+}
+
+.info-grid-section--packages .info-grid-section__title {
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.info-grid-section--packages .info-grid-section__list {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-grid-section--packages .info-grid-section__list li {
+    position: relative;
+    margin: 0;
+    padding-left: 24px;
+    line-height: var(--lh-body);
+}
+
+.info-grid-section--packages .info-grid-section__list li::before {
+    content: "";
+    position: absolute;
+    top: 0.7em;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-circle);
+    background: var(--color-primary);
+    transform: translateY(-50%);
+}
+
+.info-grid-section--packages .info-grid-section__list li strong {
+    display: block;
+    font-weight: var(--fw-semibold);
+}
+
 @media (max-width: 992px) {
     .info-grid-section--analyses .info-grid-section__card--analyses-media {
         padding: 24px 16px 24px 24px;
@@ -129,6 +186,15 @@
     .info-grid-section--vaccination
         .info-grid-section__card
         + .info-grid-section__card {
+        border-left: 0;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .info-grid-section--packages .info-grid-section__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid-section--packages .info-grid-section__card + .info-grid-section__card {
         border-left: 0;
         border-top: 1px solid var(--color-border);
     }
@@ -182,5 +248,14 @@
         height: 9px;
         border-left-width: 3px;
         border-bottom-width: 3px;
+    }
+
+    .info-grid-section--packages .info-grid-section__card {
+        padding: 28px 20px;
+    }
+
+    .info-grid-section--packages .info-grid-section__list {
+        margin-top: 20px;
+        gap: 16px;
     }
 }

@@ -7,6 +7,7 @@ import InfoGridSection from "../../components/InfoGridSection/InfoGridSection";
 import PackagesCardsGrid from "../../components/PackagesCardsGrid/PackagesCardsGrid";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 import "./PackagesPage.css";
 
 const packageBenefits = [
@@ -52,11 +53,7 @@ const PAGE_SEO = getStaticSeo("packages");
 export default function PackagesPage() {
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        const target = document.querySelector("#packages-form");
-
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollToSelectorWithOffset("#packages-form");
     };
 
     return (

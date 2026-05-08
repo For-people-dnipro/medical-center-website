@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_BASE_URL, LOCAL_STRAPI_FALLBACK } from "../../api/foundation";
 import "./VaccinesPriceSection.css";
 
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const API_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 const VISIBLE_VACCINES_COUNT = 5;
 
 function normalizeVaccines(items = []) {

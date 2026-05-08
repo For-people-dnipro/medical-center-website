@@ -1,23 +1,21 @@
 import { Fragment, memo, useMemo, useState } from "react";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { BRANCHES_CATALOG } from "../data/branchesCatalog";
 
-const DEFAULT_BRANCHES = [
-    {
-        lat: 48.4613,
-        lng: 34.9384,
-        link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
-    },
-    {
-        lat: 48.4063,
-        lng: 35.0014,
-        link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
-    },
-    {
-        lat: 48.414,
-        lng: 35.0659,
-        link: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
-    },
-];
+const DEFAULT_BRANCHES = BRANCHES_CATALOG.flatMap((branch) =>
+    Array.isArray(branch.mapMarkers) && branch.mapMarkers.length > 0
+        ? branch.mapMarkers
+        : branch.lat && branch.lng
+          ? [
+                {
+                    id: branch.id,
+                    lat: branch.lat,
+                    lng: branch.lng,
+                    link: branch.mapLink,
+                },
+            ]
+          : [],
+);
 
 const PIN_PATH =
     "M0,-18 C-6,-18 -10,-14 -10,-8 C-10,0 0,14 0,14 C0,14 10,0 10,-8 C10,-14 6,-18 0,-18 Z";
@@ -199,7 +197,11 @@ function BranchesMap({
                         onMouseOut={() => setHoveredId(null)}
                         onClick={() => {
                             if (branch.link) {
-                                window.open(branch.link, "_blank");
+                                window.open(
+                                    branch.link,
+                                    "_blank",
+                                    "noopener,noreferrer",
+                                );
                             }
                         }}
                     />

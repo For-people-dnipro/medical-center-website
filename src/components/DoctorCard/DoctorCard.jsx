@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { getResponsiveImageProps } from "../../api/foundation";
 import {
     formatExperienceYearsLabel,
     getDoctorCardSummary,
@@ -91,19 +92,25 @@ export default function DoctorCard({
     const doctorImageAlt = `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
     const imageLoading = priority ? "eager" : "lazy";
     const imageFetchPriority = priority ? "high" : "auto";
+    const imageProps = getResponsiveImageProps(doctor.photo, {
+        variant: "card",
+        sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw",
+    });
 
     const cardContent = (
         <>
             <div className="doctor-card__image-wrap">
-                {doctor.photo?.url ? (
+                {imageProps?.src ? (
                     <img
                         className="doctor-card__image"
-                        src={doctor.photo.url}
+                        src={imageProps.src}
+                        srcSet={imageProps.srcSet}
+                        sizes={imageProps.sizes}
                         alt={doctorImageAlt}
-                        width={doctor.photo.width || 720}
-                        height={doctor.photo.height || 880}
+                        width={imageProps.width || 720}
+                        height={imageProps.height || 880}
                         loading={imageLoading}
-                        fetchPriority={imageFetchPriority}
+                        fetchpriority={imageFetchPriority}
                         decoding="async"
                     />
                 ) : (

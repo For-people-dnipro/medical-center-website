@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Keyboard } from "swiper/modules";
+import {
+    API_BASE_URL,
+    LOCAL_STRAPI_FALLBACK,
+    buildOptimizedImageSrcSet,
+    getOptimizedImageUrl,
+} from "../../api/foundation";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./Banner.css";
 
-const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
-    .trim()
-    .replace(/\/$/, "");
+const STRAPI_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 const HOME_SLIDES_ENDPOINT = `${STRAPI_URL}/api/home-sliders?populate=*`;
 const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";
@@ -145,6 +150,26 @@ export default function Banner() {
         };
     }, []);
 
+    const firstSlide = slides[0] || null;
+    const firstDesktopImage = firstSlide?.photodesktop
+        ? resolveMediaUrl(firstSlide.photodesktop)
+        : "";
+    const firstMobileImage = firstSlide?.photomobile
+        ? resolveMediaUrl(firstSlide.photomobile)
+        : "";
+    const firstDesktopSrc = getOptimizedImageUrl(firstDesktopImage, {
+        variant: "hero",
+        width: 1600,
+    });
+    const firstDesktopSrcSet = buildOptimizedImageSrcSet(firstDesktopImage, {
+        variant: "hero",
+        maxWidth: 1920,
+    });
+    const firstMobileSrc = getOptimizedImageUrl(firstMobileImage, {
+        variant: "hero",
+        width: 768,
+    });
+
     if (slides.length === 0) {
         return (
             <div className="banner-container">
@@ -164,6 +189,26 @@ export default function Banner() {
 
     return (
         <div className="banner-container">
+            <Helmet>
+                {firstDesktopSrc ? (
+                    <link
+                        rel="preload"
+                        as="image"
+                        href={firstDesktopSrc}
+                        imageSrcSet={firstDesktopSrcSet || undefined}
+                        imageSizes="100vw"
+                        media="(min-width: 769px)"
+                    />
+                ) : null}
+                {firstMobileSrc ? (
+                    <link
+                        rel="preload"
+                        as="image"
+                        href={firstMobileSrc}
+                        media="(max-width: 768px)"
+                    />
+                ) : null}
+            </Helmet>
             {/* ===== SLIDER ===== */}
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, Keyboard]}
@@ -203,6 +248,27 @@ export default function Banner() {
                         "--banner-button-accent": slide.buttonColor,
                     };
                     const isExternal = isExternalLink(slide.buttonLink);
+                    const desktopImageUrl = slide.photodesktop
+                        ? resolveMediaUrl(slide.photodesktop)
+                        : "";
+                    const mobileImageUrl = slide.photomobile
+                        ? resolveMediaUrl(slide.photomobile)
+                        : "";
+                    const desktopSrc = getOptimizedImageUrl(desktopImageUrl, {
+                        variant: "hero",
+                        width: 1600,
+                    });
+                    const desktopSrcSet = buildOptimizedImageSrcSet(
+                        desktopImageUrl,
+                        {
+                            variant: "hero",
+                            maxWidth: 1920,
+                        },
+                    );
+                    const mobileSrc = getOptimizedImageUrl(mobileImageUrl, {
+                        variant: "hero",
+                        width: 768,
+                    });
 
                     return (
                         <SwiperSlide key={slide.id}>
@@ -211,24 +277,18 @@ export default function Banner() {
                                     {/* MOBILE IMAGE */}
                                     <source
                                         media="(max-width: 768px)"
-                                        srcSet={
-                                            slide.photomobile
-                                                ? resolveMediaUrl(slide.photomobile)
-                                                : undefined
-                                        }
+                                        srcSet={mobileSrc || undefined}
                                     />
 
                                     {/* DESKTOP IMAGE */}
                                     <img
-                                        src={
-                                            slide.photodesktop
-                                                ? resolveMediaUrl(slide.photodesktop)
-                                                : ""
-                                        }
+                                        src={desktopSrc || desktopImageUrl || ""}
+                                        srcSet={desktopSrcSet || undefined}
+                                        sizes="100vw"
                                         alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
                                         className="banner-image"
                                         loading={index === 0 ? "eager" : "lazy"}
-                                        fetchPriority={index === 0 ? "high" : "auto"}
+                                        fetchpriority={index === 0 ? "high" : "auto"}
                                         decoding="async"
                                     />
                                 </picture>

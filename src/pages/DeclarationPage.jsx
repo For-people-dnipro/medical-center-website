@@ -232,7 +232,7 @@ export default function DeclarationPage() {
                         { label: "Декларація" },
                     ]}
                     buttonText="Підписати декларацію"
-                    buttonHref="#"
+                    buttonHref="#declaration-form"
                 />
 
                 <ServicesIntroText>

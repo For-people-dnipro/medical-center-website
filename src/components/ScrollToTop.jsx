@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { scrollToTopWithOffset } from "../lib/smoothScroll";
 
 function scrollToPageTop() {
     const html = document.documentElement;
@@ -99,7 +100,7 @@ export default function ScrollToTop() {
             if (!isSamePath || !isSameQuery) return;
 
             event.preventDefault();
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            scrollToTopWithOffset();
         };
 
         document.addEventListener("click", handleSameRouteClick, true);

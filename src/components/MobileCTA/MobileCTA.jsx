@@ -11,39 +11,20 @@ export default function MobileCTA() {
 
     return (
         <div className="mobile-cta">
-            <div className="mobile-cta-buttons">
-                <button
-                    type="button"
-                    className="mobile-btn"
-                    onClick={() => openInNewTab("/declaration")}
-                >
-                    <div className="mobile-btn-content">
-                        <span className="mobile-btn-icon">
-                            <img src="/icons/document.svg" alt="" />
-                        </span>
-                        <span className="mobile-btn-text">
-                            Підписати декларацію
-                        </span>
-                    </div>
-                </button>
-
-                <button
-                    type="button"
-                    className="mobile-btn"
-                    onClick={() =>
-                        openInNewTab("https://vitalab.com.ua/qr-code")
-                    }
-                >
-                    <div className="mobile-btn-content">
-                        <span className="mobile-btn-icon">
-                            <img src="/icons/lab.svg" alt="" />
-                        </span>
-                        <span className="mobile-btn-text">
-                            Результати аналізів
-                        </span>
-                    </div>
-                </button>
-            </div>
+            <button
+                type="button"
+                className="mobile-cta-button"
+                onClick={() =>
+                    openInNewTab("https://vitalab.com.ua/qr-code")
+                }
+            >
+                <span className="mobile-cta-button__icon" aria-hidden="true">
+                    <img src="/icons/lab.svg" alt="" />
+                </span>
+                <span className="mobile-cta-button__title">
+                    Результати аналізів
+                </span>
+            </button>
         </div>
     );
 }

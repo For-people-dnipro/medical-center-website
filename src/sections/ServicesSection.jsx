@@ -58,7 +58,7 @@ export default function ServicesSection() {
                                         src={item.icon}
                                         alt=""
                                         loading={prioritizeImages ? "eager" : "lazy"}
-                                        fetchPriority={
+                                        fetchpriority={
                                             prioritizeImages ? "high" : "auto"
                                         }
                                         decoding="async"
@@ -90,7 +90,7 @@ export default function ServicesSection() {
                                 alt=""
                                 className="service-arrow"
                                 loading={prioritizeImages ? "eager" : "lazy"}
-                                fetchPriority={prioritizeImages ? "high" : "auto"}
+                                fetchpriority={prioritizeImages ? "high" : "auto"}
                                 decoding="async"
                                 data-route-critical={
                                     prioritizeImages ? "true" : undefined
@@ -143,7 +143,7 @@ export default function ServicesSection() {
                                                                     ? "eager"
                                                                     : "lazy"
                                                             }
-                                                            fetchPriority={
+                                                            fetchpriority={
                                                                 prioritizeImages
                                                                     ? "high"
                                                                     : "auto"
@@ -168,7 +168,7 @@ export default function ServicesSection() {
                                                             ? "eager"
                                                             : "lazy"
                                                     }
-                                                    fetchPriority={
+                                                    fetchpriority={
                                                         prioritizeImages
                                                             ? "high"
                                                             : "auto"

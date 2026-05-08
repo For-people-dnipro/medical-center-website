@@ -8,6 +8,7 @@ import VaccinesStaticSection from "../../components/VaccinesStaticSection/Vaccin
 import VaccinationStandardsCarousel from "../../components/VaccinationStandardsCarousel/VaccinationStandardsCarousel";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 
 const vaccinationFaqs = [
     {
@@ -62,11 +63,7 @@ export default function VaccinationPage() {
 
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        const target = document.querySelector("#vaccination-contact-form");
-
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollToSelectorWithOffset("#vaccination-contact-form");
     };
 
     useEffect(() => {

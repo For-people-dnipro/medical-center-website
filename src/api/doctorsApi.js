@@ -324,7 +324,7 @@ function normalizeBranch(entry, index = 0) {
         firstNonEmpty(phoneHref, catalogBranch?.phoneHref, finalPhoneDisplay),
     );
     const finalMapLink = normalizeInternalLink(
-        firstNonEmpty(mapLink, catalogBranch?.mapLink),
+        firstNonEmpty(catalogBranch?.mapLink, mapLink),
     );
 
     const catalogLat = toNumber(catalogBranch?.lat);

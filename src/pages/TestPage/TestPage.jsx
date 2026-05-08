@@ -6,6 +6,7 @@ import Footer from "../../components/Footer/Footer";
 import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 import "./TestPage.css";
 
 const checkupPackages = [
@@ -76,11 +77,7 @@ const PAGE_SEO = getStaticSeo("checkup");
 export default function TestPage() {
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        const target = document.querySelector("#checkup-form");
-
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollToSelectorWithOffset("#checkup-form");
     };
 
     return (

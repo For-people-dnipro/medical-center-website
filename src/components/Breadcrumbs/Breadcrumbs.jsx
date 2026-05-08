@@ -6,6 +6,7 @@ export default function Breadcrumbs({
     className = "",
     ariaLabel = "Breadcrumb",
     separator = "›",
+    allowLastLink = false,
 }) {
     const sanitizedItems = items
         .map((item) => {
@@ -42,11 +43,13 @@ export default function Breadcrumbs({
         <nav className={rootClassName} aria-label={ariaLabel}>
             {sanitizedItems.map((item, index) => {
                 const isLast = index === sanitizedItems.length - 1;
+                const shouldRenderLink =
+                    Boolean(item.to) && (!isLast || allowLastLink);
                 const key = `${item.to || item.link || "current"}-${item.label}-${index}`;
 
                 return (
                     <span key={key} className={styles.item}>
-                        {item.to && !isLast ? (
+                        {shouldRenderLink ? (
                             <Link to={item.to} className={styles.link}>
                                 {item.label}
                             </Link>

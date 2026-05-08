@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { API_BASE_URL, LOCAL_STRAPI_FALLBACK } from "../../api/foundation";
 import { toUiServiceTitle } from "../../lib/serviceTitle";
 import "./ServicesPriceSection.css";
 
-const API_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
-    .trim()
-    .replace(/\/$/, "");
+const API_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 
 const DEFAULT_TITLE = "ЦІНИ НА КОНСУЛЬТАЦІЇ";
 const DEFAULT_ENDPOINT = "/api/service-prices";

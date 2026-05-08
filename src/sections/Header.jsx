@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Header.css";
 import logo from "../assets/logo_main.svg";
 import ncsuIcon from "../assets/nszu.png";
 import arrowIcon from "../../public/icons/arrow-down.svg";
 import { Link, useLocation } from "react-router-dom";
 import { SERVICE_MENU_ITEMS } from "../data/servicesCatalog";
+import { scrollToTopWithOffset } from "../lib/smoothScroll";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
     const location = useLocation();
+    const servicesToggleRef = useRef(null);
+    const submenuRef = useRef(null);
 
     const openInNewTab = (url) => {
         window.open(url, "_blank", "noopener,noreferrer");
@@ -35,11 +38,20 @@ export default function Header() {
         // From other routes we keep immediate navigation behavior.
         if (location.pathname === "/") {
             event.preventDefault();
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            scrollToTopWithOffset();
         }
         setMenuOpen(false);
         setServicesOpen(false);
     };
+
+    useEffect(() => {
+        if (servicesOpen) return;
+
+        const activeElement = document.activeElement;
+        if (submenuRef.current?.contains(activeElement)) {
+            servicesToggleRef.current?.focus();
+        }
+    }, [servicesOpen]);
 
     return (
         <>
@@ -77,17 +89,17 @@ export default function Header() {
                                             "https://vitalab.com.ua/qr-code",
                                         )
                                     }
-                                    className="outline-btn purple"
+                                    className="outline-btn teal"
                                 >
                                     Результати аналізів
                                 </button>
-                                <button
+                                {/* <button
                                     type="button"
                                     onClick={() => openInNewTab("/declaration")}
                                     className="outline-btn teal"
                                 >
                                     Підписати декларацію
-                                </button>
+                                </button> */}
                             </div>
                         </div>
 
@@ -127,6 +139,7 @@ export default function Header() {
 
                     <div className="mobile-services-group">
                         <button
+                            ref={servicesToggleRef}
                             className="mobile-dropdown-toggle"
                             onClick={() => setServicesOpen((v) => !v)}
                         >
@@ -139,8 +152,9 @@ export default function Header() {
                         </button>
 
                         <div
+                            ref={submenuRef}
                             className={`mobile-submenu ${servicesOpen ? "open" : ""}`}
-                            aria-hidden={!servicesOpen}
+                            {...(!servicesOpen ? { inert: "" } : {})}
                         >
                             <div className="mobile-submenu__inner">
                                 {SERVICE_MENU_ITEMS.map((item) => (
@@ -171,26 +185,24 @@ export default function Header() {
                     <Link to="/contacts" onClick={closeMobileMenus}>
                         Контакти
                     </Link>
-                </nav>
 
-                <div className="mobile-actions">
                     <button
                         type="button"
+                        className="mobile-nav-action"
                         onClick={() =>
                             openInNewTab("https://vitalab.com.ua/qr-code")
                         }
-                        className="outline-btn purple"
                     >
                         Результати аналізів
                     </button>
-                    <button
+                    {/* <button
                         type="button"
                         onClick={() => openInNewTab("/declaration")}
                         className="outline-btn teal"
                     >
                         Підписати декларацію
-                    </button>
-                </div>
+                    </button> */}
+                </nav>
             </div>
         </>
     );

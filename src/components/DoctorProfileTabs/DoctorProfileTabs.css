@@ -138,6 +138,12 @@
     gap: 6px;
 }
 
+.doctor-profile-tabs__repeatable-item li,
+.doctor-profile-tabs__repeatable-html p {
+    padding-left: 12px;
+    text-indent: -12px;
+}
+
 .doctor-profile-tabs__repeatable-title {
     margin: 0;
     font-size: var(--font-h3);

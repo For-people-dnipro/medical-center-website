@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 import MapPin from "../MapPin";
-import { SOCIAL_LINKS } from "../../constants/socialLinks";
 
 export default function Footer() {
     const [isRulesInMenu, setIsRulesInMenu] = useState(false);
@@ -25,52 +24,49 @@ export default function Footer() {
         {
             address: "м. Дніпро, вул. Данила Галицького, 34",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+38 (050) 067-13-88",
-            phoneHref: "tel:+380500671388",
+            phone: "+050-067-13-88",
         },
         {
             address: "м. Дніпро, просп. Б. Хмельницького, 127",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+38 (050) 067-22-35",
-            phoneHref: "tel:+380500672235",
+            phone: "+050-067-22-35",
         },
         {
             address: "м. Дніпро, бульвар Слави, 8",
             hours: "ПН–ПТ з 9:00 до 18:00",
-            phone: "+38 (066) 067-00-37",
-            phoneHref: "tel:+380660670037",
+            phone: "+066-067-00-37",
         },
     ];
 
     const mobileLeft = [
-        { label: "Про нас", href: "/about" },
-        { label: "Лікарі", href: "/doctors" },
-        { label: "Послуги", href: "/services" },
-        { label: "Філії", href: "/branches" },
-        { label: "Вакансії", href: "/vacancies" },
-        { label: "Новини", href: "/news" },
-        { label: "Контакти", href: "/contacts" },
+        "Про клініку",
+        "Лікарі",
+        "Послуги",
+        "Філії",
+        "Вакансії",
+        "Новини",
+        "Контакти",
     ];
 
     const mobileRight = [
-        { label: "Документи", href: "/documents" },
-        { label: "Публічна оферта", href: "/offer" },
-        { label: "Політика конфіденційності", href: "/privacy" },
-        { label: "Захист персональних даних", href: "/data-protection" },
-        { label: "Перелік безкоштовних послуг (ПМГ)", href: "/free-services" },
-        { label: "Правила повітряної тривоги", href: "/air-alert" },
-        { label: "Правила внутрішнього розпорядку", href: "/rules" },
+        "Документи",
+        "Публічна оферта",
+        "Політика конфіденційності",
+        "Захист персональних даних",
+        "Перелік безкоштовних послуг (ПМГ)",
+        "Правила повітряної тривоги",
+        "Правила внутрішнього розпорядку",
     ];
 
     const desktopMenu = [
-        { label: "Про нас", href: "/about" },
+        { label: "Про клініку", href: "/about" },
         { label: "Лікарі", href: "/doctors" },
         { label: "Послуги", href: "/services" },
         { label: "Філії", href: "/branches" },
         { label: "Вакансії", href: "/vacancies" },
         { label: "Новини", href: "/news" },
         { label: "Контакти", href: "/contacts" },
-        { label: "Документи", href: "/documents" },
+        { label: "Документи", href: "https://drive.google.com/drive/folders/1cNnQCDB6XV-gfTbvyaZqrm35UHY6NrIE?usp=sharing", external: true },
         {
             label: "Результати аналізів",
             href: "https://vitalab.com.ua/qr-code",
@@ -89,18 +85,13 @@ export default function Footer() {
     ];
 
     const menuToRender = isRulesInMenu ? desktopMenuWithRules : desktopMenu;
-    const isInternalRoute = (href) =>
-        typeof href === "string" && href.startsWith("/") && !href.startsWith("//");
 
     return (
         <footer className={`footer ${isRulesInMenu ? "rules-in-menu" : ""}`}>
             <div className="footer-container">
                 <div className="footer-top">
                     <div className="footer-logo">
-                        <img
-                            src={logofooter}
-                            alt="Логотип медичного центру Для Людей"
-                        />
+                        <img src={logofooter} alt="Для людей" />
                     </div>
 
                     <div className="footer-mobile-addresses">
@@ -128,7 +119,7 @@ export default function Footer() {
                                 </p>
                                 <p>
                                     <img src="/icons/icon-phone.svg" alt="" />
-                                    <a href={b.phoneHref}>{b.phone}</a>
+                                    <a href={`tel:${b.phone}`}>{b.phone}</a>
                                 </p>
                             </div>
                         ))}
@@ -137,10 +128,15 @@ export default function Footer() {
 
                 <div className="footer-nav desktop-menu">
                     {menuToRender.map((item, i) =>
-                        isInternalRoute(item.href) ? (
+                        item.href === "/air-alert" ||
+                        item.href === "/branches" ? (
                             <Link key={i} to={item.href}>
                                 {item.label}
                             </Link>
+                        ) : item.external ? (
+                            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer">
+                                {item.label}
+                            </a>
                         ) : (
                             <a key={i} href={item.href}>
                                 {item.label}
@@ -152,13 +148,13 @@ export default function Footer() {
                 <div className="footer-mobile-menu">
                     <div className="footer-mobile-col">
                         {mobileLeft.map((item, i) =>
-                            isInternalRoute(item.href) ? (
-                                <Link key={i} to={item.href}>
-                                    {item.label}
+                            item === "Філії" ? (
+                                <Link key={i} to="/branches">
+                                    {item}
                                 </Link>
                             ) : (
-                                <a key={i} href={item.href}>
-                                    {item.label}
+                                <a key={i} href="#">
+                                    {item}
                                 </a>
                             ),
                         )}
@@ -166,13 +162,17 @@ export default function Footer() {
 
                     <div className="footer-mobile-col">
                         {mobileRight.map((item, i) =>
-                            isInternalRoute(item.href) ? (
-                                <Link key={i} to={item.href}>
-                                    {item.label}
+                            item === "Правила повітряної тривоги" ? (
+                                <Link key={i} to="/air-alert">
+                                    {item}
                                 </Link>
+                            ) : item === "Документи" ? (
+                                <a key={i} href="https://drive.google.com/drive/folders/1cNnQCDB6XV-gfTbvyaZqrm35UHY6NrIE?usp=sharing" target="_blank" rel="noopener noreferrer">
+                                    {item}
+                                </a>
                             ) : (
-                                <a key={i} href={item.href}>
-                                    {item.label}
+                                <a key={i} href="#">
+                                    {item}
                                 </a>
                             ),
                         )}
@@ -185,27 +185,13 @@ export default function Footer() {
                     © 2025 Для людей. Всі права захищені
                 </span>
 
-                <Link to="/rules" className="footer-rules">
+                <a href="/rules" className="footer-rules">
                     Правила внутрішнього розпорядку
-                </Link>
+                </a>
 
                 <div className="footer-socials" aria-label="Соцмережі">
-                    <a
-                        href={SOCIAL_LINKS.instagram}
-                        aria-label="Instagram"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <Instagram className="footer-icon" />
-                    </a>
-                    <a
-                        href={SOCIAL_LINKS.facebook}
-                        aria-label="Facebook"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <Facebook className="footer-icon" />
-                    </a>
+                    <Instagram aria-label="Instagram" className="footer-icon" />
+                    <Facebook aria-label="Facebook" className="footer-icon" />
                 </div>
 
                 <a

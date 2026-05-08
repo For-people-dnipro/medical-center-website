@@ -218,6 +218,15 @@
     font-weight: 500;
 }
 
+.mobile-nav-action {
+    all: unset;
+    font-size: 18px;
+    color: #000;
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 1.2;
+}
+
 .mobile-dropdown-toggle {
     background: none;
     border: 0;
@@ -320,15 +329,6 @@
     }
 }
 
-.mobile-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.mobile-actions .outline-btn {
-    width: 100%;
-}
 .global-burger {
     display: none;
 }
@@ -387,6 +387,10 @@
     }
 }
 @media (max-width: 430px) {
+    .mobile-menu {
+        padding: 90px 16px 30px 14px;
+    }
+
     .outline-btn {
         width: 100%;
         font-size: 14px;
@@ -394,9 +398,11 @@
     }
 }
 
-@media (max-width: 330px) {
-    .mobile-actions .outline-btn {
-        font-size: 12px;
-        padding: 8px 4px;
+@media (max-width: 360px) {
+    .mobile-nav a,
+    .mobile-nav-action,
+    .mobile-dropdown-toggle {
+        font-size: 16px;
+        white-space: nowrap;
     }
 }

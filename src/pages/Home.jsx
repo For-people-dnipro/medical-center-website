@@ -10,9 +10,10 @@ import FAQSection from "../sections/FaqSection";
 import ContactForm from "../components/ContactForm/ContactForm";
 import Footer from "../components/Footer/Footer";
 import SeoHead from "../components/Seo/SeoHead";
+import { API_BASE_URL, LOCAL_STRAPI_FALLBACK } from "../api/foundation";
 import { getStaticSeo } from "../seo/seoConfig";
 
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const API_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 const PAGE_SEO = getStaticSeo("home");
 const homeFaqTitle = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
 const homeFaqs = [

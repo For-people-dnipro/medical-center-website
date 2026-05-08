@@ -65,6 +65,25 @@ function normalizeJsonLd(jsonLd) {
     return [jsonLd];
 }
 
+function normalizePreloadImages(images) {
+    if (!Array.isArray(images)) return [];
+
+    return images
+        .map((image) => {
+            if (!image || typeof image !== "object") return null;
+            const href = toAbsoluteUrl(image.href || image.src || "");
+            if (!href) return null;
+
+            return {
+                href,
+                media: firstSeoText(image.media),
+                imageSrcSet: firstSeoText(image.imageSrcSet, image.srcSet),
+                imageSizes: firstSeoText(image.imageSizes, image.sizes),
+            };
+        })
+        .filter(Boolean);
+}
+
 function buildLocalBusinessSchema() {
     const origin = getCurrentOrigin();
     const siteUrl = firstSeoText(origin);
@@ -122,6 +141,7 @@ export default function SeoHead({
     articlePublishedTime = "",
     articleModifiedTime = "",
     jsonLd = null,
+    preloadImages = [],
 }) {
     const location = useLocation();
 
@@ -156,6 +176,7 @@ export default function SeoHead({
         buildLocalBusinessSchema(),
         ...normalizeJsonLd(jsonLd),
     ].filter(Boolean);
+    const resolvedPreloadImages = normalizePreloadImages(preloadImages);
 
     return (
         <Helmet prioritizeSeoTags>
@@ -182,6 +203,18 @@ export default function SeoHead({
             {resolvedOgImage ? (
                 <meta property="og:image" content={resolvedOgImage} />
             ) : null}
+
+            {resolvedPreloadImages.map((image, index) => (
+                <link
+                    key={`preload-image-${index}`}
+                    rel="preload"
+                    as="image"
+                    href={image.href}
+                    media={image.media || undefined}
+                    imageSrcSet={image.imageSrcSet || undefined}
+                    imageSizes={image.imageSizes || undefined}
+                />
+            ))}
 
             <meta
                 name="twitter:card"

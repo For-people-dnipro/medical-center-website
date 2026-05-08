@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "postbuild": "node scripts/generate-static-og-pages.mjs",
+        "postbuild": "node scripts/generate-static-og-pages.mjs && node scripts/verify-static-seo.mjs",
         "lint": "eslint .",
         "preview": "vite preview"
     },

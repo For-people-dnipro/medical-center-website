@@ -204,6 +204,12 @@
 
 .vacancy-item__actions .vacancy-item__apply.ui-button {
     margin-top: 0;
+    min-height: 36px;
+    padding-inline: 14px;
+}
+
+.vacancy-item__actions .vacancy-item__apply.ui-button .ui-button-text {
+    font-size: 14px;
 }
 
 @media (max-width: 992px) {
@@ -216,7 +222,7 @@
     }
 
     .vacancy-item__meta-item {
-        font-size: var(--font-body);
+        font-size: 12px;
     }
 
     .vacancy-item__content {
@@ -258,6 +264,15 @@
     .vacancy-item__chevron img {
         width: 22px;
         height: 20px;
+    }
+
+    .vacancy-item__actions .vacancy-item__apply.ui-button {
+        min-height: 32px;
+        padding-inline: 12px;
+    }
+
+    .vacancy-item__actions .vacancy-item__apply.ui-button .ui-button-text {
+        font-size: 14px;
     }
 }
 

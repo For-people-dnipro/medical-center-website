@@ -8,60 +8,65 @@
 
 @media (max-width: 768px) {
     :root {
-        --mobile-cta-height: 48px;
+        --mobile-cta-height: 64px;
     }
 
     .mobile-cta {
-        display: block;
+        display: flex;
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
         background: #3c8f98;
+        padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
         z-index: 9999;
+        box-sizing: border-box;
+        justify-content: center;
     }
 
-    .mobile-cta-buttons {
+    .mobile-cta-button {
         display: flex;
-        width: 100%;
-    }
-
-    .mobile-btn {
-        flex: 1;
-        height: 48px;
-        padding: 6px 8px;
+        width: auto;
+        min-height: 42px;
+        max-width: calc(100% - 8px);
+        padding: 5px 16px;
         background: transparent;
         border: none;
         color: var(--color-bg-main);
         cursor: pointer;
-
-        display: flex;
         align-items: center;
         justify-content: center;
-
         box-sizing: border-box;
         overflow: hidden;
+        border-radius: 18px;
+        text-align: center;
+        gap: 7px;
     }
 
-    .mobile-btn-content {
+    .mobile-cta-button__icon {
+        width: 24px;
+        height: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
-        max-width: 100%;
-    }
-
-    .mobile-btn-icon img {
-        width: 30px;
-        height: 30px;
         flex-shrink: 0;
+        opacity: 0.96;
     }
 
-    .mobile-btn-text {
-        font-size: clamp(1px, 3.2vw, 15px);
+    .mobile-cta-button__icon img {
+        width: 24px;
+        height: 24px;
+        display: block;
+        filter: brightness(0) invert(1);
+    }
+
+    .mobile-cta-button__title {
+        font-size: clamp(13px, 3.2vw, 15px);
         line-height: 1.2;
-        text-align: center;
+        font-weight: 700;
         white-space: nowrap;
-        word-break: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: 0;
     }
 }

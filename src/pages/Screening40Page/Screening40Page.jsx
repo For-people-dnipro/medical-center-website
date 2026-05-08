@@ -5,6 +5,7 @@ import ServicesCardHero from "../../components/ServicesCardHero/ServicesCardHero
 import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import useTabsUnderline from "../../hooks/useTabsUnderline";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 import "./Screening40Page.css";
 
 const PAGE_SEO = getStaticSeo("screening40");
@@ -293,11 +294,7 @@ export default function Screening40Page() {
 
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        const target = document.querySelector("#screening-40-form");
-
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollToSelectorWithOffset("#screening-40-form");
     };
 
     const activePanelMeta =

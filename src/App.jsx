@@ -1,34 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-import AboutUs from "./pages/AboutUs/AboutUs";
-import AllServices from "./pages/AllServices";
-import DeclarationPage from "./pages/DeclarationPage";
 import Header from "./sections/Header";
-import MobileCTA from "./components/MobileCTA/MobileCTA";
 import PageLoader from "./components/PageLoader/PageLoader";
+import MobileCTA from "./components/MobileCTA/MobileCTA";
 import "./styles/pageTransitions.css";
-import ConsultPage from "./pages/ConsultPage/ConsultPage";
-import DiagnosticsPage from "./pages/DiagnosticsPage/DiagnosticsPage";
-import ManipulationPage from "./pages/ManipulationPage/ManipulationPage";
-import VaccinationPage from "./pages/VaccinationPage/VaccinationPage";
-import PackagesPage from "./pages/PackagesPage/PackagesPage";
-import TestPage from "./pages/TestPage/TestPage";
-import Screening40Page from "./pages/Screening40Page/Screening40Page";
-import AirAlertPage from "./pages/AirAlertPage/AirAlertPage";
-import RulesPage from "./pages/RulesPage/RulesPage";
-import OfferPage from "./pages/OfferPage/OfferPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
-import DataProtectionPage from "./pages/DataProtectionPage/DataProtectionPage";
-import FreeServicesPage from "./pages/FreeServicesPage/FreeServicesPage";
-import BranchesPage from "./pages/BranchesPage/BranchesPage";
-import AnalysesPage from "./pages/AnalysesPage/AnalysesPage";
-import VacanciesPage from "./pages/VacanciesPage/VacanciesPage";
-import NewsPage from "./pages/NewsPage/NewsPage";
-import NewsArticlePage from "./pages/NewsArticlePage/NewsArticlePage";
-import DoctorsPage from "./pages/DoctorsPage/DoctorsPage";
-import DoctorProfilePage from "./pages/DoctorProfilePage/DoctorProfilePage";
-import ContactsPage from "./pages/ContactsPage/ContactsPage";
 import Footer from "./components/Footer/Footer";
 import CookieBanner from "./components/CookieBanner/CookieBanner";
 import {
@@ -43,7 +18,76 @@ import {
     warmCriticalRouteImageCache,
 } from "./lib/routeImagePrefetch";
 
-const INITIAL_LOADER_DISPLAY_MS = 300;
+const Home = lazy(() => import("./pages/Home"));
+const AboutUs = lazy(() => import("./pages/AboutUs/AboutUs"));
+const AllServices = lazy(() => import("./pages/AllServices"));
+const DeclarationPage = lazy(() => import("./pages/DeclarationPage"));
+const ConsultPage = lazy(() => import("./pages/ConsultPage/ConsultPage"));
+const DiagnosticsPage = lazy(
+    () => import("./pages/DiagnosticsPage/DiagnosticsPage"),
+);
+const ManipulationPage = lazy(
+    () => import("./pages/ManipulationPage/ManipulationPage"),
+);
+const VaccinationPage = lazy(
+    () => import("./pages/VaccinationPage/VaccinationPage"),
+);
+const PackagesPage = lazy(() => import("./pages/PackagesPage/PackagesPage"));
+const TestPage = lazy(() => import("./pages/TestPage/TestPage"));
+const Screening40Page = lazy(
+    () => import("./pages/Screening40Page/Screening40Page"),
+);
+const AirAlertPage = lazy(() => import("./pages/AirAlertPage/AirAlertPage"));
+const RulesPage = lazy(() => import("./pages/RulesPage/RulesPage"));
+const OfferPage = lazy(() => import("./pages/OfferPage/OfferPage"));
+const PrivacyPolicyPage = lazy(
+    () => import("./pages/PrivacyPolicyPage/PrivacyPolicyPage"),
+);
+const DataProtectionPage = lazy(
+    () => import("./pages/DataProtectionPage/DataProtectionPage"),
+);
+const FreeServicesPage = lazy(
+    () => import("./pages/FreeServicesPage/FreeServicesPage"),
+);
+const BranchesPage = lazy(() => import("./pages/BranchesPage/BranchesPage"));
+const AnalysesPage = lazy(() => import("./pages/AnalysesPage/AnalysesPage"));
+const VacanciesPage = lazy(() => import("./pages/VacanciesPage/VacanciesPage"));
+const NewsPage = lazy(() => import("./pages/NewsPage/NewsPage"));
+const NewsArticlePage = lazy(
+    () => import("./pages/NewsArticlePage/NewsArticlePage"),
+);
+const DoctorsPage = lazy(() => import("./pages/DoctorsPage/DoctorsPage"));
+const DoctorProfilePage = lazy(
+    () => import("./pages/DoctorProfilePage/DoctorProfilePage"),
+);
+const ContactsPage = lazy(() => import("./pages/ContactsPage/ContactsPage"));
+
+const INITIAL_LOADER_DISPLAY_MS = 120;
+const ROUTE_SHELL_READY_CLASS = "app-shell--ready";
+
+function RouteFallback() {
+    return <div className="route-fallback" aria-hidden="true" />;
+}
+
+function getSessionValue(key) {
+    if (typeof window === "undefined") return "";
+
+    try {
+        return window.sessionStorage.getItem(key) || "";
+    } catch {
+        return "";
+    }
+}
+
+function setSessionValue(key, value) {
+    if (typeof window === "undefined") return;
+
+    try {
+        window.sessionStorage.setItem(key, value);
+    } catch {
+        // Ignore storage write failures in restricted browser contexts.
+    }
+}
 
 function normalizePathname(pathname = "/") {
     const raw = String(pathname || "/").trim();
@@ -61,7 +105,14 @@ function App() {
     const measurementId = getGoogleAnalyticsId();
 
     useEffect(() => {
+        const hasSeenLoader = getSessionValue("has-seen-loader");
+        if (hasSeenLoader === "1") {
+            setIsLoaderVisible(false);
+            return undefined;
+        }
+
         const showTimer = window.setTimeout(() => {
+            setSessionValue("has-seen-loader", "1");
             setIsLoaderExiting(true);
         }, INITIAL_LOADER_DISPLAY_MS);
 
@@ -69,8 +120,10 @@ function App() {
     }, []);
 
     useEffect(() => {
+        const isHomeRoute = normalizedPathname === "/";
         const isContactsRoute = normalizedPathname === "/contacts";
         const isScreening40Route = normalizedPathname === "/screening-40-plus";
+        document.body.classList.toggle("route-home", isHomeRoute);
         document.body.classList.toggle("route-contacts", isContactsRoute);
         document.body.classList.toggle(
             "route-screening-40-plus",
@@ -78,12 +131,15 @@ function App() {
         );
 
         return () => {
+            document.body.classList.remove("route-home");
             document.body.classList.remove("route-contacts");
             document.body.classList.remove("route-screening-40-plus");
         };
     }, [normalizedPathname]);
 
     useEffect(() => {
+        if (isLoaderVisible) return undefined;
+
         const setLinkTarget = (anchor) => {
             const href = anchor.getAttribute("href") || "";
 
@@ -237,76 +293,84 @@ function App() {
             ) : null}
 
             <div
-                className={`app-shell ${!isLoaderVisible ? "app-shell--ready" : ""}`}
+                className={`app-shell ${!isLoaderVisible ? ROUTE_SHELL_READY_CLASS : ""}`}
             >
                 <Header />
                 <div className="route-viewport">
-                    <div
-                        key={routeTransitionKey}
-                        className={`page-content ${
-                            shouldSkipPageTransition ? "" : "page-fade"
-                        }`.trim()}
-                    >
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/about" element={<AboutUs />} />
-                            <Route path="/services" element={<AllServices />} />
-                            <Route
-                                path="/declaration"
-                                element={<DeclarationPage />}
-                            />
-                            <Route path="/consultation" element={<ConsultPage />} />
-                            <Route
-                                path="/diagnostics"
-                                element={<DiagnosticsPage />}
-                            />
-                            <Route
-                                path="/manipulation"
-                                element={<ManipulationPage />}
-                            />{" "}
-                            <Route
-                                path="/vaccination"
-                                element={<VaccinationPage />}
-                            />
-                            <Route path="/packages" element={<PackagesPage />} />
-                            <Route path="/checkup" element={<TestPage />} />
-                            <Route
-                                path="/screening-40-plus"
-                                element={<Screening40Page />}
-                            />
-                            <Route
-                                path="/check-up"
-                                element={<Navigate to="/checkup" replace />}
-                            />
-                            <Route path="/air-alert" element={<AirAlertPage />} />
-                            <Route path="/rules" element={<RulesPage />} />
-                            <Route path="/offer" element={<OfferPage />} />
-                            <Route
-                                path="/privacy"
-                                element={<PrivacyPolicyPage />}
-                            />
-                            <Route
-                                path="/data-protection"
-                                element={<DataProtectionPage />}
-                            />
-                            <Route
-                                path="/free-services"
-                                element={<FreeServicesPage />}
-                            />
-                            <Route path="/doctors" element={<DoctorsPage />} />
-                            <Route
-                                path="/doctors/:slug"
-                                element={<DoctorProfilePage />}
-                            />
-                            <Route path="/branches" element={<BranchesPage />} />
-                            <Route path="/analyses" element={<AnalysesPage />} />
-                            <Route path="/vacancies" element={<VacanciesPage />} />
-                            <Route path="/news" element={<NewsPage />} />
-                            <Route path="/news/:slug" element={<NewsArticlePage />} />
-                            <Route path="/contacts" element={<ContactsPage />} />
-                            <Route path="*" element={<Home />} />
-                        </Routes>
-                    </div>
+                    <Suspense fallback={<RouteFallback />}>
+                        <div
+                            key={routeTransitionKey}
+                            className={`page-content ${
+                                shouldSkipPageTransition ? "" : "page-fade"
+                            }`.trim()}
+                        >
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/about" element={<AboutUs />} />
+                                <Route path="/services" element={<AllServices />} />
+                                <Route
+                                    path="/declaration"
+                                    element={<DeclarationPage />}
+                                />
+                                <Route path="/consultation" element={<ConsultPage />} />
+                                <Route
+                                    path="/diagnostics"
+                                    element={<DiagnosticsPage />}
+                                />
+                                <Route
+                                    path="/manipulation"
+                                    element={<ManipulationPage />}
+                                />
+                                <Route
+                                    path="/vaccination"
+                                    element={<VaccinationPage />}
+                                />
+                                <Route path="/packages" element={<PackagesPage />} />
+                                <Route path="/checkup" element={<TestPage />} />
+                                <Route
+                                    path="/screening-40-plus"
+                                    element={<Screening40Page />}
+                                />
+                                <Route
+                                    path="/check-up"
+                                    element={<Navigate to="/checkup" replace />}
+                                />
+                                <Route path="/air-alert" element={<AirAlertPage />} />
+                                <Route path="/rules" element={<RulesPage />} />
+                                <Route path="/offer" element={<OfferPage />} />
+                                <Route
+                                    path="/privacy"
+                                    element={<PrivacyPolicyPage />}
+                                />
+                                <Route
+                                    path="/data-protection"
+                                    element={<DataProtectionPage />}
+                                />
+                                <Route
+                                    path="/free-services"
+                                    element={<FreeServicesPage />}
+                                />
+                                <Route path="/doctors" element={<DoctorsPage />} />
+                                <Route
+                                    path="/doctors/:slug"
+                                    element={<DoctorProfilePage />}
+                                />
+                                <Route path="/branches" element={<BranchesPage />} />
+                                <Route path="/analyses" element={<AnalysesPage />} />
+                                <Route
+                                    path="/vacancies"
+                                    element={<VacanciesPage />}
+                                />
+                                <Route path="/news" element={<NewsPage />} />
+                                <Route
+                                    path="/news/:slug"
+                                    element={<NewsArticlePage />}
+                                />
+                                <Route path="/contacts" element={<ContactsPage />} />
+                                <Route path="*" element={<Home />} />
+                            </Routes>
+                        </div>
+                    </Suspense>
                 </div>
                 <MobileCTA />
             </div>

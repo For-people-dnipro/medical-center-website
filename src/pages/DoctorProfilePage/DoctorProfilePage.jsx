@@ -7,6 +7,7 @@ import ContactForm from "../../components/ContactForm/ContactForm";
 import DoctorProfileTabs from "../../components/DoctorProfileTabs/DoctorProfileTabs";
 import RelatedDoctorsSection from "../../components/RelatedDoctorsSection/RelatedDoctorsSection";
 import SeoHead from "../../components/Seo/SeoHead";
+import { getResponsiveImageProps } from "../../api/foundation";
 import {
     fetchDoctorBranches,
     fetchDoctorBySlug,
@@ -38,7 +39,7 @@ function buildDescription(doctor) {
 function getProfileButtons(doctor) {
     const defaults = [
         { id: "book", text: "Записатися до лікаря", href: "/contacts" },
-        { id: "declaration", text: "Підписати декларацію", href: "/declaration" },
+        // { id: "declaration", text: "Підписати декларацію", href: "/declaration" },
     ];
 
     const buttons = Array.isArray(doctor?.buttons) ? doctor.buttons : [];
@@ -92,6 +93,26 @@ function resolveExperienceYears(doctor) {
     if (yearsOfExperience <= 0) return 1;
 
     return yearsOfExperience;
+}
+
+function dedupeDoctors(items = []) {
+    const unique = new Map();
+
+    items.forEach((item, index) => {
+        if (!item) return;
+
+        const key =
+            String(item.documentId || "").trim() ||
+            String(item.slug || "").trim().toLowerCase() ||
+            String(item.id || "").trim() ||
+            `idx-${index}`;
+
+        if (!unique.has(key)) {
+            unique.set(key, item);
+        }
+    });
+
+    return Array.from(unique.values());
 }
 
 export default function DoctorProfilePage() {
@@ -149,10 +170,9 @@ export default function DoctorProfilePage() {
                     .filter(
                         (item) =>
                             getBranchIdentity(item.branch) === branchIdentity,
-                    )
-                    .slice(0, 4);
+                    );
 
-                setRelatedDoctors(related);
+                setRelatedDoctors(dedupeDoctors(related));
 
                 try {
                     const branchesList = await fetchDoctorBranches({
@@ -208,6 +228,10 @@ export default function DoctorProfilePage() {
         fullName: doctor?.fullName,
         shortDescription: doctor?.shortDescription,
     });
+    const doctorPhotoProps = getResponsiveImageProps(doctor?.photo, {
+        variant: "hero",
+        sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 520px",
+    });
     const seoProps = {
         title: pageTitle,
         description: pageDescription,
@@ -218,6 +242,15 @@ export default function DoctorProfilePage() {
         ogType: "website",
         ogImage: doctor?.photo?.url || "",
         canonicalPath,
+        preloadImages: doctorPhotoProps?.src
+            ? [
+                  {
+                      href: doctorPhotoProps.src,
+                      imageSrcSet: doctorPhotoProps.srcSet,
+                      imageSizes: doctorPhotoProps.sizes,
+                  },
+              ]
+            : [],
     };
 
     if (loading) {
@@ -278,7 +311,6 @@ export default function DoctorProfilePage() {
     const doctorNameForAlt = String(doctor.fullName || "Лікар").trim();
     const doctorImageAlt = `Сімейний лікар ${doctorNameForAlt} — медичний центр Для Людей, Дніпро`;
     const doctorPageSource = `Лікар: ${doctor.fullName || "Лікар"}`;
-
     return (
         <main className="doctor-profile-page">
             <SeoHead {...seoProps} />
@@ -297,15 +329,17 @@ export default function DoctorProfilePage() {
                     <div className="doctor-profile-page__hero-layout">
                         <div className="doctor-profile-page__photo-card">
                             <div className="doctor-profile-page__photo-wrap">
-                                {doctor.photo?.url ? (
+                                {doctorPhotoProps?.src ? (
                                     <img
                                         className="doctor-profile-page__photo"
-                                        src={doctor.photo.url}
+                                        src={doctorPhotoProps.src}
+                                        srcSet={doctorPhotoProps.srcSet}
+                                        sizes={doctorPhotoProps.sizes}
                                         alt={doctorImageAlt}
-                                        width={doctor.photo.width || 760}
-                                        height={doctor.photo.height || 960}
+                                        width={doctorPhotoProps.width || 760}
+                                        height={doctorPhotoProps.height || 960}
                                         loading="eager"
-                                        fetchPriority="high"
+                                        fetchpriority="high"
                                         decoding="async"
                                     />
                                 ) : (

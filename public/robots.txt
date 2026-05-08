@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /check-up
 
-Sitemap: /sitemap.xml
+Sitemap: https://forpeople.com.ua/sitemap.xml

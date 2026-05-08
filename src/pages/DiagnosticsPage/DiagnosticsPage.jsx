@@ -7,6 +7,7 @@ import SectionTypes from "../../components/SectionTypes/SectionTypes";
 import ServicesIntroText from "../../components/ServicesIntroText/ServicesIntroText";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 import "./DiagnosticsPage.css";
 
 const PAGE_SEO = getStaticSeo("diagnostics");
@@ -14,10 +15,7 @@ const PAGE_SEO = getStaticSeo("diagnostics");
 export default function DiagnosticsPage() {
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        const target = document.querySelector("#diagnostics-form");
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        scrollToSelectorWithOffset("#diagnostics-form");
     };
 
     return (

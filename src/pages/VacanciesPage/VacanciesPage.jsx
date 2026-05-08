@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import VacanciesHero from "../../components/VacanciesHero/VacanciesHero";
 import VacanciesList from "../../components/VacanciesList/VacanciesList";
@@ -7,26 +6,13 @@ import "./VacanciesPage.css";
 import Ticket from "../../components/Ticket/Ticket";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToSelectorWithOffset } from "../../lib/smoothScroll";
 
 const PAGE_SEO = getStaticSeo("vacancies");
 
 export default function VacanciesPage() {
-    const [setSelectedVacancy] = useState("");
-
-    const scrollToSection = (selector) => {
-        const target = document.querySelector(selector);
-        if (!target) return;
-
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-
     const handleExploreVacancies = () => {
-        scrollToSection("#vacancies-list");
-    };
-
-    const handleApply = (vacancyTitle) => {
-        setSelectedVacancy(vacancyTitle || "");
-        scrollToSection("#vacancies-form");
+        scrollToSelectorWithOffset("#vacancies-list");
     };
 
     return (
@@ -43,7 +29,6 @@ export default function VacanciesPage() {
                     title="АКТУАЛЬНІ ВАКАНСІЇ"
                     endpoint="/api/vacancies"
                     sectionId="vacancies-list"
-                    onApply={handleApply}
                 />
                 <section className="cta-all-pages">
                     <Ticket text="Долучайтеся до нашої команди — і давайте разом створювати медицину, якою хочеться пишатися." />

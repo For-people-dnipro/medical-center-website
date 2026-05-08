@@ -1,0 +1,21 @@
+.about-us-page__info {
+    padding: 80px 20px 0;
+}
+
+.about-us-page__info .info-grid-section__list li {
+    padding-left: 0;
+}
+
+.about-us-page__info .info-grid-section__list li::before {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .about-us-page__info {
+        padding: 70px 16px 0;
+    }
+
+    .about-us-page__info .services-text-under-card__container {
+        padding: 0;
+    }
+}

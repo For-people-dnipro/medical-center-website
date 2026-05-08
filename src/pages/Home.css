@@ -1,5 +1,5 @@
 @media (max-width: 768px) {
     .page-home {
-        padding-bottom: 40;
+        padding-bottom: calc(var(--mobile-cta-height, 0px) + 16px);
     }
 }

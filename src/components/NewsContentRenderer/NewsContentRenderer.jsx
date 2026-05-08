@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import { resolveMedia } from "../../api/newsApi";
+import { getResponsiveImageProps } from "../../api/foundation";
+import { renderPlainTextBlocks } from "../../lib/safeRichText";
 import "./NewsContentRenderer.css";
 
 function withTextMarks(text, node, keyPrefix) {
@@ -141,15 +143,20 @@ function renderBodyNode(node, key) {
 
     if (node.type === "image") {
         const image = resolveMedia(node.image || node);
-        if (!image?.url) return null;
+        const imageProps = getResponsiveImageProps(node.image || node, {
+            sizes: "(max-width: 768px) 100vw, 960px",
+        });
+        if (!image?.url || !imageProps?.src) return null;
 
         return (
             <figure className="news-content__figure" key={key}>
                 <img
-                    src={image.url}
+                    src={imageProps.src}
+                    srcSet={imageProps.srcSet}
+                    sizes={imageProps.sizes}
                     alt={image.alt}
-                    width={image.width}
-                    height={image.height}
+                    width={imageProps.width}
+                    height={imageProps.height}
                     loading="lazy"
                     decoding="async"
                 />
@@ -169,12 +176,9 @@ function renderBodyNode(node, key) {
 
 function renderTextBlockBody(body, keyPrefix) {
     if (typeof body === "string") {
-        return (
-            <div
-                className="news-content__html"
-                dangerouslySetInnerHTML={{ __html: body }}
-            />
-        );
+        return renderPlainTextBlocks(body, (block, index) => (
+            <p key={`${keyPrefix}-plain-${index}`}>{block}</p>
+        ));
     }
 
     const nodes = Array.isArray(body)
@@ -202,15 +206,20 @@ function renderDynamicZoneItem(entry, index) {
 
     if (componentName.includes("image-block")) {
         const image = resolveMedia(source.image);
-        if (!image?.url) return null;
+        const imageProps = getResponsiveImageProps(source.image, {
+            sizes: "(max-width: 768px) 100vw, 960px",
+        });
+        if (!image?.url || !imageProps?.src) return null;
 
         return (
             <figure className="news-content__figure" key={`image-${index}`}>
                 <img
-                    src={image.url}
+                    src={imageProps.src}
+                    srcSet={imageProps.srcSet}
+                    sizes={imageProps.sizes}
                     alt={source.alt || image.alt}
-                    width={image.width}
-                    height={image.height}
+                    width={imageProps.width}
+                    height={imageProps.height}
                     loading="lazy"
                     decoding="async"
                 />

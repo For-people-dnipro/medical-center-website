@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { formatNewsDate } from "../../api/newsApi";
+import { getResponsiveImageProps } from "../../api/foundation";
 import "./NewsCard.css";
 
 export default function NewsCard({ item, priority = false }) {
@@ -9,6 +10,10 @@ export default function NewsCard({ item, priority = false }) {
     const newsImageAlt = `${newsTitle} — медичний центр Для Людей, Дніпро`;
     const imageLoading = priority ? "eager" : "lazy";
     const imageFetchPriority = priority ? "high" : "auto";
+    const imageProps = getResponsiveImageProps(cardImage, {
+        variant: "card",
+        sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+    });
 
     let dateTime = "";
     if (item.publishedDate) {
@@ -22,15 +27,17 @@ export default function NewsCard({ item, priority = false }) {
         <article className="news-card">
             <Link to={`/news/${item.slug}`} className="news-card__link">
                 <div className="news-card__media">
-                    {cardImage?.url ? (
+                    {imageProps?.src ? (
                         <img
                             className="news-card__image"
-                            src={cardImage.url}
+                            src={imageProps.src}
+                            srcSet={imageProps.srcSet}
+                            sizes={imageProps.sizes}
                             alt={newsImageAlt}
-                            width={cardImage.width}
-                            height={cardImage.height}
+                            width={imageProps.width}
+                            height={imageProps.height}
                             loading={imageLoading}
-                            fetchPriority={imageFetchPriority}
+                            fetchpriority={imageFetchPriority}
                             decoding="async"
                         />
                     ) : (

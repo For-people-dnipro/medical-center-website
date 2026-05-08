@@ -19,6 +19,9 @@ function extractHouseNumber(value) {
     return match ? match[0].toLowerCase() : "";
 }
 
+const WEST_BRANCH_MAP_LINK =
+    "https://www.google.com/maps/place/%D0%9F%D0%B5%D1%80%D1%88%D0%B0+%D0%BF%D1%80%D0%B8%D0%B2%D0%B0%D1%82%D0%BD%D0%B0+%D0%BF%D0%BE%D0%BB%D1%96%D0%BA%D0%BB%D1%96%D0%BD%D1%96%D0%BA%D0%B0+-+%D0%A4%D1%96%D0%BB%D1%96%D1%8F+%E2%84%961+%22%D0%97%D0%B0%D1%85%D1%96%D0%B4%D0%BD%D0%B0%22/@48.4603389,34.9394541,17z/data=!4m6!3m5!1s0x40dbe30975ec1f5f:0xc265d0fdfdc899eb!8m2!3d48.4604738!4d34.9390963!16s%2Fg%2F11p46j7bff";
+
 export const BRANCHES_CATALOG = [
     {
         id: "slava",
@@ -46,16 +49,16 @@ export const BRANCHES_CATALOG = [
         hours: "ПН-ПТ: з 9:00 до 18:00",
         phoneDisplay: "+38 (050) 067-13-88",
         phoneHref: "+380500671388",
-        lat: 48.4613,
-        lng: 34.9384,
-        mapLink: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
-        mapCenter: { lat: 48.4613, lng: 34.9384 },
+        lat: 48.4604738,
+        lng: 34.9390963,
+        mapLink: WEST_BRANCH_MAP_LINK,
+        mapCenter: { lat: 48.4604738, lng: 34.9390963 },
         mapMarkers: [
             {
                 id: "halytskoho",
-                lat: 48.4613,
-                lng: 34.9384,
-                link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
+                lat: 48.4604738,
+                lng: 34.9390963,
+                link: WEST_BRANCH_MAP_LINK,
             },
         ],
         aliases: ["галицького 34", "данила галицького 34"],

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Autoplay, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "./VaccinationStandardsCarousel.css";
 
@@ -33,9 +33,16 @@ const slides = [
 ];
 
 export default function VaccinationStandardsCarousel() {
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
     const swiperRef = useRef(null);
+    const transitionSpeed = 650;
+
+    const goToPrevSlide = () => {
+        swiperRef.current?.slidePrev();
+    };
+
+    const goToNextSlide = () => {
+        swiperRef.current?.slideNext();
+    };
 
     const handleKeyDown = (event) => {
         if (!swiperRef.current) {
@@ -44,12 +51,12 @@ export default function VaccinationStandardsCarousel() {
 
         if (event.key === "ArrowLeft") {
             event.preventDefault();
-            swiperRef.current.slidePrev();
+            goToPrevSlide();
         }
 
         if (event.key === "ArrowRight") {
             event.preventDefault();
-            swiperRef.current.slideNext();
+            goToNextSlide();
         }
     };
 
@@ -76,8 +83,8 @@ export default function VaccinationStandardsCarousel() {
                         <button
                             type="button"
                             className="vaccination-standards-carousel__arrow vaccination-standards-carousel__arrow--prev"
-                            aria-label="Previous slide"
-                            ref={prevRef}
+                            aria-label="Попередній слайд"
+                            onClick={goToPrevSlide}
                         >
                             <img
                                 src="/icons/arrow-left.svg"
@@ -88,8 +95,8 @@ export default function VaccinationStandardsCarousel() {
                         <button
                             type="button"
                             className="vaccination-standards-carousel__arrow vaccination-standards-carousel__arrow--next"
-                            aria-label="Next slide"
-                            ref={nextRef}
+                            aria-label="Наступний слайд"
+                            onClick={goToNextSlide}
                         >
                             <img
                                 src="/icons/arrow-right.svg"
@@ -107,27 +114,24 @@ export default function VaccinationStandardsCarousel() {
                 >
                     <Swiper
                         className="vaccination-standards-carousel__swiper"
-                        modules={[Navigation, Autoplay]}
+                        modules={[Autoplay, Keyboard]}
                         loop={slides.length > 1}
+                        loopPreventsSliding={false}
                         slidesPerView={1}
                         spaceBetween={0}
-                        speed={650}
+                        speed={transitionSpeed}
+                        keyboard={{
+                            enabled: true,
+                            onlyInViewport: true,
+                        }}
                         autoplay={{
                             delay: 5000,
                             disableOnInteraction: false,
                             pauseOnMouseEnter: true,
+                            waitForTransition: false,
                         }}
-                        navigation
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
-                        }}
-                        onInit={(swiper) => {
-                            swiper.params.navigation.prevEl = prevRef.current;
-                            swiper.params.navigation.nextEl = nextRef.current;
-
-                            swiper.navigation.destroy();
-                            swiper.navigation.init();
-                            swiper.navigation.update();
                         }}
                     >
                         {slides.map((slide, index) => (
@@ -146,7 +150,7 @@ export default function VaccinationStandardsCarousel() {
                                             src={slide.image}
                                             alt={`${slide.title} — вакцинація у медичному центрі Для Людей, Дніпро`}
                                             loading={index === 0 ? "eager" : "lazy"}
-                                            fetchPriority={
+                                            fetchpriority={
                                                 index === 0 ? "high" : "auto"
                                             }
                                             decoding="async"

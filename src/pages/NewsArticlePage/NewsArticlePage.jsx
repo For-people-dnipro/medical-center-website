@@ -4,6 +4,7 @@ import ContactForm from "../../components/ContactForm/ContactForm";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import NewsContentRenderer from "../../components/NewsContentRenderer/NewsContentRenderer";
 import SeoHead from "../../components/Seo/SeoHead";
+import { getResponsiveImageProps } from "../../api/foundation";
 import { fetchNewsBySlug, formatNewsDate } from "../../api/newsApi";
 import { getStaticSeo, withSiteTitle } from "../../seo/seoConfig";
 import "./NewsArticlePage.css";
@@ -95,6 +96,10 @@ export default function NewsArticlePage() {
         newsItem?.shortDescription ||
         buildNewsArticleFallbackDescription();
     const heroImage = newsItem?.coverImageHero || newsItem?.coverImage || null;
+    const heroImageProps = getResponsiveImageProps(heroImage, {
+        variant: "hero",
+        sizes: "(max-width: 768px) 100vw, 960px",
+    });
 
     const canonicalPath = slug ? `/news/${slug}` : "/news";
 
@@ -145,6 +150,15 @@ export default function NewsArticlePage() {
         articlePublishedTime: articlePublishedIso,
         articleModifiedTime: articleModifiedIso,
         jsonLd: articleSchema,
+        preloadImages: heroImageProps?.src
+            ? [
+                  {
+                      href: heroImageProps.src,
+                      imageSrcSet: heroImageProps.srcSet,
+                      imageSizes: heroImageProps.sizes,
+                  },
+              ]
+            : [],
     };
 
     if (loading) {
@@ -201,10 +215,10 @@ export default function NewsArticlePage() {
                     <Breadcrumbs
                         className="news-article-page__crumbs"
                         ariaLabel="Breadcrumb"
+                        allowLastLink
                         items={[
                             { label: "Головна", to: "/" },
                             { label: "Новини", to: "/news" },
-                            { label: newsItem.title },
                         ]}
                     />
 
@@ -220,20 +234,22 @@ export default function NewsArticlePage() {
                     </header>
 
                     <div className="news-article-page__content">
-                        {heroImage?.url ? (
+                        {heroImageProps?.src ? (
                             <figure
                                 className="news-article-page__cover"
                                 style={{
-                                    "--cover-max-width": `${heroImage.width}px`,
+                                    "--cover-max-width": `${heroImageProps.width}px`,
                                 }}
                             >
                                 <img
-                                    src={heroImage.url}
+                                    src={heroImageProps.src}
+                                    srcSet={heroImageProps.srcSet}
+                                    sizes={heroImageProps.sizes}
                                     alt={newsHeroAlt}
-                                    width={heroImage.width}
-                                    height={heroImage.height}
+                                    width={heroImageProps.width}
+                                    height={heroImageProps.height}
                                     loading="eager"
-                                    fetchPriority="high"
+                                    fetchpriority="high"
                                     decoding="async"
                                 />
                             </figure>

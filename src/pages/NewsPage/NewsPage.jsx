@@ -7,6 +7,7 @@ import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import { fetchNewsList, fetchThemes } from "../../api/newsApi";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
+import { scrollToElementWithOffset } from "../../lib/smoothScroll";
 import "./NewsPage.css";
 
 const MOBILE_BREAKPOINT = 768;
@@ -351,11 +352,7 @@ export default function NewsPage() {
     const scrollToNewsList = () => {
         const section = newsListSectionRef.current;
         if (!section) return;
-
-        section.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
+        scrollToElementWithOffset(section);
     };
 
     const handleLoadMore = () => {

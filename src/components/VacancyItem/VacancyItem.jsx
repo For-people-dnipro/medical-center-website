@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "../Button/Button";
 import "./VacancyItem.css";
 
+const DEFAULT_VACANCY_APPLY_URL =
+    "https://forms.gle/BUbVWtqUddkSsebn8";
+
 function toPanelToken(id) {
     const value = String(id ?? "vacancy");
     return value.toLowerCase().replace(/[^a-z0-9_-]+/g, "-");
@@ -16,7 +19,7 @@ function splitDescription(value) {
         .filter(Boolean);
 }
 
-export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
+export default function VacancyItem({ vacancy, isOpen, onToggle }) {
     const contentRef = useRef(null);
     const [contentHeight, setContentHeight] = useState(0);
 
@@ -164,13 +167,9 @@ export default function VacancyItem({ vacancy, isOpen, onToggle, onApply }) {
 
                     <div className="vacancy-item__actions">
                         <Button
-                            href="#vacancies-form"
+                            href={DEFAULT_VACANCY_APPLY_URL}
                             className="vacancy-item__apply"
                             withArrow
-                            onClick={(event) => {
-                                event.preventDefault();
-                                onApply?.(vacancy.title);
-                            }}
                         >
                             Подати заявку
                         </Button>

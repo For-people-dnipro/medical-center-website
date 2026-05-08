@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../Button/Button";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 import { toUiServiceTitle } from "../../lib/serviceTitle";
+import { scrollToElementWithOffset } from "../../lib/smoothScroll";
 import "./ServicesCardHero.css";
 
 export default function ServicesCardHero({
@@ -44,7 +45,7 @@ export default function ServicesCardHero({
         }
 
         event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        scrollToElementWithOffset(target);
     };
 
     return (
@@ -98,7 +99,7 @@ export default function ServicesCardHero({
                                 src={image}
                                 alt={heroImageAlt}
                                 loading="eager"
-                                fetchPriority="high"
+                                fetchpriority="high"
                                 decoding="async"
                                 data-route-nonblocking="true"
                                 onLoad={() => setLoadedImageSrc(image)}

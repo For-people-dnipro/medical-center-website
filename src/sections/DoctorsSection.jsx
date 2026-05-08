@@ -1,12 +1,11 @@
 import "./DoctorsSection.css";
 import Button from "../components/Button/Button";
+import { getResponsiveImageProps } from "../api/foundation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
 function buildLoopItems(items, minSlides = 6) {
     if (!Array.isArray(items) || items.length === 0) return [];
@@ -122,6 +121,16 @@ export default function DoctorsSection({ doctors = [] }) {
         return yearsOfExperience;
     }
 
+    function getDoctorImageProps(photo, { priority = false, mobile = false } = {}) {
+        return getResponsiveImageProps(photo, {
+            variant: "card",
+            sizes: mobile
+                ? "78vw"
+                : "(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 280px",
+            priority,
+        });
+    }
+
     return (
         <section className="section">
             <div className="doctors-container">
@@ -138,9 +147,9 @@ export default function DoctorsSection({ doctors = [] }) {
                     <div className={gridClassName}>
                         {limitedDoctors.map((doc) => {
                             const d = doc.attributes || doc || {};
-                            const imgSrc = d.photo?.url
-                                ? `${API_URL}${d.photo.url}`
-                                : "";
+                            const imageProps = getDoctorImageProps(d.photo, {
+                                priority: true,
+                            });
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
                             const doctorImageAlt = buildDoctorImageAlt(d);
@@ -151,11 +160,18 @@ export default function DoctorsSection({ doctors = [] }) {
                             const cardContent = (
                                 <>
                                     <div className="imageWrapper">
-                                        {imgSrc && (
+                                        {imageProps?.src && (
                                             <img
-                                                src={imgSrc}
+                                                src={imageProps.src}
+                                                srcSet={imageProps.srcSet}
+                                                sizes={imageProps.sizes}
                                                 alt={doctorImageAlt}
                                                 className="image"
+                                                width={imageProps.width}
+                                                height={imageProps.height}
+                                                loading="eager"
+                                                fetchpriority="high"
+                                                decoding="async"
                                             />
                                         )}
 
@@ -237,9 +253,10 @@ export default function DoctorsSection({ doctors = [] }) {
                     >
                         {mobileDoctors.map((doc, index) => {
                             const d = doc.attributes || doc || {};
-                            const imgSrc = d.photo?.url
-                                ? `${API_URL}${d.photo.url}`
-                                : "";
+                            const imageProps = getDoctorImageProps(d.photo, {
+                                priority: index === 0,
+                                mobile: true,
+                            });
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
                             const doctorImageAlt = buildDoctorImageAlt(d);
@@ -250,11 +267,20 @@ export default function DoctorsSection({ doctors = [] }) {
                             const cardContent = (
                                 <div className="mobile-card">
                                     <div className="imageWrapper">
-                                        {imgSrc && (
+                                        {imageProps?.src && (
                                             <img
-                                                src={imgSrc}
+                                                src={imageProps.src}
+                                                srcSet={imageProps.srcSet}
+                                                sizes={imageProps.sizes}
                                                 alt={doctorImageAlt}
                                                 className="mobile-image"
+                                                width={imageProps.width}
+                                                height={imageProps.height}
+                                                loading={index === 0 ? "eager" : "lazy"}
+                                                fetchpriority={
+                                                    index === 0 ? "high" : "auto"
+                                                }
+                                                decoding="async"
                                             />
                                         )}
 

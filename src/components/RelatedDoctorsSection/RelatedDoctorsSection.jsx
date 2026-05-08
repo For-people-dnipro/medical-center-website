@@ -6,18 +6,6 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "./RelatedDoctorsSection.css";
 
-function buildLoopItems(items, minSlides = 6) {
-    if (!Array.isArray(items) || items.length === 0) return [];
-    if (items.length >= minSlides) return items;
-
-    const result = [];
-    while (result.length < minSlides) {
-        result.push(...items);
-    }
-
-    return result.slice(0, minSlides);
-}
-
 export default function RelatedDoctorsSection({
     doctors = [],
     branchAddress = "",
@@ -26,9 +14,10 @@ export default function RelatedDoctorsSection({
     allDoctorsLabel = "Наша команда",
     className = "",
 }) {
-    const items = doctors.slice(0, 4);
-    const hasMobileCarousel = items.length > 1;
-    const mobileItems = hasMobileCarousel ? buildLoopItems(items, 6) : items;
+    const desktopItems = doctors.slice(0, 4);
+    const mobileItems = doctors;
+    const hasMobileCarousel = mobileItems.length > 1;
+    const canLoopMobileCarousel = mobileItems.length > 2;
     const mobileSwiperRef = useRef(null);
 
     useEffect(() => {
@@ -44,11 +33,13 @@ export default function RelatedDoctorsSection({
         return () => window.clearInterval(intervalId);
     }, [hasMobileCarousel, mobileItems.length]);
 
-    if (!items.length) return null;
+    if (!doctors.length) return null;
 
     const rootClassName = ["related-doctors", className].filter(Boolean).join(" ");
     const countClass =
-        items.length < 4 ? `related-doctors__grid--count-${items.length}` : "";
+        desktopItems.length < 4
+            ? `related-doctors__grid--count-${desktopItems.length}`
+            : "";
     const gridClassName = ["related-doctors__grid", countClass]
         .filter(Boolean)
         .join(" ");
@@ -65,7 +56,7 @@ export default function RelatedDoctorsSection({
             </div>
 
             <div className={gridClassName}>
-                {items.map((doctor) => (
+                {desktopItems.map((doctor) => (
                     <DoctorCard key={doctor.id || doctor.slug} doctor={doctor} />
                 ))}
             </div>
@@ -82,7 +73,7 @@ export default function RelatedDoctorsSection({
                     slidesPerView="auto"
                     centeredSlides={hasMobileCarousel}
                     spaceBetween={20}
-                    loop={hasMobileCarousel}
+                    loop={canLoopMobileCarousel}
                     watchOverflow={!hasMobileCarousel}
                     observer={hasMobileCarousel}
                     observeParents={hasMobileCarousel}

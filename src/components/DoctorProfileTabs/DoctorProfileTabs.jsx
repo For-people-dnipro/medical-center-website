@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import useTabsUnderline from "../../hooks/useTabsUnderline";
 import NewsContentRenderer from "../NewsContentRenderer/NewsContentRenderer";
+import { renderPlainTextBlocks } from "../../lib/safeRichText";
 import "./DoctorProfileTabs.css";
 
 function isObject(value) {
@@ -121,11 +122,17 @@ function renderRepeatableContent(items) {
                         ) : null}
 
                         {text ? (
-                            typeof text === "string" && /<\/?[a-z][\s\S]*>/i.test(text) ? (
-                                <div
-                                    className="doctor-profile-tabs__repeatable-html"
-                                    dangerouslySetInnerHTML={{ __html: text }}
-                                />
+                            typeof text === "string" &&
+                            /<\/?[a-z][\s\S]*>/i.test(text) ? (
+                                <div className="doctor-profile-tabs__repeatable-html">
+                                    {renderPlainTextBlocks(text, (block, blockIndex) => (
+                                        <p
+                                            key={`repeat-${source.id || index}-plain-${blockIndex}`}
+                                        >
+                                            {block}
+                                        </p>
+                                    ))}
+                                </div>
                             ) : (
                                 <p>{text}</p>
                             )

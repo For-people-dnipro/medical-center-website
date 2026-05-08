@@ -30,6 +30,12 @@ const ROUTE_CRITICAL_IMAGES = Object.freeze({
     "/vacancies": ["/images/vacancy-hero.jpg"],
 });
 
+const SHARED_UI_IMAGES = Object.freeze([
+    "/icons/arrow-right.svg",
+    "/icons/arrow-down.svg",
+    "/icons/check.svg",
+]);
+
 const prefetchedImageUrls = new Set();
 let hasWarmedRouteCache = false;
 
@@ -149,10 +155,14 @@ export function warmCriticalRouteImageCache() {
     if (hasWarmedRouteCache || !canPrefetchImages()) return;
     hasWarmedRouteCache = true;
 
+    const currentPath =
+        typeof window !== "undefined" ? window.location.pathname : "/";
     const urls = Array.from(
-        new Set(
-            Object.values(ROUTE_CRITICAL_IMAGES).flatMap((items) => items || []),
-        ),
+        new Set([
+            ...SHARED_UI_IMAGES,
+            ...getCriticalImagesForPath(currentPath),
+            ...getCriticalImagesForPath("/services").slice(0, 4),
+        ]),
     );
 
     urls.forEach((url) => {

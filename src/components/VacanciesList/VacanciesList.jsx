@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { API_BASE_URL, LOCAL_STRAPI_FALLBACK } from "../../api/foundation";
 import VacancyItem from "../VacancyItem/VacancyItem";
 import "./VacanciesList.css";
 
-const API_URL = (import.meta.env.VITE_STRAPI_URL || "http://localhost:1337")
-    .trim()
-    .replace(/\/$/, "");
+const API_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 
 const DEFAULT_ENDPOINT = "/api/vacancies";
 const IGNORED_KEYS = new Set([
@@ -260,7 +259,6 @@ export default function VacanciesList({
     title = "АКТУАЛЬНІ ВАКАНСІЇ",
     endpoint = DEFAULT_ENDPOINT,
     sectionId = "vacancies-list",
-    onApply,
 }) {
     const accordionRef = useRef(null);
     const [vacancies, setVacancies] = useState([]);
@@ -432,7 +430,6 @@ export default function VacanciesList({
                                               : vacancy.id,
                                       )
                                   }
-                                  onApply={onApply}
                               />
                           ))
                         : null}

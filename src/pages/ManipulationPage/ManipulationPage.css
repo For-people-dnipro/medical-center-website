@@ -14,7 +14,7 @@
 }
 
 .manipulation-page .services-text-under-card__intro {
-    padding-top: var(--manipulation-section-spacing);
+    padding-top: 40px;
 }
 
 .manipulation-page .services-price-section {

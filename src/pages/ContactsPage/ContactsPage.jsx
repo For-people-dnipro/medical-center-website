@@ -4,34 +4,17 @@ import ContactForm from "../../components/ContactForm/ContactForm";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getStaticSeo } from "../../seo/seoConfig";
 import { SOCIAL_LINKS } from "../../constants/socialLinks";
+import { BRANCHES_CATALOG } from "../../data/branchesCatalog";
 import "./ContactsPage.css";
 
 const PAGE_SEO = getStaticSeo("contacts");
-const BRANCHES = [
-    {
-        id: "galytskoho",
-        address: "м. Дніпро, вул. Данила Галицького, 34",
-        phone: "+38 (050) 067-13-88",
-        tel: "+380500671388",
-        mapLink:
-            "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
-    },
-    {
-        id: "khmelnytskoho",
-        address: "м. Дніпро, просп. Б. Хмельницького, 127",
-        phone: "+38 (050) 067-22-35",
-        tel: "+380500672235",
-        mapLink:
-            "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
-    },
-    {
-        id: "slavy",
-        address: "м. Дніпро, бульвар Слави, 8",
-        phone: "+38 (066) 067-00-37",
-        tel: "+380660670037",
-        mapLink: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
-    },
-];
+const BRANCHES = BRANCHES_CATALOG.map((branch) => ({
+    id: branch.id,
+    address: `м. ${branch.address}`,
+    phone: branch.phoneDisplay,
+    tel: branch.phoneHref,
+    mapLink: branch.mapLink,
+}));
 
 export default function ContactsPage() {
     return (
