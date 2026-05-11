@@ -4,6 +4,7 @@ import {
     formatExperienceYearsLabel,
     getDoctorCardSummary,
     getDoctorDisplayName,
+    prefetchDoctorBySlug,
 } from "../../api/doctorsApi";
 import "./DoctorCard.css";
 
@@ -96,6 +97,10 @@ export default function DoctorCard({
         variant: "card",
         sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw",
     });
+    const handlePrefetch = () => {
+        if (!doctor?.slug) return;
+        prefetchDoctorBySlug(doctor.slug);
+    };
 
     const cardContent = (
         <>
@@ -161,7 +166,14 @@ export default function DoctorCard({
     return (
         <article className={cardClassName}>
             {asLink ? (
-                <Link className="doctor-card__link" to={cardHref}>
+                <Link
+                    className="doctor-card__link"
+                    to={cardHref}
+                    state={{ doctor }}
+                    onMouseEnter={handlePrefetch}
+                    onFocus={handlePrefetch}
+                    onTouchStart={handlePrefetch}
+                >
                     {cardContent}
                 </Link>
             ) : (

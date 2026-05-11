@@ -9,8 +9,11 @@ const RAW_ENV =
     typeof import.meta.env === "object" &&
     import.meta.env !== null
         ? import.meta.env
-        : typeof process !== "undefined" && process?.env
-          ? process.env
+        : typeof globalThis !== "undefined" &&
+            globalThis.process &&
+            typeof globalThis.process.env === "object" &&
+            globalThis.process.env !== null
+          ? globalThis.process.env
           : {};
 
 export const SEO_SITE_URL = String(RAW_ENV.VITE_SITE_URL || "")

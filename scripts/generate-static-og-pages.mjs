@@ -47,6 +47,7 @@ const STATIC_ROUTES = [
     { route: "/news", seoKey: "news" },
     { route: "/contacts", seoKey: "contacts" },
 ];
+const BUILD_LASTMOD = new Date().toISOString();
 
 function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -58,6 +59,16 @@ function pickSource(entry) {
 
 function normalizePath(value = "/") {
     return value.startsWith("/") ? value : `/${value}`;
+}
+
+function toLastmod(value) {
+    const text = toText(value);
+    if (!text) return "";
+
+    const parsed = new Date(text);
+    if (Number.isNaN(parsed.getTime())) return "";
+
+    return parsed.toISOString();
 }
 
 function toAbsoluteMediaUrl(url) {
@@ -93,11 +104,26 @@ async function fetchJson(url) {
     return response.json();
 }
 
+async function fetchFirstAvailable(urls) {
+    let lastError = null;
+
+    for (const url of urls) {
+        try {
+            return await fetchJson(url);
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError;
+}
+
 async function fetchDynamicEntries() {
     const [newsPayload, doctorsPayload] = await Promise.all([
-        fetchJson(
+        fetchFirstAvailable([
             `${API_BASE_URL}/api/news?populate=*&pagination[pageSize]=1000`,
-        ).catch(() => ({ data: [] })),
+            `${API_BASE_URL}/api/news-items?populate=*&pagination[pageSize]=1000`,
+        ]).catch(() => ({ data: [] })),
         fetchJson(
             `${API_BASE_URL}/api/doctors?populate=*&filters[isActive][$eq]=true&pagination[pageSize]=1000`,
         ).catch(() => ({ data: [] })),
@@ -125,6 +151,10 @@ async function fetchDynamicEntries() {
                 description: description || getStaticSeo("newsArticle").description,
                 ogType: "article",
                 ogImage: imageUrl || buildPublicUrl(SEO_DEFAULT_OG_IMAGE),
+                lastmod:
+                    toLastmod(source.updatedAt) ||
+                    toLastmod(source.publishedAt) ||
+                    BUILD_LASTMOD,
             };
         })
         .filter(Boolean);
@@ -153,6 +183,10 @@ async function fetchDynamicEntries() {
                 description,
                 ogType: "website",
                 ogImage: imageUrl || buildPublicUrl(SEO_DEFAULT_OG_IMAGE),
+                lastmod:
+                    toLastmod(source.updatedAt) ||
+                    toLastmod(source.publishedAt) ||
+                    BUILD_LASTMOD,
             };
         })
         .filter(Boolean);
@@ -310,6 +344,7 @@ async function main() {
         ...STATIC_ROUTES.map(({ route, seoKey }) => ({
             route,
             ...getStaticSeo(seoKey),
+            lastmod: BUILD_LASTMOD,
         })),
         ...dynamicEntries,
     ];
@@ -330,12 +365,23 @@ async function main() {
     }
 
     const sitemapEntries = allEntries
-        .map(({ route }) => buildPublicUrl(route))
-        .filter((url) => /^https?:\/\//i.test(url));
+        .map(({ route, lastmod }) => {
+            const url = buildPublicUrl(route);
+            if (!/^https?:\/\//i.test(url)) return null;
+
+            return {
+                url,
+                lastmod: toLastmod(lastmod) || BUILD_LASTMOD,
+            };
+        })
+        .filter(Boolean);
 
     if (sitemapEntries.length > 0) {
         const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries
-            .map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`)
+            .map(
+                ({ url, lastmod }) =>
+                    `  <url><loc>${escapeHtml(url)}</loc><lastmod>${escapeHtml(lastmod)}</lastmod></url>`,
+            )
             .join("\n")}\n</urlset>\n`;
         await fs.writeFile(DIST_SITEMAP_PATH, sitemapXml, "utf8");
     }

@@ -298,12 +298,6 @@ export default function DoctorsPage() {
                 aria-label={BREADCRUMBS_LABEL}
             >
                 <div className="doctors-page__container">
-                    {(loading || initialLoading) && doctors.length === 0 ? (
-                        <div className="doctors-page__state" role="status">
-                            Завантажуємо лікарів...
-                        </div>
-                    ) : null}
-
                     {!loading && !initialLoading && error ? (
                         <div
                             className="doctors-page__state doctors-page__state--error"

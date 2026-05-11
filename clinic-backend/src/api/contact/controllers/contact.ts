@@ -13,6 +13,11 @@ type ContactPayload = {
   turnstileToken?: unknown;
 };
 
+type ContactSubmissionMeta = {
+  submissionId: string;
+  submittedAt: string;
+};
+
 const RESEND_API_URL = 'https://api.resend.com/emails';
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 5;
@@ -65,8 +70,10 @@ function escapeHtml(value: string) {
     .replace(/'/g, '&#39;');
 }
 
-function buildEmailHtml(payload: ContactPayload) {
+function buildEmailHtml(payload: ContactPayload, meta: ContactSubmissionMeta) {
   const lines = [
+    ['ID заявки', meta.submissionId],
+    ['Час надсилання', meta.submittedAt],
     ['Форма', toText(payload.formType)],
     ['Імʼя', toText(payload.name)],
     ['Телефон', toText(payload.phone)],
@@ -102,6 +109,28 @@ function buildEmailHtml(payload: ContactPayload) {
 </html>`;
 }
 
+function createSubmissionMeta(): ContactSubmissionMeta {
+  const randomPart =
+    typeof crypto?.randomUUID === 'function'
+      ? crypto.randomUUID().split('-')[0]
+      : Math.random().toString(36).slice(2, 10);
+
+  const now = new Date();
+  const timestamp = now
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}Z$/, 'Z');
+
+  return {
+    submissionId: `${timestamp}-${randomPart}`.toUpperCase(),
+    submittedAt: now.toLocaleString('uk-UA', {
+      dateStyle: 'short',
+      timeStyle: 'medium',
+      timeZone: 'Europe/Kyiv',
+    }),
+  };
+}
+
 function validatePayload(payload: ContactPayload) {
   const errors: string[] = [];
   const formType = toText(payload.formType);
@@ -112,17 +141,20 @@ function validatePayload(payload: ContactPayload) {
   const branch = toText(payload.branch);
   const diagnostic = toText(payload.diagnostic);
   const checkupName = toText(payload.checkupName);
+  const details = toText(payload.details);
   const consent = isTrue(payload.consent);
 
   if (!formType) errors.push('formType is required');
   if (!name) errors.push('name is required');
   if (!phone) errors.push('phone is required');
-  if (!message) errors.push('message is required');
-  if (!branch) errors.push('branch is required');
   if (!consent) errors.push('consent is required');
 
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.push('email is invalid');
+  }
+
+  if (branch.length > 200) {
+    errors.push('branch is too long');
   }
 
   if (diagnostic && diagnostic.length > 200) {
@@ -133,7 +165,12 @@ function validatePayload(payload: ContactPayload) {
     errors.push('checkupName is too long');
   }
 
-  if (name.length > 120 || phone.length > 40 || message.length > 5000) {
+  if (
+    name.length > 120 ||
+    phone.length > 40 ||
+    message.length > 5000 ||
+    details.length > 10000
+  ) {
     errors.push('payload exceeds allowed length');
   }
 
@@ -174,9 +211,11 @@ async function sendViaResend(payload: ContactPayload) {
     throw new Error('EMAIL_PROVIDER_NOT_CONFIGURED');
   }
 
+  const meta = createSubmissionMeta();
   const subjectBase = toText(payload.formType) || 'Нова заявка';
   const name = toText(payload.name);
-  const subject = name ? `${subjectBase}: ${name}` : subjectBase;
+  const subjectCore = name ? `${subjectBase}: ${name}` : subjectBase;
+  const subject = `${subjectCore} [${meta.submissionId}]`;
 
   const response = await fetch(RESEND_API_URL, {
     method: 'POST',
@@ -189,7 +228,10 @@ async function sendViaResend(payload: ContactPayload) {
       to: [to],
       reply_to: replyTo || undefined,
       subject,
-      html: buildEmailHtml(payload),
+      html: buildEmailHtml(payload, meta),
+      headers: {
+        'X-Entity-Ref-ID': meta.submissionId,
+      },
     }),
   });
 
@@ -223,6 +265,7 @@ export default {
       ctx.status = 400;
       ctx.body = {
         error: 'VALIDATION_ERROR',
+        message: 'Не вдалося перевірити дані форми. Перевірте обовʼязкові поля й спробуйте ще раз.',
         details: validationErrors,
       };
       return;

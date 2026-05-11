@@ -3,11 +3,14 @@ import {
     pickSource,
     resolveMedia,
 } from "./foundation";
+import { getCachedValue, setCachedValue } from "../lib/requestCache";
 
 export { resolveMedia } from "./foundation";
 
 const NEWS_ENDPOINTS = ["/api/news", "/api/news-items"];
 const LOCAL_COLLECTION_FETCH_LIMIT = 1000;
+const NEWS_CACHE_TTL_MS = 60 * 1000;
+const THEMES_CACHE_TTL_MS = 3 * 60 * 1000;
 
 function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -180,6 +183,10 @@ function filterPublishedNews(items) {
 }
 
 export async function fetchThemes({ signal } = {}) {
+    const cacheKey = "news-themes";
+    const cached = getCachedValue(cacheKey, THEMES_CACHE_TTL_MS);
+    if (cached) return cached;
+
     try {
         const payload = await fetchWithEndpointFallback({
             endpoints: ["/api/news/topics", "/api/themes"],
@@ -203,9 +210,10 @@ export async function fetchThemes({ signal } = {}) {
               ? payload
               : [];
 
-        return entries
+        const themes = entries
             .map((entry) => normalizeTheme(entry))
             .filter((theme) => theme && theme.slug);
+        return setCachedValue(cacheKey, themes, THEMES_CACHE_TTL_MS);
     } catch (primaryError) {
         // Fallback: derive topics from news relation payload when topics endpoint
         // is not available yet or Theme public permissions are missing.
@@ -239,9 +247,10 @@ export async function fetchThemes({ signal } = {}) {
                 }
             });
 
-            return Array.from(uniqueBySlug.values()).sort((a, b) =>
+            const themes = Array.from(uniqueBySlug.values()).sort((a, b) =>
                 a.name.localeCompare(b.name, "uk-UA"),
             );
+            return setCachedValue(cacheKey, themes, THEMES_CACHE_TTL_MS);
         } catch {
             throw primaryError;
         }
@@ -257,6 +266,19 @@ export async function fetchNewsList({
     preferServerPagination = false,
     signal,
 } = {}) {
+    const cacheKey = [
+        "news-list",
+        themeSlug,
+        themeName,
+        themeId,
+        page,
+        pageSize,
+        preferServerPagination ? "server" : "client",
+    ].join(":");
+
+    const cached = getCachedValue(cacheKey, NEWS_CACHE_TTL_MS);
+    if (cached) return cached;
+
     const normalizeValue = (value) =>
         String(value || "")
             .trim()
@@ -424,7 +446,7 @@ export async function fetchNewsList({
     if (preferServerPagination) {
         const serverPaginatedResult = await tryServerPaginatedFetch();
         if (serverPaginatedResult) {
-            return serverPaginatedResult;
+            return setCachedValue(cacheKey, serverPaginatedResult, NEWS_CACHE_TTL_MS);
         }
     }
 
@@ -544,14 +566,20 @@ export async function fetchNewsList({
         total: sorted.length,
     };
 
-    return {
+    const result = {
         items,
         pagination,
         hasMore,
     };
+
+    return setCachedValue(cacheKey, result, NEWS_CACHE_TTL_MS);
 }
 
 export async function fetchNewsBySlug(slug, { signal } = {}) {
+    const cacheKey = `news-by-slug:${String(slug || "").trim().toLowerCase()}`;
+    const cached = getCachedValue(cacheKey, NEWS_CACHE_TTL_MS);
+    if (cached) return cached;
+
     const payload = await fetchWithEndpointFallback({
         endpoints: NEWS_ENDPOINTS,
         paramsVariants: [
@@ -584,7 +612,13 @@ export async function fetchNewsBySlug(slug, { signal } = {}) {
                     .toLocaleLowerCase("uk-UA") === loweredSlug,
         ) || null;
 
-    return item;
+    return item ? setCachedValue(cacheKey, item, NEWS_CACHE_TTL_MS) : item;
+}
+
+export function prefetchNewsBySlug(slug) {
+    const safeSlug = String(slug || "").trim();
+    if (!safeSlug) return Promise.resolve(null);
+    return fetchNewsBySlug(safeSlug);
 }
 
 export function formatNewsDate(value) {

@@ -104,6 +104,7 @@ export default function ContactForm({
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [submitError, setSubmitError] = useState(false);
+    const [submitErrorMessage, setSubmitErrorMessage] = useState("");
     const [fieldErrors, setFieldErrors] = useState({});
 
     const clearFieldError = (fieldName) => {
@@ -197,6 +198,7 @@ export default function ContactForm({
             const timer = setTimeout(() => {
                 setSuccess(false);
                 setSubmitError(false);
+                setSubmitErrorMessage("");
             }, 3000);
             return () => clearTimeout(timer);
         }
@@ -207,6 +209,7 @@ export default function ContactForm({
             if (e.key === "Escape") {
                 setSuccess(false);
                 setSubmitError(false);
+                setSubmitErrorMessage("");
             }
         };
         window.addEventListener("keydown", handleEsc);
@@ -227,6 +230,7 @@ export default function ContactForm({
         setLoading(true);
         setSubmitError(false);
         setSuccess(false);
+        setSubmitErrorMessage("");
         setFieldErrors({});
 
         const details = [];
@@ -285,6 +289,11 @@ export default function ContactForm({
                     const errorPayload = await response.json();
                     if (typeof errorPayload?.message === "string" && errorPayload.message.trim()) {
                         errorMessage = errorPayload.message.trim();
+                    } else if (
+                        Array.isArray(errorPayload?.details) &&
+                        errorPayload.details.length > 0
+                    ) {
+                        errorMessage = errorPayload.details.join(", ");
                     }
                 } catch {
                     // Ignore JSON parsing failures for non-JSON error responses.
@@ -297,6 +306,11 @@ export default function ContactForm({
             setFormData(initialData);
         } catch (err) {
             console.error("Contact form submission error:", err);
+            setSubmitErrorMessage(
+                err instanceof Error && err.message
+                    ? err.message
+                    : "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо.",
+            );
             setSubmitError(true);
         } finally {
             setLoading(false);
@@ -500,6 +514,7 @@ export default function ContactForm({
                                 onClick={() => {
                                     setSuccess(false);
                                     setSubmitError(false);
+                                    setSubmitErrorMessage("");
                                 }}
                             >
                                 ×
@@ -514,7 +529,8 @@ export default function ContactForm({
                             <p>
                                 {success
                                     ? "Дякуємо! Ми зв’яжемося з вами найближчим часом."
-                                    : "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо."}
+                                    : submitErrorMessage ||
+                                      "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо."}
                             </p>
                         </div>
                     </div>,

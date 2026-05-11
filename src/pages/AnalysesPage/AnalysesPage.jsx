@@ -122,8 +122,6 @@ export default function AnalysesPage() {
             setIsMobileFormHeading(event.matches);
         };
 
-        setIsMobileFormHeading(mediaQuery.matches);
-
         if (typeof mediaQuery.addEventListener === "function") {
             mediaQuery.addEventListener("change", handleMediaQueryChange);
             return () =>

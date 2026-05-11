@@ -233,6 +233,7 @@ export default function DeclarationPage() {
                     ]}
                     buttonText="Підписати декларацію"
                     buttonHref="#declaration-form"
+                    buttonClassName="arrow-down"
                 />
 
                 <ServicesIntroText>

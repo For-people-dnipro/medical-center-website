@@ -2,54 +2,36 @@ import { useEffect, useState } from "react";
 import "./CookieBanner.css";
 import {
     applyAnalyticsConsentState,
+    CONSENT_ACCEPTED as STORED_CONSENT_ACCEPTED,
+    CONSENT_DECLINED as STORED_CONSENT_DECLINED,
     getGoogleAnalyticsId,
     getStoredAnalyticsConsent,
     initializeGoogleAnalytics,
+    setStoredAnalyticsConsent,
     trackPageView,
 } from "../../lib/analytics";
 
-const CONSENT_ACCEPTED = "accepted";
-const CONSENT_DECLINED = "declined";
+const CONSENT_ACCEPTED = STORED_CONSENT_ACCEPTED;
+const CONSENT_DECLINED = STORED_CONSENT_DECLINED;
 const CONSENT_UNSET = "unset";
-const CONSENT_LOADING = "loading";
 
 export default function CookieBanner({
     measurementId = getGoogleAnalyticsId(),
 }) {
-    const [consent, setConsent] = useState(CONSENT_LOADING);
+    const [consent, setConsent] = useState(() => {
+        const storedConsent = getStoredAnalyticsConsent();
+        return storedConsent || CONSENT_UNSET;
+    });
 
     useEffect(() => {
         initializeGoogleAnalytics(measurementId);
-
-        const storedConsent = getStoredAnalyticsConsent();
-        if (storedConsent) {
-            applyAnalyticsConsentState(storedConsent);
-            setConsent(storedConsent);
-            return;
-        }
-
-        applyAnalyticsConsentState(CONSENT_DECLINED);
-        setConsent(CONSENT_UNSET);
-    }, []);
-
-    useEffect(() => {
-        if (consent === CONSENT_ACCEPTED) {
-            initializeGoogleAnalytics(measurementId);
-            applyAnalyticsConsentState(CONSENT_ACCEPTED);
-        }
-
-        if (consent === CONSENT_DECLINED) {
-            initializeGoogleAnalytics(measurementId);
-            applyAnalyticsConsentState(CONSENT_DECLINED);
-        }
+        applyAnalyticsConsentState(
+            consent === CONSENT_UNSET ? CONSENT_DECLINED : consent,
+        );
     }, [consent, measurementId]);
 
     const handleAccept = () => {
-        try {
-            localStorage.setItem(CONSENT_STORAGE_KEY, CONSENT_ACCEPTED);
-        } catch {
-            // no-op
-        }
+        setStoredAnalyticsConsent(CONSENT_ACCEPTED);
         const initialized = initializeGoogleAnalytics(measurementId);
         if (initialized) {
             applyAnalyticsConsentState(CONSENT_ACCEPTED);
@@ -59,11 +41,7 @@ export default function CookieBanner({
     };
 
     const handleReject = () => {
-        try {
-            localStorage.setItem(CONSENT_STORAGE_KEY, CONSENT_DECLINED);
-        } catch {
-            // no-op
-        }
+        setStoredAnalyticsConsent(CONSENT_DECLINED);
         initializeGoogleAnalytics(measurementId);
         applyAnalyticsConsentState(CONSENT_DECLINED);
         setConsent(CONSENT_DECLINED);

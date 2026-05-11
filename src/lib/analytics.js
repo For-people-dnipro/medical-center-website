@@ -1,6 +1,6 @@
-const CONSENT_STORAGE_KEY = "cookie-consent";
-const CONSENT_ACCEPTED = "accepted";
-const CONSENT_DECLINED = "declined";
+export const CONSENT_STORAGE_KEY = "cookie-consent";
+export const CONSENT_ACCEPTED = "accepted";
+export const CONSENT_DECLINED = "declined";
 
 function ensureGtagStub() {
     if (typeof window === "undefined") {
@@ -51,6 +51,19 @@ export function getStoredAnalyticsConsent() {
     }
 
     return "";
+}
+
+export function setStoredAnalyticsConsent(consent) {
+    if (typeof window === "undefined") {
+        return false;
+    }
+
+    try {
+        window.localStorage.setItem(CONSENT_STORAGE_KEY, consent);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 export function applyAnalyticsConsentState(consent) {

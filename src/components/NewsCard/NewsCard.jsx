@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { formatNewsDate } from "../../api/newsApi";
+import { formatNewsDate, prefetchNewsBySlug } from "../../api/newsApi";
 import { getResponsiveImageProps } from "../../api/foundation";
 import "./NewsCard.css";
 
@@ -14,6 +14,10 @@ export default function NewsCard({ item, priority = false }) {
         variant: "card",
         sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     });
+    const handlePrefetch = () => {
+        if (!item?.slug) return;
+        prefetchNewsBySlug(item.slug);
+    };
 
     let dateTime = "";
     if (item.publishedDate) {
@@ -23,9 +27,16 @@ export default function NewsCard({ item, priority = false }) {
         }
     }
 
-    return (
+        return (
         <article className="news-card">
-            <Link to={`/news/${item.slug}`} className="news-card__link">
+            <Link
+                to={`/news/${item.slug}`}
+                className="news-card__link"
+                state={{ newsItem: item }}
+                onMouseEnter={handlePrefetch}
+                onFocus={handlePrefetch}
+                onTouchStart={handlePrefetch}
+            >
                 <div className="news-card__media">
                     {imageProps?.src ? (
                         <img

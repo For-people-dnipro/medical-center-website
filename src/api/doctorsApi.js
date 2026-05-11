@@ -4,6 +4,7 @@ import {
     resolveMedia,
 } from "./foundation";
 import { findBranchInCatalog } from "../data/branchesCatalog";
+import { getCachedValue, setCachedValue } from "../lib/requestCache";
 
 const DOCTORS_ENDPOINTS = ["/api/doctors"];
 const BRANCHES_ENDPOINTS = ["/api/branches"];
@@ -12,6 +13,9 @@ const DOCTORS_PAGE_ENDPOINTS = ["/api/doctors-page"];
 const DOCTORS_FETCH_LIMIT = 1000;
 const BRANCHES_FETCH_LIMIT = 200;
 const SPECIALISATIONS_FETCH_LIMIT = 300;
+const DOCTORS_CACHE_TTL_MS = 60 * 1000;
+const BRANCHES_CACHE_TTL_MS = 3 * 60 * 1000;
+const SPECIALISATIONS_CACHE_TTL_MS = 3 * 60 * 1000;
 
 function toText(value, fallback = "") {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -821,6 +825,10 @@ export async function fetchDoctorsPageSettings({ signal } = {}) {
 }
 
 export async function fetchDoctorSpecialisations({ signal } = {}) {
+    const cacheKey = "doctor-specialisations";
+    const cached = getCachedValue(cacheKey, SPECIALISATIONS_CACHE_TTL_MS);
+    if (cached) return cached;
+
     const paramsVariants = [
         {
             "sort[0]": "order:asc",
@@ -867,7 +875,7 @@ export async function fetchDoctorSpecialisations({ signal } = {}) {
                 }),
             );
 
-        return list;
+        return setCachedValue(cacheKey, list, SPECIALISATIONS_CACHE_TTL_MS);
     } catch (error) {
         if (error?.name === "AbortError") throw error;
         console.error("Failed to load specialisations:", error);
@@ -887,6 +895,18 @@ export async function fetchDoctorsList({
     const safeSearch = toText(search);
     const safeBranchId = toText(branchId);
     const safeSpecialisationId = toText(specialisationId);
+
+    const cacheKey = [
+        "doctors-list",
+        includeInactive ? "all" : "active",
+        safePageSize,
+        safeSearch,
+        safeBranchId,
+        safeSpecialisationId,
+    ].join(":");
+
+    const cached = getCachedValue(cacheKey, DOCTORS_CACHE_TTL_MS);
+    if (cached) return cached;
 
     const baseFilters = {
         ...(includeInactive ? {} : { "filters[isActive][$eq]": "true" }),
@@ -981,18 +1001,24 @@ export async function fetchDoctorsList({
 
     const sorted = sortDoctors(items);
 
-    return {
+    const result = {
         items: sorted,
         total:
             Number(payload?.meta?.pagination?.total) ||
             Number(payload?.meta?.total) ||
             sorted.length,
     };
+
+    return setCachedValue(cacheKey, result, DOCTORS_CACHE_TTL_MS);
 }
 
 export async function fetchDoctorBySlug(slug, { signal } = {}) {
     const safeSlug = toText(slug);
     if (!safeSlug) return null;
+    const cacheKey = `doctor-by-slug:${safeSlug.toLowerCase()}`;
+
+    const cached = getCachedValue(cacheKey, DOCTORS_CACHE_TTL_MS);
+    if (cached) return cached;
 
     const slugParamsVariants = [
         {
@@ -1017,7 +1043,9 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
         });
 
         const item = extractCollectionRows(payload).map(normalizeDoctor).find(Boolean);
-        if (item) return item;
+        if (item) {
+            return setCachedValue(cacheKey, item, DOCTORS_CACHE_TTL_MS);
+        }
     } catch (error) {
         if (error?.name === "AbortError") throw error;
         // Fall through to full list fallback
@@ -1029,15 +1057,29 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
         pageSize: DOCTORS_FETCH_LIMIT,
     });
 
-    return (
+    const fallbackItem = (
         items.find(
             (doctor) =>
                 toText(doctor.slug).toLowerCase() === safeSlug.toLowerCase(),
         ) || null
     );
+
+    return fallbackItem
+        ? setCachedValue(cacheKey, fallbackItem, DOCTORS_CACHE_TTL_MS)
+        : fallbackItem;
+}
+
+export function prefetchDoctorBySlug(slug) {
+    const safeSlug = toText(slug);
+    if (!safeSlug) return Promise.resolve(null);
+    return fetchDoctorBySlug(safeSlug);
 }
 
 export async function fetchDoctorBranches({ signal } = {}) {
+    const cacheKey = "doctor-branches";
+    const cached = getCachedValue(cacheKey, BRANCHES_CACHE_TTL_MS);
+    if (cached) return cached;
+
     const normalizeAndSortBranches = (payload) =>
         extractCollectionRows(payload)
             .map(normalizeBranch)
@@ -1097,7 +1139,7 @@ export async function fetchDoctorBranches({ signal } = {}) {
         const branches = normalizeAndSortBranches(payload);
 
         if (branches.length > 0) {
-            return branches;
+            return setCachedValue(cacheKey, branches, BRANCHES_CACHE_TTL_MS);
         }
     } catch (error) {
         if (error?.name === "AbortError") throw error;
@@ -1115,7 +1157,7 @@ export async function fetchDoctorBranches({ signal } = {}) {
         const branches = normalizeAndSortBranches(payload);
 
         if (branches.length > 0) {
-            return branches;
+            return setCachedValue(cacheKey, branches, BRANCHES_CACHE_TTL_MS);
         }
     } catch (error) {
         if (error?.name === "AbortError") throw error;
@@ -1131,11 +1173,13 @@ export async function fetchDoctorBranches({ signal } = {}) {
         deduped.set(key, branch);
     });
 
-    return Array.from(deduped.values()).sort((a, b) =>
+    const branches = Array.from(deduped.values()).sort((a, b) =>
         (a.name || a.address || "").localeCompare(b.name || b.address || "", "uk-UA", {
             sensitivity: "base",
         }),
     );
+
+    return setCachedValue(cacheKey, branches, BRANCHES_CACHE_TTL_MS);
 }
 
 export function getDoctorTabItems(doctor) {

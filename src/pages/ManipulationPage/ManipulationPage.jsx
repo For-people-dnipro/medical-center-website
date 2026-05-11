@@ -168,6 +168,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-location.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg text-medium">
                                         м. Дніпро, вул. Д. Галицького, 34
@@ -178,6 +180,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-clock.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg">
                                         ПН-ПТ з 9:00 до 18:00
@@ -191,6 +195,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <span className="contact-link text-body-lg">
                                         +38 (050) 067-13-88
@@ -203,6 +209,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-location.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg text-medium">
                                         м. Дніпро, просп. Б. Хмельницького, 127
@@ -213,6 +221,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-clock.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg">
                                         ПН-ПТ з 9:00 до 18:00
@@ -226,6 +236,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <span className="contact-link text-body-lg">
                                         +38 (050) 067-22-35
@@ -238,6 +250,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-location.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg text-medium">
                                         м. Дніпро, бульвар Слави, 8
@@ -248,6 +262,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-clock.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <p className="contact-text text-body-lg">
                                         ПН-ПТ з 9:00 до 18:00
@@ -261,6 +277,8 @@ export default function ManipulationPage() {
                                         src="/icons/icon-phone.svg"
                                         alt=""
                                         className="contact-icon"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <span className="contact-link text-body-lg">
                                         +38 (066) 067-00-37

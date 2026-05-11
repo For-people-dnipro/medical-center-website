@@ -492,12 +492,6 @@ export default function NewsPage() {
 
             <section className="news-page__list" ref={newsListSectionRef}>
                 <div className="news-page__container">
-                    {loading ? (
-                        <div className="news-page__state" role="status">
-                            Завантажуємо новини...
-                        </div>
-                    ) : null}
-
                     {!loading && error ? (
                         <div
                             className="news-page__state news-page__state--error"

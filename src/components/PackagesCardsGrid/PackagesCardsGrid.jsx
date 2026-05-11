@@ -36,6 +36,8 @@ export default function PackagesCardsGrid() {
                                     alt=""
                                     className="packages-cards-grid__icon"
                                     aria-hidden="true"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
 

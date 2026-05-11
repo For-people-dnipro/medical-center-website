@@ -279,6 +279,67 @@ function App() {
         return () => window.clearTimeout(timeoutId);
     }, []);
 
+    useEffect(() => {
+        if (typeof window === "undefined") return undefined;
+
+        let cancelled = false;
+
+        const warmContentCache = async () => {
+            try {
+                const [doctorsApi, newsApi] = await Promise.all([
+                    import("./api/doctorsApi"),
+                    import("./api/newsApi"),
+                ]);
+
+                if (cancelled) return;
+
+                const [doctorsResponse, newsResponse] = await Promise.allSettled([
+                    doctorsApi.fetchDoctorsList(),
+                    newsApi.fetchNewsList(),
+                    doctorsApi.fetchDoctorBranches(),
+                    doctorsApi.fetchDoctorSpecialisations(),
+                    newsApi.fetchThemes(),
+                ]);
+
+                if (cancelled) return;
+
+                const doctors =
+                    doctorsResponse.status === "fulfilled"
+                        ? doctorsResponse.value?.items || []
+                        : [];
+                const news =
+                    newsResponse.status === "fulfilled"
+                        ? newsResponse.value?.items || []
+                        : [];
+
+                doctors.slice(0, 8).forEach((doctor) => {
+                    doctorsApi.prefetchDoctorBySlug(doctor?.slug);
+                });
+                news.slice(0, 8).forEach((item) => {
+                    newsApi.prefetchNewsBySlug(item?.slug);
+                });
+            } catch {
+                // Cache warming is opportunistic; page-level fetches remain the source of truth.
+            }
+        };
+
+        if ("requestIdleCallback" in window) {
+            const callbackId = window.requestIdleCallback(warmContentCache, {
+                timeout: 1800,
+            });
+            return () => {
+                cancelled = true;
+                window.cancelIdleCallback(callbackId);
+            };
+        }
+
+        const timeoutId = window.setTimeout(warmContentCache, 900);
+        return () => {
+            cancelled = true;
+            window.clearTimeout(timeoutId);
+        };
+    }, []);
+
     const shouldSkipPageTransition =
         location.state?.skipPageTransition === true;
     const routeTransitionKey = location.pathname;

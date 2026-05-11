@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import NewsContentRenderer from "../../components/NewsContentRenderer/NewsContentRenderer";
 import SeoHead from "../../components/Seo/SeoHead";
 import { getResponsiveImageProps } from "../../api/foundation";
 import { fetchNewsBySlug, formatNewsDate } from "../../api/newsApi";
+import { getCachedValue, setCachedValue } from "../../lib/requestCache";
 import { getStaticSeo, withSiteTitle } from "../../seo/seoConfig";
 import "./NewsArticlePage.css";
 
@@ -33,8 +34,25 @@ const PAGE_SEO = getStaticSeo("newsArticle");
 
 export default function NewsArticlePage() {
     const { slug = "" } = useParams();
-    const [newsItem, setNewsItem] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const initialCachedNewsItem = useMemo(() => {
+        const safeSlug = String(slug || "").trim().toLowerCase();
+        if (!safeSlug) return null;
+        const cached = getCachedValue(`news-by-slug:${safeSlug}`);
+        if (cached) return cached;
+
+        const routeStateItem = location.state?.newsItem;
+        if (
+            routeStateItem &&
+            String(routeStateItem.slug || "").trim().toLowerCase() === safeSlug
+        ) {
+            return setCachedValue(`news-by-slug:${safeSlug}`, routeStateItem);
+        }
+
+        return null;
+    }, [slug, location.state]);
+    const [newsItem, setNewsItem] = useState(initialCachedNewsItem);
+    const [loading, setLoading] = useState(!initialCachedNewsItem);
     const [error, setError] = useState("");
     const [notFound, setNotFound] = useState(false);
 
@@ -48,7 +66,9 @@ export default function NewsArticlePage() {
                 return;
             }
 
-            setLoading(true);
+            if (!initialCachedNewsItem) {
+                setLoading(true);
+            }
             setError("");
             setNotFound(false);
 
@@ -59,7 +79,9 @@ export default function NewsArticlePage() {
 
                 if (!data) {
                     setNotFound(true);
-                    setNewsItem(null);
+                    if (!initialCachedNewsItem) {
+                        setNewsItem(null);
+                    }
                     return;
                 }
 
@@ -73,7 +95,9 @@ export default function NewsArticlePage() {
                         ? "Немає доступу до News API. У Strapi увімкніть `find` для Public role."
                         : "Не вдалося завантажити новину. Спробуйте пізніше.",
                 );
-                setNewsItem(null);
+                if (!initialCachedNewsItem) {
+                    setNewsItem(null);
+                }
             } finally {
                 if (!controller.signal.aborted) {
                     setLoading(false);
@@ -84,7 +108,7 @@ export default function NewsArticlePage() {
         loadNewsBySlug();
 
         return () => controller.abort();
-    }, [slug]);
+    }, [slug, initialCachedNewsItem]);
 
     const pageTitle = useMemo(
         () => withSiteTitle(newsItem?.seoTitle || newsItem?.title, PAGE_SEO.title),
@@ -165,11 +189,7 @@ export default function NewsArticlePage() {
         return (
             <main className="news-article-page">
                 <SeoHead {...seoProps} />
-                <div className="news-article-page__container">
-                    <div className="news-article-page__state" role="status">
-                        Завантажуємо новину...
-                    </div>
-                </div>
+                <div className="news-article-page__container" />
             </main>
         );
     }

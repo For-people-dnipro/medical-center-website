@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - "codex/**"
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Lint frontend
+        run: npm run lint
+
+      - name: Build frontend
+        env:
+          VITE_SITE_URL: https://forpeople.com.ua
+          VITE_API_URL: http://127.0.0.1:1337
+        run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: clinic-backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
+          cache: npm
+          cache-dependency-path: clinic-backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Build backend
+        env:
+          HOST: 0.0.0.0
+          PORT: 1337
+          APP_KEYS: test-app-key-1,test-app-key-2,test-app-key-3,test-app-key-4
+          API_TOKEN_SALT: test-api-token-salt
+          ADMIN_JWT_SECRET: test-admin-jwt-secret
+          TRANSFER_TOKEN_SALT: test-transfer-token-salt
+          ENCRYPTION_KEY: test-encryption-key-1234567890
+          JWT_SECRET: test-jwt-secret
+          DATABASE_CLIENT: sqlite
+          DATABASE_FILENAME: .tmp/data.db
+          UPLOAD_PROVIDER: local
+        run: npm run build

@@ -63,7 +63,7 @@ async function main() {
         let html = "";
         try {
             html = await fs.readFile(outputPath, "utf8");
-        } catch (error) {
+        } catch {
             failures.push(`${route}: missing file ${outputPath}`);
             continue;
         }

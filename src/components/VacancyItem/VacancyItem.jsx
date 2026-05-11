@@ -75,6 +75,8 @@ export default function VacancyItem({ vacancy, isOpen, onToggle }) {
                                     <img
                                         src="/icons/map-point-green.svg"
                                         alt=""
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                 </span>
                                 <span>{vacancy.location}</span>
@@ -83,7 +85,12 @@ export default function VacancyItem({ vacancy, isOpen, onToggle }) {
                         {collapsedSchedule ? (
                             <span className="vacancy-item__meta-item">
                                 <span className="vacancy-item__meta-icon">
-                                    <img src="/icons/clock-green.svg" alt="" />
+                                    <img
+                                        src="/icons/clock-green.svg"
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </span>
                                 <span>{collapsedSchedule}</span>
                             </span>
@@ -92,7 +99,12 @@ export default function VacancyItem({ vacancy, isOpen, onToggle }) {
                 </span>
 
                 <span className="vacancy-item__chevron" aria-hidden="true">
-                    <img src="/icons/arrow-down.svg" alt="" />
+                    <img
+                        src="/icons/arrow-down.svg"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                    />
                 </span>
             </button>
 

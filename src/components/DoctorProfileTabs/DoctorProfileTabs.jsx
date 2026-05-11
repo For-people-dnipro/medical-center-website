@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useTabsUnderline from "../../hooks/useTabsUnderline";
 import NewsContentRenderer from "../NewsContentRenderer/NewsContentRenderer";
 import { renderPlainTextBlocks } from "../../lib/safeRichText";
@@ -186,21 +186,19 @@ export default function DoctorProfileTabs({
             ? initialTabKey
             : firstTabKey;
     const [activeKey, setActiveKey] = useState(requestedKey);
+    const resolvedActiveKey = availableTabKeys.includes(activeKey)
+        ? activeKey
+        : requestedKey;
     const { tabListRef, setTabRef } = useTabsUnderline({
-        activeKey,
+        activeKey: resolvedActiveKey,
         tabKeys: availableTabKeys,
     });
-
-    useEffect(() => {
-        if (!availableTabKeys.includes(activeKey)) {
-            setActiveKey(requestedKey);
-        }
-    }, [activeKey, availableTabKeys, requestedKey]);
 
     if (availableTabs.length === 0) return null;
 
     const activeTab =
-        availableTabs.find((tab) => tab.key === activeKey) || availableTabs[0];
+        availableTabs.find((tab) => tab.key === resolvedActiveKey) ||
+        availableTabs[0];
     const rootClassName = ["doctor-profile-tabs", className]
         .filter(Boolean)
         .join(" ");

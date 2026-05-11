@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import BranchCard from "../../components/BranchCard/BranchCard";
 import Button from "../../components/Button/Button";
@@ -22,6 +22,7 @@ import {
     firstSeoText,
     withSiteTitle,
 } from "../../seo/seoConfig";
+import { getCachedValue, setCachedValue } from "../../lib/requestCache";
 import "../BranchesPage/BranchesPage.css";
 import "./DoctorProfilePage.css";
 
@@ -117,10 +118,27 @@ function dedupeDoctors(items = []) {
 
 export default function DoctorProfilePage() {
     const { slug = "" } = useParams();
-    const [doctor, setDoctor] = useState(null);
-    const [doctorBranch, setDoctorBranch] = useState(null);
+    const location = useLocation();
+    const initialCachedDoctor = useMemo(() => {
+        const safeSlug = String(slug || "").trim().toLowerCase();
+        if (!safeSlug) return null;
+        const cached = getCachedValue(`doctor-by-slug:${safeSlug}`);
+        if (cached) return cached;
+
+        const routeStateDoctor = location.state?.doctor;
+        if (
+            routeStateDoctor &&
+            String(routeStateDoctor.slug || "").trim().toLowerCase() === safeSlug
+        ) {
+            return setCachedValue(`doctor-by-slug:${safeSlug}`, routeStateDoctor);
+        }
+
+        return null;
+    }, [slug, location.state]);
+    const [doctor, setDoctor] = useState(initialCachedDoctor);
+    const [doctorBranch, setDoctorBranch] = useState(initialCachedDoctor?.branch || null);
     const [relatedDoctors, setRelatedDoctors] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!initialCachedDoctor);
     const [error, setError] = useState("");
     const [notFound, setNotFound] = useState(false);
 
@@ -134,12 +152,16 @@ export default function DoctorProfilePage() {
                 return;
             }
 
-            setLoading(true);
+            if (!initialCachedDoctor) {
+                setLoading(true);
+            }
             setError("");
             setNotFound(false);
-            setDoctor(null);
-            setDoctorBranch(null);
-            setRelatedDoctors([]);
+            if (!initialCachedDoctor) {
+                setDoctor(null);
+                setDoctorBranch(null);
+                setRelatedDoctors([]);
+            }
 
             try {
                 const doctorData = await fetchDoctorBySlug(slug, {
@@ -215,7 +237,7 @@ export default function DoctorProfilePage() {
         loadDoctorProfile();
 
         return () => controller.abort();
-    }, [slug]);
+    }, [slug, initialCachedDoctor]);
 
     const pageTitle = withSiteTitle(
         doctor?.seoTitle,
@@ -257,11 +279,7 @@ export default function DoctorProfilePage() {
         return (
             <main className="doctor-profile-page">
                 <SeoHead {...seoProps} />
-                <div className="doctor-profile-page__container">
-                    <div className="doctor-profile-page__state" role="status">
-                        Завантажуємо сторінку лікаря...
-                    </div>
-                </div>
+                <div className="doctor-profile-page__container" />
             </main>
         );
     }
