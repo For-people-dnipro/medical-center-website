@@ -6,12 +6,14 @@ import {
     SEO_DEFAULT_LOCALE,
     SEO_DEFAULT_OG_IMAGE,
     SEO_DEFAULT_ROBOTS,
+    SEO_SITE_URL,
     SEO_DEFAULT_TITLE,
     SEO_SITE_NAME,
     firstSeoText,
 } from "../../seo/seoConfig";
 
 function getCurrentOrigin() {
+    if (SEO_SITE_URL) return SEO_SITE_URL;
     if (typeof window === "undefined") return "";
     return window.location.origin || "";
 }

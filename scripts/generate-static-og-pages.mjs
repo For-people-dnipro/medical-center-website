@@ -3,13 +3,25 @@ import path from "node:path";
 import {
     SEO_DEFAULT_OG_IMAGE,
     SEO_SITE_NAME,
+    buildDoctorFallbackDescription,
+    buildDoctorFallbackTitle,
     getStaticSeo,
+    withSiteTitle,
 } from "../src/seo/seoConfig.js";
 
 const DIST_DIR = path.resolve(process.cwd(), "dist");
 const DIST_INDEX_PATH = path.join(DIST_DIR, "index.html");
+const DIST_SITEMAP_PATH = path.join(DIST_DIR, "sitemap.xml");
 const DEFAULT_OG_TYPE = "website";
 const IMAGE_ALT = 'Медичний центр "Для людей" у Дніпрі';
+const API_BASE_URL = String(
+    process.env.VITE_API_URL ||
+        process.env.VITE_STRAPI_URL ||
+        process.env.VITE_API_PROXY_TARGET ||
+        "http://localhost:1337",
+)
+    .trim()
+    .replace(/\/+$/, "");
 const STATIC_ROUTES = [
     { route: "/", seoKey: "home" },
     { route: "/about", seoKey: "about" },
@@ -35,6 +47,118 @@ const STATIC_ROUTES = [
     { route: "/news", seoKey: "news" },
     { route: "/contacts", seoKey: "contacts" },
 ];
+
+function toText(value, fallback = "") {
+    return typeof value === "string" && value.trim() ? value.trim() : fallback;
+}
+
+function pickSource(entry) {
+    return entry?.attributes ?? entry ?? {};
+}
+
+function normalizePath(value = "/") {
+    return value.startsWith("/") ? value : `/${value}`;
+}
+
+function toAbsoluteMediaUrl(url) {
+    const text = toText(url);
+    if (!text) return "";
+    if (/^https?:\/\//i.test(text)) return text;
+    if (text.startsWith("//")) return `https:${text}`;
+    return `${API_BASE_URL}${normalizePath(text)}`;
+}
+
+function getDoctorFullName(source) {
+    const fullName = toText(source.fullName);
+    if (fullName) return fullName;
+
+    return [toText(source.surname), toText(source.name), toText(source.middleName)]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+}
+
+function extractCollectionRows(payload) {
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload)) return payload;
+    return [];
+}
+
+async function fetchJson(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: HTTP ${response.status}`);
+    }
+
+    return response.json();
+}
+
+async function fetchDynamicEntries() {
+    const [newsPayload, doctorsPayload] = await Promise.all([
+        fetchJson(
+            `${API_BASE_URL}/api/news?populate=*&pagination[pageSize]=1000`,
+        ).catch(() => ({ data: [] })),
+        fetchJson(
+            `${API_BASE_URL}/api/doctors?populate=*&filters[isActive][$eq]=true&pagination[pageSize]=1000`,
+        ).catch(() => ({ data: [] })),
+    ]);
+
+    const newsEntries = extractCollectionRows(newsPayload)
+        .map((entry) => {
+            const source = pickSource(entry);
+            const slug = toText(source.slug);
+            const title = toText(source.seo_title || source.seoTitle || source.title);
+            const description = toText(
+                source.seo_description ||
+                    source.seoDescription ||
+                    source.short_description,
+            );
+            const imageUrl = toAbsoluteMediaUrl(
+                source.cover_image?.url || source.cover_image?.data?.attributes?.url,
+            );
+
+            if (!slug || !title) return null;
+
+            return {
+                route: `/news/${slug}`,
+                title: withSiteTitle(title, getStaticSeo("newsArticle").title),
+                description: description || getStaticSeo("newsArticle").description,
+                ogType: "article",
+                ogImage: imageUrl || buildPublicUrl(SEO_DEFAULT_OG_IMAGE),
+            };
+        })
+        .filter(Boolean);
+
+    const doctorEntries = extractCollectionRows(doctorsPayload)
+        .map((entry) => {
+            const source = pickSource(entry);
+            const slug = toText(source.slug);
+            const fullName = getDoctorFullName(source);
+            const title = withSiteTitle(
+                toText(source.seo_title || source.seoTitle),
+                buildDoctorFallbackTitle(fullName),
+            );
+            const description =
+                toText(source.seo_description || source.seoDescription) ||
+                buildDoctorFallbackDescription({ fullName });
+            const imageUrl = toAbsoluteMediaUrl(
+                source.photo?.url || source.photo?.data?.attributes?.url,
+            );
+
+            if (!slug || !fullName) return null;
+
+            return {
+                route: `/doctors/${slug}`,
+                title,
+                description,
+                ogType: "website",
+                ogImage: imageUrl || buildPublicUrl(SEO_DEFAULT_OG_IMAGE),
+            };
+        })
+        .filter(Boolean);
+
+    return [...newsEntries, ...doctorEntries];
+}
 
 function escapeHtml(value) {
     return String(value)
@@ -120,9 +244,9 @@ function removeLink(html, rel) {
     return html.replace(matcher, "\n");
 }
 
-function applySeo(html, { title, description, route }) {
+function applySeo(html, { title, description, route, ogType = DEFAULT_OG_TYPE, ogImage }) {
     const routeUrl = buildPublicUrl(route);
-    const ogImageUrl = buildPublicUrl(SEO_DEFAULT_OG_IMAGE);
+    const ogImageUrl = ogImage || buildPublicUrl(SEO_DEFAULT_OG_IMAGE);
     const hasAbsoluteSiteUrl = /^https?:\/\//i.test(routeUrl);
     let nextHtml = html;
 
@@ -135,7 +259,7 @@ function applySeo(html, { title, description, route }) {
     nextHtml = upsertMeta(nextHtml, "property", "og:image:width", "1200");
     nextHtml = upsertMeta(nextHtml, "property", "og:image:height", "630");
     nextHtml = upsertMeta(nextHtml, "property", "og:image:alt", IMAGE_ALT);
-    nextHtml = upsertMeta(nextHtml, "property", "og:type", DEFAULT_OG_TYPE);
+    nextHtml = upsertMeta(nextHtml, "property", "og:type", ogType);
     nextHtml = upsertMeta(
         nextHtml,
         "name",
@@ -173,18 +297,47 @@ function getOutputPath(route) {
 
 async function main() {
     const baseHtml = await fs.readFile(DIST_INDEX_PATH, "utf8");
+    const dynamicEntries = await fetchDynamicEntries();
 
-    for (const { route, seoKey } of STATIC_ROUTES) {
-        const seo = getStaticSeo(seoKey);
+    if (dynamicEntries.length === 0) {
+        console.warn(
+            "[generate-static-og-pages] No dynamic news/doctor routes were generated. " +
+                "Ensure Strapi is running and VITE_API_URL points to it during build.",
+        );
+    }
+
+    const allEntries = [
+        ...STATIC_ROUTES.map(({ route, seoKey }) => ({
+            route,
+            ...getStaticSeo(seoKey),
+        })),
+        ...dynamicEntries,
+    ];
+
+    for (const seo of allEntries) {
+        const { route } = seo;
         const pageHtml = applySeo(baseHtml, {
             route,
             title: seo.title,
             description: seo.description,
+            ogType: seo.ogType,
+            ogImage: seo.ogImage,
         });
         const outputPath = getOutputPath(route);
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true });
         await fs.writeFile(outputPath, pageHtml, "utf8");
+    }
+
+    const sitemapEntries = allEntries
+        .map(({ route }) => buildPublicUrl(route))
+        .filter((url) => /^https?:\/\//i.test(url));
+
+    if (sitemapEntries.length > 0) {
+        const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries
+            .map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`)
+            .join("\n")}\n</urlset>\n`;
+        await fs.writeFile(DIST_SITEMAP_PATH, sitemapXml, "utf8");
     }
 }
 

@@ -1,5 +1,19 @@
 const CONSENT_STORAGE_KEY = "cookie-consent";
 const CONSENT_ACCEPTED = "accepted";
+const CONSENT_DECLINED = "declined";
+
+function ensureGtagStub() {
+    if (typeof window === "undefined") {
+        return false;
+    }
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() {
+        window.dataLayer.push(arguments);
+    };
+
+    return true;
+}
 
 export function getGoogleAnalyticsId() {
     const gaId =
@@ -22,9 +36,55 @@ export function hasAnalyticsConsent() {
     }
 }
 
+export function getStoredAnalyticsConsent() {
+    if (typeof window === "undefined") {
+        return "";
+    }
+
+    try {
+        const value = localStorage.getItem(CONSENT_STORAGE_KEY);
+        if (value === CONSENT_ACCEPTED || value === CONSENT_DECLINED) {
+            return value;
+        }
+    } catch {
+        return "";
+    }
+
+    return "";
+}
+
+export function applyAnalyticsConsentState(consent) {
+    if (!ensureGtagStub()) {
+        return false;
+    }
+
+    const granted = consent === CONSENT_ACCEPTED;
+
+    window.gtag("consent", "update", {
+        analytics_storage: granted ? "granted" : "denied",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+    });
+
+    return true;
+}
+
 export function initializeGoogleAnalytics(measurementId) {
     if (typeof window === "undefined" || !measurementId) {
         return false;
+    }
+
+    ensureGtagStub();
+
+    if (!window.__gaConsentDefaultsApplied) {
+        window.gtag("consent", "default", {
+            analytics_storage: "denied",
+            ad_storage: "denied",
+            ad_user_data: "denied",
+            ad_personalization: "denied",
+        });
+        window.__gaConsentDefaultsApplied = true;
     }
 
     if (window.__gaInitialized === measurementId) {
@@ -39,11 +99,6 @@ export function initializeGoogleAnalytics(measurementId) {
         script.dataset.gaId = measurementId;
         document.head.appendChild(script);
     }
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || function gtag() {
-        window.dataLayer.push(arguments);
-    };
 
     window.gtag("js", new Date());
     window.gtag("config", measurementId, {

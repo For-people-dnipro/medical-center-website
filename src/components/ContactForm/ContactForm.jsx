@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import emailjs from "@emailjs/browser";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
+import { buildApiUrl } from "../../api/foundation";
 import "./ContactForm.css";
 
 const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
@@ -256,23 +256,47 @@ export default function ContactForm({
             new Date().toLocaleString("uk-UA"),
         );
         const payload = {
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            branch: formData.branch,
+            diagnostic: formData.diagnostic,
+            checkupName: formData.checkupName,
+            message: formData.message,
+            consent: formData.consent,
+            company: formData.company,
             details: details.join("\n"),
             formType,
-            to_email: import.meta.env.VITE_EMAIL_TO,
         };
 
         try {
-            await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                payload,
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-            );
+            const response = await fetch(buildApiUrl("/api/contact-submissions"), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                let errorMessage = `HTTP ${response.status}`;
+
+                try {
+                    const errorPayload = await response.json();
+                    if (typeof errorPayload?.message === "string" && errorPayload.message.trim()) {
+                        errorMessage = errorPayload.message.trim();
+                    }
+                } catch {
+                    // Ignore JSON parsing failures for non-JSON error responses.
+                }
+
+                throw new Error(errorMessage);
+            }
 
             setSuccess(true);
             setFormData(initialData);
         } catch (err) {
-            console.error("EmailJS error:", err);
+            console.error("Contact form submission error:", err);
             setSubmitError(true);
         } finally {
             setLoading(false);

@@ -3,6 +3,19 @@ export const SEO_SITE_TITLE_SUFFIX = "Для людей, Дніпро";
 export const SEO_DEFAULT_TITLE = "Медичний центр у Дніпрі | Для людей, Дніпро";
 export const SEO_DEFAULT_DESCRIPTION =
     "Медичний центр “Для людей” у Дніпрі: консультації, діагностика, аналізи, вакцинація та турбота про ваше здоров'я.";
+const RAW_ENV =
+    typeof import.meta !== "undefined" &&
+    import.meta &&
+    typeof import.meta.env === "object" &&
+    import.meta.env !== null
+        ? import.meta.env
+        : typeof process !== "undefined" && process?.env
+          ? process.env
+          : {};
+
+export const SEO_SITE_URL = String(RAW_ENV.VITE_SITE_URL || "")
+    .trim()
+    .replace(/\/+$/, "");
 export const SEO_DEFAULT_ROBOTS =
     "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
 export const SEO_DEFAULT_LOCALE = "uk_UA";

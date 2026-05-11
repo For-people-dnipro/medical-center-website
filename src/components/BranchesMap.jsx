@@ -190,7 +190,6 @@ function BranchesMap({
                         icon={mainIcons[branch.id]}
                         options={{
                             zIndex: 10,
-                            optimized: false,
                         }}
                         onMouseOver={() => setHoveredId(branch.id)}
                         onMouseOut={() => setHoveredId(null)}
@@ -210,7 +209,6 @@ function BranchesMap({
                         options={{
                             zIndex: 11,
                             clickable: false,
-                            optimized: false,
                         }}
                     />
                 </Fragment>

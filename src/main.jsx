@@ -4,6 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import "./styles/fonts.css";
 import "./styles/global.css";
 import "./styles/typography.css";
 
