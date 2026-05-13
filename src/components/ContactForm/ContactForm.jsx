@@ -2,21 +2,143 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import { buildApiUrl } from "../../api/foundation";
+import { useIsEn } from "../../en/useIsEn";
 import "./ContactForm.css";
 
-const DEFAULT_TITLE = "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ";
-const DEFAULT_MOBILE_TITLE = "ПОРУЧ, ЩОБ ДОПОМОГТИ";
-const DEFAULT_SUBTITLE = "ЗАЛИШТЕ ПОВІДОМЛЕННЯ";
+const DEFAULTS_UA = {
+    title: "МИ ЗАВЖДИ ПОРУЧ, ЩОБ ДОПОМОГТИ",
+    mobileTitle: "ПОРУЧ, ЩОБ ДОПОМОГТИ",
+    subtitle: "ЗАЛИШТЕ ПОВІДОМЛЕННЯ",
+    formType: "Загальна базова форма",
+    buttonText: "Надіслати повідомлення",
+    labels: {
+        name: "Імʼя *",
+        phone: "Номер телефону *",
+        email: "Електронна пошта",
+        branch: "Оберіть філію медичного центру *",
+        diagnostic: "Необхідна діагностика *",
+        checkupName: "Назва CHECK-UP*",
+        message: "Повідомлення *",
+        consent: "Даю згоду на збір та обробку персональних даних",
+    },
+    placeholders: {
+        name: "Ваше імʼя",
+        phone: "Ваш номер телефону",
+        email: "Ваша ел. пошта (за бажанням)",
+        branch: "Оберіть філію",
+        diagnostic: "Вкажіть назву процедури",
+        checkupName: "Введіть назву CHECK-UP",
+        message: "Що вас турбує?",
+    },
+    branchOptions: [
+        "Ще не визначився(лась) / Потрібна консультація",
+        "вул. Данила Галицького, 34",
+        "просп. Богдана Хмельницького, 127",
+        "бульвар Слави, 8",
+    ],
+    errors: {
+        name: "Введіть, будь ласка, імʼя.",
+        phone: "Введіть, будь ласка, номер телефону.",
+        email: "Вкажіть коректну електронну пошту.",
+        branch: "Оберіть, будь ласка, філію.",
+        diagnostic: "Вкажіть, будь ласка, назву процедури.",
+        checkupName: "Введіть, будь ласка, назву CHECK-UP.",
+        message: "Введіть, будь ласка, повідомлення.",
+        consent: "Потрібно надати згоду на обробку персональних даних.",
+        generic: "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо.",
+    },
+    popup: {
+        successTitle: "Повідомлення надіслано",
+        successText: "Дякуємо! Ми зв’яжемося з вами найближчим часом.",
+        errorTitle: "Сталася помилка.",
+        closeAria: "Закрити",
+    },
+    detailsLabels: {
+        form: "Форма",
+        name: "Імʼя",
+        phone: "Телефон",
+        email: "Email",
+        branch: "Філія",
+        diagnostic: "Діагностика",
+        checkupName: "Назва CHECK-UP",
+        message: "Повідомлення",
+        dateTime: "Дата та час",
+    },
+    dateLocale: "uk-UA",
+};
+
+const DEFAULTS_EN = {
+    title: "WE ARE ALWAYS HERE TO HELP",
+    mobileTitle: "HERE TO HELP",
+    subtitle: "SEND US A MESSAGE",
+    formType: "General contact form (EN)",
+    buttonText: "Send message",
+    labels: {
+        name: "Name *",
+        phone: "Phone number *",
+        email: "Email",
+        branch: "Choose a branch of the medical centre *",
+        diagnostic: "Required diagnostics *",
+        checkupName: "CHECK-UP name *",
+        message: "Message *",
+        consent: "I consent to the collection and processing of my personal data",
+    },
+    placeholders: {
+        name: "Your name",
+        phone: "Your phone number",
+        email: "Your email (optional)",
+        branch: "Choose a branch",
+        diagnostic: "Specify the procedure name",
+        checkupName: "Enter the CHECK-UP name",
+        message: "What can we help you with?",
+    },
+    branchOptions: [
+        "Not decided yet / Need consultation",
+        "Danyla Halytskoho St., 34",
+        "Bohdana Khmelnytskoho Ave., 127",
+        "Slavy Blvd., 8",
+    ],
+    errors: {
+        name: "Please enter your name.",
+        phone: "Please enter your phone number.",
+        email: "Please enter a valid email address.",
+        branch: "Please choose a branch.",
+        diagnostic: "Please specify the procedure name.",
+        checkupName: "Please enter the CHECK-UP name.",
+        message: "Please enter your message.",
+        consent: "You need to consent to the processing of personal data.",
+        generic: "Please call us or try again later. Thank you.",
+    },
+    popup: {
+        successTitle: "Message sent",
+        successText: "Thank you! We will get back to you shortly.",
+        errorTitle: "An error occurred.",
+        closeAria: "Close",
+    },
+    detailsLabels: {
+        form: "Form",
+        name: "Name",
+        phone: "Phone",
+        email: "Email",
+        branch: "Branch",
+        diagnostic: "Diagnostics",
+        checkupName: "CHECK-UP name",
+        message: "Message",
+        dateTime: "Date and time",
+    },
+    dateLocale: "en-GB",
+};
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactForm({
     title,
-    subtitle = DEFAULT_SUBTITLE,
+    subtitle,
     smallTitle,
     subtitleTag,
 
-    formType = "Загальна базова форма",
-    buttonText = "Надіслати повідомлення",
+    formType,
+    buttonText,
 
     fields = {
         name: true,
@@ -28,52 +150,31 @@ export default function ContactForm({
         message: true,
     },
 
-    labels = {
-        name: "Імʼя *",
-        phone: "Номер телефону *",
-        email: "Електронна пошта",
-        branch: "Оберіть філію медичного центру *",
-        diagnostic: "Необхідна діагностика *",
-        checkupName: "Назва CHECK-UP*",
-        message: "Повідомлення *",
-        consent: "Даю згоду на збір та обробку персональних даних",
-    },
-
-    placeholders = {
-        name: "Ваше імʼя",
-        phone: "Ваш номер телефону",
-        email: "Ваша ел. пошта (за бажанням)",
-        branch: "Оберіть філію",
-        diagnostic: "Вкажіть назву процедури",
-        checkupName: "Введіть назву CHECK-UP",
-        message: "Що вас турбує?",
-    },
-
+    labels,
+    placeholders,
     detailsLabels = {},
-
-    branchOptions = [
-        "Ще не визначився(лась) / Потрібна консультація",
-        "вул. Данила Галицького, 34",
-        "просп. Богдана Хмельницького, 127",
-        "бульвар Слави, 8",
-    ],
+    branchOptions,
 }) {
+    const isEn = useIsEn();
+    const D = isEn ? DEFAULTS_EN : DEFAULTS_UA;
+
+    // Resolve defaults from current locale. Caller-provided values always win.
+    const resolvedSubtitle = subtitle ?? D.subtitle;
+    const resolvedFormType = formType ?? D.formType;
+    const resolvedButtonText = buttonText ?? D.buttonText;
+    const resolvedLabels = labels ?? D.labels;
+    const resolvedPlaceholders = placeholders ?? D.placeholders;
+    const resolvedBranchOptions = branchOptions ?? D.branchOptions;
+    const ERR = D.errors;
+    const POPUP = D.popup;
     const resolvedDetailsLabels = {
-        form: "Форма",
-        name: "Імʼя",
-        phone: "Телефон",
-        email: "Email",
-        branch: "Філія",
-        diagnostic: "Діагностика",
-        checkupName: "Назва CHECK-UP",
-        message: "Повідомлення",
-        dateTime: "Дата та час",
+        ...D.detailsLabels,
         ...detailsLabels,
     };
 
-    const resolvedTitle = title ?? DEFAULT_TITLE;
+    const resolvedTitle = title ?? D.title;
     const resolvedSmallTitle =
-        smallTitle ?? (title == null ? DEFAULT_MOBILE_TITLE : undefined);
+        smallTitle ?? (title == null ? D.mobileTitle : undefined);
     const hasSmallTitle = Boolean(resolvedSmallTitle);
     const SubtitleTag = subtitleTag ?? "h3";
     const hasEmailLike =
@@ -118,7 +219,7 @@ export default function ContactForm({
 
     const branchDropdownOptions = useMemo(
         () =>
-            (branchOptions || [])
+            (resolvedBranchOptions || [])
                 .map((option) => {
                     if (option && typeof option === "object") {
                         const value = String(
@@ -134,7 +235,7 @@ export default function ContactForm({
                     return value ? { value, label: value } : null;
                 })
                 .filter(Boolean),
-        [branchOptions],
+        [resolvedBranchOptions],
     );
 
     const handleChange = (e) => {
@@ -151,25 +252,25 @@ export default function ContactForm({
         const getText = (candidate) => String(candidate || "").trim();
 
         if (fields.name && !getText(values.name)) {
-            errors.name = "Введіть, будь ласка, імʼя.";
+            errors.name = ERR.name;
         }
 
         if (fields.phone && !getText(values.phone)) {
-            errors.phone = "Введіть, будь ласка, номер телефону.";
+            errors.phone = ERR.phone;
         }
 
         if (fields.email && getText(values.email)) {
             if (!EMAIL_PATTERN.test(getText(values.email))) {
-                errors.email = "Вкажіть коректну електронну пошту.";
+                errors.email = ERR.email;
             }
         }
 
         if (fields.branch && !getText(values.branch)) {
-            errors.branch = "Оберіть, будь ласка, філію.";
+            errors.branch = ERR.branch;
         }
 
         if (fields.diagnostic && !getText(values.diagnostic)) {
-            errors.diagnostic = "Вкажіть, будь ласка, назву процедури.";
+            errors.diagnostic = ERR.diagnostic;
         }
 
         if (
@@ -178,16 +279,15 @@ export default function ContactForm({
             fields.checkupName &&
             !getText(values.checkupName)
         ) {
-            errors.checkupName = "Введіть, будь ласка, назву CHECK-UP.";
+            errors.checkupName = ERR.checkupName;
         }
 
         if (fields.message && !getText(values.message)) {
-            errors.message = "Введіть, будь ласка, повідомлення.";
+            errors.message = ERR.message;
         }
 
         if (!values.consent) {
-            errors.consent =
-                "Потрібно надати згоду на обробку персональних даних.";
+            errors.consent = ERR.consent;
         }
 
         return errors;
@@ -241,7 +341,7 @@ export default function ContactForm({
             }
         };
 
-        addField(resolvedDetailsLabels.form, formType);
+        addField(resolvedDetailsLabels.form, resolvedFormType);
 
         if (fields.name) addField(resolvedDetailsLabels.name, formData.name);
         if (fields.phone) addField(resolvedDetailsLabels.phone, formData.phone);
@@ -257,7 +357,7 @@ export default function ContactForm({
 
         addField(
             resolvedDetailsLabels.dateTime,
-            new Date().toLocaleString("uk-UA"),
+            new Date().toLocaleString(D.dateLocale),
         );
         const payload = {
             name: formData.name,
@@ -270,7 +370,7 @@ export default function ContactForm({
             consent: formData.consent,
             company: formData.company,
             details: details.join("\n"),
-            formType,
+            formType: resolvedFormType,
         };
 
         try {
@@ -309,7 +409,7 @@ export default function ContactForm({
             setSubmitErrorMessage(
                 err instanceof Error && err.message
                     ? err.message
-                    : "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо.",
+                    : ERR.generic,
             );
             setSubmitError(true);
         } finally {
@@ -346,22 +446,22 @@ export default function ContactForm({
                             </span>
                         )}
                     </h2>
-                    {subtitle && (
+                    {resolvedSubtitle && (
                         <SubtitleTag className="form-subtitle">
-                            {subtitle}
+                            {resolvedSubtitle}
                         </SubtitleTag>
                     )}
                 </div>
 
                 {fields.name && (
                     <div className="form-group form-name">
-                        <label>{labels.name}</label>
+                        <label>{resolvedLabels.name}</label>
                         <input
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder={placeholders.name}
+                            placeholder={resolvedPlaceholders.name}
                             aria-required="true"
                             aria-invalid={Boolean(fieldErrors.name)}
                         />
@@ -370,13 +470,13 @@ export default function ContactForm({
 
                 {fields.phone && (
                     <div className="form-group form-phone">
-                        <label>{labels.phone}</label>
+                        <label>{resolvedLabels.phone}</label>
                         <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder={placeholders.phone}
+                            placeholder={resolvedPlaceholders.phone}
                             aria-required="true"
                             aria-invalid={Boolean(fieldErrors.phone)}
                         />
@@ -385,13 +485,13 @@ export default function ContactForm({
 
                 {fields.email && (
                     <div className="form-group form-email">
-                        <label>{labels.email}</label>
+                        <label>{resolvedLabels.email}</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder={placeholders.email}
+                            placeholder={resolvedPlaceholders.email}
                             aria-invalid={Boolean(fieldErrors.email)}
                         />
                     </div>
@@ -399,7 +499,7 @@ export default function ContactForm({
 
                 {fields.branch && (
                     <div className="form-group form-branch">
-                        <label>{labels.branch}</label>
+                        <label>{resolvedLabels.branch}</label>
                         <CustomDropdown
                             id="contact-form-branch"
                             value={formData.branch}
@@ -411,8 +511,8 @@ export default function ContactForm({
                                 clearFieldError("branch");
                             }}
                             options={branchDropdownOptions}
-                            placeholder={placeholders.branch}
-                            ariaLabel={labels.branch}
+                            placeholder={resolvedPlaceholders.branch}
+                            ariaLabel={resolvedLabels.branch}
                             allowEmptyOption={false}
                             className="contact-form__branch-dropdown"
                             ariaRequired="true"
@@ -423,13 +523,13 @@ export default function ContactForm({
 
                 {fields.diagnostic && (
                     <div className="form-group form-email">
-                        <label>{labels.diagnostic}</label>
+                        <label>{resolvedLabels.diagnostic}</label>
                         <input
                             type="text"
                             name="diagnostic"
                             value={formData.diagnostic}
                             onChange={handleChange}
-                            placeholder={placeholders.diagnostic}
+                            placeholder={resolvedPlaceholders.diagnostic}
                             aria-required="true"
                             aria-invalid={Boolean(fieldErrors.diagnostic)}
                         />
@@ -438,13 +538,13 @@ export default function ContactForm({
 
                 {!fields.email && !fields.diagnostic && fields.checkupName && (
                     <div className="form-group form-email">
-                        <label>{labels.checkupName}</label>
+                        <label>{resolvedLabels.checkupName}</label>
                         <input
                             type="text"
                             name="checkupName"
                             value={formData.checkupName}
                             onChange={handleChange}
-                            placeholder={placeholders.checkupName}
+                            placeholder={resolvedPlaceholders.checkupName}
                             aria-required="true"
                             aria-invalid={Boolean(fieldErrors.checkupName)}
                         />
@@ -453,12 +553,12 @@ export default function ContactForm({
 
                 {fields.message && (
                     <div className="form-message">
-                        <label>{labels.message}</label>
+                        <label>{resolvedLabels.message}</label>
                         <textarea
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
-                            placeholder={placeholders.message}
+                            placeholder={resolvedPlaceholders.message}
                             aria-required="true"
                             aria-invalid={Boolean(fieldErrors.message)}
                         />
@@ -475,7 +575,7 @@ export default function ContactForm({
                         aria-invalid={Boolean(fieldErrors.consent)}
                     />
                     <span className="custom-checkbox" />
-                    <span className="form-consent__label">{labels.consent}</span>
+                    <span className="form-consent__label">{resolvedLabels.consent}</span>
                 </label>
 
                 <div className="form-button">
@@ -485,7 +585,9 @@ export default function ContactForm({
                         disabled={loading}
                     >
                         <span className="submit-button__text">
-                            {loading ? "Надсилання..." : buttonText}
+                            {loading
+                                ? isEn ? "Sending..." : "Надсилання..."
+                                : resolvedButtonText}
                         </span>
                         <span className="submit-button__icon">
                             <img src="/icons/arrow-right.svg" alt="" />
@@ -510,7 +612,7 @@ export default function ContactForm({
                         >
                             <button
                                 className="popup-close"
-                                aria-label="Закрити"
+                                aria-label={POPUP.closeAria}
                                 onClick={() => {
                                     setSuccess(false);
                                     setSubmitError(false);
@@ -522,15 +624,14 @@ export default function ContactForm({
 
                             <h3>
                                 {success
-                                    ? "Повідомлення надіслано"
-                                    : "Сталася помилка."}
+                                    ? POPUP.successTitle
+                                    : POPUP.errorTitle}
                             </h3>
 
                             <p>
                                 {success
-                                    ? "Дякуємо! Ми зв’яжемося з вами найближчим часом."
-                                    : submitErrorMessage ||
-                                      "Будь ласка, зателефонуйте нам або повторіть спробу пізніше, дякуємо."}
+                                    ? POPUP.successText
+                                    : submitErrorMessage || ERR.generic}
                             </p>
                         </div>
                     </div>,

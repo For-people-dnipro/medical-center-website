@@ -6,6 +6,7 @@ import {
     getDoctorDisplayName,
     prefetchDoctorBySlug,
 } from "../../api/doctorsApi";
+import { useIsEn } from "../../en/useIsEn";
 import "./DoctorCard.css";
 
 function getInitials(name) {
@@ -81,16 +82,23 @@ export default function DoctorCard({
     asLink = true,
     priority = false,
 }) {
+    const isEn = useIsEn();
     if (!doctor) return null;
 
     const cardClassName = ["doctor-card", className].filter(Boolean).join(" ");
     const displayName = getDoctorDisplayName(doctor);
     const summaryLine = getDoctorCardSummary(doctor);
-    const cardHref = href || `/doctors/${doctor.slug}`;
+    // EN mini-site has no doctor profile pages, so cards are not links there.
+    const cardHref = href || (isEn ? "" : `/doctors/${doctor.slug}`);
+    const linkAsLink = asLink && !isEn && Boolean(cardHref);
     const years = resolveExperienceYears(doctor);
     const shouldShowBadge = years !== null;
     const splitName = getSplitNameParts(doctor, displayName);
-    const doctorImageAlt = `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
+    const doctorImageAlt = isEn
+        ? `Family doctor ${displayName} — For People Medical Centre, Dnipro`
+        : `Сімейний лікар ${displayName} — медичний центр Для Людей, Дніпро`;
+    const placeholderInitial = isEn ? "D" : "Л";
+    const experienceLabel = isEn ? "of experience" : "досвіду";
     const imageLoading = priority ? "eager" : "lazy";
     const imageFetchPriority = priority ? "high" : "auto";
     const imageProps = getResponsiveImageProps(doctor.photo, {
@@ -120,7 +128,7 @@ export default function DoctorCard({
                     />
                 ) : (
                     <div className="doctor-card__image doctor-card__image--placeholder">
-                        <span>{getInitials(displayName) || "Л"}</span>
+                        <span>{getInitials(displayName) || placeholderInitial}</span>
                     </div>
                 )}
 
@@ -129,9 +137,13 @@ export default function DoctorCard({
                         <div className="doctor-card__experience-number">{years}</div>
                         <div className="doctor-card__experience-line" />
                         <div className="doctor-card__experience-text">
-                            {formatExperienceYearsLabel(years)}
+                            {isEn
+                                ? years === 1
+                                    ? "year"
+                                    : "years"
+                                : formatExperienceYearsLabel(years)}
                             <br />
-                            досвіду
+                            {experienceLabel}
                         </div>
                     </div>
                 ) : null}
@@ -165,7 +177,7 @@ export default function DoctorCard({
 
     return (
         <article className={cardClassName}>
-            {asLink ? (
+            {linkAsLink ? (
                 <Link
                     className="doctor-card__link"
                     to={cardHref}
