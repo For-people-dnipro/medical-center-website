@@ -8,7 +8,6 @@ import {
     buildOptimizedImageSrcSet,
     getOptimizedImageUrl,
 } from "../../api/foundation";
-import { useIsEn } from "../../en/useIsEn";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -129,7 +128,6 @@ async function loadSlides() {
 }
 
 export default function Banner() {
-    const isEn = useIsEn();
     const [slides, setSlides] = useState(() =>
         Array.isArray(cachedSlides) ? cachedSlides : [],
     );
@@ -181,19 +179,9 @@ export default function Banner() {
                 />
 
                 <div className="mobile-slogan">
-                    {isEn ? (
-                        <>
-                            <span className="slogan-care">WE CARE.</span>{" "}
-                            <span className="slogan-diagnose">WE DIAGNOSE.</span>{" "}
-                            <span className="slogan-treat">WE TREAT.</span>
-                        </>
-                    ) : (
-                        <>
-                            <span className="slogan-care">ДБАЄМО.</span>{" "}
-                            <span className="slogan-diagnose">ДІАГНОСТУЄМО.</span>{" "}
-                            <span className="slogan-treat">ЛІКУЄМО.</span>
-                        </>
-                    )}
+                    <span className="slogan-care">ДБАЄМО.</span>{" "}
+                    <span className="slogan-diagnose">ДІАГНОСТУЄМО.</span>{" "}
+                    <span className="slogan-treat">ЛІКУЄМО.</span>
                 </div>
             </div>
         );
@@ -251,10 +239,7 @@ export default function Banner() {
                 </button>
 
                 {slides.map((slide, index) => {
-                    // Hide CMS-managed buttons on the EN mini-site:
-                    // their text comes from Strapi in Ukrainian.
                     const hasButton =
-                        !isEn &&
                         slide.buttonEnabled &&
                         slide.buttonText &&
                         slide.buttonLink;
@@ -300,11 +285,7 @@ export default function Banner() {
                                         src={desktopSrc || desktopImageUrl || ""}
                                         srcSet={desktopSrcSet || undefined}
                                         sizes="100vw"
-                                        alt={
-                                            isEn
-                                                ? `Hero banner ${index + 1} — For People Medical Centre, Dnipro, Ukraine`
-                                                : `Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`
-                                        }
+                                        alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
                                         className="banner-image"
                                         loading={index === 0 ? "eager" : "lazy"}
                                         fetchpriority={index === 0 ? "high" : "auto"}
@@ -336,15 +317,13 @@ export default function Banner() {
 
                                 {hasMozAttribution ? (
                                     <p className="banner-attribution">
-                                        {isEn ? "Source: " : "Джерело: "}
+                                        Джерело:{" "}
                                         <a
                                             href={MOZ_SOURCE_URL}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {isEn
-                                                ? "Ministry of Health of Ukraine"
-                                                : "МОЗ України"}
+                                            МОЗ України
                                         </a>
                                     </p>
                                 ) : null}
