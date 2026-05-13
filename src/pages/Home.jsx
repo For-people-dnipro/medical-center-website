@@ -242,7 +242,6 @@ export default function Home() {
                             break;
                         }
                     } catch {
-                        // silently try the next endpoint
                     }
                 }
 

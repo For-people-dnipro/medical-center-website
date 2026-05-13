@@ -209,7 +209,6 @@ export default function Banner() {
                     />
                 ) : null}
             </Helmet>
-            {/* ===== SLIDER ===== */}
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, Keyboard]}
                 loop={slides.length > 1}
@@ -229,7 +228,6 @@ export default function Banner() {
                 slidesPerView={1}
                 allowTouchMove
             >
-                {/* arrows — тільки для desktop */}
                 <button className="banner-arrow banner-arrow-left">
                     <img src="/icons/arrow-left.svg" alt="" />
                 </button>
@@ -274,13 +272,11 @@ export default function Banner() {
                         <SwiperSlide key={slide.id}>
                             <div className="banner-slide">
                                 <picture>
-                                    {/* MOBILE IMAGE */}
                                     <source
                                         media="(max-width: 768px)"
                                         srcSet={mobileSrc || undefined}
                                     />
 
-                                    {/* DESKTOP IMAGE */}
                                     <img
                                         src={desktopSrc || desktopImageUrl || ""}
                                         srcSet={desktopSrcSet || undefined}

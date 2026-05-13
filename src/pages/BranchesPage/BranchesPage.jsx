@@ -91,7 +91,6 @@ export default function BranchesPage() {
     useEffect(() => {
         if (!targetBranchId) return;
 
-        // Run after destination route is mounted so previous page never scrolls.
         forceInstantScrollToTop();
     }, [targetBranchId, location.key]);
 
@@ -138,7 +137,6 @@ export default function BranchesPage() {
             });
         };
 
-        // Start one frame later so users land on the destination first.
         startRafId = window.requestAnimationFrame(() => {
             rafId = window.requestAnimationFrame(scrollToBranchWhenReady);
         });

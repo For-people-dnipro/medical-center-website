@@ -85,7 +85,7 @@ function setSessionValue(key, value) {
     try {
         window.sessionStorage.setItem(key, value);
     } catch {
-        // Ignore storage write failures in restricted browser contexts.
+        /* ignore quota/security errors */
     }
 }
 
@@ -319,7 +319,7 @@ function App() {
                     newsApi.prefetchNewsBySlug(item?.slug);
                 });
             } catch {
-                // Cache warming is opportunistic; page-level fetches remain the source of truth.
+                /* ignore prefetch errors */
             }
         };
 

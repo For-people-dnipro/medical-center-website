@@ -591,8 +591,6 @@ function normalizeDoctor(entry, index = 0) {
     };
 }
 
-// Helps search when users type visually identical Latin letters (e.g. "cap")
-// for Ukrainian names like "сар".
 const SEARCH_CONFUSABLE_LATIN_TO_CYRILLIC = {
     A: "А",
     B: "В",
@@ -984,7 +982,6 @@ export async function fetchDoctorsList({
         items = items.filter((doctor) => doctor.isActive !== false);
     }
 
-    // Safety fallback if backend ignored one of the filters.
     if (safeSearch) {
         items = items.filter((doctor) => matchesDoctorSearch(doctor, safeSearch));
     }
@@ -1048,7 +1045,6 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
         }
     } catch (error) {
         if (error?.name === "AbortError") throw error;
-        // Fall through to full list fallback
     }
 
     const { items } = await fetchDoctorsList({

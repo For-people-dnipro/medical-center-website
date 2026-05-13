@@ -172,8 +172,6 @@ function dedupeNewsItems(items) {
 }
 
 function filterPublishedNews(items) {
-    // In Strapi with draft/publish enabled, `publishedAt` is the source of truth.
-    // Fallback to `publishedDate` only when `publishedAt` is absent for all items.
     const hasPublishedAtField = items.some((item) => Boolean(item?.publishedAt));
     if (hasPublishedAtField) {
         return items.filter((item) => Boolean(item?.publishedAt));
@@ -215,8 +213,6 @@ export async function fetchThemes({ signal } = {}) {
             .filter((theme) => theme && theme.slug);
         return setCachedValue(cacheKey, themes, THEMES_CACHE_TTL_MS);
     } catch (primaryError) {
-        // Fallback: derive topics from news relation payload when topics endpoint
-        // is not available yet or Theme public permissions are missing.
         try {
             const newsPayload = await fetchWithEndpointFallback({
                 endpoints: NEWS_ENDPOINTS,
@@ -375,9 +371,6 @@ export async function fetchNewsList({
             filterPublishedNews(normalizeCollection(payload)),
         );
 
-        // Some Strapi endpoints locally ignore requested pagination[pageSize].
-        // In that case we fallback to the client-side-compatible path so UI logic
-        // (mobile 18 / preview limits) stays deterministic.
         const serverAppliedRequestedPageSize =
             paginationMeta.pageSize === safePageSize && items.length <= safePageSize;
 
@@ -453,7 +446,6 @@ export async function fetchNewsList({
     let themeFiltered = [];
 
     if (normalizedThemeSlug) {
-        // Preferred path: dedicated backend endpoint with stable relation filtering.
         try {
             const byThemePayload = await fetchWithEndpointFallback({
                 endpoints: [
@@ -474,12 +466,10 @@ export async function fetchNewsList({
                 themeFiltered = strictlyMatchedItems;
             }
         } catch {
-            // ignore and continue to generic fallback path
         }
     }
 
     if (normalizedThemeSlug && themeFiltered.length === 0) {
-        // First: ask backend to filter by relation directly.
         try {
             const filteredPayload = await fetchWithEndpointFallback({
                 endpoints: NEWS_ENDPOINTS,
@@ -523,17 +513,13 @@ export async function fetchNewsList({
             );
             const strictlyMatchedItems = backendItems.filter(matchesSelectedTheme);
 
-            // If backend returns filtered rows, use them as source of truth.
-            // This works even when theme relation is not exposed in Public response.
             if (strictlyMatchedItems.length > 0) {
                 themeFiltered = strictlyMatchedItems;
             }
         } catch {
-            // ignore and fallback below
         }
     }
 
-    // Fallback: load populated list and filter locally.
     if (themeFiltered.length === 0) {
         const payload = await loadPopulatedNews();
         const publishedItems = dedupeNewsItems(

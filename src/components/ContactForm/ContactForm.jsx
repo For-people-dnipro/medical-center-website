@@ -296,7 +296,6 @@ export default function ContactForm({
                         errorMessage = errorPayload.details.join(", ");
                     }
                 } catch {
-                    // Ignore JSON parsing failures for non-JSON error responses.
                 }
 
                 throw new Error(errorMessage);

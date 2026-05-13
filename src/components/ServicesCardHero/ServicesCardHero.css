@@ -1,7 +1,3 @@
-/* ================================
-   HERO SECTION
-================================ */
-
 .services-card-hero {
     padding: 20px 0px;
     background: transparent;
@@ -12,10 +8,6 @@
     margin: 0 auto;
     padding: 0 20px;
 }
-
-/* ================================
-   CARD
-================================ */
 
 .services-card-hero__card {
     background: #ffffff;
@@ -37,7 +29,6 @@
     min-width: 0;
 }
 
-/* Title */
 .services-card-hero__title {
     display: flex;
     align-items: center;
@@ -64,7 +55,6 @@
     overflow-wrap: anywhere;
 }
 
-/* Divider */
 .services-card-hero__line {
     display: block;
     width: 100%;
@@ -73,14 +63,12 @@
     margin: 0 0 15px;
 }
 
-/* Subtitle */
 .services-card-hero__subtitle {
     font-size: 18px;
     margin: 0 0 22px 10px;
     font-weight: 400;
 }
 
-/* Button */
 .services-card-hero__button {
     width: fit-content;
     display: inline-flex;
@@ -91,10 +79,6 @@
     margin-top: 32px;
     border-radius: var(--radius-full);
 }
-
-/* ================================
-   RIGHT IMAGE
-================================ */
 
 .services-card-hero__right {
     border-radius: var(--radius-xl);
@@ -154,9 +138,6 @@
     }
 }
 
-/* ================================
-   TABLET & MOBILE
-================================ */
 .services-card-hero__crumbs {
     margin-bottom: 48px;
     margin-top: 24px;
@@ -230,13 +211,11 @@
     }
 }
 @media (max-width: 377px) {
-    /* HERO CARD */
     .services-card-hero__card {
         padding: 16px;
         min-height: unset;
     }
 
-    /* TITLE */
     .services-card-hero__title h1 {
         font-size: 20px;
         line-height: 1.2;
@@ -247,7 +226,6 @@
         line-height: 1.4;
     }
 
-    /* IMAGE — SMALLER */
     .services-card-hero__right img {
         height: 160px;
         border-radius: var(--radius-xl);

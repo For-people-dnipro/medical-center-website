@@ -44,7 +44,6 @@
     object-fit: cover;
 }
 
-/* ===== TABLET ===== */
 @media (max-width: 1100px) {
     .service-template__card {
         grid-template-columns: 1fr;

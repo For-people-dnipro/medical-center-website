@@ -65,7 +65,6 @@ function writeStorage(key, value, ttlMs) {
             }),
         );
     } catch {
-        // Ignore storage quota / serialization errors.
     }
 }
 

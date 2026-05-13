@@ -88,7 +88,6 @@
     opacity: 0.85;
 }
 
-/* ===== CONTACT ===== */
 .diagnostics-contact {
     max-width: 1080px;
     margin: 80px auto 0;
@@ -100,7 +99,6 @@
     margin-bottom: 32px;
 }
 
-/* 📱 MOBILE */
 @media (max-width: 768px) {
     .diagnostics-form-section {
         scroll-margin-top: 80px;

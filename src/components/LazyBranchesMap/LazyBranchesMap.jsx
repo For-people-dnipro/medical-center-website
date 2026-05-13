@@ -1,10 +1,6 @@
 import { useState } from "react";
 import BranchesMap from "../BranchesMap";
 
-/**
- * Показує плейсхолдер одразу, інтерактивну карту — після кліку.
- * Google Maps SDK (145KB) завантажується тільки коли юзер цього хоче.
- */
 export default function LazyBranchesMap({ center, zoom = 14, borderRadius, ...rest }) {
     const [isInteractive, setIsInteractive] = useState(false);
 
@@ -37,7 +33,6 @@ export default function LazyBranchesMap({ center, zoom = 14, borderRadius, ...re
             role="button"
             aria-label="Завантажити карту"
         >
-            {/* Декоративна сітка як у Google Maps */}
             <svg
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.12 }}
                 xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +45,6 @@ export default function LazyBranchesMap({ center, zoom = 14, borderRadius, ...re
                 <rect width="100%" height="100%" fill="url(#grid)" />
             </svg>
 
-            {/* Іконка pin */}
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style={{ zIndex: 1 }}>
                 <path
                     d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"

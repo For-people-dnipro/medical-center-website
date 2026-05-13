@@ -54,7 +54,6 @@ function writeCachedItems(cacheKey, items) {
             JSON.stringify(storageMap),
         );
     } catch {
-        // Ignore storage write errors and keep in-memory cache only.
     }
 }
 

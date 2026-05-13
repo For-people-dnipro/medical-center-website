@@ -107,7 +107,6 @@ export default function WhyChooseUsSection() {
     return (
         <section className="why-section">
             <div className="why-container">
-                {/* TITLE */}
                 <h2 className="why-title why-title-desktop">
                     ЧОМУ ВАРТО ОБРАТИ НАС?
                 </h2>
@@ -115,7 +114,6 @@ export default function WhyChooseUsSection() {
                     МЦ «Для людей» — сучасна медицина з турботою про кожного
                 </h2>
 
-                {/* DESCRIPTION */}
                 <p className="why-description why-description-desktop">
                     Наші центри — це місце, де до кожного ставляться з повагою
                     та турботою. Ми зібрали команду лікарів, які слухають,
@@ -140,7 +138,6 @@ export default function WhyChooseUsSection() {
                     </p>
                 </div>
 
-                {/* STATS */}
                 <div className="why-stats" ref={statsRef}>
                     {STATS.map((stat, index) => (
                         <div
@@ -180,7 +177,6 @@ export default function WhyChooseUsSection() {
                     </div>
                 </div>
 
-                {/* BUTTON */}
                 <div className="why-button">
                     <Button href="/about">Дізнатись більше</Button>
                 </div>

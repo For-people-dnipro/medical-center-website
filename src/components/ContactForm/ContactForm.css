@@ -44,7 +44,6 @@
         "consent button";
 }
 
-/* GRID AREAS */
 .form-header {
     grid-area: header;
 }
@@ -141,7 +140,6 @@
     border-color: #008b96;
 }
 
-/* SELECT */
 .form-group select {
     appearance: none;
     background: url("/icons/arrow-down.svg") no-repeat right 14px center / 14px;
@@ -214,14 +212,14 @@
 .form-subtitle {
     margin: 0 0 10px 0;
     font-weight: var(--fw-semibold);
-} /* ===== Placeholders ===== */
+}
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
     font-size: 16px;
     color: var(--color-text-muted);
 }
 .contact-form h2 {
-    margin-bottom: 10px; /* ⬅️ less space under title */
+    margin-bottom: 10px;
 }
 .submit-button {
     width: 100%;
@@ -479,7 +477,7 @@
     }
 
     .contact-form h2 {
-        margin-bottom: 8px; /* ⬅️ less space under title */
+        margin-bottom: 8px;
     }
 
     .form-title--has-small .form-title-main {
@@ -498,7 +496,7 @@
         text-transform: none;
     }
     .form-message textarea {
-        flex: none; /* 🔴 КЛЮЧОВЕ */
+        flex: none;
         max-height: 100px;
         min-height: 60px;
     }

@@ -9,7 +9,7 @@ body {
 
 body {
     background-color: #fdfdfd;
-    padding-top: 104px; /* ≈ реальна висота header */
+    padding-top: 104px;
 }
 .h1,
 .h2,
@@ -29,13 +29,13 @@ body {
 }
 html,
 body {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE / Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+    display: none;
 }
 .reveal {
     opacity: 0;

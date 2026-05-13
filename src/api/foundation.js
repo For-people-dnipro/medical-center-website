@@ -438,7 +438,6 @@ export async function fetchJson(url, { signal } = {}) {
             const payload = await response.json();
             message = payload?.error?.message || payload?.message || message;
         } catch {
-            // Ignore invalid JSON error payloads.
         }
 
         const error = new Error(message);

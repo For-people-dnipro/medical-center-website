@@ -1,11 +1,3 @@
-/**
- * Рендерить <picture> з WebP-версією якщо вона існує поруч з оригіналом.
- * Якщо WebP немає — просто рендерить <img>.
- *
- * Використання:
- *   <WebPImage src="/images/hero.jpg" alt="Hero" className="hero-img" loading="eager" />
- */
-
 const WEBP_AVAILABLE = new Set([
     "/images/ambulance.jpg",
     "/images/analyses-hero.jpg",

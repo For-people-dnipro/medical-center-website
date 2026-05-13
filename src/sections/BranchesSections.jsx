@@ -23,7 +23,6 @@ export default function BranchesSection() {
     const navigate = useNavigate();
 
     const handleBranchClick = (event, branchId) => {
-        // Keep native browser new-tab/window behavior for modified clicks.
         if (
             event.button !== 0 ||
             event.metaKey ||
@@ -47,7 +46,6 @@ export default function BranchesSection() {
     return (
         <section className="branches-section">
             <div className="branches-container">
-                {/* LEFT */}
                 <div className="branches-text">
                     <h2 className="branches-title">НАШІ ФІЛІЇ У М. ДНІПРО</h2>
 
@@ -62,7 +60,7 @@ export default function BranchesSection() {
                         {branches.map((b, i) => (
                             <li key={i} className="branches-item">
                                 <span className="icon">
-                                    <MapPin size={30} /> {/* ⬅ компактний */}
+                                    <MapPin size={30} />
                                 </span>
                                 <Link
                                     to="/branches"
@@ -80,18 +78,15 @@ export default function BranchesSection() {
                             </li>
                         ))}
                     </ul>
-                    {/* ✅ DESKTOP BUTTON */}
                     <div className="branches-button-wrapper desktop-only">
                         <Button href="/branches">Детальніше</Button>
                     </div>
                 </div>
 
-                {/* MAP */}
                 <div className="branches-map">
                     <BranchesMap />
                 </div>
 
-                {/* ✅ MOBILE BUTTON */}
                 <div className="branches-button-wrapper mobile-only">
                     <Button href="/branches">Детальніше</Button>
                 </div>

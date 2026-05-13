@@ -53,7 +53,6 @@ export default function ServicesCardHero({
         <section className="services-card-hero">
             <div className="services-card-hero__container">
                 <div className="services-card-hero__card">
-                    {/* LEFT */}
                     <div className="services-card-hero__left">
                         {crumbs.length > 0 && (
                             <Breadcrumbs
@@ -89,7 +88,6 @@ export default function ServicesCardHero({
                         )}
                     </div>
 
-                    {/* RIGHT */}
                     {image && (
                         <div
                             className={`services-card-hero__right${

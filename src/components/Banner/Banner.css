@@ -1,7 +1,3 @@
-/* =======================
-   BASE
-======================= */
-
 .banner-container {
     width: 100%;
     position: relative;
@@ -151,10 +147,6 @@
     text-decoration: underline;
 }
 
-/* =======================
-   SWIPER
-======================= */
-
 .swiper-pagination {
     background: white;
     padding: 8px 12px;
@@ -177,10 +169,6 @@
 .swiper-pagination-bullet-active {
     background: #238f9c !important;
 }
-
-/* =======================
-   ARROWS (DESKTOP)
-======================= */
 
 .banner-arrow {
     position: absolute;
@@ -209,10 +197,6 @@
 .swiper-button-prev {
     display: none !important;
 }
-
-/* =======================
-   MOBILE SLOGAN (HIDDEN BY DEFAULT)
-======================= */
 
 .mobile-slogan {
     display: none;
@@ -294,10 +278,6 @@
     }
 }
 
-/* =======================
-   MOBILE
-======================= */
-
 @media (max-width: 768px) {
     .banner-button {
         left: 7.3%;
@@ -323,7 +303,6 @@
         display: none !important;
     }
 
-    /* ===== SLOGAN ===== */
     .mobile-slogan {
         display: none;
     }

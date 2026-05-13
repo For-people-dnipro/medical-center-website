@@ -34,8 +34,6 @@ export default function Header() {
     };
 
     const handleLogoClick = (event) => {
-        // Only logo re-click on home should scroll.
-        // From other routes we keep immediate navigation behavior.
         if (location.pathname === "/") {
             event.preventDefault();
             scrollToTopWithOffset();

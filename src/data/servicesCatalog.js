@@ -1,4 +1,3 @@
-// Shared catalog to keep service cards and navigation in sync.
 export const SERVICE_CARDS = Object.freeze([
     {
         icon: "/icons/service-declaration.svg",

@@ -89,7 +89,6 @@ export default function DoctorsSection({ doctors = [] }) {
     }, [hasMobileCarousel, mobileDoctors.length]);
 
     useLayoutEffect(() => {
-        // тільки для mobile
         if (window.innerWidth > 576 || limitedDoctors.length === 0) return;
 
         const hasOverflow = mobileNameRefs.current.some(

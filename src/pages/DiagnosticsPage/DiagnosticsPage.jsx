@@ -26,7 +26,6 @@ export default function DiagnosticsPage() {
                 canonicalPath="/diagnostics"
             />
             <main className="diagnostics-page">
-                {/* HERO */}
                 <ServicesCardHero
                     title="ДІАГНОСТИКА У ДНІПРІ"
                     subtitle="Бачити. Розуміти. Діяти з турботою."

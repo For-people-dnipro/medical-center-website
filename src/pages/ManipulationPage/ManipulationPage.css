@@ -87,7 +87,6 @@
     color: var(--color-text-primary);
 }
 
-/* SAFETY */
 .manipulation-safety {
     padding: var(--manipulation-section-spacing) 20px
         var(--manipulation-section-spacing);
@@ -119,7 +118,6 @@
     width: 50px;
 }
 
-/* CONTACTS */
 .manipulation-contacts {
     padding: 0px 20px;
     scroll-margin-top: 220px;
@@ -209,7 +207,7 @@
     margin: 40px auto 0;
 }
 .contact-text {
-    white-space: normal; /* або просто видалити */
+    white-space: normal;
     overflow-wrap: break-word;
     word-break: normal;
 }

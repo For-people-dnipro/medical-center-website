@@ -1,7 +1,3 @@
-/* =========================
-   PAGE WRAPPER
-   ========================= */
-
 .vaccination-page {
     min-height: 100vh;
     color: var(--color-text-main);
@@ -28,16 +24,11 @@
     transform: translateY(0);
 }
 
-/* Keep the section frame visible immediately; animate only timeline items. */
 .vaccination-page__steps.scroll-reveal,
 .vaccination-page__steps.scroll-reveal.is-visible {
     opacity: 1;
     transform: none;
 }
-
-/* =========================
-   HERO FIXES
-   ========================= */
 
 .vaccination-page .services-card-hero {
     padding-bottom: 0;
@@ -53,10 +44,6 @@
     border-radius: var(--radius-xl);
 }
 
-/* =========================
-   INTRO
-   ========================= */
-
 .vaccination-page__intro {
     padding-top: 40px;
 }
@@ -66,10 +53,6 @@
     max-width: 100%;
     text-align: justify;
 }
-
-/* =========================
-   STEPS
-   ========================= */
 
 .vaccination-page__steps {
     padding-top: 80px;
@@ -88,7 +71,6 @@
     color: var(--color-primary);
 }
 
-/* Override generic ".vaccination-page__container p" rule */
 .vaccination-page__steps .vaccination-page__steps-eyebrow {
     margin: 0;
     text-align: left;
@@ -297,10 +279,6 @@
     aspect-ratio: 16 / 9;
 }
 
-/* =========================
-   VISIT SECTION
-   ========================= */
-
 .vaccination-visit {
     padding-top: 80px;
 }
@@ -388,10 +366,6 @@
     background-color: var(--color-primary);
     border-radius: var(--radius-circle);
 }
-/* =========================
-   RECORDS SECTION
-   ========================= */
-
 .vaccination-page__records {
     margin-top: 80px;
     padding: 40px 20px;
@@ -502,7 +476,6 @@
         position: absolute;
         left: calc(
             var(--timeline-rail-x) - (var(--timeline-dot-size) / 2) - 1px
-                /* половина ширини лінії (3px / 2 ≈ 1.5px) округлюємо */
         );
         top: calc(
             (var(--font-h3) * var(--lh-heading) - var(--timeline-dot-size)) /
@@ -742,6 +715,6 @@
     .vaccination-page__steps-eyebrow {
         text-align: center;
         display: block;
-        font-weight: 600; /* або 700 */
+        font-weight: 600;
     }
 }

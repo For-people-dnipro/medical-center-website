@@ -41,7 +41,7 @@ const MAP_OPTIONS = {
         {
             featureType: "landscape",
             elementType: "geometry",
-            stylers: [{ color: "#f5f7f9" }], // світліший фон
+            stylers: [{ color: "#f5f7f9" }],
         },
     ],
 };

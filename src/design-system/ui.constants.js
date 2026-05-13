@@ -1,9 +1,3 @@
-/**
- * Centralized UI Design System (used-values-only)
- * ------------------------------------------------
- * Contains only values already present in this project.
- */
-
 const deepFreeze = (value) => {
     if (value && typeof value === "object" && !Object.isFrozen(value)) {
         Object.values(value).forEach(deepFreeze);

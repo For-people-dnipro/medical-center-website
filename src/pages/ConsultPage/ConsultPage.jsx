@@ -120,7 +120,7 @@ export default function ConsultPage() {
                             відповідальність за ваш добробут.
                         </>
                     }
-                    image="/images/consultation-other-doctor.png"
+                    image="/images/consultation-other-doctor.webp"
                     imageAlt="Консультація лікаря в медичному центрі Для Людей, Дніпро"
                 />
 

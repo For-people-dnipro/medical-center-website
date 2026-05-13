@@ -6,7 +6,7 @@
     background: var(--color-bg-main);
     border-radius: var(--radius-xl);
     grid-template-columns: 1fr 1fr;
-    align-items: center; /* ← ось це головне */
+    align-items: center;
 }
 
 .packages-page__about .service-template__image {
