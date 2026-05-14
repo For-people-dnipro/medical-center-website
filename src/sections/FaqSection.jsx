@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import "./FAQSection.css";
+import "./FaqSection.css";
 
 const DEFAULT_TITLE = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
 
