@@ -8,7 +8,7 @@
 
 @media (max-width: 768px) {
     :root {
-        --mobile-cta-height: 64px;
+        --mobile-cta-height: 52px;
     }
 
     .mobile-cta {
@@ -18,7 +18,7 @@
         left: 0;
         width: 100%;
         background: #3c8f98;
-        padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
+        padding: 4px 12px calc(4px + env(safe-area-inset-bottom));
         z-index: 9999;
         box-sizing: border-box;
         justify-content: center;
@@ -27,7 +27,7 @@
     .mobile-cta-button {
         display: flex;
         width: auto;
-        min-height: 42px;
+        min-height: 36px;
         max-width: calc(100% - 8px);
         padding: 5px 16px;
         background: transparent;
