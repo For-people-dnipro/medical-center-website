@@ -3,6 +3,13 @@ import { formatNewsDate, prefetchNewsBySlug } from "../../api/newsApi";
 import { getResponsiveImageProps } from "../../api/foundation";
 import "./NewsCard.css";
 
+function canPrefetchOnHover() {
+    if (typeof navigator === "undefined") return true;
+
+    const connection = navigator.connection || navigator.mozConnection;
+    return connection?.saveData !== true;
+}
+
 export default function NewsCard({ item, priority = false }) {
     const dateLabel = formatNewsDate(item.publishedDate);
     const cardImage = item.coverImageCard || item.coverImage;
@@ -15,7 +22,7 @@ export default function NewsCard({ item, priority = false }) {
         sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     });
     const handlePrefetch = () => {
-        if (!item?.slug) return;
+        if (!item?.slug || !canPrefetchOnHover()) return;
         prefetchNewsBySlug(item.slug);
     };
 
@@ -27,15 +34,13 @@ export default function NewsCard({ item, priority = false }) {
         }
     }
 
-        return (
+    return (
         <article className="news-card">
             <Link
                 to={`/news/${item.slug}`}
                 className="news-card__link"
                 state={{ newsItem: item }}
                 onMouseEnter={handlePrefetch}
-                onFocus={handlePrefetch}
-                onTouchStart={handlePrefetch}
             >
                 <div className="news-card__media">
                     {imageProps?.src ? (

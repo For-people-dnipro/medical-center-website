@@ -183,6 +183,7 @@ export default function DoctorProfilePage() {
 
                 const doctorsResponse = await fetchDoctorsList({
                     signal: controller.signal,
+                    queryMode: "profile",
                 });
 
                 if (controller.signal.aborted) return;
@@ -356,8 +357,8 @@ export default function DoctorProfilePage() {
                                         alt={doctorImageAlt}
                                         width={doctorPhotoProps.width || 760}
                                         height={doctorPhotoProps.height || 960}
-                                        loading="eager"
-                                        fetchpriority="high"
+                                        loading="lazy"
+                                        fetchpriority="auto"
                                         decoding="async"
                                     />
                                 ) : (

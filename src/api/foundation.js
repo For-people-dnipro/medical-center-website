@@ -19,6 +19,7 @@ const IMAGEKIT_SITE_URL_ENDPOINT = (
 export const LOCAL_STRAPI_FALLBACK = import.meta.env.DEV
     ? "http://localhost:1337"
     : "";
+const SHOULD_USE_PRODUCTION_FALLBACK = import.meta.env.DEV;
 
 const MEDIA_FORMAT_PRIORITY = {
     hero: ["large", "xlarge"],
@@ -438,6 +439,7 @@ export async function fetchJson(url, { signal } = {}) {
             const payload = await response.json();
             message = payload?.error?.message || payload?.message || message;
         } catch {
+            // Ignore invalid JSON bodies and keep the HTTP-based fallback message.
         }
 
         const error = new Error(message);
@@ -455,12 +457,23 @@ export async function fetchWithEndpointFallback({
     signal,
     unauthorizedMessage = "UNAUTHORIZED",
     retryStatusCodes = [400, 404],
+    allowProductionFallback = SHOULD_USE_PRODUCTION_FALLBACK,
 }) {
     let lastError = null;
     let unauthorizedError = null;
+    const attemptErrors = [];
 
-    for (const endpoint of endpoints) {
-        for (const params of paramsVariants) {
+    const activeEndpoints =
+        allowProductionFallback || endpoints.length <= 1
+            ? endpoints
+            : endpoints.slice(0, 1);
+    const activeParamsVariants =
+        allowProductionFallback || paramsVariants.length <= 1
+            ? paramsVariants
+            : paramsVariants.slice(0, 1);
+
+    for (const endpoint of activeEndpoints) {
+        for (const params of activeParamsVariants) {
             const requestUrls = buildCandidateUrls(endpoint, params);
 
             for (const requestUrl of requestUrls) {
@@ -476,8 +489,19 @@ export async function fetchWithEndpointFallback({
                         unauthorizedError =
                             unauthorizedError ||
                             new Error(unauthorizedMessage);
+                        attemptErrors.push({
+                            url: requestUrl,
+                            status,
+                            message: requestError?.message || "Unauthorized",
+                        });
                         continue;
                     }
+
+                    attemptErrors.push({
+                        url: requestUrl,
+                        status,
+                        message: requestError?.message || "Request failed",
+                    });
 
                     if (retryStatusCodes.includes(status)) {
                         lastError = requestError;
@@ -491,8 +515,11 @@ export async function fetchWithEndpointFallback({
     }
 
     if (unauthorizedError) {
+        unauthorizedError.attempts = attemptErrors;
         throw unauthorizedError;
     }
 
-    throw lastError || new Error("NO_VALID_ENDPOINT");
+    const error = lastError || new Error("NO_VALID_ENDPOINT");
+    error.attempts = attemptErrors;
+    throw error;
 }

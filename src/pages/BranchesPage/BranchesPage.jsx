@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import ContactForm from "../../components/ContactForm/ContactForm";
-import BranchesMap from "../../components/BranchesMap";
+import LazyBranchesMap from "../../components/LazyBranchesMap/LazyBranchesMap";
 import MapPin from "../../components/MapPin";
 import SeoHead from "../../components/Seo/SeoHead";
 import { BRANCHES_CATALOG } from "../../data/branchesCatalog";
@@ -237,11 +237,12 @@ export default function BranchesPage() {
                                                     : ""
                                             }`}
                                         >
-                                            <BranchesMap
+                                            <LazyBranchesMap
                                                 branches={branch.mapMarkers}
                                                 center={branch.mapCenter}
                                                 zoom={14}
                                                 borderRadius="var(--radius-none)"
+                                                minHeight={320}
                                             />
                                         </div>
                                     </article>

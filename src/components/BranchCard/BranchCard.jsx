@@ -1,4 +1,4 @@
-import BranchesMap from "../BranchesMap";
+import LazyBranchesMap from "../LazyBranchesMap/LazyBranchesMap";
 import "./BranchCard.css";
 
 export default function BranchCard({ branch, className = "" }) {
@@ -68,11 +68,12 @@ export default function BranchCard({ branch, className = "" }) {
 
             {hasMap ? (
                 <div className="branch-card__map">
-                    <BranchesMap
+                    <LazyBranchesMap
                         branches={branch.mapMarkers}
                         center={branch.mapCenter}
                         zoom={14}
                         borderRadius="var(--radius-none)"
+                        minHeight={320}
                     />
                 </div>
             ) : null}

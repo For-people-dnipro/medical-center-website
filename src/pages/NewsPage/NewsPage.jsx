@@ -245,7 +245,7 @@ export default function NewsPage() {
                     themeId: activeThemeId,
                     page: requestPageForFetch,
                     pageSize: currentPageSize,
-                    preferServerPagination: isMobileViewport,
+                    preferServerPagination: true,
                     signal: controller.signal,
                 });
 
@@ -376,7 +376,7 @@ export default function NewsPage() {
             themeId: activeThemeId,
             page: nextPage,
             pageSize: DESKTOP_PAGE_SIZE,
-            preferServerPagination: false,
+            preferServerPagination: true,
         })
             .then((response) => {
                 setNewsItems((currentItems) =>

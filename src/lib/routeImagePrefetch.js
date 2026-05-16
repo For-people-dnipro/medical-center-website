@@ -161,7 +161,6 @@ export function warmCriticalRouteImageCache() {
         new Set([
             ...SHARED_UI_IMAGES,
             ...getCriticalImagesForPath(currentPath),
-            ...getCriticalImagesForPath("/services").slice(0, 4),
         ]),
     );
 

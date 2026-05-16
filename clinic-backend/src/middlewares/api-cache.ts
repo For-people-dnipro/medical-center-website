@@ -24,6 +24,7 @@ export default (_config: unknown, { strapi }: { strapi: any }) => {
       if (cached.type) {
         ctx.type = cached.type;
       }
+      ctx.set('Cache-Control', `public, max-age=${Math.floor(ttlMs / 1000)}, stale-while-revalidate=60`);
       ctx.set('X-API-Cache', 'HIT');
       ctx.set('X-Content-Version', getPublicContentVersion());
       return;
@@ -39,6 +40,7 @@ export default (_config: unknown, { strapi }: { strapi: any }) => {
         type: ctx.type,
         expiresAt: Date.now() + ttlMs,
       });
+      ctx.set('Cache-Control', `public, max-age=${Math.floor(ttlMs / 1000)}, stale-while-revalidate=60`);
       ctx.set('X-API-Cache', 'MISS');
       ctx.set('X-Content-Version', getPublicContentVersion());
     }

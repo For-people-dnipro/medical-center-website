@@ -1,7 +1,7 @@
 import "./BranchesSection.css";
 import Button from "../components/Button/Button";
 import MapPin from "../components/MapPin";
-import BranchesMap from "../components/BranchesMap";
+import LazyBranchesMap from "../components/LazyBranchesMap/LazyBranchesMap";
 import { Link, useNavigate } from "react-router-dom";
 
 const branches = [
@@ -84,7 +84,7 @@ export default function BranchesSection() {
                 </div>
 
                 <div className="branches-map">
-                    <BranchesMap />
+                    <LazyBranchesMap minHeight={420} />
                 </div>
 
                 <div className="branches-button-wrapper mobile-only">

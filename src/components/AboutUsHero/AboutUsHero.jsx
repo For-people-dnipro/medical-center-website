@@ -53,8 +53,8 @@ export default function AboutUsHero({
                             sizes="(max-width: 768px) 100vw, 50vw"
                             alt="Лікарка спілкується з пацієнткою та дитиною у медичному центрі Для Людей у Дніпрі"
                             className="about-us-hero__image"
-                            loading="eager"
-                            fetchpriority="high"
+                            loading="lazy"
+                            fetchpriority="auto"
                             decoding="async"
                         />
                     </div>

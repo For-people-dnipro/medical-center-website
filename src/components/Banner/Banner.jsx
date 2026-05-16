@@ -15,7 +15,24 @@ import "swiper/css/pagination";
 import "./Banner.css";
 
 const STRAPI_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
-const HOME_SLIDES_ENDPOINT = `${STRAPI_URL}/api/home-sliders?populate=*`;
+const HOME_SLIDES_ENDPOINT =
+    `${STRAPI_URL}/api/home-sliders?` +
+    new URLSearchParams({
+        "fields[0]": "order",
+        "fields[1]": "buttonEnabled",
+        "fields[2]": "showButton",
+        "fields[3]": "buttonText",
+        "fields[4]": "buttonLink",
+        "fields[5]": "buttonColor",
+        "populate[photodesktop][fields][0]": "url",
+        "populate[photodesktop][fields][1]": "width",
+        "populate[photodesktop][fields][2]": "height",
+        "populate[photodesktop][fields][3]": "formats",
+        "populate[photomobile][fields][0]": "url",
+        "populate[photomobile][fields][1]": "width",
+        "populate[photomobile][fields][2]": "height",
+        "populate[photomobile][fields][3]": "formats",
+    }).toString();
 const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";
 const MOZ_ATTRIBUTION_ASSET_MARKERS = [

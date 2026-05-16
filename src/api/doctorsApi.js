@@ -8,9 +8,9 @@ import { getCachedValue, setCachedValue } from "../lib/requestCache";
 
 const DOCTORS_ENDPOINTS = ["/api/doctors"];
 const BRANCHES_ENDPOINTS = ["/api/branches"];
-const SPECIALISATIONS_ENDPOINTS = ["/api/specialisations", "/api/specializations"];
+const SPECIALISATIONS_ENDPOINTS = ["/api/specialisations"];
 const DOCTORS_PAGE_ENDPOINTS = ["/api/doctors-page"];
-const DOCTORS_FETCH_LIMIT = 1000;
+const DOCTORS_FETCH_LIMIT = 120;
 const BRANCHES_FETCH_LIMIT = 200;
 const SPECIALISATIONS_FETCH_LIMIT = 300;
 const DOCTORS_CACHE_TTL_MS = 60 * 1000;
@@ -789,13 +789,47 @@ export function collectUniqueSpecialisations(doctors = []) {
         );
 }
 
+function buildDoctorStandardParams() {
+    return {
+        "fields[0]": "name",
+        "fields[1]": "surname",
+        "fields[2]": "slug",
+        "fields[3]": "positionShort",
+        "fields[4]": "positionLong",
+        "fields[5]": "startYear",
+        "fields[6]": "order",
+        "fields[7]": "homepage_priority",
+        "fields[8]": "show_on_homepage",
+        "fields[9]": "isActive",
+        "fields[10]": "quote",
+        "fields[11]": "education",
+        "fields[12]": "experienceSection",
+        "fields[13]": "services",
+        "fields[14]": "button1_link",
+        "fields[15]": "button2_link",
+        "populate[photo][fields][0]": "url",
+        "populate[photo][fields][1]": "alternativeText",
+        "populate[photo][fields][2]": "width",
+        "populate[photo][fields][3]": "height",
+        "populate[photo][fields][4]": "formats",
+        "populate[branch][fields][0]": "name",
+        "populate[branch][fields][1]": "slug",
+        "populate[branch][fields][2]": "address",
+        "populate[branch][fields][3]": "lat",
+        "populate[branch][fields][4]": "lng",
+        "populate[specialisations][fields][0]": "name",
+        "populate[specialisations][fields][1]": "slug",
+        "populate[specialisations][fields][2]": "order",
+        "populate[seo][fields][0]": "metaTitle",
+        "populate[seo][fields][1]": "metaDescription",
+    };
+}
+
 export async function fetchDoctorsPageSettings({ signal } = {}) {
     const paramsVariants = [
-        { populate: "*" },
         {
             "populate[0]": "seo",
         },
-        {},
     ];
 
     try {
@@ -834,20 +868,6 @@ export async function fetchDoctorSpecialisations({ signal } = {}) {
             "filters[isActive][$eq]": "true",
             "pagination[pageSize]": SPECIALISATIONS_FETCH_LIMIT,
         },
-        {
-            sort: "order:asc",
-            "filters[isActive][$eq]": "true",
-            "pagination[pageSize]": SPECIALISATIONS_FETCH_LIMIT,
-        },
-        {
-            "sort[0]": "order:asc",
-            "sort[1]": "name:asc",
-            "filters[is_active][$eq]": "true",
-            "pagination[pageSize]": SPECIALISATIONS_FETCH_LIMIT,
-        },
-        {
-            "pagination[pageSize]": SPECIALISATIONS_FETCH_LIMIT,
-        },
     ];
 
     try {
@@ -884,12 +904,24 @@ export async function fetchDoctorSpecialisations({ signal } = {}) {
 export async function fetchDoctorsList({
     signal,
     includeInactive = false,
-    pageSize = DOCTORS_FETCH_LIMIT,
+    pageSize,
     search = "",
     branchId = "",
     specialisationId = "",
+    queryMode = "default",
 } = {}) {
-    const safePageSize = Math.max(1, Number(pageSize) || DOCTORS_FETCH_LIMIT);
+    const defaultPageSizeByMode = {
+        home: 8,
+        card: 8,
+        profile: 24,
+        listing: DOCTORS_FETCH_LIMIT,
+        default: DOCTORS_FETCH_LIMIT,
+    };
+    const resolvedPageSize =
+        pageSize ??
+        defaultPageSizeByMode[queryMode] ??
+        defaultPageSizeByMode.default;
+    const safePageSize = Math.max(1, Number(resolvedPageSize) || DOCTORS_FETCH_LIMIT);
     const safeSearch = toText(search);
     const safeBranchId = toText(branchId);
     const safeSpecialisationId = toText(specialisationId);
@@ -901,6 +933,7 @@ export async function fetchDoctorsList({
         safeSearch,
         safeBranchId,
         safeSpecialisationId,
+        queryMode,
     ].join(":");
 
     const cached = getCachedValue(cacheKey, DOCTORS_CACHE_TTL_MS);
@@ -916,55 +949,55 @@ export async function fetchDoctorsList({
             : {}),
     };
 
-    const paramsVariants = [
-        {
-            "populate[0]": "photo",
-            "populate[1]": "branch",
-            "populate[2]": "specialisations",
-            "sort[0]": "order:asc",
-            "sort[1]": "fullName:asc",
-            ...baseFilters,
-            "pagination[pageSize]": safePageSize,
-        },
-        {
-            populate: "*",
-            sort: "order:asc,fullName:asc",
-            ...baseFilters,
-            "pagination[pageSize]": safePageSize,
-        },
-        {
-            populate: "*",
-            "sort[0]": "order:asc",
-            "sort[1]": "full_name:asc",
-            ...(includeInactive ? {} : { "filters[isActive][$eq]": "true" }),
-            ...(safeBranchId
-                ? { "filters[branch][id][$eq]": safeBranchId }
-                : {}),
-            ...(safeSpecialisationId
-                ? { "filters[specialisations][id][$eq]": safeSpecialisationId }
-                : {}),
-            "pagination[pageSize]": safePageSize,
-        },
-        {
-            populate: "*",
-            sort: "order:asc,name:asc",
-            ...(includeInactive ? {} : { "filters[isActive][$eq]": "true" }),
-            ...(safeBranchId ? { "filters[branch][id][$eq]": safeBranchId } : {}),
-            ...(safeSpecialisationId
-                ? { "filters[specialisations][id][$eq]": safeSpecialisationId }
-                : {}),
-            "pagination[pageSize]": safePageSize,
-        },
-        {
-            populate: "*",
-            ...(includeInactive ? {} : { "filters[is_active][$eq]": "true" }),
-            ...(safeBranchId ? { "filters[branch][id][$eq]": safeBranchId } : {}),
-            ...(safeSpecialisationId
-                ? { "filters[specialisations][id][$eq]": safeSpecialisationId }
-                : {}),
-            "pagination[pageSize]": safePageSize,
-        },
-    ];
+    const isLightweightMode =
+        queryMode === "home" || queryMode === "card" || queryMode === "listing";
+
+    const lightweightParams = {
+        "fields[0]": "name",
+        "fields[1]": "surname",
+        "fields[2]": "slug",
+        "fields[3]": "positionShort",
+        "fields[4]": "positionLong",
+        "fields[5]": "startYear",
+        "fields[6]": "order",
+        "fields[7]": "homepage_priority",
+        "fields[8]": "show_on_homepage",
+        "fields[9]": "isActive",
+        "populate[photo][fields][0]": "url",
+        "populate[photo][fields][1]": "alternativeText",
+        "populate[photo][fields][2]": "width",
+        "populate[photo][fields][3]": "height",
+        "populate[photo][fields][4]": "formats",
+        "populate[branch][fields][0]": "name",
+        "populate[branch][fields][1]": "slug",
+        "populate[branch][fields][2]": "address",
+        "populate[specialisations][fields][0]": "name",
+        "populate[specialisations][fields][1]": "slug",
+    };
+
+    const standardParams = buildDoctorStandardParams();
+
+    const paramsVariants = isLightweightMode
+        ? [
+              {
+                  ...lightweightParams,
+                  "sort[0]": "order:asc",
+                  "sort[1]": "surname:asc",
+                  "sort[2]": "name:asc",
+                  ...baseFilters,
+                  "pagination[pageSize]": safePageSize,
+              },
+          ]
+        : [
+              {
+                  ...standardParams,
+                  "sort[0]": "order:asc",
+                  "sort[1]": "surname:asc",
+                  "sort[2]": "name:asc",
+                  ...baseFilters,
+                  "pagination[pageSize]": safePageSize,
+              },
+          ];
 
     const payload = await fetchWithEndpointFallback({
         endpoints: DOCTORS_ENDPOINTS,
@@ -1013,18 +1046,19 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
     const safeSlug = toText(slug);
     if (!safeSlug) return null;
     const cacheKey = `doctor-by-slug:${safeSlug.toLowerCase()}`;
+    const standardParams = buildDoctorStandardParams();
 
     const cached = getCachedValue(cacheKey, DOCTORS_CACHE_TTL_MS);
     if (cached) return cached;
 
     const slugParamsVariants = [
         {
-            populate: "*",
+            ...standardParams,
             "filters[slug][$eq]": safeSlug,
             "pagination[pageSize]": 1,
         },
         {
-            populate: "*",
+            ...standardParams,
             "filters[slug][$eqi]": safeSlug,
             "pagination[pageSize]": 1,
         },
@@ -1065,6 +1099,16 @@ export async function fetchDoctorBySlug(slug, { signal } = {}) {
         : fallbackItem;
 }
 
+export function seedDoctorBySlugCache(doctors = []) {
+    if (!Array.isArray(doctors) || doctors.length === 0) return;
+
+    doctors.forEach((doctor) => {
+        const safeSlug = toText(doctor?.slug).toLowerCase();
+        if (!safeSlug) return;
+        setCachedValue(`doctor-by-slug:${safeSlug}`, doctor, DOCTORS_CACHE_TTL_MS);
+    });
+}
+
 export function prefetchDoctorBySlug(slug) {
     const safeSlug = toText(slug);
     if (!safeSlug) return Promise.resolve(null);
@@ -1095,30 +1139,29 @@ export async function fetchDoctorBranches({ signal } = {}) {
 
     const filteredParamsVariants = [
         {
-            populate: "*",
+            "fields[0]": "name",
+            "fields[1]": "slug",
+            "fields[2]": "address",
+            "fields[3]": "lat",
+            "fields[4]": "lng",
+            "fields[5]": "order",
+            "fields[6]": "isActive",
             "sort[0]": "order:asc",
             "sort[1]": "name:asc",
             "filters[isActive][$eq]": "true",
-            "pagination[pageSize]": BRANCHES_FETCH_LIMIT,
-        },
-        {
-            populate: "*",
-            sort: "order:asc,name:asc",
-            "filters[isActive][$eq]": "true",
-            "pagination[pageSize]": BRANCHES_FETCH_LIMIT,
-        },
-        {
-            populate: "*",
-            "sort[0]": "order:asc",
-            "sort[1]": "name:asc",
-            "filters[is_active][$eq]": "true",
             "pagination[pageSize]": BRANCHES_FETCH_LIMIT,
         },
     ];
 
     const unfilteredParamsVariants = [
         {
-            populate: "*",
+            "fields[0]": "name",
+            "fields[1]": "slug",
+            "fields[2]": "address",
+            "fields[3]": "lat",
+            "fields[4]": "lng",
+            "fields[5]": "order",
+            "fields[6]": "isActive",
             "pagination[pageSize]": BRANCHES_FETCH_LIMIT,
         },
     ];
@@ -1159,7 +1202,11 @@ export async function fetchDoctorBranches({ signal } = {}) {
         if (error?.name === "AbortError") throw error;
     }
 
-    const { items } = await fetchDoctorsList({ signal, pageSize: DOCTORS_FETCH_LIMIT });
+    const { items } = await fetchDoctorsList({
+        signal,
+        pageSize: DOCTORS_FETCH_LIMIT,
+        queryMode: "listing",
+    });
     const deduped = new Map();
 
     items.forEach((doctor) => {

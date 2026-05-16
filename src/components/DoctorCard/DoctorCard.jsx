@@ -73,6 +73,13 @@ function resolveExperienceYears(doctor) {
     return yearsOfExperience;
 }
 
+function canPrefetchOnHover() {
+    if (typeof navigator === "undefined") return true;
+
+    const connection = navigator.connection || navigator.mozConnection;
+    return connection?.saveData !== true;
+}
+
 export default function DoctorCard({
     doctor,
     className = "",
@@ -98,7 +105,7 @@ export default function DoctorCard({
         sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw",
     });
     const handlePrefetch = () => {
-        if (!doctor?.slug) return;
+        if (!doctor?.slug || !canPrefetchOnHover()) return;
         prefetchDoctorBySlug(doctor.slug);
     };
 
@@ -171,8 +178,6 @@ export default function DoctorCard({
                     to={cardHref}
                     state={{ doctor }}
                     onMouseEnter={handlePrefetch}
-                    onFocus={handlePrefetch}
-                    onTouchStart={handlePrefetch}
                 >
                     {cardContent}
                 </Link>

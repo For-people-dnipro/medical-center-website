@@ -7,8 +7,8 @@ import { getCachedValue, setCachedValue } from "../lib/requestCache";
 
 export { resolveMedia } from "./foundation";
 
-const NEWS_ENDPOINTS = ["/api/news", "/api/news-items"];
-const LOCAL_COLLECTION_FETCH_LIMIT = 1000;
+const NEWS_ENDPOINTS = ["/api/news"];
+const THEMES_FETCH_LIMIT = 100;
 const NEWS_CACHE_TTL_MS = 60 * 1000;
 const THEMES_CACHE_TTL_MS = 3 * 60 * 1000;
 
@@ -187,15 +187,11 @@ export async function fetchThemes({ signal } = {}) {
 
     try {
         const payload = await fetchWithEndpointFallback({
-            endpoints: ["/api/news/topics", "/api/themes"],
+            endpoints: ["/api/themes"],
             paramsVariants: [
                 {
                     "sort[0]": "name:asc",
-                    "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
-                },
-                {
-                    sort: "name:asc",
-                    "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
+                    "pagination[pageSize]": THEMES_FETCH_LIMIT,
                 },
             ],
             signal,
@@ -219,13 +215,8 @@ export async function fetchThemes({ signal } = {}) {
                 paramsVariants: [
                     {
                         "populate[theme]": "*",
-                        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
+                        "pagination[pageSize]": THEMES_FETCH_LIMIT,
                     },
-                    {
-                        populate: "*",
-                        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
-                    },
-                    {},
                 ],
                 signal,
                 unauthorizedMessage:
@@ -259,8 +250,9 @@ export async function fetchNewsList({
     themeId = "",
     page = 1,
     pageSize = 9,
-    preferServerPagination = false,
+    preferServerPagination = true,
     signal,
+    queryMode = "default",
 } = {}) {
     const cacheKey = [
         "news-list",
@@ -270,6 +262,7 @@ export async function fetchNewsList({
         page,
         pageSize,
         preferServerPagination ? "server" : "client",
+        queryMode,
     ].join(":");
 
     const cached = getCachedValue(cacheKey, NEWS_CACHE_TTL_MS);
@@ -287,275 +280,107 @@ export async function fetchNewsList({
     const normalizedThemeId = normalizeId(themeId);
     const requestedPage = Math.max(1, Number(page) || 1);
     const safePageSize = Math.max(1, Number(pageSize) || 9);
-    const populateParams = {
-        "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
-    };
+    const isLightweightMode = queryMode === "home" || queryMode === "card";
 
-    const loadPopulatedNews = () =>
-        fetchWithEndpointFallback({
-            endpoints: NEWS_ENDPOINTS,
-            paramsVariants: [
-                {
-                    ...populateParams,
-                    populate: "*",
-                },
-                {
-                    ...populateParams,
-                    "populate[0]": "cover_image",
-                    "populate[1]": "theme",
-                },
-                {
-                    ...populateParams,
-                    "populate[cover_image]": "*",
-                    "populate[theme]": "*",
-                },
-            ],
-            signal,
-        });
-    const matchesSelectedTheme = (item) => {
-        const itemThemeSlug = normalizeValue(item.theme?.slug);
-        const itemThemeName = normalizeValue(item.theme?.name);
-        const itemThemeId = normalizeId(item.theme?.id);
+    const populateFields = isLightweightMode
+        ? {
+              "fields[0]": "title",
+              "fields[1]": "slug",
+              "fields[2]": "short_description",
+              "fields[3]": "published_date",
+              "fields[4]": "publishedAt",
+              "populate[cover_image][fields][0]": "url",
+              "populate[cover_image][fields][1]": "alternativeText",
+              "populate[cover_image][fields][2]": "width",
+              "populate[cover_image][fields][3]": "height",
+              "populate[cover_image][fields][4]": "formats",
+              "populate[theme][fields][0]": "name",
+              "populate[theme][fields][1]": "slug",
+          }
+        : {
+              "fields[0]": "title",
+              "fields[1]": "slug",
+              "fields[2]": "short_description",
+              "fields[3]": "published_date",
+              "fields[4]": "publishedAt",
+              "fields[5]": "seo_title",
+              "fields[6]": "seo_description",
+              "populate[cover_image][fields][0]": "url",
+              "populate[cover_image][fields][1]": "alternativeText",
+              "populate[cover_image][fields][2]": "width",
+              "populate[cover_image][fields][3]": "height",
+              "populate[cover_image][fields][4]": "formats",
+              "populate[theme][fields][0]": "name",
+              "populate[theme][fields][1]": "slug",
+              "populate[content][populate]": "*",
+          };
 
-        return (
-            (normalizedThemeId && itemThemeId === normalizedThemeId) ||
-            itemThemeSlug === normalizedThemeSlug ||
-            (normalizedThemeName && itemThemeName === normalizedThemeName)
-        );
-    };
-    const hasServerMismatchedTheme = (items) =>
-        items.some((item) => {
-            const hasThemeInfo =
-                normalizeId(item.theme?.id) ||
-                normalizeValue(item.theme?.slug) ||
-                normalizeValue(item.theme?.name);
+    const filterVariants = normalizedThemeSlug
+        ? [
+              {
+                  "filters[theme][slug][$eq]": normalizedThemeSlug,
+              },
+              {
+                  "filters[theme][slug][$eqi]": normalizedThemeSlug,
+              },
+              ...(normalizedThemeId
+                  ? [
+                        {
+                            "filters[theme][id][$eq]": normalizedThemeId,
+                        },
+                    ]
+                  : []),
+              ...(normalizedThemeName
+                  ? [
+                        {
+                            "filters[theme][name][$eqi]": normalizedThemeName,
+                        },
+                    ]
+                  : []),
+          ]
+        : [{}];
 
-            return hasThemeInfo && !matchesSelectedTheme(item);
-        });
-    const buildServerPaginatedParams = (extraParams = {}) => ({
-        "pagination[page]": requestedPage,
-        "pagination[pageSize]": safePageSize,
-        ...extraParams,
-    });
-    const buildServerPaginatedVariants = (filterVariants = [{}]) =>
-        filterVariants.flatMap((filterParams) => [
-            buildServerPaginatedParams({
-                ...filterParams,
-                populate: "*",
-                "sort[0]": "published_date:desc",
-                "sort[1]": "publishedAt:desc",
-            }),
-            buildServerPaginatedParams({
-                ...filterParams,
-                populate: "*",
-                "sort[0]": "publishedAt:desc",
-            }),
-            buildServerPaginatedParams({
-                ...filterParams,
-                "populate[0]": "cover_image",
-                "populate[1]": "theme",
-                "sort[0]": "publishedAt:desc",
-            }),
-            buildServerPaginatedParams({
-                ...filterParams,
-                "populate[cover_image]": "*",
-                "populate[theme]": "*",
-                "sort[0]": "publishedAt:desc",
-            }),
-        ]);
-    const mapServerPaginatedResponse = (payload) => {
-        const paginationMeta = extractStrapiPagination(payload);
-        if (!paginationMeta) return null;
+    const paramsVariants = filterVariants.flatMap((filterParams) => [
+        {
+            ...populateFields,
+            ...filterParams,
+            "pagination[page]": requestedPage,
+            "pagination[pageSize]": safePageSize,
+            "sort[0]": "published_date:desc",
+            "sort[1]": "publishedAt:desc",
+        },
+        {
+            ...populateFields,
+            ...filterParams,
+            "pagination[page]": requestedPage,
+            "pagination[pageSize]": safePageSize,
+            "sort[0]": "publishedAt:desc",
+        },
+    ]);
 
-        const items = dedupeNewsItems(
-            filterPublishedNews(normalizeCollection(payload)),
-        );
-
-        const serverAppliedRequestedPageSize =
-            paginationMeta.pageSize === safePageSize && items.length <= safePageSize;
-
-        if (!serverAppliedRequestedPageSize) {
-            return null;
-        }
-
-        return {
-            items,
-            pagination: paginationMeta,
-            hasMore: paginationMeta.page < paginationMeta.pageCount,
-        };
-    };
-    const tryServerPaginatedFetch = async () => {
-        try {
-            const filterVariants = normalizedThemeSlug
-                ? [
-                      {
-                          "filters[theme][slug][$eq]": normalizedThemeSlug,
-                      },
-                      {
-                          "filters[theme][slug][$eqi]": normalizedThemeSlug,
-                      },
-                      ...(normalizedThemeId
-                          ? [
-                                {
-                                    "filters[theme][id][$eq]": normalizedThemeId,
-                                },
-                            ]
-                          : []),
-                      ...(normalizedThemeName
-                          ? [
-                                {
-                                    "filters[theme][name][$eqi]":
-                                        normalizedThemeName,
-                                },
-                            ]
-                          : []),
-                  ]
-                : [{}];
-
-            const payload = await fetchWithEndpointFallback({
-                endpoints: NEWS_ENDPOINTS,
-                paramsVariants: buildServerPaginatedVariants(filterVariants),
-                signal,
-                unauthorizedMessage:
-                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
-            });
-            const mapped = mapServerPaginatedResponse(payload);
-            if (!mapped) return null;
-
-            if (
-                normalizedThemeSlug &&
-                mapped.items.length > 0 &&
-                hasServerMismatchedTheme(mapped.items)
-            ) {
-                return null;
-            }
-
-            return mapped;
-        } catch {
-            return null;
-        }
-    };
-
-    if (preferServerPagination) {
-        const serverPaginatedResult = await tryServerPaginatedFetch();
-        if (serverPaginatedResult) {
-            return setCachedValue(cacheKey, serverPaginatedResult, NEWS_CACHE_TTL_MS);
-        }
-    }
-
-    let themeFiltered = [];
-
-    if (normalizedThemeSlug) {
-        try {
-            const byThemePayload = await fetchWithEndpointFallback({
-                endpoints: [
-                    `/api/news/by-theme/${encodeURIComponent(
-                        normalizedThemeSlug,
-                    )}`,
-                ],
-                paramsVariants: [{}],
-                signal,
-                unauthorizedMessage:
-                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
-            });
-            const byThemeItems = dedupeNewsItems(
-                filterPublishedNews(normalizeCollection(byThemePayload)),
-            );
-            const strictlyMatchedItems = byThemeItems.filter(matchesSelectedTheme);
-            if (strictlyMatchedItems.length > 0) {
-                themeFiltered = strictlyMatchedItems;
-            }
-        } catch {
-        }
-    }
-
-    if (normalizedThemeSlug && themeFiltered.length === 0) {
-        try {
-            const filteredPayload = await fetchWithEndpointFallback({
-                endpoints: NEWS_ENDPOINTS,
-                paramsVariants: [
-                    {
-                        ...populateParams,
-                        populate: "*",
-                        "filters[theme][slug][$eq]": normalizedThemeSlug,
-                    },
-                    {
-                        ...populateParams,
-                        populate: "*",
-                        "filters[theme][slug][$eqi]": normalizedThemeSlug,
-                    },
-                    ...(normalizedThemeId
-                        ? [
-                              {
-                                  ...populateParams,
-                                  populate: "*",
-                                  "filters[theme][id][$eq]": normalizedThemeId,
-                              },
-                          ]
-                        : []),
-                    ...(normalizedThemeName
-                        ? [
-                              {
-                                  ...populateParams,
-                                  populate: "*",
-                                  "filters[theme][name][$eqi]":
-                                      normalizedThemeName,
-                              },
-                          ]
-                        : []),
-                ],
-                signal,
-                unauthorizedMessage:
-                    "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
-            });
-            const backendItems = dedupeNewsItems(
-                filterPublishedNews(normalizeCollection(filteredPayload)),
-            );
-            const strictlyMatchedItems = backendItems.filter(matchesSelectedTheme);
-
-            if (strictlyMatchedItems.length > 0) {
-                themeFiltered = strictlyMatchedItems;
-            }
-        } catch {
-        }
-    }
-
-    if (themeFiltered.length === 0) {
-        const payload = await loadPopulatedNews();
-        const publishedItems = dedupeNewsItems(
-            filterPublishedNews(normalizeCollection(payload)),
-        );
-
-        if (normalizedThemeSlug) {
-            themeFiltered = publishedItems.filter(matchesSelectedTheme);
-        } else {
-            themeFiltered = publishedItems;
-        }
-    }
-
-    const sorted = dedupeNewsItems(themeFiltered).sort((a, b) => {
-        const aTime = new Date(a.publishedDate || 0).getTime() || 0;
-        const bTime = new Date(b.publishedDate || 0).getTime() || 0;
-        return bTime - aTime;
+    const payload = await fetchWithEndpointFallback({
+        endpoints: NEWS_ENDPOINTS,
+        paramsVariants,
+        signal,
+        unauthorizedMessage:
+            "UNAUTHORIZED: У Strapi увімкніть permission find для Public role (News/Theme).",
     });
 
-    const pageCount = Math.max(1, Math.ceil(sorted.length / safePageSize));
-    const safePage = Math.min(requestedPage, pageCount);
-    const start = (safePage - 1) * safePageSize;
-    const end = start + safePageSize;
-    const items = sorted.slice(start, end);
-    const hasMore = safePage < pageCount;
-    const pagination = {
-        page: safePage,
-        pageSize: safePageSize,
-        pageCount,
-        total: sorted.length,
-    };
+    const pagination = extractStrapiPagination(payload);
+    const items = dedupeNewsItems(filterPublishedNews(normalizeCollection(payload)));
 
     const result = {
         items,
-        pagination,
-        hasMore,
+        pagination:
+            pagination || {
+                page: requestedPage,
+                pageSize: safePageSize,
+                pageCount: Math.max(1, items.length ? 1 : 0),
+                total: items.length,
+            },
+        hasMore:
+            pagination?.page < pagination?.pageCount ||
+            false,
     };
 
     return setCachedValue(cacheKey, result, NEWS_CACHE_TTL_MS);
@@ -570,15 +395,43 @@ export async function fetchNewsBySlug(slug, { signal } = {}) {
         endpoints: NEWS_ENDPOINTS,
         paramsVariants: [
             {
-                populate: "*",
-                "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
+                "fields[0]": "title",
+                "fields[1]": "slug",
+                "fields[2]": "short_description",
+                "fields[3]": "published_date",
+                "fields[4]": "publishedAt",
+                "fields[5]": "seo_title",
+                "fields[6]": "seo_description",
+                "populate[cover_image][fields][0]": "url",
+                "populate[cover_image][fields][1]": "alternativeText",
+                "populate[cover_image][fields][2]": "width",
+                "populate[cover_image][fields][3]": "height",
+                "populate[cover_image][fields][4]": "formats",
+                "populate[theme][fields][0]": "name",
+                "populate[theme][fields][1]": "slug",
+                "populate[content][populate]": "*",
+                "filters[slug][$eq]": String(slug || "").trim(),
+                "pagination[pageSize]": 1,
             },
             {
-                "populate[cover_image]": "*",
+                "fields[0]": "title",
+                "fields[1]": "slug",
+                "fields[2]": "short_description",
+                "fields[3]": "published_date",
+                "fields[4]": "publishedAt",
+                "fields[5]": "seo_title",
+                "fields[6]": "seo_description",
+                "populate[cover_image][fields][0]": "url",
+                "populate[cover_image][fields][1]": "alternativeText",
+                "populate[cover_image][fields][2]": "width",
+                "populate[cover_image][fields][3]": "height",
+                "populate[cover_image][fields][4]": "formats",
+                "populate[theme][fields][0]": "name",
+                "populate[theme][fields][1]": "slug",
                 "populate[content][populate]": "*",
-                "pagination[pageSize]": LOCAL_COLLECTION_FETCH_LIMIT,
+                "filters[slug][$eqi]": String(slug || "").trim(),
+                "pagination[pageSize]": 1,
             },
-            {},
         ],
         signal,
     });

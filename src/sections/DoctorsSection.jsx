@@ -144,10 +144,10 @@ export default function DoctorsSection({ doctors = [] }) {
 
                 <div className="doctors-scroll">
                     <div className={gridClassName}>
-                        {limitedDoctors.map((doc) => {
+                        {limitedDoctors.map((doc, index) => {
                             const d = doc.attributes || doc || {};
                             const imageProps = getDoctorImageProps(d.photo, {
-                                priority: true,
+                                priority: index === 0,
                             });
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
@@ -168,8 +168,10 @@ export default function DoctorsSection({ doctors = [] }) {
                                                 className="image"
                                                 width={imageProps.width}
                                                 height={imageProps.height}
-                                                loading="eager"
-                                                fetchpriority="high"
+                                                loading={index === 0 ? "eager" : "lazy"}
+                                                fetchpriority={
+                                                    index === 0 ? "high" : "auto"
+                                                }
                                                 decoding="async"
                                             />
                                         )}

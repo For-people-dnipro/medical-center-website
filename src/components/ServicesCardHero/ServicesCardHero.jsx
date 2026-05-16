@@ -97,8 +97,8 @@ export default function ServicesCardHero({
                             <WebPImage
                                 src={image}
                                 alt={heroImageAlt}
-                                loading="eager"
-                                fetchpriority="high"
+                                loading="lazy"
+                                fetchpriority="auto"
                                 decoding="async"
                                 data-route-nonblocking="true"
                                 onLoad={() => setLoadedImageSrc(image)}
