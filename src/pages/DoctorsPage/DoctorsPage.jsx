@@ -114,57 +114,32 @@ export default function DoctorsPage() {
         return () => mediaQuery.removeListener(handleChange);
     }, []);
 
+    const [allDoctors, setAllDoctors] = useState([]);
+
     useEffect(() => {
         const controller = new AbortController();
 
-        async function loadFilterDictionaries() {
+        async function loadAll() {
             setInitialLoading(true);
-
-            try {
-                const [branchesList, specialisationsList] = await Promise.all([
-                    fetchDoctorBranches({ signal: controller.signal }),
-                    fetchDoctorSpecialisations({ signal: controller.signal }),
-                ]);
-
-                if (controller.signal.aborted) return;
-
-                setBranches(branchesList || []);
-                setSpecialisations(specialisationsList || []);
-            } catch (requestError) {
-                if (requestError?.name === "AbortError") return;
-                console.error(
-                    "Failed to load doctor filters data:",
-                    requestError,
-                );
-            } finally {
-                if (!controller.signal.aborted) {
-                    setInitialLoading(false);
-                }
-            }
-        }
-
-        loadFilterDictionaries();
-
-        return () => controller.abort();
-    }, []);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        async function loadDoctors() {
             setLoading(true);
             setError("");
 
             try {
-                const doctorsResponse = await fetchDoctorsList({
-                    signal: controller.signal,
-                    search: debouncedSearchValue,
-                    branchId: selectedBranch,
-                    specialisationId: selectedSpecialisation,
-                });
+                const [doctorsResponse, branchesList, specialisationsList] =
+                    await Promise.all([
+                        fetchDoctorsList({
+                            signal: controller.signal,
+                            queryMode: "listing",
+                        }),
+                        fetchDoctorBranches({ signal: controller.signal }),
+                        fetchDoctorSpecialisations({ signal: controller.signal }),
+                    ]);
 
                 if (controller.signal.aborted) return;
-                setDoctors(doctorsResponse.items || []);
+
+                setAllDoctors(doctorsResponse.items || []);
+                setBranches(branchesList || []);
+                setSpecialisations(specialisationsList || []);
             } catch (requestError) {
                 if (requestError?.name === "AbortError") return;
                 console.error("Failed to load doctors:", requestError);
@@ -174,18 +149,19 @@ export default function DoctorsPage() {
                         ? "Немає доступу до Doctors API. У Strapi увімкніть `find` для Public role."
                         : "Не вдалося завантажити список лікарів. Спробуйте пізніше.",
                 );
-                setDoctors([]);
+                setAllDoctors([]);
             } finally {
                 if (!controller.signal.aborted) {
+                    setInitialLoading(false);
                     setLoading(false);
                 }
             }
         }
 
-        loadDoctors();
+        loadAll();
 
         return () => controller.abort();
-    }, [debouncedSearchValue, selectedBranch, selectedSpecialisation]);
+    }, []);
 
     const initialVisibleCount = isMobileViewport
         ? MOBILE_INITIAL_VISIBLE_COUNT
@@ -196,12 +172,36 @@ export default function DoctorsPage() {
 
     useEffect(() => {
         setVisibleCount(initialVisibleCount);
-    }, [
-        initialVisibleCount,
-        debouncedSearchValue,
-        selectedBranch,
-        selectedSpecialisation,
-    ]);
+    }, [initialVisibleCount, debouncedSearchValue, selectedBranch, selectedSpecialisation]);
+
+    const doctors = useMemo(() => {
+        let result = allDoctors;
+
+        if (selectedBranch) {
+            result = result.filter((doc) => {
+                const branch = doc?.branch ?? doc?.attributes?.branch?.data?.attributes ?? doc?.attributes?.branch;
+                return String(branch?.id ?? getBranchIdentity(branch)) === selectedBranch;
+            });
+        }
+
+        if (selectedSpecialisation) {
+            result = result.filter((doc) => {
+                const specs = doc?.specialisations ?? doc?.attributes?.specialisations?.data ?? [];
+                return specs.some((s) => String(s?.id ?? s?.attributes?.id) === selectedSpecialisation);
+            });
+        }
+
+        if (debouncedSearchValue) {
+            const query = debouncedSearchValue.toLowerCase();
+            result = result.filter((doc) => {
+                const attrs = doc?.attributes ?? doc ?? {};
+                const name = `${attrs.name ?? ""} ${attrs.surname ?? ""}`.toLowerCase();
+                return name.includes(query);
+            });
+        }
+
+        return result;
+    }, [allDoctors, selectedBranch, selectedSpecialisation, debouncedSearchValue]);
 
     const branchOptions = useMemo(() => {
         const sourceBranches =

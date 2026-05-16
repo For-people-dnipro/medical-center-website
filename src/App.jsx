@@ -13,7 +13,6 @@ import {
     trackPageView,
 } from "./lib/analytics";
 import {
-    prefetchRouteImages,
     prefetchRouteImagesFromHref,
     warmCriticalRouteImageCache,
 } from "./lib/routeImagePrefetch";
@@ -216,48 +215,22 @@ function App() {
     }, [location.pathname, location.search, measurementId]);
 
     useEffect(() => {
-        prefetchRouteImages(normalizedPathname, { highPriority: true });
-    }, [normalizedPathname]);
+        if (typeof window === "undefined") return undefined;
 
-    useEffect(() => {
+        const isDesktopViewport = () =>
+            window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
         const handlePointerOver = (event) => {
-            const anchor = event.target?.closest?.("a[href]");
-            if (!anchor) return;
-            prefetchRouteImagesFromHref(anchor.getAttribute("href"));
-        };
-
-        const handlePointerDown = (event) => {
-            const anchor = event.target?.closest?.("a[href]");
-            if (!anchor) return;
-            prefetchRouteImagesFromHref(anchor.getAttribute("href"), {
-                highPriority: true,
-            });
-        };
-
-        const handleTouchStart = (event) => {
-            const anchor = event.target?.closest?.("a[href]");
-            if (!anchor) return;
-            prefetchRouteImagesFromHref(anchor.getAttribute("href"), {
-                highPriority: true,
-            });
-        };
-
-        const handleFocusIn = (event) => {
+            if (!isDesktopViewport()) return;
             const anchor = event.target?.closest?.("a[href]");
             if (!anchor) return;
             prefetchRouteImagesFromHref(anchor.getAttribute("href"));
         };
 
         document.addEventListener("pointerover", handlePointerOver, true);
-        document.addEventListener("pointerdown", handlePointerDown, true);
-        document.addEventListener("touchstart", handleTouchStart, true);
-        document.addEventListener("focusin", handleFocusIn, true);
 
         return () => {
             document.removeEventListener("pointerover", handlePointerOver, true);
-            document.removeEventListener("pointerdown", handlePointerDown, true);
-            document.removeEventListener("touchstart", handleTouchStart, true);
-            document.removeEventListener("focusin", handleFocusIn, true);
         };
     }, []);
 
@@ -277,67 +250,6 @@ function App() {
         }, 700);
 
         return () => window.clearTimeout(timeoutId);
-    }, []);
-
-    useEffect(() => {
-        if (typeof window === "undefined") return undefined;
-
-        let cancelled = false;
-
-        const warmContentCache = async () => {
-            try {
-                const [doctorsApi, newsApi] = await Promise.all([
-                    import("./api/doctorsApi"),
-                    import("./api/newsApi"),
-                ]);
-
-                if (cancelled) return;
-
-                const [doctorsResponse, newsResponse] = await Promise.allSettled([
-                    doctorsApi.fetchDoctorsList(),
-                    newsApi.fetchNewsList(),
-                    doctorsApi.fetchDoctorBranches(),
-                    doctorsApi.fetchDoctorSpecialisations(),
-                    newsApi.fetchThemes(),
-                ]);
-
-                if (cancelled) return;
-
-                const doctors =
-                    doctorsResponse.status === "fulfilled"
-                        ? doctorsResponse.value?.items || []
-                        : [];
-                const news =
-                    newsResponse.status === "fulfilled"
-                        ? newsResponse.value?.items || []
-                        : [];
-
-                doctors.slice(0, 8).forEach((doctor) => {
-                    doctorsApi.prefetchDoctorBySlug(doctor?.slug);
-                });
-                news.slice(0, 8).forEach((item) => {
-                    newsApi.prefetchNewsBySlug(item?.slug);
-                });
-            } catch {
-                /* ignore prefetch errors */
-            }
-        };
-
-        if ("requestIdleCallback" in window) {
-            const callbackId = window.requestIdleCallback(warmContentCache, {
-                timeout: 1800,
-            });
-            return () => {
-                cancelled = true;
-                window.cancelIdleCallback(callbackId);
-            };
-        }
-
-        const timeoutId = window.setTimeout(warmContentCache, 900);
-        return () => {
-            cancelled = true;
-            window.clearTimeout(timeoutId);
-        };
     }, []);
 
     const shouldSkipPageTransition =
@@ -434,8 +346,8 @@ function App() {
                     </Suspense>
                 </div>
                 <MobileCTA />
+                <Footer />
             </div>
-            <Footer />
             <CookieBanner />
         </>
     );
