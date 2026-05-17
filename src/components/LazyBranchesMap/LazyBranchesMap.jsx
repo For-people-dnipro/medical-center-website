@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import BranchesMap from "../BranchesMap";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 
 const OBSERVER_ROOT_MARGIN = "600px 0px";
+const BranchesMap = lazy(() => import("../BranchesMap"));
 
 export default function LazyBranchesMap({
     center,
@@ -59,12 +59,14 @@ export default function LazyBranchesMap({
             }}
         >
             {shouldLoadMap ? (
-                <BranchesMap
-                    center={center}
-                    zoom={zoom}
-                    borderRadius={borderRadius}
-                    {...rest}
-                />
+                <Suspense fallback={null}>
+                    <BranchesMap
+                        center={center}
+                        zoom={zoom}
+                        borderRadius={borderRadius}
+                        {...rest}
+                    />
+                </Suspense>
             ) : null}
         </div>
     );

@@ -65,6 +65,9 @@ export default function Header() {
                             <img
                                 src={logo}
                                 alt="Логотип медичного центру Для Людей"
+                                width="142"
+                                height="104"
+                                decoding="async"
                             />
                         </Link>
 
@@ -106,6 +109,9 @@ export default function Header() {
                                 src={ncsuIcon}
                                 className="ncsu-icon"
                                 alt="НСЗУ"
+                                width="440"
+                                height="700"
+                                decoding="async"
                             />
                         </div>
                     </div>
@@ -122,9 +128,11 @@ export default function Header() {
                     <span />
                 </span>
             </button>
-            {menuOpen && (
-                <div className="menu-overlay" onClick={closeMobileMenus} />
-            )}
+            <div
+                className={`menu-overlay ${menuOpen ? "open" : ""}`}
+                onClick={closeMobileMenus}
+                aria-hidden="true"
+            />
             <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
                 <nav className="mobile-nav">
                     <Link to="/about" onClick={closeMobileMenus}>
@@ -149,6 +157,10 @@ export default function Header() {
                                 alt=""
                                 aria-hidden="true"
                                 className={`arrow-icon ${servicesOpen ? "open" : ""}`}
+                                width="16"
+                                height="16"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </button>
 

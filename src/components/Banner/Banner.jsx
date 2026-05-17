@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, Keyboard } from "swiper/modules";
 import {
     API_BASE_URL,
     LOCAL_STRAPI_FALLBACK,
@@ -9,9 +7,6 @@ import {
     getOptimizedImageUrl,
 } from "../../api/foundation";
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import "./Banner.css";
 
 const STRAPI_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
@@ -29,13 +24,62 @@ const HOME_SLIDES_ENDPOINT =
     }).toString();
 const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";
+const DESKTOP_HERO_WIDTH = 1920;
+const DESKTOP_HERO_HEIGHT = 900;
+const MOBILE_HERO_WIDTH = 1080;
 const MOZ_ATTRIBUTION_ASSET_MARKERS = [
     "Vam_40_Projdit_Skrining_zdorov_ya_40",
     "1850_3_401a7bac50",
 ];
+const STATIC_HOME_SLIDES = Object.freeze([
+    {
+        id: "static-home-slide-1",
+        order: 1,
+        photodesktop:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp",
+        photodesktopSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_nout_a6ff75aa64.webp 768w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_nout_a6ff75aa64.webp 1200w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_nout_a6ff75aa64.webp 1600w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp 1920w",
+        photomobile:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp",
+        photomobileSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_baner_1_tf_5e7797be8d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_tf_5e7797be8d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_tf_5e7797be8d.webp 934w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp 1080w",
+        buttonEnabled: false,
+        buttonText: "",
+        buttonLink: "",
+        buttonColor: DEFAULT_BUTTON_COLOR,
+    },
+    {
+        id: "static-home-slide-2",
+        order: 2,
+        photodesktop:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp",
+        photodesktopSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 768w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1200w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1600w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1920w",
+        photomobile:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1850_4_8a4619154d.webp",
+        photomobileSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_1850_4_8a4619154d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_1850_4_8a4619154d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_1850_4_8a4619154d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_1850_4_8a4619154d.webp 934w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1850_4_8a4619154d.webp 1080w",
+        buttonEnabled: true,
+        buttonText: "ДЕТАЛЬНІШЕ",
+        buttonLink: "/screening-40-plus",
+        buttonColor: "#302528",
+    },
+]);
 
 let cachedSlides = null;
 let pendingSlidesRequest = null;
+
+function runWhenBrowserIsIdle(callback, timeout = 1800) {
+    if (typeof window === "undefined") return undefined;
+
+    if ("requestIdleCallback" in window) {
+        const idleId = window.requestIdleCallback(callback, { timeout });
+        return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(callback, timeout);
+    return () => window.clearTimeout(timeoutId);
+}
 
 function resolveMediaUrl(path) {
     const raw = String(path || "").trim();
@@ -63,6 +107,35 @@ function toBoolean(value, fallback = false) {
 function pickMediaPath(media) {
     const source = pickSource(media?.data ?? media);
     return toText(source?.url);
+}
+
+function buildMediaSrcSet(media) {
+    const source = pickSource(media?.data ?? media);
+    const formats =
+        source?.formats && typeof source.formats === "object" ? source.formats : {};
+    const candidates = [
+        formats.small,
+        formats.medium,
+        formats.large,
+        formats.xlarge,
+        source,
+    ];
+    const seenUrls = new Set();
+
+    return candidates
+        .map((candidate) => {
+            const url = toText(candidate?.url);
+            const width = Number(candidate?.width);
+
+            if (!url || !Number.isFinite(width) || width <= 0 || seenUrls.has(url)) {
+                return "";
+            }
+
+            seenUrls.add(url);
+            return `${resolveMediaUrl(url)} ${Math.round(width)}w`;
+        })
+        .filter(Boolean)
+        .join(", ");
 }
 
 function normalizeBannerLink(value) {
@@ -99,7 +172,9 @@ function normalizeSlides(payload) {
                 id: entry?.id ?? source.documentId ?? index,
                 order: Number(source.order) || 0,
                 photodesktop: pickMediaPath(source.photodesktop),
+                photodesktopSrcSet: buildMediaSrcSet(source.photodesktop),
                 photomobile: pickMediaPath(source.photomobile),
+                photomobileSrcSet: buildMediaSrcSet(source.photomobile),
                 buttonEnabled: toBoolean(
                     source.buttonEnabled ?? source.showButton,
                     false,
@@ -140,26 +215,116 @@ async function loadSlides() {
 
 export default function Banner() {
     const [slides, setSlides] = useState(() =>
-        Array.isArray(cachedSlides) ? cachedSlides : [],
+        Array.isArray(cachedSlides) ? cachedSlides : STATIC_HOME_SLIDES,
     );
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [prevIndex, setPrevIndex] = useState(null);
+    const [direction, setDirection] = useState("next");
+    const [isPaused, setIsPaused] = useState(false);
+    const isAnimatingRef = useRef(false);
+    const touchStartXRef = useRef(null);
+    const touchStartYRef = useRef(null);
+
+    const changeSlide = (computeNextIndex, dir) => {
+        if (isAnimatingRef.current) return;
+        setActiveIndex((currentIndex) => {
+            const nextIndex =
+                typeof computeNextIndex === "function"
+                    ? computeNextIndex(currentIndex)
+                    : computeNextIndex;
+            if (nextIndex === currentIndex) return currentIndex;
+            isAnimatingRef.current = true;
+            setDirection(dir);
+            setPrevIndex(currentIndex);
+            return nextIndex;
+        });
+    };
+
+    useEffect(() => {
+        if (prevIndex === null) return undefined;
+        const timeoutId = window.setTimeout(() => {
+            setPrevIndex(null);
+            isAnimatingRef.current = false;
+        }, 600);
+        return () => window.clearTimeout(timeoutId);
+    }, [prevIndex, activeIndex]);
 
     useEffect(() => {
         let isMounted = true;
 
-        loadSlides()
-            .then((nextSlides) => {
-                if (!isMounted || !Array.isArray(nextSlides)) return;
-                setSlides(nextSlides);
-            })
-            .catch((error) => {
-                if (!isMounted) return;
-                console.error(error);
-            });
+        const cancelIdle = runWhenBrowserIsIdle(() => {
+            loadSlides()
+                .then((nextSlides) => {
+                    if (!isMounted || !Array.isArray(nextSlides)) return;
+                    if (nextSlides.length > 0) {
+                        setSlides(nextSlides);
+                    }
+                })
+                .catch((error) => {
+                    if (!isMounted) return;
+                    console.error(error);
+                });
+        });
 
         return () => {
             isMounted = false;
+            cancelIdle?.();
         };
     }, []);
+
+    useEffect(() => {
+        if (slides.length <= 1 || isPaused) return undefined;
+
+        const intervalId = window.setInterval(() => {
+            changeSlide(
+                (currentIndex) => (currentIndex + 1) % slides.length,
+                "next",
+            );
+        }, 5000);
+
+        return () => window.clearInterval(intervalId);
+    }, [slides.length, isPaused]);
+
+    const handleTouchStart = (event) => {
+        const touch = event.touches[0];
+        if (!touch) return;
+        touchStartXRef.current = touch.clientX;
+        touchStartYRef.current = touch.clientY;
+        setIsPaused(true);
+    };
+
+    const handleTouchEnd = (event) => {
+        const startX = touchStartXRef.current;
+        const startY = touchStartYRef.current;
+        touchStartXRef.current = null;
+        touchStartYRef.current = null;
+        setIsPaused(false);
+
+        if (startX === null) return;
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - startX;
+        const deltaY = touch.clientY - (startY ?? touch.clientY);
+
+        if (
+            Math.abs(deltaX) < 40 ||
+            Math.abs(deltaX) <= Math.abs(deltaY)
+        ) {
+            return;
+        }
+
+        if (deltaX < 0) showNextSlide();
+        else showPreviousSlide();
+    };
+
+    const handleTouchCancel = () => {
+        touchStartXRef.current = null;
+        touchStartYRef.current = null;
+        setIsPaused(false);
+    };
+
+    const handlePointerEnter = () => setIsPaused(true);
+    const handlePointerLeave = () => setIsPaused(false);
 
     const firstSlide = slides[0] || null;
     const firstDesktopImage = firstSlide?.photodesktop
@@ -175,11 +340,15 @@ export default function Banner() {
     const firstDesktopSrcSet = buildOptimizedImageSrcSet(firstDesktopImage, {
         variant: "hero",
         maxWidth: 1920,
-    });
+    }) || firstSlide?.photodesktopSrcSet || "";
     const firstMobileSrc = getOptimizedImageUrl(firstMobileImage, {
         variant: "hero",
-        width: 768,
+        width: MOBILE_HERO_WIDTH,
     });
+    const firstMobileSrcSet = buildOptimizedImageSrcSet(firstMobileImage, {
+        variant: "hero",
+        maxWidth: MOBILE_HERO_WIDTH,
+    }) || firstSlide?.photomobileSrcSet || "";
 
     if (slides.length === 0) {
         return (
@@ -197,6 +366,56 @@ export default function Banner() {
             </div>
         );
     }
+
+    const safeActiveIndex = Math.min(activeIndex, slides.length - 1);
+
+    const showPreviousSlide = () => {
+        changeSlide(
+            (currentIndex) =>
+                currentIndex === 0 ? slides.length - 1 : currentIndex - 1,
+            "prev",
+        );
+    };
+
+    const showNextSlide = () => {
+        changeSlide(
+            (currentIndex) => (currentIndex + 1) % slides.length,
+            "next",
+        );
+    };
+
+    const handleSliderKeyDown = (event) => {
+        if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            showPreviousSlide();
+        }
+
+        if (event.key === "ArrowRight") {
+            event.preventDefault();
+            showNextSlide();
+        }
+    };
+
+    useEffect(() => {
+        if (slides.length <= 1) return undefined;
+
+        const handler = (event) => {
+            if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+            const target = event.target;
+            if (
+                target instanceof HTMLElement &&
+                (target.matches("input, textarea, select, [contenteditable]") ||
+                    target.isContentEditable)
+            ) {
+                return;
+            }
+            if (event.key === "ArrowLeft") showPreviousSlide();
+            else showNextSlide();
+        };
+
+        document.addEventListener("keydown", handler);
+        return () => document.removeEventListener("keydown", handler);
+    }, [slides.length]);
 
     return (
         <div className="banner-container">
@@ -216,33 +435,29 @@ export default function Banner() {
                         rel="preload"
                         as="image"
                         href={firstMobileSrc}
+                        imageSrcSet={firstMobileSrcSet || undefined}
+                        imageSizes="100vw"
                         media="(max-width: 768px)"
                     />
                 ) : null}
             </Helmet>
-            <Swiper
-                modules={[Navigation, Pagination, Autoplay, Keyboard]}
-                loop={slides.length > 1}
-                autoHeight
-                autoplay={{
-                    delay: 4000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: false,
-                }}
-                speed={900}
-                navigation={{
-                    nextEl: ".banner-arrow-right",
-                    prevEl: ".banner-arrow-left",
-                }}
-                pagination={{ clickable: true }}
-                keyboard={{ enabled: true }}
-                slidesPerView={1}
-                allowTouchMove
+            <div
+                className="banner-slider"
+                data-direction={direction}
+                role="region"
+                aria-label="Головний банер"
+                onKeyDown={handleSliderKeyDown}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchCancel={handleTouchCancel}
+                onPointerEnter={handlePointerEnter}
+                onPointerLeave={handlePointerLeave}
             >
                 <button
                     type="button"
                     className="banner-arrow banner-arrow-left"
                     aria-label="Попередній слайд"
+                    onClick={showPreviousSlide}
                 >
                     <img src="/icons/arrow-left.svg" alt="" aria-hidden="true" />
                 </button>
@@ -251,11 +466,14 @@ export default function Banner() {
                     type="button"
                     className="banner-arrow banner-arrow-right"
                     aria-label="Наступний слайд"
+                    onClick={showNextSlide}
                 >
                     <img src="/icons/arrow-right.svg" alt="" aria-hidden="true" />
                 </button>
 
                 {slides.map((slide, index) => {
+                    const isActive = index === safeActiveIndex;
+                    const isPrev = index === prevIndex;
                     const hasButton =
                         slide.buttonEnabled &&
                         slide.buttonText &&
@@ -284,36 +502,63 @@ export default function Banner() {
                     );
                     const mobileSrc = getOptimizedImageUrl(mobileImageUrl, {
                         variant: "hero",
-                        width: 768,
+                        width: MOBILE_HERO_WIDTH,
+                    });
+                    const mobileSrcSet = buildOptimizedImageSrcSet(mobileImageUrl, {
+                        variant: "hero",
+                        maxWidth: MOBILE_HERO_WIDTH,
                     });
 
                     return (
-                        <SwiperSlide key={slide.id}>
-                            <div className="banner-slide">
-                                <picture>
-                                    <source
-                                        media="(max-width: 768px)"
-                                        srcSet={mobileSrc || undefined}
-                                    />
+                        <div
+                            key={slide.id}
+                            className={[
+                                "banner-slide",
+                                isActive ? "banner-slide--active" : "",
+                                isPrev ? "banner-slide--prev" : "",
+                            ]
+                                .filter(Boolean)
+                                .join(" ")}
+                            aria-hidden={!isActive}
+                        >
+                            <picture>
+                                <source
+                                    media="(max-width: 768px)"
+                                    srcSet={
+                                        mobileSrcSet ||
+                                        slide.photomobileSrcSet ||
+                                        mobileSrc ||
+                                        undefined
+                                    }
+                                    sizes="100vw"
+                                />
 
-                                    <img
-                                        src={desktopSrc || desktopImageUrl || ""}
-                                        srcSet={desktopSrcSet || undefined}
-                                        sizes="100vw"
-                                        alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
-                                        className="banner-image"
-                                        loading={index === 0 ? "eager" : "lazy"}
-                                        fetchpriority={index === 0 ? "high" : "auto"}
-                                        decoding="async"
-                                    />
-                                </picture>
+                                <img
+                                    src={desktopSrc || desktopImageUrl || ""}
+                                    srcSet={
+                                        desktopSrcSet ||
+                                        slide.photodesktopSrcSet ||
+                                        undefined
+                                    }
+                                    sizes="100vw"
+                                    width={DESKTOP_HERO_WIDTH}
+                                    height={DESKTOP_HERO_HEIGHT}
+                                    alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
+                                    className="banner-image"
+                                    loading={index === 0 ? "eager" : "lazy"}
+                                    fetchPriority={
+                                        index === 0 ? "high" : "auto"
+                                    }
+                                    decoding="async"
+                                />
+                            </picture>
 
-                                {hasButton ? (
-                                    <a
-                                        className="banner-button"
-                                        href={slide.buttonLink}
-                                        style={buttonStyle}
-                                        target={isExternal ? "_blank" : undefined}
+                            {hasButton ? (
+                                <a
+                                    className="banner-button"
+                                    href={slide.buttonLink}
+                                    style={buttonStyle}
+                                    target={isExternal ? "_blank" : undefined}
                                         rel={
                                             isExternal
                                                 ? "noopener noreferrer"
@@ -342,11 +587,28 @@ export default function Banner() {
                                         </a>
                                     </p>
                                 ) : null}
-                            </div>
-                        </SwiperSlide>
+                        </div>
                     );
                 })}
-            </Swiper>
+
+                {slides.length > 1 ? (
+                    <div className="banner-pagination" aria-hidden="true">
+                        {slides.map((slide, index) => (
+                            <span
+                                key={`${slide.id}-dot`}
+                                className={[
+                                    "banner-pagination__bullet",
+                                    index === safeActiveIndex
+                                        ? "banner-pagination__bullet--active"
+                                        : "",
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                            />
+                        ))}
+                    </div>
+                ) : null}
+            </div>
 
             <div className="mobile-slogan">
                 <span className="slogan-care">ДБАЄМО.</span>{" "}

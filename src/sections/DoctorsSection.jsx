@@ -120,13 +120,12 @@ export default function DoctorsSection({ doctors = [] }) {
         return yearsOfExperience;
     }
 
-    function getDoctorImageProps(photo, { priority = false, mobile = false } = {}) {
+    function getDoctorImageProps(photo, { mobile = false } = {}) {
         return getResponsiveImageProps(photo, {
             variant: "card",
             sizes: mobile
                 ? "78vw"
                 : "(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 280px",
-            priority,
         });
     }
 
@@ -144,11 +143,9 @@ export default function DoctorsSection({ doctors = [] }) {
 
                 <div className="doctors-scroll">
                     <div className={gridClassName}>
-                        {limitedDoctors.map((doc, index) => {
+                        {limitedDoctors.map((doc) => {
                             const d = doc.attributes || doc || {};
-                            const imageProps = getDoctorImageProps(d.photo, {
-                                priority: index === 0,
-                            });
+                            const imageProps = getDoctorImageProps(d.photo);
                             const years = computeExperience(d);
                             const cardPosition = getDoctorCardPosition(d);
                             const doctorImageAlt = buildDoctorImageAlt(d);
@@ -168,10 +165,8 @@ export default function DoctorsSection({ doctors = [] }) {
                                                 className="image"
                                                 width={imageProps.width}
                                                 height={imageProps.height}
-                                                loading={index === 0 ? "eager" : "lazy"}
-                                                fetchpriority={
-                                                    index === 0 ? "high" : "auto"
-                                                }
+                                                loading="lazy"
+                                                fetchPriority="auto"
                                                 decoding="async"
                                             />
                                         )}
@@ -255,7 +250,6 @@ export default function DoctorsSection({ doctors = [] }) {
                         {mobileDoctors.map((doc, index) => {
                             const d = doc.attributes || doc || {};
                             const imageProps = getDoctorImageProps(d.photo, {
-                                priority: index === 0,
                                 mobile: true,
                             });
                             const years = computeExperience(d);
@@ -277,10 +271,8 @@ export default function DoctorsSection({ doctors = [] }) {
                                                 className="mobile-image"
                                                 width={imageProps.width}
                                                 height={imageProps.height}
-                                                loading={index === 0 ? "eager" : "lazy"}
-                                                fetchpriority={
-                                                    index === 0 ? "high" : "auto"
-                                                }
+                                                loading="lazy"
+                                                fetchPriority="auto"
                                                 decoding="async"
                                             />
                                         )}

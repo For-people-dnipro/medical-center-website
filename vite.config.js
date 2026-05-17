@@ -25,7 +25,6 @@ export default defineConfig(({ mode }) => {
                 output: {
                     manualChunks: {
                         "vendor-react": ["react", "react-dom", "react-router-dom"],
-                        "vendor-maps": ["@react-google-maps/api"],
                         "vendor-swiper": ["swiper"],
                         "vendor-ui": ["lucide-react", "react-helmet-async"],
                     },

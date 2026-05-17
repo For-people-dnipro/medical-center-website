@@ -62,7 +62,7 @@ export default function NewsCard({ item, priority = false }) {
                             width={imageProps.width}
                             height={imageProps.height}
                             loading={imageLoading}
-                            fetchpriority={imageFetchPriority}
+                            fetchPriority={imageFetchPriority}
                             decoding="async"
                         />
                     ) : (

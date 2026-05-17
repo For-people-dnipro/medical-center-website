@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Instagram, Facebook } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
@@ -94,7 +93,14 @@ export default function Footer() {
             <div className="footer-container">
                 <div className="footer-top">
                     <div className="footer-logo">
-                        <img src={logofooter} alt="Для людей" />
+                        <img
+                            src={logofooter}
+                            alt="Для людей"
+                            width="255"
+                            height="51"
+                            loading="lazy"
+                            decoding="async"
+                        />
                     </div>
 
                     <div className="footer-mobile-addresses">
@@ -110,15 +116,15 @@ export default function Footer() {
                         {branches.map((b, i) => (
                             <div className="footer-contact-block" key={i}>
                                 <p>
-                                    <img src="/icons/icon-location.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-location.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" decoding="async" />
                                     {b.address}
                                 </p>
                                 <p>
-                                    <img src="/icons/icon-clock.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-clock.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" decoding="async" />
                                     {b.hours}
                                 </p>
                                 <p>
-                                    <img src="/icons/icon-phone.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-phone.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" decoding="async" />
                                     <a href={`tel:${b.phoneHref}`}>{b.phoneDisplay}</a>
                                 </p>
                             </div>
@@ -191,10 +197,28 @@ export default function Footer() {
 
                 <div className="footer-socials" aria-label="Соцмережі">
                     <a href="https://www.instagram.com/medcentr_dl?igsh=MXFjN3dsOWxneHhrYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <Instagram className="footer-icon" />
+                        <img
+                            className="footer-icon"
+                            src="/icons/icon-instagram.svg"
+                            alt=""
+                            aria-hidden="true"
+                            width="29"
+                            height="28"
+                            loading="lazy"
+                            decoding="async"
+                        />
                     </a>
                     <a href="https://www.facebook.com/profile.php?id=61582468588174" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                        <Facebook className="footer-icon" />
+                        <img
+                            className="footer-icon"
+                            src="/icons/icon-facebook.svg"
+                            alt=""
+                            aria-hidden="true"
+                            width="36"
+                            height="34"
+                            loading="lazy"
+                            decoding="async"
+                        />
                     </a>
                 </div>
 

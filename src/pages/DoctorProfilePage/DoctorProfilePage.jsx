@@ -357,8 +357,8 @@ export default function DoctorProfilePage() {
                                         alt={doctorImageAlt}
                                         width={doctorPhotoProps.width || 760}
                                         height={doctorPhotoProps.height || 960}
-                                        loading="lazy"
-                                        fetchpriority="auto"
+                                        loading="eager"
+                                        fetchPriority="high"
                                         decoding="async"
                                     />
                                 ) : (

@@ -122,7 +122,7 @@ export default function DoctorCard({
                         width={imageProps.width || 720}
                         height={imageProps.height || 880}
                         loading={imageLoading}
-                        fetchpriority={imageFetchPriority}
+                        fetchPriority={imageFetchPriority}
                         decoding="async"
                     />
                 ) : (

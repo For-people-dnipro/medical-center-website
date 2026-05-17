@@ -151,7 +151,7 @@ export default function VaccinationStandardsCarousel() {
                                             src={slide.image}
                                             alt={`${slide.title} — вакцинація у медичному центрі Для Людей, Дніпро`}
                                             loading={index === 0 ? "eager" : "lazy"}
-                                            fetchpriority={
+                                            fetchPriority={
                                                 index === 0 ? "high" : "auto"
                                             }
                                             decoding="async"

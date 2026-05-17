@@ -247,7 +247,7 @@ function App() {
 
         const timeoutId = window.setTimeout(() => {
             warmCriticalRouteImageCache();
-        }, 700);
+        }, 2500);
 
         return () => window.clearTimeout(timeoutId);
     }, []);
@@ -345,7 +345,7 @@ function App() {
                         </div>
                     </Suspense>
                 </div>
-                <MobileCTA />
+                {/* <MobileCTA /> */}
                 <Footer />
             </div>
             <CookieBanner />

@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import Banner from "../components/Banner/Banner";
 import DeclarationSection from "../sections/DeclarationSection";
 import Ticket from "../components/Ticket/Ticket";
 import ServicesSection from "../sections/ServicesSection";
-import DoctorsSection from "../sections/DoctorsSection";
-import BranchesSection from "../sections/BranchesSections";
-import WhyChooseUsSection from "../sections/WhyChooseUsSection";
-import FAQSection from "../sections/FaqSection";
-import ContactForm from "../components/ContactForm/ContactForm";
-import Footer from "../components/Footer/Footer";
 import SeoHead from "../components/Seo/SeoHead";
-import {
-    API_BASE_URL,
-    LOCAL_STRAPI_FALLBACK,
-    fetchWithEndpointFallback,
-} from "../api/foundation";
+import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
+import { fetchWithEndpointFallback } from "../api/foundation";
 import { getStaticSeo } from "../seo/seoConfig";
 
-const API_URL = API_BASE_URL || LOCAL_STRAPI_FALLBACK;
 const PAGE_SEO = getStaticSeo("home");
+const DoctorsSection = lazy(() => import("../sections/DoctorsSection"));
+const BranchesSection = lazy(() => import("../sections/BranchesSections"));
+const WhyChooseUsSection = lazy(() => import("../sections/WhyChooseUsSection"));
+const FAQSection = lazy(() => import("../sections/FaqSection"));
+const ContactForm = lazy(() => import("../components/ContactForm/ContactForm"));
 const homeFaqTitle = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
 const homeFaqs = [
     {
@@ -149,6 +144,18 @@ const homeFaqs = [
         answer: "Ви можете укласти декларацію з нашим сімейним лікарем, навіть якщо раніше вона була оформлена в іншій клініці. Вам не потрібно нічого робити з попередньою декларацією — під час укладання нової декларації попередня автоматично припиняється. Оформити декларацію можна в будь-якій з наших філій.",
     },
 ];
+
+function runWhenBrowserIsIdle(callback, timeout = 2200) {
+    if (typeof window === "undefined") return undefined;
+
+    if ("requestIdleCallback" in window) {
+        const idleId = window.requestIdleCallback(callback, { timeout });
+        return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(callback, timeout);
+    return () => window.clearTimeout(timeoutId);
+}
 
 export default function Home() {
     const [doctors, setDoctors] = useState([]);
@@ -291,7 +298,11 @@ export default function Home() {
             }
         }
 
-        load();
+        const cancelIdle = runWhenBrowserIsIdle(load);
+
+        return () => {
+            cancelIdle?.();
+        };
     }, []);
 
     return (
@@ -303,18 +314,42 @@ export default function Home() {
             />
             <div className="page-home">
                 <Banner />
-                <DeclarationSection />
+                <RevealOnScroll>
+                    <DeclarationSection />
+                </RevealOnScroll>
                 <Ticket text="САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ ДЛЯ ВАШОГО ЗДОРОВ’Я" />
-                <ServicesSection />
+                <RevealOnScroll>
+                    <ServicesSection />
+                </RevealOnScroll>
 
-                {loading ? null : <DoctorsSection doctors={doctors} />}
-                <BranchesSection />
-                <WhyChooseUsSection />
-                <FAQSection title={homeFaqTitle} faqs={homeFaqs} />
-                <ContactForm
-                    smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
-                    subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
-                />
+                <Suspense fallback={null}>
+                    <RevealOnScroll>
+                        {loading ? (
+                            <div
+                                className="doctors-section-placeholder"
+                                aria-hidden="true"
+                                style={{ minHeight: "640px" }}
+                            />
+                        ) : (
+                            <DoctorsSection doctors={doctors} />
+                        )}
+                    </RevealOnScroll>
+                    <RevealOnScroll>
+                        <BranchesSection />
+                    </RevealOnScroll>
+                    <RevealOnScroll>
+                        <WhyChooseUsSection />
+                    </RevealOnScroll>
+                    <RevealOnScroll>
+                        <FAQSection title={homeFaqTitle} faqs={homeFaqs} />
+                    </RevealOnScroll>
+                    <RevealOnScroll>
+                        <ContactForm
+                            smallTitle="ПОРУЧ, ЩОБ ДОПОМОГТИ"
+                            subtitle="ЗАЛИШТЕ ПОВІДОМЛЕННЯ"
+                        />
+                    </RevealOnScroll>
+                </Suspense>
             </div>
         </div>
     );

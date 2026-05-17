@@ -84,7 +84,7 @@ export default function BranchesSection() {
                 </div>
 
                 <div className="branches-map">
-                    <LazyBranchesMap minHeight={420} />
+                    <LazyBranchesMap minHeight={420} zoom={11} />
                 </div>
 
                 <div className="branches-button-wrapper mobile-only">

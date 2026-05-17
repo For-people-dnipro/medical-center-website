@@ -24,7 +24,10 @@ export default function CookieBanner({
     });
 
     useEffect(() => {
-        initializeGoogleAnalytics(measurementId);
+        if (consent === CONSENT_ACCEPTED) {
+            initializeGoogleAnalytics(measurementId);
+        }
+
         applyAnalyticsConsentState(
             consent === CONSENT_UNSET ? CONSENT_DECLINED : consent,
         );
@@ -42,7 +45,6 @@ export default function CookieBanner({
 
     const handleReject = () => {
         setStoredAnalyticsConsent(CONSENT_DECLINED);
-        initializeGoogleAnalytics(measurementId);
         applyAnalyticsConsentState(CONSENT_DECLINED);
         setConsent(CONSENT_DECLINED);
     };
