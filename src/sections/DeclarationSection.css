@@ -44,7 +44,8 @@
 }
 
 .decl-image {
-    flex: 0 0 clamp(170px, 18vw, 220px);
+    flex: 0 0 clamp(140px, 14vw, 180px);
+    align-self: center;
 }
 
 .decl-image-link {

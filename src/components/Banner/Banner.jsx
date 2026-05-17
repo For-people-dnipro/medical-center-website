@@ -26,7 +26,7 @@ const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";
 const DESKTOP_HERO_WIDTH = 1920;
 const DESKTOP_HERO_HEIGHT = 900;
-const MOBILE_HERO_WIDTH = 1080;
+const MOBILE_HERO_WIDTH = 768;
 const MOZ_ATTRIBUTION_ASSET_MARKERS = [
     "Vam_40_Projdit_Skrining_zdorov_ya_40",
     "1850_3_401a7bac50",

@@ -19,3 +19,11 @@
         transition: none;
     }
 }
+
+@media (min-width: 769px) {
+    .reveal-on-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

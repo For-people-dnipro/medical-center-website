@@ -1,6 +1,6 @@
 import "./DeclarationSection.css";
 import check from "../../public/icons/check.svg";
-import nszulogo from "../assets/nszu.png";
+import nszulogo from "../assets/nszu.svg";
 import Button from "../components/Button/Button";
 
 const FREE_SERVICES_HREF = "/free-services";

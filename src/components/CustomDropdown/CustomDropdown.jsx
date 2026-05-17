@@ -114,13 +114,14 @@ export default function CustomDropdown({
                 id={id}
                 ref={triggerRef}
                 type="button"
+                role="combobox"
                 className="custom-dropdown__trigger"
                 aria-label={ariaLabel || resolvedPlaceholder}
                 aria-haspopup="listbox"
                 aria-expanded={isMenuOpen}
                 aria-controls={menuId}
                 aria-required={ariaRequired || undefined}
-                aria-invalid={ariaInvalid}
+                aria-invalid={ariaInvalid || undefined}
                 aria-describedby={ariaDescribedBy || undefined}
                 disabled={disabled}
                 onClick={() => setIsOpen((state) => !state)}

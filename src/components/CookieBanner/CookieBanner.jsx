@@ -54,7 +54,13 @@ export default function CookieBanner({
     }
 
     return (
-        <div className="cookie-banner" role="dialog" aria-live="polite">
+        <div
+            className="cookie-banner"
+            role="dialog"
+            aria-modal="false"
+            aria-label="Налаштування файлів cookie"
+            aria-live="polite"
+        >
             <div className="cookie-banner__content">
                 <p className="cookie-banner__text">
                     Ми використовуємо cookies для покращення роботи сайту та

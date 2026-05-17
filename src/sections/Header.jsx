@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./Header.css";
 import logo from "../assets/logo_main.svg";
-import ncsuIcon from "../assets/nszu.png";
+import ncsuIcon from "../assets/nszu.svg";
 import arrowIcon from "../../public/icons/arrow-down.svg";
 import { Link, useLocation } from "react-router-dom";
 import { SERVICE_MENU_ITEMS } from "../data/servicesCatalog";

@@ -44,6 +44,12 @@
         <link rel="shortcut icon" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="canonical" href="https://forpeople.com.ua/" />
+
+        <!-- LCP optimisation: warm up CDN connections (URLs from env) -->
+        <link rel="preconnect" href="%VITE_CDN_URL%" crossorigin />
+        <link rel="preconnect" href="%VITE_API_URL%" crossorigin />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
         <title>Медичний центр | Для людей, Дніпро</title>
     </head>
     <body>
