@@ -157,6 +157,19 @@ body.route-screening-40-plus .footer {
     width: 25px;
     height: 25px;
 }
+.footer-socials .footer-icon {
+    width: 25px;
+    height: 25px;
+    stroke: #008b96;
+    stroke-width: 1.25;
+    transition:
+        transform 0.22s ease,
+        opacity 0.22s ease;
+}
+.footer-socials a:hover .footer-icon {
+    transform: translateY(-2px);
+    opacity: 1;
+}
 .footer-icon {
     display: block;
     stroke-width: 1.25;

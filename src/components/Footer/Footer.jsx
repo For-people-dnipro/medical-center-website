@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Footer.css";
 import logofooter from "../../assets/logo_footer.svg";
 import MapPin from "../MapPin";
+import { Instagram, Facebook } from "lucide-react";
 
 export default function Footer() {
     const [isRulesInMenu, setIsRulesInMenu] = useState(false);
@@ -196,29 +197,21 @@ export default function Footer() {
                 </a>
 
                 <div className="footer-socials" aria-label="Соцмережі">
-                    <a href="https://www.instagram.com/medcentr_dl?igsh=MXFjN3dsOWxneHhrYg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <img
-                            className="footer-icon"
-                            src="/icons/icon-instagram.svg"
-                            alt=""
-                            aria-hidden="true"
-                            width="29"
-                            height="28"
-                            loading="lazy"
-                            decoding="async"
-                        />
+                    <a
+                        href="https://www.instagram.com/medcentr_dl?igsh=MXFjN3dsOWxneHhrYg=="
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram"
+                    >
+                        <Instagram className="footer-icon" aria-hidden="true" />
                     </a>
-                    <a href="https://www.facebook.com/profile.php?id=61582468588174" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                        <img
-                            className="footer-icon"
-                            src="/icons/icon-facebook.svg"
-                            alt=""
-                            aria-hidden="true"
-                            width="36"
-                            height="34"
-                            loading="lazy"
-                            decoding="async"
-                        />
+                    <a
+                        href="https://www.facebook.com/profile.php?id=61582468588174"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook"
+                    >
+                        <Facebook className="footer-icon" aria-hidden="true" />
                     </a>
                 </div>
 

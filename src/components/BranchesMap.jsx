@@ -29,7 +29,7 @@ const PIN_PATH =
 const WHITE_DOT_PATH =
     "M0,-7.8 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0";
 
-const DEFAULT_CENTER = { lat: 48.4272, lng: 35.0019 };
+const DEFAULT_CENTER = { lat: 48.418, lng: 35.0019 };
 const SCRIPT_ID = "branches-google-maps-script";
 const MAP_OPTIONS = {
     scrollwheel: false,
