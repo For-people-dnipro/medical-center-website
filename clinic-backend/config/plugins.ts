@@ -34,8 +34,20 @@ export default ({ env }) => {
             },
           },
           actionOptions: {
-            upload: {},
-            uploadStream: {},
+            upload: {
+              ACL: env('AWS_ACL', 'public-read'),
+              CacheControl: env(
+                'AWS_CACHE_CONTROL',
+                'public, max-age=31536000, immutable',
+              ),
+            },
+            uploadStream: {
+              ACL: env('AWS_ACL', 'public-read'),
+              CacheControl: env(
+                'AWS_CACHE_CONTROL',
+                'public, max-age=31536000, immutable',
+              ),
+            },
             delete: {},
           },
           ...sharedUploadConfig,
