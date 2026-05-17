@@ -8,7 +8,7 @@
 
 @media (max-width: 768px) {
     :root {
-        --mobile-cta-height: 52px;
+        --mobile-cta-height: 0px;
     }
 
     .mobile-cta {
