@@ -62,7 +62,6 @@ function getIsMobileViewport() {
 export default function DoctorsPage() {
     const [searchParams] = useSearchParams();
     const branchFromQuery = toFilterParam(searchParams.get("branch"));
-    const [doctors, setDoctors] = useState([]);
     const [branches, setBranches] = useState([]);
     const [specialisations, setSpecialisations] = useState([]);
     const [initialLoading, setInitialLoading] = useState(true);

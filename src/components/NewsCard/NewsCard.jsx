@@ -1,16 +1,23 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { formatNewsDate, prefetchNewsBySlug } from "../../api/newsApi";
 import { getResponsiveImageProps } from "../../api/foundation";
 import "./NewsCard.css";
 
-function canPrefetchOnHover() {
+function canPrefetchNews() {
     if (typeof navigator === "undefined") return true;
 
     const connection = navigator.connection || navigator.mozConnection;
-    return connection?.saveData !== true;
+    if (connection?.saveData === true) {
+        return false;
+    }
+
+    const effectiveType = String(connection?.effectiveType || "").toLowerCase();
+    return !effectiveType.includes("2g");
 }
 
 export default function NewsCard({ item, priority = false }) {
+    const hasPrefetchedRef = useRef(false);
     const dateLabel = formatNewsDate(item.publishedDate);
     const cardImage = item.coverImageCard || item.coverImage;
     const newsTitle = String(item?.title || "Новина").trim();
@@ -22,7 +29,8 @@ export default function NewsCard({ item, priority = false }) {
         sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     });
     const handlePrefetch = () => {
-        if (!item?.slug || !canPrefetchOnHover()) return;
+        if (hasPrefetchedRef.current || !item?.slug || !canPrefetchNews()) return;
+        hasPrefetchedRef.current = true;
         prefetchNewsBySlug(item.slug);
     };
 
@@ -40,7 +48,8 @@ export default function NewsCard({ item, priority = false }) {
                 to={`/news/${item.slug}`}
                 className="news-card__link"
                 state={{ newsItem: item }}
-                onMouseEnter={handlePrefetch}
+                onPointerDown={handlePrefetch}
+                onFocus={handlePrefetch}
             >
                 <div className="news-card__media">
                     {imageProps?.src ? (

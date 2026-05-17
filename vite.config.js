@@ -3,10 +3,19 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), "");
+    const isProductionBuild = mode === "production";
+    const configuredApiUrl =
+        env.VITE_API_URL || env.VITE_STRAPI_URL || "";
+
+    if (isProductionBuild && !configuredApiUrl.trim()) {
+        throw new Error(
+            "Production build requires VITE_API_URL or VITE_STRAPI_URL.",
+        );
+    }
+
     const apiProxyTarget =
         env.VITE_API_PROXY_TARGET ||
-        env.VITE_API_URL ||
-        env.VITE_STRAPI_URL ||
+        configuredApiUrl ||
         "http://localhost:1337";
 
     return {

@@ -13,8 +13,7 @@ import SeoHead from "../components/Seo/SeoHead";
 import {
     API_BASE_URL,
     LOCAL_STRAPI_FALLBACK,
-    buildApiUrl,
-    fetchJson,
+    fetchWithEndpointFallback,
 } from "../api/foundation";
 import { getStaticSeo } from "../seo/seoConfig";
 
@@ -223,44 +222,57 @@ export default function Home() {
             try {
                 let items = [];
 
-                const homepagePayload = await fetchJson(
-                    buildApiUrl("/api/homepage", {
-                        "populate[featured_doctors][populate][0]": "photo",
-                        "populate[featured_doctors][populate][1]": "branch",
-                        "populate[featured_doctors][populate][2]": "specialisations",
-                    }),
-                );
-                items = extractFeaturedDoctors(homepagePayload);
+                try {
+                    const homepagePayload = await fetchWithEndpointFallback({
+                        endpoints: ["/api/homepage"],
+                        paramsVariants: [
+                            {
+                                "populate[featured_doctors][populate][0]": "photo",
+                                "populate[featured_doctors][populate][1]": "branch",
+                                "populate[featured_doctors][populate][2]":
+                                    "specialisations",
+                            },
+                        ],
+                        retryStatusCodes: [],
+                    });
+                    items = extractFeaturedDoctors(homepagePayload);
+                } catch (homepageError) {
+                    console.warn("Homepage featured doctors request skipped:", homepageError);
+                }
 
                 if (!items.length) {
-                    const doctorsPayload = await fetchJson(
-                        buildApiUrl("/api/doctors", {
-                            "fields[0]": "name",
-                            "fields[1]": "surname",
-                            "fields[2]": "slug",
-                            "fields[3]": "positionShort",
-                            "fields[4]": "positionLong",
-                            "fields[5]": "startYear",
-                            "fields[6]": "order",
-                            "fields[7]": "homepage_priority",
-                            "fields[8]": "show_on_homepage",
-                            "fields[9]": "isActive",
-                            "populate[photo][fields][0]": "url",
-                            "populate[photo][fields][1]": "alternativeText",
-                            "populate[photo][fields][2]": "width",
-                            "populate[photo][fields][3]": "height",
-                            "populate[photo][fields][4]": "formats",
-                            "populate[branch][fields][0]": "name",
-                            "populate[branch][fields][1]": "slug",
-                            "populate[branch][fields][2]": "address",
-                            "populate[specialisations][fields][0]": "name",
-                            "populate[specialisations][fields][1]": "slug",
-                            "pagination[pageSize]": 8,
-                            "sort[0]": "order:asc",
-                            "sort[1]": "surname:asc",
-                            "sort[2]": "name:asc",
-                        }),
-                    );
+                    const doctorsPayload = await fetchWithEndpointFallback({
+                        endpoints: ["/api/doctors"],
+                        paramsVariants: [
+                            {
+                                "fields[0]": "name",
+                                "fields[1]": "surname",
+                                "fields[2]": "slug",
+                                "fields[3]": "positionShort",
+                                "fields[4]": "positionLong",
+                                "fields[5]": "startYear",
+                                "fields[6]": "order",
+                                "fields[7]": "homepage_priority",
+                                "fields[8]": "show_on_homepage",
+                                "fields[9]": "isActive",
+                                "populate[photo][fields][0]": "url",
+                                "populate[photo][fields][1]": "alternativeText",
+                                "populate[photo][fields][2]": "width",
+                                "populate[photo][fields][3]": "height",
+                                "populate[photo][fields][4]": "formats",
+                                "populate[branch][fields][0]": "name",
+                                "populate[branch][fields][1]": "slug",
+                                "populate[branch][fields][2]": "address",
+                                "populate[specialisations][fields][0]": "name",
+                                "populate[specialisations][fields][1]": "slug",
+                                "pagination[pageSize]": 8,
+                                "sort[0]": "order:asc",
+                                "sort[1]": "surname:asc",
+                                "sort[2]": "name:asc",
+                            },
+                        ],
+                        retryStatusCodes: [],
+                    });
                     const allDoctors = Array.isArray(doctorsPayload?.data)
                         ? doctorsPayload.data
                         : [];

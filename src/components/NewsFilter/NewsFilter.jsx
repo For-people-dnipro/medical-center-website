@@ -5,6 +5,7 @@ export default function NewsFilter({
     themes = [],
     selectedTheme = "",
     onChange,
+    onOpen,
 }) {
     const rootRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +78,15 @@ export default function NewsFilter({
                     className="news-filter__trigger"
                     aria-haspopup="listbox"
                     aria-expanded={isOpen}
-                    onClick={() => setIsOpen((state) => !state)}
+                    onClick={() =>
+                        setIsOpen((state) => {
+                            const nextState = !state;
+                            if (nextState) {
+                                onOpen?.();
+                            }
+                            return nextState;
+                        })
+                    }
                 >
                     <span className="news-filter__trigger-label">
                         {triggerLabel}

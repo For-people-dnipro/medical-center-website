@@ -24,14 +24,9 @@ const HOME_SLIDES_ENDPOINT =
         "fields[3]": "buttonText",
         "fields[4]": "buttonLink",
         "fields[5]": "buttonColor",
-        "populate[photodesktop][fields][0]": "url",
-        "populate[photodesktop][fields][1]": "width",
-        "populate[photodesktop][fields][2]": "height",
-        "populate[photodesktop][fields][3]": "formats",
-        "populate[photomobile][fields][0]": "url",
-        "populate[photomobile][fields][1]": "width",
-        "populate[photomobile][fields][2]": "height",
-        "populate[photomobile][fields][3]": "formats",
+        "sort[0]": "order:asc",
+        "populate[photodesktop]": "*",
+        "populate[photomobile]": "*",
     }).toString();
 const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";

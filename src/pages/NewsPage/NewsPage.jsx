@@ -112,6 +112,9 @@ export default function NewsPage() {
     const newsListSectionRef = useRef(null);
 
     const [themes, setThemes] = useState([]);
+    const [shouldLoadThemes, setShouldLoadThemes] = useState(
+        () => Boolean(themeSlug),
+    );
     const [newsItems, setNewsItems] = useState([]);
     const [isMobileViewport, setIsMobileViewport] = useState(getIsMobileViewport);
     const [visibleCount, setVisibleCount] = useState(SMALL_NEWS_INITIAL_COUNT);
@@ -177,6 +180,10 @@ export default function NewsPage() {
         : null;
 
     useEffect(() => {
+        if (!shouldLoadThemes) {
+            return undefined;
+        }
+
         const controller = new AbortController();
 
         async function loadThemes() {
@@ -192,7 +199,7 @@ export default function NewsPage() {
         loadThemes();
 
         return () => controller.abort();
-    }, []);
+    }, [shouldLoadThemes]);
 
     useEffect(() => {
         if (typeof window === "undefined") return undefined;
@@ -335,6 +342,7 @@ export default function NewsPage() {
     ]);
 
     const handleThemeChange = (nextTheme) => {
+        setShouldLoadThemes(true);
         setSearchParams((previous) => {
             const params = new URLSearchParams(previous);
 
@@ -485,6 +493,7 @@ export default function NewsPage() {
                             themes={themes}
                             selectedTheme={themeSlug}
                             onChange={handleThemeChange}
+                            onOpen={() => setShouldLoadThemes(true)}
                         />
                     </div>
                 </div>
