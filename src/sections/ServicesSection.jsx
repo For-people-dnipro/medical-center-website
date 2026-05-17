@@ -57,6 +57,7 @@ export default function ServicesSection() {
                                     <img
                                         src={item.icon}
                                         alt=""
+                                        aria-hidden="true"
                                         loading={prioritizeImages ? "eager" : "lazy"}
                                         fetchpriority={
                                             prioritizeImages ? "high" : "auto"
@@ -88,6 +89,7 @@ export default function ServicesSection() {
                             <img
                                 src="/icons/arrow-right.svg"
                                 alt=""
+                                aria-hidden="true"
                                 className="service-arrow"
                                 loading={prioritizeImages ? "eager" : "lazy"}
                                 fetchpriority={prioritizeImages ? "high" : "auto"}
@@ -138,6 +140,7 @@ export default function ServicesSection() {
                                                                 item.iconMobile
                                                             }
                                                             alt=""
+                                                            aria-hidden="true"
                                                             loading={
                                                                 prioritizeImages
                                                                     ? "eager"
@@ -162,6 +165,7 @@ export default function ServicesSection() {
                                                 <img
                                                     src="/icons/arrow-right.svg"
                                                     alt=""
+                                                    aria-hidden="true"
                                                     className="service-arrow"
                                                     loading={
                                                         prioritizeImages

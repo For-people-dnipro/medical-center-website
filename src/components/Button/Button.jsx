@@ -45,6 +45,7 @@ export default function Button({
                         <img
                             src="/icons/arrow-right.svg"
                             alt=""
+                            aria-hidden="true"
                             className="ui-button-arrow"
                         />
                     )}
@@ -66,6 +67,7 @@ export default function Button({
                     <img
                         src="/icons/arrow-right.svg"
                         alt=""
+                        aria-hidden="true"
                         className="ui-button-arrow"
                     />
                 )}
@@ -86,6 +88,7 @@ export default function Button({
                 <img
                     src="/icons/arrow-right.svg"
                     alt=""
+                    aria-hidden="true"
                     className="ui-button-arrow"
                 />
             )}

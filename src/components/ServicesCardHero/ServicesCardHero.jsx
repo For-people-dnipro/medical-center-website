@@ -63,7 +63,7 @@ export default function ServicesCardHero({
                         <div className="services-card-hero__title">
                             {icon && (
                                 <span className="services-card-hero__icon">
-                                    <img src={icon} alt="" />
+                                    <img src={icon} alt="" aria-hidden="true" />
                                 </span>
                             )}
                             <h1>{uiTitle}</h1>

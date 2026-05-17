@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import VacancyItem from "../VacancyItem/VacancyItem";
 import { useVacancies } from "./useVacancies";
 import { DEFAULT_ENDPOINT } from "./vacanciesList.utils";
@@ -22,7 +22,6 @@ export default function VacanciesList({
     endpoint = DEFAULT_ENDPOINT,
     sectionId = "vacancies-list",
 }) {
-    const accordionRef = useRef(null);
     const [openId, setOpenId] = useState(null);
     const { error, loading, vacancies } = useVacancies(endpoint);
 
@@ -38,26 +37,19 @@ export default function VacanciesList({
     useEffect(() => {
         if (openId === null) return;
 
-        const handleOutsideClick = (event) => {
-            const root = accordionRef.current;
-            if (!root || !(event.target instanceof Node)) return;
-
-            const activeItem = root.querySelector(".vacancy-item.is-open");
-            if (!activeItem) return;
-
-            if (!activeItem.contains(event.target)) {
-                setOpenId(null);
-            }
+        const handleDocumentClick = (event) => {
+            if (event.target.closest(".vacancy-item__trigger")) return;
+            if (event.target.closest("a, button")) return;
+            setOpenId(null);
         };
 
-        document.addEventListener("mousedown", handleOutsideClick);
-        document.addEventListener("touchstart", handleOutsideClick, {
-            passive: true,
-        });
+        const timeoutId = window.setTimeout(() => {
+            document.addEventListener("click", handleDocumentClick);
+        }, 0);
 
         return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-            document.removeEventListener("touchstart", handleOutsideClick);
+            window.clearTimeout(timeoutId);
+            document.removeEventListener("click", handleDocumentClick);
         };
     }, [openId]);
 
@@ -74,11 +66,7 @@ export default function VacanciesList({
                     {title}
                 </h2>
 
-                <div
-                    ref={accordionRef}
-                    className="vacancies-list__items"
-                    aria-live="polite"
-                >
+                <div className="vacancies-list__items" aria-live="polite">
                     {loading ? <SkeletonList /> : null}
 
                     {!loading && error ? (

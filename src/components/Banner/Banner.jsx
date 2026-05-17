@@ -20,13 +20,12 @@ const HOME_SLIDES_ENDPOINT =
     new URLSearchParams({
         "fields[0]": "order",
         "fields[1]": "buttonEnabled",
-        "fields[2]": "showButton",
-        "fields[3]": "buttonText",
-        "fields[4]": "buttonLink",
-        "fields[5]": "buttonColor",
+        "fields[2]": "buttonText",
+        "fields[3]": "buttonLink",
+        "fields[4]": "buttonColor",
         "sort[0]": "order:asc",
-        "populate[photodesktop]": "*",
-        "populate[photomobile]": "*",
+        "populate[0]": "photodesktop",
+        "populate[1]": "photomobile",
     }).toString();
 const DEFAULT_BUTTON_COLOR = "#302528";
 const MOZ_SOURCE_URL = "https://moz.gov.ua";
@@ -240,12 +239,20 @@ export default function Banner() {
                 slidesPerView={1}
                 allowTouchMove
             >
-                <button className="banner-arrow banner-arrow-left">
-                    <img src="/icons/arrow-left.svg" alt="" />
+                <button
+                    type="button"
+                    className="banner-arrow banner-arrow-left"
+                    aria-label="Попередній слайд"
+                >
+                    <img src="/icons/arrow-left.svg" alt="" aria-hidden="true" />
                 </button>
 
-                <button className="banner-arrow banner-arrow-right">
-                    <img src="/icons/arrow-right.svg" alt="" />
+                <button
+                    type="button"
+                    className="banner-arrow banner-arrow-right"
+                    aria-label="Наступний слайд"
+                >
+                    <img src="/icons/arrow-right.svg" alt="" aria-hidden="true" />
                 </button>
 
                 {slides.map((slide, index) => {

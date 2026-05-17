@@ -140,11 +140,14 @@ export default function Header() {
                             ref={servicesToggleRef}
                             className="mobile-dropdown-toggle"
                             onClick={() => setServicesOpen((v) => !v)}
+                            aria-expanded={servicesOpen}
+                            aria-label="Меню послуг"
                         >
                             <span>Послуги</span>
                             <img
                                 src={arrowIcon}
                                 alt=""
+                                aria-hidden="true"
                                 className={`arrow-icon ${servicesOpen ? "open" : ""}`}
                             />
                         </button>

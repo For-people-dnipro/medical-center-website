@@ -154,7 +154,7 @@ function renderBodyNode(node, key) {
                     src={imageProps.src}
                     srcSet={imageProps.srcSet}
                     sizes={imageProps.sizes}
-                    alt={image.alt}
+                    alt={image.alt || ""}
                     width={imageProps.width}
                     height={imageProps.height}
                     loading="lazy"
@@ -217,7 +217,7 @@ function renderDynamicZoneItem(entry, index) {
                     src={imageProps.src}
                     srcSet={imageProps.srcSet}
                     sizes={imageProps.sizes}
-                    alt={source.alt || image.alt}
+                    alt={source.alt || image.alt || ""}
                     width={imageProps.width}
                     height={imageProps.height}
                     loading="lazy"

@@ -19,7 +19,7 @@ export default function MobileCTA() {
                 }
             >
                 <span className="mobile-cta-button__icon" aria-hidden="true">
-                    <img src="/icons/lab.svg" alt="" />
+                    <img src="/icons/lab.svg" alt="" aria-hidden="true" />
                 </span>
                 <span className="mobile-cta-button__title">
                     Результати аналізів

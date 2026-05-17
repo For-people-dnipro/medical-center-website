@@ -110,15 +110,15 @@ export default function Footer() {
                         {branches.map((b, i) => (
                             <div className="footer-contact-block" key={i}>
                                 <p>
-                                    <img src="/icons/icon-location.svg" alt="" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-location.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                                     {b.address}
                                 </p>
                                 <p>
-                                    <img src="/icons/icon-clock.svg" alt="" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-clock.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                                     {b.hours}
                                 </p>
                                 <p>
-                                    <img src="/icons/icon-phone.svg" alt="" loading="lazy" decoding="async" />
+                                    <img src="/icons/icon-phone.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                                     <a href={`tel:${b.phoneHref}`}>{b.phoneDisplay}</a>
                                 </p>
                             </div>

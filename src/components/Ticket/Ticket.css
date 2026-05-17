@@ -39,12 +39,19 @@
 
 @media (max-width: 768px) {
     .ticket-wrapper {
-        --ticket-gap: 56px;
-        --ticket-font-size: 16px;
-        padding: 10px 0;
+        --ticket-gap: 52px;
+        --ticket-font-size: 15px;
+        padding: 9px 0;
     }
 
     .ticket-item {
-        letter-spacing: 0.45px;
+        letter-spacing: 0.4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ticket-wrapper {
+        --ticket-gap: 44px;
+        --ticket-font-size: 14px;
     }
 }

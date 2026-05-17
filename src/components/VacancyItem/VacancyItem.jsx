@@ -21,7 +21,33 @@ function splitDescription(value) {
 
 export default function VacancyItem({ vacancy, isOpen, onToggle }) {
     const contentRef = useRef(null);
+    const articleRef = useRef(null);
     const [contentHeight, setContentHeight] = useState(0);
+
+    useEffect(() => {
+        if (!isOpen || !articleRef.current) return;
+
+        const TRANSITION_MS = 380;
+        const EXTRA_GAP = 16;
+
+        const scrollToArticle = () => {
+            if (!articleRef.current) return;
+            const header = document.querySelector(".header");
+            const headerHeight = header ? header.getBoundingClientRect().height : 0;
+            const rectTop = articleRef.current.getBoundingClientRect().top;
+
+            if (rectTop >= headerHeight && rectTop <= window.innerHeight * 0.4) {
+                return;
+            }
+
+            const top =
+                rectTop + window.scrollY - headerHeight - EXTRA_GAP;
+            window.scrollTo({ top, behavior: "smooth" });
+        };
+
+        const timeoutId = window.setTimeout(scrollToArticle, TRANSITION_MS);
+        return () => window.clearTimeout(timeoutId);
+    }, [isOpen]);
 
     useEffect(() => {
         const contentElement = contentRef.current;
@@ -56,7 +82,10 @@ export default function VacancyItem({ vacancy, isOpen, onToggle }) {
     );
 
     return (
-        <article className={`vacancy-item ${isOpen ? "is-open" : ""}`}>
+        <article
+            ref={articleRef}
+            className={`vacancy-item ${isOpen ? "is-open" : ""}`}
+        >
             <button
                 id={triggerId}
                 type="button"
