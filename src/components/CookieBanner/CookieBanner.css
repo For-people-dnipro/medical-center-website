@@ -71,7 +71,7 @@
 
 @media (max-width: 768px) {
     .cookie-banner {
-        bottom: calc(58px + env(safe-area-inset-bottom));
+        bottom: calc(8px + env(safe-area-inset-bottom));
         z-index: 1400;
         padding: 0 10px;
     }
