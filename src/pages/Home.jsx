@@ -2,13 +2,13 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import Banner from "../components/Banner/Banner";
 import DeclarationSection from "../sections/DeclarationSection";
 import Ticket from "../components/Ticket/Ticket";
-import ServicesSection from "../sections/ServicesSection";
 import SeoHead from "../components/Seo/SeoHead";
 import RevealOnScroll from "../components/RevealOnScroll/RevealOnScroll";
 import { fetchWithEndpointFallback } from "../api/foundation";
 import { getStaticSeo } from "../seo/seoConfig";
 
 const PAGE_SEO = getStaticSeo("home");
+const ServicesSection = lazy(() => import("../sections/ServicesSection"));
 const DoctorsSection = lazy(() => import("../sections/DoctorsSection"));
 const BranchesSection = lazy(() => import("../sections/BranchesSections"));
 const WhyChooseUsSection = lazy(() => import("../sections/WhyChooseUsSection"));
@@ -318,11 +318,11 @@ export default function Home() {
                     <DeclarationSection />
                 </RevealOnScroll>
                 <Ticket text="САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ ДЛЯ ВАШОГО ЗДОРОВ’Я" />
-                <RevealOnScroll>
-                    <ServicesSection />
-                </RevealOnScroll>
 
                 <Suspense fallback={null}>
+                    <RevealOnScroll>
+                        <ServicesSection />
+                    </RevealOnScroll>
                     <RevealOnScroll>
                         {loading ? (
                             <div

@@ -39,10 +39,18 @@ const STATIC_HOME_SLIDES = Object.freeze([
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp",
         photodesktopSrcSet:
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_nout_a6ff75aa64.webp 768w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_nout_a6ff75aa64.webp 1200w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_nout_a6ff75aa64.webp 1600w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp 1920w",
+        photodesktopAvif:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_ecfa01a432.avif",
+        photodesktopAvifSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_ecfa01a432.avif",
         photomobile:
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp",
         photomobileSrcSet:
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_baner_1_tf_5e7797be8d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_tf_5e7797be8d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_tf_5e7797be8d.webp 934w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp 1080w",
+        photomobileAvif:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_8731b396d7.avif",
+        photomobileAvifSrcSet:
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_8731b396d7.avif",
         buttonEnabled: false,
         buttonText: "",
         buttonLink: "",
@@ -522,6 +530,21 @@ export default function Banner() {
                             aria-hidden={!isActive}
                         >
                             <picture>
+                                {slide.photomobileAvifSrcSet ? (
+                                    <source
+                                        type="image/avif"
+                                        media="(max-width: 768px)"
+                                        srcSet={slide.photomobileAvifSrcSet}
+                                        sizes="100vw"
+                                    />
+                                ) : null}
+                                {slide.photodesktopAvifSrcSet ? (
+                                    <source
+                                        type="image/avif"
+                                        srcSet={slide.photodesktopAvifSrcSet}
+                                        sizes="100vw"
+                                    />
+                                ) : null}
                                 <source
                                     media="(max-width: 768px)"
                                     srcSet={

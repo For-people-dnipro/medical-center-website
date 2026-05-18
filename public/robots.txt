@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /check-up
 
 Sitemap: https://forpeople.com.ua/sitemap.xml
