@@ -123,10 +123,16 @@ async function fetchDynamicEntries() {
         fetchFirstAvailable([
             `${API_BASE_URL}/api/news?populate=*&pagination[pageSize]=1000`,
             `${API_BASE_URL}/api/news-items?populate=*&pagination[pageSize]=1000`,
-        ]).catch(() => ({ data: [] })),
+        ]).catch((error) => {
+            console.warn("[generate-static-og-pages] news fetch failed:", error.message);
+            return { data: [] };
+        }),
         fetchJson(
             `${API_BASE_URL}/api/doctors?populate=*&filters[isActive][$eq]=true&pagination[pageSize]=1000`,
-        ).catch(() => ({ data: [] })),
+        ).catch((error) => {
+            console.warn("[generate-static-og-pages] doctors fetch failed:", error.message);
+            return { data: [] };
+        }),
     ]);
 
     const newsEntries = extractCollectionRows(newsPayload)
@@ -206,11 +212,16 @@ function escapeRegex(value) {
     return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+const DEFAULT_SITE_URL = "https://forpeople.com.ua";
+
+function getSiteUrl() {
+    return String(process.env.VITE_SITE_URL || DEFAULT_SITE_URL)
+        .trim()
+        .replace(/\/+$/, "");
+}
+
 function buildPublicUrl(rawPath = "/") {
-    const siteUrl = String(process.env.VITE_SITE_URL || "").trim().replace(
-        /\/+$/,
-        "",
-    );
+    const siteUrl = getSiteUrl();
     const normalizedPath = rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
 
     if (!siteUrl) {
@@ -384,6 +395,14 @@ async function main() {
             )
             .join("\n")}\n</urlset>\n`;
         await fs.writeFile(DIST_SITEMAP_PATH, sitemapXml, "utf8");
+        console.log(
+            `[generate-static-og-pages] sitemap.xml written: ${sitemapEntries.length} URLs ` +
+                `(${STATIC_ROUTES.length} static + ${dynamicEntries.length} dynamic).`,
+        );
+    } else {
+        console.warn(
+            "[generate-static-og-pages] sitemap.xml NOT written — no valid URLs (check VITE_SITE_URL).",
+        );
     }
 }
 

@@ -13,6 +13,9 @@
     align-items: center;
     gap: 20px;
     cursor: pointer;
+    color: var(--color-text-main);
+    -webkit-text-fill-color: var(--color-text-main);
+    font-family: inherit;
 }
 
 .vacancy-item__head {

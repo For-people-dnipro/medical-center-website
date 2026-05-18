@@ -79,6 +79,19 @@
 
 .faq-answer-scroll.has-scroll {
     overflow-y: auto;
+    position: relative;
+    mask-image: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 calc(100% - 28px),
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 calc(100% - 28px),
+        transparent 100%
+    );
 }
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar {

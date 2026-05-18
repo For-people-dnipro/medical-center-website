@@ -30,30 +30,20 @@
     height: 100%;
     overflow: hidden;
     pointer-events: none;
-    transform: translateX(100%);
-    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    will-change: opacity;
 }
 
-.banner-slider[data-direction="prev"] .banner-slide {
-    transform: translateX(-100%);
-}
-
-.banner-slide--active,
-.banner-slider[data-direction="prev"] .banner-slide--active,
-.banner-slider[data-direction="next"] .banner-slide--active {
-    transform: translateX(0);
+.banner-slide--active {
+    opacity: 1;
     pointer-events: auto;
-    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
 }
 
-.banner-slider[data-direction="next"] .banner-slide--prev {
-    transform: translateX(-100%);
-    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.banner-slider[data-direction="prev"] .banner-slide--prev {
-    transform: translateX(100%);
-    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+.banner-slide--prev {
+    opacity: 0;
+    z-index: 1;
 }
 
 .banner-slide picture {

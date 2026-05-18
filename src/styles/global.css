@@ -47,6 +47,12 @@ body {
 * {
     font-family: "Montserrat", sans-serif;
 }
+
+button {
+    color: inherit;
+    -webkit-text-fill-color: inherit;
+    font: inherit;
+}
 html,
 body {
     scrollbar-width: none;
