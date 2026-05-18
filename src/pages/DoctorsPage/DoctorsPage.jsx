@@ -200,14 +200,6 @@ export default function DoctorsPage() {
             if (tokens.length > 0) {
                 result = result.filter((doc) => {
                     const attrs = doc?.attributes ?? doc ?? {};
-                    const specs =
-                        attrs.specialisations?.data ??
-                        attrs.specialisations ??
-                        [];
-                    const branch =
-                        attrs.branch?.data?.attributes ??
-                        attrs.branch ??
-                        {};
 
                     const haystack = [
                         attrs.name,
@@ -217,16 +209,6 @@ export default function DoctorsPage() {
                         attrs.middleName,
                         attrs.fullName,
                         attrs.displayName,
-                        attrs.positionShort,
-                        attrs.positionLong,
-                        attrs.position,
-                        attrs.primarySpecialisation,
-                        attrs.address,
-                        branch.name,
-                        branch.address,
-                        ...specs.map(
-                            (s) => s?.name ?? s?.attributes?.name ?? "",
-                        ),
                     ]
                         .filter(Boolean)
                         .join(" ")
