@@ -191,12 +191,50 @@ export default function DoctorsPage() {
         }
 
         if (debouncedSearchValue) {
-            const query = debouncedSearchValue.toLowerCase();
-            result = result.filter((doc) => {
-                const attrs = doc?.attributes ?? doc ?? {};
-                const name = `${attrs.name ?? ""} ${attrs.surname ?? ""}`.toLowerCase();
-                return name.includes(query);
-            });
+            const tokens = debouncedSearchValue
+                .toLowerCase()
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+
+            if (tokens.length > 0) {
+                result = result.filter((doc) => {
+                    const attrs = doc?.attributes ?? doc ?? {};
+                    const specs =
+                        attrs.specialisations?.data ??
+                        attrs.specialisations ??
+                        [];
+                    const branch =
+                        attrs.branch?.data?.attributes ??
+                        attrs.branch ??
+                        {};
+
+                    const haystack = [
+                        attrs.name,
+                        attrs.surname,
+                        attrs.firstName,
+                        attrs.lastName,
+                        attrs.middleName,
+                        attrs.fullName,
+                        attrs.displayName,
+                        attrs.positionShort,
+                        attrs.positionLong,
+                        attrs.position,
+                        attrs.primarySpecialisation,
+                        attrs.address,
+                        branch.name,
+                        branch.address,
+                        ...specs.map(
+                            (s) => s?.name ?? s?.attributes?.name ?? "",
+                        ),
+                    ]
+                        .filter(Boolean)
+                        .join(" ")
+                        .toLowerCase();
+
+                    return tokens.every((token) => haystack.includes(token));
+                });
+            }
         }
 
         return result;
