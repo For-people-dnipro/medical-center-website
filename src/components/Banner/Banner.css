@@ -312,7 +312,7 @@
     }
 
     .banner-image {
-        object-fit: cover;
+        object-fit: contain;
         object-position: center top;
     }
 
@@ -337,9 +337,11 @@
 
     .banner-attribution {
         right: 1.2%;
-        bottom: 0.6%;
+        bottom: calc(0.6% + env(safe-area-inset-bottom, 0px));
         padding: 0;
         font-size: 11px;
+        z-index: 10;
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
     }
 
     .banner-arrow,
