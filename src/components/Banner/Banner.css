@@ -38,7 +38,9 @@
     transform: translateX(-100%);
 }
 
-.banner-slide--active {
+.banner-slide--active,
+.banner-slider[data-direction="prev"] .banner-slide--active,
+.banner-slider[data-direction="next"] .banner-slide--active {
     transform: translateX(0);
     pointer-events: auto;
     transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
@@ -296,8 +298,8 @@
 
 @media (max-width: 768px) {
     .banner-container {
-        --banner-aspect-ratio: 1080 / 1850;
-        aspect-ratio: 1080 / 1850;
+        --banner-aspect-ratio: 1080 / 1600;
+        aspect-ratio: 1080 / 1600;
         width: 100%;
         max-width: 100%;
         height: auto;
@@ -305,7 +307,7 @@
     }
 
     .banner-image {
-        object-fit: cover;
+        object-fit: contain;
         object-position: center center;
     }
 
