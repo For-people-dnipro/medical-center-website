@@ -32,6 +32,17 @@
     max-width: none;
 }
 
+.cookie-banner__link {
+    color: #008b96;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.cookie-banner__link:hover {
+    opacity: 0.8;
+}
+
 .cookie-banner__actions {
     display: inline-flex;
     align-items: center;

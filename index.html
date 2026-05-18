@@ -48,7 +48,28 @@
         <!-- LCP optimisation: warm up CDN connections (URLs from env) -->
         <link rel="preconnect" href="%VITE_CDN_URL%" crossorigin />
         <link rel="preconnect" href="%VITE_API_URL%" crossorigin />
+        <link rel="preconnect" href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev" crossorigin />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+        <!-- LCP preload: first hero slide (mobile + desktop) -->
+        <link
+            rel="preload"
+            as="image"
+            href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp"
+            imagesrcset="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_baner_1_tf_5e7797be8d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_tf_5e7797be8d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_tf_5e7797be8d.webp 934w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp 1080w"
+            imagesizes="100vw"
+            media="(max-width: 768px)"
+            fetchpriority="high"
+        />
+        <link
+            rel="preload"
+            as="image"
+            href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp"
+            imagesrcset="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_nout_a6ff75aa64.webp 768w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_nout_a6ff75aa64.webp 1200w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_nout_a6ff75aa64.webp 1600w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_nout_a6ff75aa64.webp 1920w"
+            imagesizes="100vw"
+            media="(min-width: 769px)"
+            fetchpriority="high"
+        />
 
         <title>Медичний центр | Для людей, Дніпро</title>
     </head>

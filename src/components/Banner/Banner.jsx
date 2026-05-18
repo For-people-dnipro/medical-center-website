@@ -549,7 +549,7 @@ export default function Banner() {
                                     fetchPriority={
                                         index === 0 ? "high" : "auto"
                                     }
-                                    decoding="async"
+                                    decoding={index === 0 ? "sync" : "async"}
                                 />
                             </picture>
 

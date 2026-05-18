@@ -63,9 +63,15 @@ export default function CookieBanner({
         >
             <div className="cookie-banner__content">
                 <p className="cookie-banner__text">
-                    Ми використовуємо cookies для покращення роботи сайту та
-                    аналітики. Оберіть, чи погоджуєтесь ви на використання
-                    аналітичних cookies.
+                    Ми використовуємо{" "}
+                    <a
+                        className="cookie-banner__link"
+                        href="/privacy#cookies"
+                    >
+                        cookies
+                    </a>{" "}
+                    для покращення роботи сайту та аналітики. Оберіть, чи
+                    погоджуєтесь ви на використання аналітичних cookies.
                 </p>
 
                 <div className="cookie-banner__actions">
@@ -74,14 +80,14 @@ export default function CookieBanner({
                         className="cookie-banner__button cookie-banner__button--reject"
                         onClick={handleReject}
                     >
-                        Reject
+                        Відхилити
                     </button>
                     <button
                         type="button"
                         className="cookie-banner__button cookie-banner__button--accept"
                         onClick={handleAccept}
                     >
-                        Accept
+                        Прийняти
                     </button>
                 </div>
             </div>

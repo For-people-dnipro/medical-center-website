@@ -237,7 +237,7 @@ export default function PrivacyPolicyPage() {
                             </p>
                         </section>
 
-                        <section className="air-alert-page__block">
+                        <section className="air-alert-page__block" id="cookies">
                             <h3>6. Використання cookies</h3>
                             <p>
                                 6.1. Файли cookie можуть бути постійними

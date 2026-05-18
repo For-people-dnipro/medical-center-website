@@ -16,8 +16,7 @@ import {
     prefetchRouteImagesFromHref,
     warmCriticalRouteImageCache,
 } from "./lib/routeImagePrefetch";
-
-const Home = lazy(() => import("./pages/Home"));
+import Home from "./pages/Home";
 const AboutUs = lazy(() => import("./pages/AboutUs/AboutUs"));
 const AllServices = lazy(() => import("./pages/AllServices"));
 const DeclarationPage = lazy(() => import("./pages/DeclarationPage"));

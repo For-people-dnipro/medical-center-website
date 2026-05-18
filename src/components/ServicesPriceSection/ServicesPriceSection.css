@@ -106,6 +106,12 @@
         height 120ms linear;
 }
 
+@media (hover: none) and (pointer: coarse) {
+    .services-price-section__scrollbar-thumb {
+        transition: none;
+    }
+}
+
 .services-price-section__fade {
     position: absolute;
     left: 0;
