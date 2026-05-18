@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Banner from "../components/Banner/Banner";
 import DeclarationSection from "../sections/DeclarationSection";
 import Ticket from "../components/Ticket/Ticket";
@@ -160,8 +160,35 @@ function runWhenBrowserIsIdle(callback, timeout = 2200) {
 export default function Home() {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [shouldLoadDoctors, setShouldLoadDoctors] = useState(false);
+    const doctorsSentinelRef = useRef(null);
 
     useEffect(() => {
+        if (shouldLoadDoctors) return undefined;
+
+        const sentinel = doctorsSentinelRef.current;
+        if (!sentinel || typeof IntersectionObserver === "undefined") {
+            setShouldLoadDoctors(true);
+            return undefined;
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    setShouldLoadDoctors(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: "600px 0px" },
+        );
+        observer.observe(sentinel);
+
+        return () => observer.disconnect();
+    }, [shouldLoadDoctors]);
+
+    useEffect(() => {
+        if (!shouldLoadDoctors) return undefined;
+
         function extractFeaturedDoctors(payload) {
             const data = payload?.data;
 
@@ -303,7 +330,7 @@ export default function Home() {
         return () => {
             cancelIdle?.();
         };
-    }, []);
+    }, [shouldLoadDoctors]);
 
     return (
         <div>
@@ -324,15 +351,17 @@ export default function Home() {
                         <ServicesSection />
                     </RevealOnScroll>
                     <RevealOnScroll>
-                        {loading ? (
-                            <div
-                                className="doctors-section-placeholder"
-                                aria-hidden="true"
-                                style={{ minHeight: "640px" }}
-                            />
-                        ) : (
-                            <DoctorsSection doctors={doctors} />
-                        )}
+                        <div ref={doctorsSentinelRef}>
+                            {loading ? (
+                                <div
+                                    className="doctors-section-placeholder"
+                                    aria-hidden="true"
+                                    style={{ minHeight: "640px" }}
+                                />
+                            ) : (
+                                <DoctorsSection doctors={doctors} />
+                            )}
+                        </div>
                     </RevealOnScroll>
                     <RevealOnScroll>
                         <BranchesSection />
