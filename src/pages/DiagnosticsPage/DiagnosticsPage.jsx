@@ -30,7 +30,7 @@ export default function DiagnosticsPage() {
                     title="ДІАГНОСТИКА У ДНІПРІ"
                     subtitle="Бачити. Розуміти. Діяти з турботою."
                     icon="/icons/service-diagnostics.svg"
-                    image="/images/diagnostics-hero.jpg"
+                    image="/images/diagnostics-hero.webp"
                     crumbs={[
                         { label: "Головна", to: "/" },
                         { label: "Послуги", to: "/services" },
@@ -72,7 +72,7 @@ export default function DiagnosticsPage() {
                                 заздалегідь.
                             </>
                         }
-                        image="/images/diagnostics-prepare.jpg"
+                        image="/images/diagnostics-prepare.webp"
                         imageAlt="Підготовка до діагностики в медичному центрі Для Людей, Дніпро"
                     />
                 </section>

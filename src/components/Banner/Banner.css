@@ -297,13 +297,22 @@
 @media (max-width: 768px) {
     .banner-container {
         --banner-aspect-ratio: 1080 / 1850;
-        aspect-ratio: auto;
-        height: calc(100svh - var(--header-h, 72px));
-        max-height: calc(100svh - var(--header-h, 72px));
+        aspect-ratio: 1080 / 1850;
+        height: min(
+            calc(100vw * 1850 / 1080),
+            calc(
+                100svh - var(--header-height, 110px) -
+                    env(safe-area-inset-top, 0px) -
+                    env(safe-area-inset-bottom, 0px)
+            )
+        );
+        width: auto;
+        max-width: 100%;
+        margin-inline: auto;
     }
 
     .banner-image {
-        object-fit: contain;
+        object-fit: cover;
         object-position: center top;
     }
 

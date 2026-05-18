@@ -21,7 +21,7 @@ export default function ManipulationPage() {
                     title="МАНІПУЛЯЦІЇ У ДНІПРІ"
                     subtitle="Дбайливо. Безпечно. Професійно."
                     icon="/icons/service-manipulation.svg"
-                    image="/images/manipulation-hero.jpg"
+                    image="/images/manipulation-hero.webp"
                     crumbs={[
                         { label: "Головна", to: "/" },
                         { label: "Послуги", to: "/services" },
