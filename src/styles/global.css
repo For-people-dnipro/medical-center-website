@@ -31,6 +31,10 @@ body {
     background-color: #fdfdfd;
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
 }
+
+body.route-home {
+    padding-top: calc(104px + env(safe-area-inset-top, 0px));
+}
 .h1,
 .h2,
 .h3 {
