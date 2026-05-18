@@ -42,23 +42,27 @@ export default function Footer() {
     ];
 
     const mobileLeft = [
-        "Про клініку",
-        "Лікарі",
-        "Послуги",
-        "Філії",
-        "Вакансії",
-        "Новини",
-        "Контакти",
+        { label: "Про клініку", href: "/about" },
+        { label: "Лікарі", href: "/doctors" },
+        { label: "Послуги", href: "/services" },
+        { label: "Філії", href: "/branches" },
+        { label: "Вакансії", href: "/vacancies" },
+        { label: "Новини", href: "/news" },
+        { label: "Контакти", href: "/contacts" },
     ];
 
     const mobileRight = [
-        "Документи",
-        "Публічна оферта",
-        "Політика конфіденційності",
-        "Захист персональних даних",
-        "Перелік безкоштовних послуг (ПМГ)",
-        "Правила повітряної тривоги",
-        "Правила внутрішнього розпорядку",
+        {
+            label: "Документи",
+            href: "https://drive.google.com/drive/folders/1cNnQCDB6XV-gfTbvyaZqrm35UHY6NrIE?usp=sharing",
+            external: true,
+        },
+        { label: "Публічна оферта", href: "/offer" },
+        { label: "Політика конфіденційності", href: "/privacy" },
+        { label: "Захист персональних даних", href: "/data-protection" },
+        { label: "Перелік безкоштовних послуг (ПМГ)", href: "/free-services" },
+        { label: "Правила повітряної тривоги", href: "/air-alert" },
+        { label: "Правила внутрішнього розпорядку", href: "/rules" },
     ];
 
     const desktopMenu = [
@@ -135,19 +139,28 @@ export default function Footer() {
 
                 <div className="footer-nav desktop-menu">
                     {menuToRender.map((item, i) =>
-                        item.href === "/air-alert" ||
-                        item.href === "/branches" ? (
-                            <Link key={i} to={item.href}>
+                        item.external ? (
+                            <a
+                                key={i}
+                                href={item.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 {item.label}
-                            </Link>
-                        ) : item.external ? (
-                            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer">
+                            </a>
+                        ) : /^https?:/i.test(item.href) ? (
+                            <a
+                                key={i}
+                                href={item.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 {item.label}
                             </a>
                         ) : (
-                            <a key={i} href={item.href}>
+                            <Link key={i} to={item.href}>
                                 {item.label}
-                            </a>
+                            </Link>
                         ),
                     )}
                 </div>
@@ -155,32 +168,38 @@ export default function Footer() {
                 <div className="footer-mobile-menu">
                     <div className="footer-mobile-col">
                         {mobileLeft.map((item, i) =>
-                            item === "Філії" ? (
-                                <Link key={i} to="/branches">
-                                    {item}
-                                </Link>
-                            ) : (
-                                <a key={i} href="#">
-                                    {item}
+                            item.external ? (
+                                <a
+                                    key={i}
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {item.label}
                                 </a>
+                            ) : (
+                                <Link key={i} to={item.href}>
+                                    {item.label}
+                                </Link>
                             ),
                         )}
                     </div>
 
                     <div className="footer-mobile-col">
                         {mobileRight.map((item, i) =>
-                            item === "Правила повітряної тривоги" ? (
-                                <Link key={i} to="/air-alert">
-                                    {item}
-                                </Link>
-                            ) : item === "Документи" ? (
-                                <a key={i} href="https://drive.google.com/drive/folders/1cNnQCDB6XV-gfTbvyaZqrm35UHY6NrIE?usp=sharing" target="_blank" rel="noopener noreferrer">
-                                    {item}
+                            item.external ? (
+                                <a
+                                    key={i}
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {item.label}
                                 </a>
                             ) : (
-                                <a key={i} href="#">
-                                    {item}
-                                </a>
+                                <Link key={i} to={item.href}>
+                                    {item.label}
+                                </Link>
                             ),
                         )}
                     </div>
