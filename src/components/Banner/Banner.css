@@ -345,8 +345,8 @@
 
 @media (max-width: 768px) {
     .banner-container {
-        --banner-aspect-ratio: 1080 / 1600;
-        aspect-ratio: 1080 / 1600;
+        --banner-aspect-ratio: 1080 / 1700;
+        aspect-ratio: 1080 / 1700;
         width: 100%;
         max-width: 100%;
         height: auto;

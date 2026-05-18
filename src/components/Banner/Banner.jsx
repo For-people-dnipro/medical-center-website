@@ -48,9 +48,9 @@ const STATIC_HOME_SLIDES = Object.freeze([
         photomobileSrcSet:
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_baner_1_tf_5e7797be8d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_tf_5e7797be8d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_tf_5e7797be8d.webp 934w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_1_tf_5e7797be8d.webp 1080w",
         photomobileAvif:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1850_1080_x_1600_piks_9aade1d087.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1_0701208817.avif",
         photomobileAvifSrcSet:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1850_1080_x_1600_piks_9aade1d087.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1_0701208817.avif",
         buttonEnabled: false,
         buttonText: "",
         buttonLink: "",
@@ -64,13 +64,13 @@ const STATIC_HOME_SLIDES = Object.freeze([
         photodesktopSrcSet:
             "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 768w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1200w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1600w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/Vam_40_Projdit_Skrining_zdorov_ya_40_bezoplatno_v_nashih_medichnih_czentrah_Knopka_DETALNI_Sh_E_3_e91ce1b227.webp 1920w",
         photomobile:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_2_tf_f4ad0d0843.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/2_bc91ebbbbf.avif",
         photomobileSrcSet:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_2_tf_f4ad0d0843.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/2_bc91ebbbbf.avif",
         photomobileAvif:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_2_tf_f4ad0d0843.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/2_bc91ebbbbf.avif",
         photomobileAvifSrcSet:
-            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/baner_2_tf_f4ad0d0843.avif",
+            "https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/2_bc91ebbbbf.avif",
         buttonEnabled: true,
         buttonText: "ДЕТАЛЬНІШЕ",
         buttonLink: "/screening-40-plus",
