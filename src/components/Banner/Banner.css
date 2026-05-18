@@ -298,22 +298,15 @@
     .banner-container {
         --banner-aspect-ratio: 1080 / 1850;
         aspect-ratio: 1080 / 1850;
-        height: min(
-            calc(100vw * 1850 / 1080),
-            calc(
-                100svh - var(--header-height, 110px) -
-                    env(safe-area-inset-top, 0px) -
-                    env(safe-area-inset-bottom, 0px)
-            )
-        );
-        width: auto;
+        width: 100%;
         max-width: 100%;
-        margin-inline: auto;
+        height: auto;
+        margin-inline: 0;
     }
 
     .banner-image {
-        object-fit: contain;
-        object-position: center top;
+        object-fit: cover;
+        object-position: center center;
     }
 
     .banner-button {
