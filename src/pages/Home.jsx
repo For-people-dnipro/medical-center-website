@@ -186,137 +186,79 @@ export default function Home() {
         return () => observer.disconnect();
     }, [shouldLoadDoctors]);
 
+    const DOCTORS_CACHE_KEY = "home-doctors-v1";
+    const DOCTORS_CACHE_TTL_MS = 10 * 60 * 1000;
+
+    useEffect(() => {
+        try {
+            const cached = JSON.parse(
+                window.localStorage.getItem(DOCTORS_CACHE_KEY) || "null",
+            );
+            if (
+                cached &&
+                Date.now() - cached.savedAt < DOCTORS_CACHE_TTL_MS &&
+                Array.isArray(cached.doctors) &&
+                cached.doctors.length > 0
+            ) {
+                setDoctors(cached.doctors);
+                setLoading(false);
+            }
+        } catch {
+            // ignore parse errors
+        }
+    }, []);
+
     useEffect(() => {
         if (!shouldLoadDoctors) return undefined;
 
-        function extractFeaturedDoctors(payload) {
-            const data = payload?.data;
-
-            if (data?.attributes?.featured_doctors?.data) {
-                return data.attributes.featured_doctors.data;
-            }
-
-            if (Array.isArray(data) && data[0]?.attributes?.featured_doctors?.data) {
-                return data[0].attributes.featured_doctors.data;
-            }
-
-            return [];
-        }
-
-        function toNumberOrNull(value) {
-            const num = Number(value);
-            return Number.isFinite(num) ? num : null;
-        }
-
-        function pickHomepageDoctors(items = []) {
-            if (!Array.isArray(items)) return [];
-
-            const selected = items
-                .map((item, index) => {
-                    const attrs = item?.attributes || item || {};
-                    const homepagePriority = toNumberOrNull(
-                        attrs.homepage_priority ?? attrs.homepagePriority,
-                    );
-
-                    if (homepagePriority === null) {
-                        return null;
-                    }
-
-                    return {
-                        item,
-                        homepagePriority,
-                        order: toNumberOrNull(attrs.order),
-                        index,
-                    };
-                })
-                .filter(Boolean)
-                .sort((a, b) => {
-                    if (a.homepagePriority !== b.homepagePriority) {
-                        return a.homepagePriority - b.homepagePriority;
-                    }
-
-                    const orderA = Number.isFinite(a.order)
-                        ? a.order
-                        : Number.MAX_SAFE_INTEGER;
-                    const orderB = Number.isFinite(b.order)
-                        ? b.order
-                        : Number.MAX_SAFE_INTEGER;
-                    if (orderA !== orderB) {
-                        return orderA - orderB;
-                    }
-
-                    return a.index - b.index;
-                })
-                .map((entry) => entry.item);
-
-            return selected;
-        }
-
         async function load() {
             try {
-                let items = [];
+                const doctorsPayload = await fetchWithEndpointFallback({
+                    endpoints: ["/api/doctors"],
+                    paramsVariants: [
+                        {
+                            "fields[0]": "name",
+                            "fields[1]": "surname",
+                            "fields[2]": "slug",
+                            "fields[3]": "positionShort",
+                            "fields[4]": "positionLong",
+                            "fields[5]": "startYear",
+                            "fields[6]": "order",
+                            "fields[7]": "homepage_priority",
+                            "populate[photo][fields][0]": "url",
+                            "populate[photo][fields][1]": "alternativeText",
+                            "populate[photo][fields][2]": "width",
+                            "populate[photo][fields][3]": "height",
+                            "populate[photo][fields][4]": "formats",
+                            "populate[branch][fields][0]": "name",
+                            "populate[branch][fields][1]": "slug",
+                            "populate[branch][fields][2]": "address",
+                            "populate[specialisations][fields][0]": "name",
+                            "populate[specialisations][fields][1]": "slug",
+                            "filters[homepage_priority][$notNull]": "true",
+                            "pagination[pageSize]": 4,
+                            "sort[0]": "homepage_priority:asc",
+                            "sort[1]": "order:asc",
+                            "sort[2]": "surname:asc",
+                        },
+                    ],
+                    retryStatusCodes: [],
+                });
+                const allDoctors = Array.isArray(doctorsPayload?.data)
+                    ? doctorsPayload.data
+                    : [];
+                const items = allDoctors.slice(0, 4);
+
+                setDoctors(items);
 
                 try {
-                    const homepagePayload = await fetchWithEndpointFallback({
-                        endpoints: ["/api/homepage"],
-                        paramsVariants: [
-                            {
-                                "populate[featured_doctors][populate][0]": "photo",
-                                "populate[featured_doctors][populate][1]": "branch",
-                                "populate[featured_doctors][populate][2]":
-                                    "specialisations",
-                            },
-                        ],
-                        retryStatusCodes: [],
-                    });
-                    items = extractFeaturedDoctors(homepagePayload);
-                } catch (homepageError) {
-                    console.warn("Homepage featured doctors request skipped:", homepageError);
+                    window.localStorage.setItem(
+                        DOCTORS_CACHE_KEY,
+                        JSON.stringify({ savedAt: Date.now(), doctors: items }),
+                    );
+                } catch {
+                    // ignore quota errors
                 }
-
-                if (!items.length) {
-                    const doctorsPayload = await fetchWithEndpointFallback({
-                        endpoints: ["/api/doctors"],
-                        paramsVariants: [
-                            {
-                                "fields[0]": "name",
-                                "fields[1]": "surname",
-                                "fields[2]": "slug",
-                                "fields[3]": "positionShort",
-                                "fields[4]": "positionLong",
-                                "fields[5]": "startYear",
-                                "fields[6]": "order",
-                                "fields[7]": "homepage_priority",
-                                "fields[8]": "show_on_homepage",
-                                "fields[9]": "isActive",
-                                "populate[photo][fields][0]": "url",
-                                "populate[photo][fields][1]": "alternativeText",
-                                "populate[photo][fields][2]": "width",
-                                "populate[photo][fields][3]": "height",
-                                "populate[photo][fields][4]": "formats",
-                                "populate[branch][fields][0]": "name",
-                                "populate[branch][fields][1]": "slug",
-                                "populate[branch][fields][2]": "address",
-                                "populate[specialisations][fields][0]": "name",
-                                "populate[specialisations][fields][1]": "slug",
-                                "pagination[pageSize]": 8,
-                                "sort[0]": "order:asc",
-                                "sort[1]": "surname:asc",
-                                "sort[2]": "name:asc",
-                            },
-                        ],
-                        retryStatusCodes: [],
-                    });
-                    const allDoctors = Array.isArray(doctorsPayload?.data)
-                        ? doctorsPayload.data
-                        : [];
-                    const selectedHomepageDoctors = pickHomepageDoctors(allDoctors);
-                    items = selectedHomepageDoctors.length
-                        ? selectedHomepageDoctors
-                        : allDoctors;
-                }
-
-                setDoctors(items.slice(0, 4));
             } catch (err) {
                 console.error("Failed to load doctors:", err);
                 setDoctors([]);

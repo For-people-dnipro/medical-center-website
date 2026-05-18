@@ -31,19 +31,76 @@
     overflow: hidden;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.45s ease;
-    will-change: opacity;
+    will-change: transform, opacity;
 }
 
 .banner-slide--active {
     opacity: 1;
     pointer-events: auto;
     z-index: 2;
+    transform: translateX(0);
 }
 
 .banner-slide--prev {
-    opacity: 0;
+    opacity: 1;
     z-index: 1;
+    transform: translateX(0);
+}
+
+@keyframes banner-slide-in-from-right {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes banner-slide-in-from-left {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes banner-slide-out-to-left {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes banner-slide-out-to-right {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.banner-slide--active[data-anim="next"] {
+    animation: banner-slide-in-from-right 0.55s cubic-bezier(0.4, 0, 0.2, 1)
+        forwards;
+}
+
+.banner-slide--active[data-anim="prev"] {
+    animation: banner-slide-in-from-left 0.55s cubic-bezier(0.4, 0, 0.2, 1)
+        forwards;
+}
+
+.banner-slide--prev[data-anim="next"] {
+    animation: banner-slide-out-to-left 0.55s cubic-bezier(0.4, 0, 0.2, 1)
+        forwards;
+}
+
+.banner-slide--prev[data-anim="prev"] {
+    animation: banner-slide-out-to-right 0.55s cubic-bezier(0.4, 0, 0.2, 1)
+        forwards;
 }
 
 .banner-slide picture {

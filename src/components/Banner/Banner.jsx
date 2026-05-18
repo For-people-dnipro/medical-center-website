@@ -521,6 +521,8 @@ export default function Banner() {
                         maxWidth: MOBILE_HERO_WIDTH,
                     });
 
+                    const isAnimating = prevIndex !== null;
+
                     return (
                         <div
                             key={slide.id}
@@ -531,6 +533,11 @@ export default function Banner() {
                             ]
                                 .filter(Boolean)
                                 .join(" ")}
+                            data-anim={
+                                isAnimating && (isActive || isPrev)
+                                    ? direction
+                                    : undefined
+                            }
                             aria-hidden={!isActive}
                         >
                             <picture>
