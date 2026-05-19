@@ -66,12 +66,14 @@
         <link rel="preconnect" href="%VITE_API_URL%" crossorigin />
         <link rel="preconnect" href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev" crossorigin />
 
-        <!-- LCP preload: first hero slide (AVIF, mobile + desktop) -->
+        <!-- LCP preload: first hero slide (responsive webp, AVIF for desktop) -->
         <link
             rel="preload"
             as="image"
-            type="image/avif"
-            href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/1_0701208817.avif"
+            type="image/webp"
+            href="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp"
+            imagesrcset="https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/small_baner_1_tf_5e7797be8d.webp 280w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/medium_baner_1_tf_5e7797be8d.webp 448w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/large_baner_1_tf_5e7797be8d.webp 701w, https://pub-7bbc3c2ba7f44ae5865d2230f3c7f008.r2.dev/xlarge_baner_1_tf_5e7797be8d.webp 934w"
+            imagesizes="100vw"
             media="(max-width: 768px)"
             fetchpriority="high"
         />
