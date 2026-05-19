@@ -14,9 +14,10 @@ function FaqAnswerContent({ answer, isActive }) {
         const el = scrollRef.current;
         let rafId = 0;
         let lastThumbHeight = -1;
+        let currentTop = 0;
+        let targetTop = 0;
 
-        const update = () => {
-            rafId = 0;
+        const computeTarget = () => {
             const overflow = el.scrollHeight - el.clientHeight > 1;
             setHasOverflow(overflow);
 
@@ -24,31 +25,52 @@ function FaqAnswerContent({ answer, isActive }) {
             if (!thumb) return;
 
             if (!overflow) {
-                thumb.style.transform = "translate3d(0,0,0)";
+                targetTop = 0;
                 return;
             }
 
             const ch = el.clientHeight;
             const sh = el.scrollHeight;
-            const st = el.scrollTop;
+            const range = Math.max(1, sh - ch);
+            const st = Math.max(0, Math.min(range, el.scrollTop));
             const thumbH = Math.max(24, (ch / sh) * ch);
             const maxTop = Math.max(0, ch - thumbH);
-            const range = Math.max(1, sh - ch);
-            const top = (st / range) * maxTop;
+            const next = (st / range) * maxTop;
+            targetTop = Math.max(0, Math.min(maxTop, next));
 
             if (thumbH !== lastThumbHeight) {
                 lastThumbHeight = thumbH;
                 thumb.style.height = `${thumbH}px`;
             }
-            thumb.style.transform = `translate3d(0, ${top}px, 0)`;
+        };
+
+        const tick = () => {
+            rafId = 0;
+            computeTarget();
+            const thumb = thumbRef.current;
+            if (!thumb) return;
+            const diff = targetTop - currentTop;
+            if (Math.abs(diff) < 0.3) {
+                currentTop = targetTop;
+            } else {
+                currentTop += diff * 0.35;
+            }
+            thumb.style.transform = `translate3d(0, ${currentTop}px, 0)`;
+            if (Math.abs(targetTop - currentTop) > 0.3) {
+                rafId = requestAnimationFrame(tick);
+            }
         };
 
         const schedule = () => {
             if (rafId) return;
-            rafId = requestAnimationFrame(update);
+            rafId = requestAnimationFrame(tick);
         };
 
-        update();
+        computeTarget();
+        currentTop = targetTop;
+        if (thumbRef.current) {
+            thumbRef.current.style.transform = `translate3d(0, ${currentTop}px, 0)`;
+        }
         el.addEventListener("scroll", schedule, { passive: true });
         window.addEventListener("resize", schedule);
 

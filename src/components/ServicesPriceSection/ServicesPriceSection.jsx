@@ -45,11 +45,12 @@ export default function ServicesPriceSection({
         const threshold = 2;
         let rafId = 0;
         let lastThumbHeight = -1;
+        let currentTop = 0;
+        let targetTop = 0;
         let prevScrollable = null;
         let prevAtBottom = null;
 
-        const applyUpdate = () => {
-            rafId = 0;
+        const computeTarget = () => {
             const hasOverflow =
                 listElement.scrollHeight - listElement.clientHeight > threshold;
             if (prevScrollable !== hasOverflow) {
@@ -61,23 +62,26 @@ export default function ServicesPriceSection({
             if (thumbElement) {
                 const clientHeight = listElement.clientHeight;
                 const scrollHeight = listElement.scrollHeight;
-                const scrollTop = listElement.scrollTop;
+                const scrollRange = Math.max(1, scrollHeight - clientHeight);
+                const scrollTop = Math.max(
+                    0,
+                    Math.min(scrollRange, listElement.scrollTop),
+                );
 
                 const thumbHeight = hasOverflow
                     ? Math.max(28, (clientHeight / scrollHeight) * clientHeight)
                     : clientHeight;
 
                 const maxThumbTop = Math.max(0, clientHeight - thumbHeight);
-                const scrollRange = Math.max(1, scrollHeight - clientHeight);
-                const thumbTop = hasOverflow
+                const next = hasOverflow
                     ? (scrollTop / scrollRange) * maxThumbTop
                     : 0;
+                targetTop = Math.max(0, Math.min(maxThumbTop, next));
 
                 if (thumbHeight !== lastThumbHeight) {
                     lastThumbHeight = thumbHeight;
                     thumbElement.style.height = `${thumbHeight}px`;
                 }
-                thumbElement.style.transform = `translate3d(0, ${thumbTop}px, 0)`;
             }
 
             let reachedBottom = true;
@@ -92,12 +96,34 @@ export default function ServicesPriceSection({
             }
         };
 
-        const scheduleUpdate = () => {
-            if (rafId) return;
-            rafId = requestAnimationFrame(applyUpdate);
+        const tick = () => {
+            rafId = 0;
+            computeTarget();
+            const thumbElement = scrollbarThumbRef.current;
+            if (thumbElement) {
+                const diff = targetTop - currentTop;
+                if (Math.abs(diff) < 0.3) {
+                    currentTop = targetTop;
+                } else {
+                    currentTop += diff * 0.35;
+                }
+                thumbElement.style.transform = `translate3d(0, ${currentTop}px, 0)`;
+                if (Math.abs(targetTop - currentTop) > 0.3) {
+                    rafId = requestAnimationFrame(tick);
+                }
+            }
         };
 
-        applyUpdate();
+        const scheduleUpdate = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(tick);
+        };
+
+        computeTarget();
+        currentTop = targetTop;
+        if (scrollbarThumbRef.current) {
+            scrollbarThumbRef.current.style.transform = `translate3d(0, ${currentTop}px, 0)`;
+        }
 
         const resizeObserver = new ResizeObserver(scheduleUpdate);
         resizeObserver.observe(listElement);

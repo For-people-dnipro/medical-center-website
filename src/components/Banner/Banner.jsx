@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import {
     API_BASE_URL,
     LOCAL_STRAPI_FALLBACK,
@@ -341,30 +340,6 @@ export default function Banner() {
     const handlePointerEnter = () => setIsPaused(true);
     const handlePointerLeave = () => setIsPaused(false);
 
-    const firstSlide = slides[0] || null;
-    const firstDesktopImage = firstSlide?.photodesktop
-        ? resolveMediaUrl(firstSlide.photodesktop)
-        : "";
-    const firstMobileImage = firstSlide?.photomobile
-        ? resolveMediaUrl(firstSlide.photomobile)
-        : "";
-    const firstDesktopSrc = getOptimizedImageUrl(firstDesktopImage, {
-        variant: "hero",
-        width: 1600,
-    });
-    const firstDesktopSrcSet = buildOptimizedImageSrcSet(firstDesktopImage, {
-        variant: "hero",
-        maxWidth: 1920,
-    }) || firstSlide?.photodesktopSrcSet || "";
-    const firstMobileSrc = getOptimizedImageUrl(firstMobileImage, {
-        variant: "hero",
-        width: MOBILE_HERO_WIDTH,
-    });
-    const firstMobileSrcSet = buildOptimizedImageSrcSet(firstMobileImage, {
-        variant: "hero",
-        maxWidth: MOBILE_HERO_WIDTH,
-    }) || firstSlide?.photomobileSrcSet || "";
-
     if (slides.length === 0) {
         return (
             <div className="banner-container">
@@ -434,28 +409,6 @@ export default function Banner() {
 
     return (
         <div className="banner-container">
-            <Helmet>
-                {firstDesktopSrc ? (
-                    <link
-                        rel="preload"
-                        as="image"
-                        href={firstDesktopSrc}
-                        imageSrcSet={firstDesktopSrcSet || undefined}
-                        imageSizes="100vw"
-                        media="(min-width: 769px)"
-                    />
-                ) : null}
-                {firstMobileSrc ? (
-                    <link
-                        rel="preload"
-                        as="image"
-                        href={firstMobileSrc}
-                        imageSrcSet={firstMobileSrcSet || undefined}
-                        imageSizes="100vw"
-                        media="(max-width: 768px)"
-                    />
-                ) : null}
-            </Helmet>
             <div
                 className="banner-slider"
                 data-direction={direction}

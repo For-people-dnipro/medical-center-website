@@ -251,15 +251,6 @@ export default {
       return;
     }
 
-    if (!consumeRateLimit(ip)) {
-      ctx.status = 429;
-      ctx.body = {
-        error: 'TOO_MANY_REQUESTS',
-        message: 'Забагато запитів. Спробуйте пізніше.',
-      };
-      return;
-    }
-
     const validationErrors = validatePayload(payload);
     if (validationErrors.length > 0) {
       ctx.status = 400;

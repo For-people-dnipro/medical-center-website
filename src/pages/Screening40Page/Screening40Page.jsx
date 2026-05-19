@@ -381,7 +381,7 @@ export default function Screening40Page() {
                     title="СКРИНІНГ ЗДОРОВ’Я 40+"
                     subtitle="Безоплатний скринінг здоров’я для людей 40+"
                     icon="/icons/service-checkup.svg"
-                    image="/images/consultation.jpg"
+                    image="/images/consultation.webp"
                     crumbs={[
                         { label: "Головна", to: "/" },
                         { label: "Послуги", to: "/services" },
