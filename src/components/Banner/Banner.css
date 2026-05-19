@@ -133,7 +133,8 @@
     --banner-button-accent: #302528;
     position: absolute;
     left: 6.3%;
-    top: 73%;
+    top: 76%;
+    transform: translateY(-50%);
     z-index: 6;
     display: inline-grid;
     grid-template-columns:
@@ -360,7 +361,8 @@
 
     .banner-button {
         left: 7.3%;
-        top: 26%;
+        top: 28%;
+        transform: translateY(-50%);
         --banner-button-block-padding: 0.18rem;
         --banner-button-inline-padding: 0.42rem;
         --banner-button-gap: 0.4rem;
