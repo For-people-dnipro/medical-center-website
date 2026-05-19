@@ -19,8 +19,7 @@ function extractHouseNumber(value) {
     return match ? match[0].toLowerCase() : "";
 }
 
-const WEST_BRANCH_MAP_LINK =
-    "https://www.google.com/maps/place/%D0%9F%D0%B5%D1%80%D1%88%D0%B0+%D0%BF%D1%80%D0%B8%D0%B2%D0%B0%D1%82%D0%BD%D0%B0+%D0%BF%D0%BE%D0%BB%D1%96%D0%BA%D0%BB%D1%96%D0%BD%D1%96%D0%BA%D0%B0+-+%D0%A4%D1%96%D0%BB%D1%96%D1%8F+%E2%84%961+%22%D0%97%D0%B0%D1%85%D1%96%D0%B4%D0%BD%D0%B0%22/@48.4603389,34.9394541,17z/data=!4m6!3m5!1s0x40dbe30975ec1f5f:0xc265d0fdfdc899eb!8m2!3d48.4604738!4d34.9390963!16s%2Fg%2F11p46j7bff";
+const WEST_BRANCH_MAP_LINK = "https://maps.app.goo.gl/5AynBEx6upmbMMwb7";
 
 export const BRANCHES_CATALOG = [
     {
@@ -31,14 +30,14 @@ export const BRANCHES_CATALOG = [
         phoneHref: "+380660670037",
         lat: 48.414,
         lng: 35.0659,
-        mapLink: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
+        mapLink: "https://maps.app.goo.gl/zjLNbhFtQdMu43hd9",
         mapCenter: { lat: 48.414, lng: 35.0659 },
         mapMarkers: [
             {
                 id: "slava",
                 lat: 48.414,
                 lng: 35.0659,
-                link: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
+                link: "https://maps.app.goo.gl/zjLNbhFtQdMu43hd9",
             },
         ],
         aliases: ["бульвар слави 8", "слави 8"],
@@ -71,14 +70,14 @@ export const BRANCHES_CATALOG = [
         phoneHref: "+380500672235",
         lat: 48.4063,
         lng: 35.0014,
-        mapLink: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
+        mapLink: "https://maps.app.goo.gl/BUkHB2jY9q7vSzMU8",
         mapCenter: { lat: 48.4063, lng: 35.0014 },
         mapMarkers: [
             {
                 id: "khmelnytskoho",
                 lat: 48.4063,
                 lng: 35.0014,
-                link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
+                link: "https://maps.app.goo.gl/BUkHB2jY9q7vSzMU8",
             },
         ],
         aliases: ["хмельницького 127", "богдана хмельницького 127"],

@@ -5,17 +5,17 @@ const DEFAULT_BRANCHES = [
     {
         lat: 48.4613,
         lng: 34.9384,
-        link: "https://www.google.com/maps?q=вул.+Данила+Галицького,+34,+Дніпро",
+        link: "https://maps.app.goo.gl/5AynBEx6upmbMMwb7",
     },
     {
         lat: 48.4063,
         lng: 35.0014,
-        link: "https://www.google.com/maps?q=просп.+Богдана+Хмельницького,+127,+Дніпро",
+        link: "https://maps.app.goo.gl/BUkHB2jY9q7vSzMU8",
     },
     {
         lat: 48.414,
         lng: 35.0659,
-        link: "https://www.google.com/maps?q=бульвар+Слави,+8,+Дніпро",
+        link: "https://maps.app.goo.gl/zjLNbhFtQdMu43hd9",
     },
 ];
 
