@@ -636,7 +636,7 @@
 
 .screening-40-page__form-section {
     padding: var(--screening-section-space) 20px var(--screening-section-space);
-    scroll-margin-top: 150px;
+    scroll-margin-top: 0;
 }
 
 @media (max-width: 1024px) {

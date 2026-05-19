@@ -5,43 +5,96 @@ const DEFAULT_TITLE = "НАЙБІЛЬШ ПОШИРЕНІ ЗАПИТАННЯ";
 
 function FaqAnswerContent({ answer, isActive }) {
     const scrollRef = useRef(null);
+    const thumbRef = useRef(null);
     const [hasOverflow, setHasOverflow] = useState(false);
 
     useEffect(() => {
         if (!isActive || !scrollRef.current) return;
 
         const el = scrollRef.current;
+        let rafId = 0;
+        let lastThumbHeight = -1;
 
-        const checkOverflow = () => {
-            setHasOverflow(el.scrollHeight > el.clientHeight);
+        const update = () => {
+            rafId = 0;
+            const overflow = el.scrollHeight - el.clientHeight > 1;
+            setHasOverflow(overflow);
+
+            const thumb = thumbRef.current;
+            if (!thumb) return;
+
+            if (!overflow) {
+                thumb.style.transform = "translate3d(0,0,0)";
+                return;
+            }
+
+            const ch = el.clientHeight;
+            const sh = el.scrollHeight;
+            const st = el.scrollTop;
+            const thumbH = Math.max(24, (ch / sh) * ch);
+            const maxTop = Math.max(0, ch - thumbH);
+            const range = Math.max(1, sh - ch);
+            const top = (st / range) * maxTop;
+
+            if (thumbH !== lastThumbHeight) {
+                lastThumbHeight = thumbH;
+                thumb.style.height = `${thumbH}px`;
+            }
+            thumb.style.transform = `translate3d(0, ${top}px, 0)`;
         };
 
-        checkOverflow();
-        window.addEventListener("resize", checkOverflow);
+        const schedule = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(update);
+        };
 
-        return () => window.removeEventListener("resize", checkOverflow);
+        update();
+        el.addEventListener("scroll", schedule, { passive: true });
+        window.addEventListener("resize", schedule);
+
+        const resizeObserver = new ResizeObserver(schedule);
+        resizeObserver.observe(el);
+        const parent = el.parentElement;
+        if (parent) resizeObserver.observe(parent);
+
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+            el.removeEventListener("scroll", schedule);
+            window.removeEventListener("resize", schedule);
+            resizeObserver.disconnect();
+        };
     }, [isActive, answer]);
 
     return (
-        <div
-            className={`faq-answer-scroll ${
-                hasOverflow ? "has-scroll" : "no-scroll"
-            }`}
-            ref={scrollRef}
-        >
-            <div className="faq-answer-content">
-                {Array.isArray(answer) ? (
-                    answer.map((line, i) =>
-                        line === "" ? (
-                            <div key={i} className="faq-answer-spacer" />
-                        ) : (
-                            <p key={i}>{line}</p>
-                        ),
-                    )
-                ) : (
-                    <p>{answer}</p>
-                )}
+        <div className="faq-answer-scroll-wrapper">
+            <div
+                className={`faq-answer-scroll ${
+                    hasOverflow ? "has-scroll" : "no-scroll"
+                }`}
+                ref={scrollRef}
+            >
+                <div className="faq-answer-content">
+                    {Array.isArray(answer) ? (
+                        answer.map((line, i) =>
+                            line === "" ? (
+                                <div key={i} className="faq-answer-spacer" />
+                            ) : (
+                                <p key={i}>{line}</p>
+                            ),
+                        )
+                    ) : (
+                        <p>{answer}</p>
+                    )}
+                </div>
             </div>
+            {hasOverflow && (
+                <div className="faq-answer-scrollbar" aria-hidden="true">
+                    <span
+                        ref={thumbRef}
+                        className="faq-answer-scrollbar-thumb"
+                    />
+                </div>
+            )}
         </div>
     );
 }

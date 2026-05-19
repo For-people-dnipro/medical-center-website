@@ -74,9 +74,7 @@
     min-height: 28px;
     border-radius: var(--radius-full);
     background: var(--color-primary);
-    transition:
-        transform 120ms linear,
-        height 120ms linear;
+    will-change: transform;
 }
 
 .vaccines-static__item {

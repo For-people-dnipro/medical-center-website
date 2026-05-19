@@ -101,15 +101,7 @@
     min-height: 28px;
     border-radius: var(--radius-full);
     background: var(--color-primary);
-    transition:
-        transform 120ms linear,
-        height 120ms linear;
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .services-price-section__scrollbar-thumb {
-        transition: none;
-    }
+    will-change: transform;
 }
 
 .services-price-section__fade {

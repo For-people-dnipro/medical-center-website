@@ -80,18 +80,6 @@
 .faq-answer-scroll.has-scroll {
     overflow-y: auto;
     position: relative;
-    mask-image: linear-gradient(
-        to bottom,
-        #000 0,
-        #000 calc(100% - 28px),
-        transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-        to bottom,
-        #000 0,
-        #000 calc(100% - 28px),
-        transparent 100%
-    );
 }
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar {
@@ -105,6 +93,51 @@
 
 .faq-answer-scroll.has-scroll::-webkit-scrollbar-track {
     background: rgba(29, 155, 166, 0.15);
+}
+
+.faq-answer-scroll-wrapper {
+    position: relative;
+}
+
+.faq-answer-scrollbar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .faq-answer-scroll-wrapper .faq-answer-scroll.has-scroll {
+        padding-right: 18px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .faq-answer-scroll-wrapper .faq-answer-scroll.has-scroll::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+    .faq-answer-scrollbar {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 6px;
+        width: 4px;
+        height: 100%;
+        border-radius: var(--radius-full);
+        background: rgba(0, 139, 150, 0.15);
+        pointer-events: none;
+    }
+
+    .faq-answer-scrollbar-thumb {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        min-height: 24px;
+        border-radius: var(--radius-full);
+        background: var(--color-primary);
+        will-change: transform;
+    }
 }
 
 .faq-answer-content {

@@ -43,11 +43,19 @@ export default function ServicesPriceSection({
         if (!listElement) return;
 
         const threshold = 2;
+        let rafId = 0;
+        let lastThumbHeight = -1;
+        let prevScrollable = null;
+        let prevAtBottom = null;
 
-        const updateScrollState = () => {
+        const applyUpdate = () => {
+            rafId = 0;
             const hasOverflow =
                 listElement.scrollHeight - listElement.clientHeight > threshold;
-            setIsScrollable(hasOverflow);
+            if (prevScrollable !== hasOverflow) {
+                prevScrollable = hasOverflow;
+                setIsScrollable(hasOverflow);
+            }
 
             const thumbElement = scrollbarThumbRef.current;
             if (thumbElement) {
@@ -56,55 +64,61 @@ export default function ServicesPriceSection({
                 const scrollTop = listElement.scrollTop;
 
                 const thumbHeight = hasOverflow
-                    ? Math.max(
-                          28,
-                          Math.round((clientHeight / scrollHeight) * clientHeight),
-                      )
+                    ? Math.max(28, (clientHeight / scrollHeight) * clientHeight)
                     : clientHeight;
 
                 const maxThumbTop = Math.max(0, clientHeight - thumbHeight);
                 const scrollRange = Math.max(1, scrollHeight - clientHeight);
                 const thumbTop = hasOverflow
-                    ? Math.round((scrollTop / scrollRange) * maxThumbTop)
+                    ? (scrollTop / scrollRange) * maxThumbTop
                     : 0;
 
-                thumbElement.style.height = `${thumbHeight}px`;
-                thumbElement.style.transform = `translateY(${thumbTop}px)`;
+                if (thumbHeight !== lastThumbHeight) {
+                    lastThumbHeight = thumbHeight;
+                    thumbElement.style.height = `${thumbHeight}px`;
+                }
+                thumbElement.style.transform = `translate3d(0, ${thumbTop}px, 0)`;
             }
 
-            if (!hasOverflow) {
-                setIsAtBottom(true);
-                return;
+            let reachedBottom = true;
+            if (hasOverflow) {
+                reachedBottom =
+                    listElement.scrollTop + listElement.clientHeight >=
+                    listElement.scrollHeight - threshold;
             }
-
-            const reachedBottom =
-                listElement.scrollTop + listElement.clientHeight >=
-                listElement.scrollHeight - threshold;
-
-            setIsAtBottom(reachedBottom);
+            if (prevAtBottom !== reachedBottom) {
+                prevAtBottom = reachedBottom;
+                setIsAtBottom(reachedBottom);
+            }
         };
 
-        updateScrollState();
+        const scheduleUpdate = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(applyUpdate);
+        };
 
-        const resizeObserver = new ResizeObserver(updateScrollState);
+        applyUpdate();
+
+        const resizeObserver = new ResizeObserver(scheduleUpdate);
         resizeObserver.observe(listElement);
 
-        const mutationObserver = new MutationObserver(updateScrollState);
+        const mutationObserver = new MutationObserver(scheduleUpdate);
         mutationObserver.observe(listElement, {
             childList: true,
             subtree: true,
         });
 
-        listElement.addEventListener("scroll", updateScrollState, {
+        listElement.addEventListener("scroll", scheduleUpdate, {
             passive: true,
         });
-        window.addEventListener("resize", updateScrollState);
+        window.addEventListener("resize", scheduleUpdate);
 
         return () => {
+            if (rafId) cancelAnimationFrame(rafId);
             resizeObserver.disconnect();
             mutationObserver.disconnect();
-            listElement.removeEventListener("scroll", updateScrollState);
-            window.removeEventListener("resize", updateScrollState);
+            listElement.removeEventListener("scroll", scheduleUpdate);
+            window.removeEventListener("resize", scheduleUpdate);
         };
     }, []);
 

@@ -378,12 +378,15 @@
     }
 
     .banner-attribution {
-        right: 1.2%;
-        bottom: calc(0.6% + env(safe-area-inset-bottom, 0px));
+        right: 8px;
+        bottom: calc(6px + env(safe-area-inset-bottom, 0px));
         padding: 0;
-        font-size: 11px;
+        font-size: 10px;
         z-index: 10;
-        text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+        background: transparent;
+        color: #4f3f3a;
+        opacity: 0.55;
+        text-shadow: none;
     }
 
     .banner-arrow,

@@ -167,10 +167,13 @@ function isExternalLink(href) {
 
 function shouldShowMozAttribution(slide) {
     const paths = [slide.photodesktop, slide.photomobile].filter(Boolean);
-
-    return paths.some((path) =>
+    const matchedByAsset = paths.some((path) =>
         MOZ_ATTRIBUTION_ASSET_MARKERS.some((marker) => path.includes(marker)),
     );
+    if (matchedByAsset) return true;
+
+    const link = String(slide.buttonLink || "").toLowerCase();
+    return link.includes("screening");
 }
 
 function normalizeSlides(payload) {
@@ -539,6 +542,7 @@ export default function Banner() {
                                     : undefined
                             }
                             aria-hidden={!isActive}
+                            inert={!isActive ? "" : undefined}
                         >
                             <picture>
                                 {slide.photomobileAvifSrcSet ? (
@@ -580,7 +584,7 @@ export default function Banner() {
                                     alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
                                     className="banner-image"
                                     loading={index === 0 ? "eager" : "lazy"}
-                                    fetchPriority={
+                                    fetchpriority={
                                         index === 0 ? "high" : "auto"
                                     }
                                     decoding={index === 0 ? "sync" : "async"}

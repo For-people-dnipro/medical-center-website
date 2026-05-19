@@ -294,7 +294,7 @@ export default function Screening40Page() {
 
     const handleScrollToForm = (event) => {
         event.preventDefault();
-        scrollToSelectorWithOffset("#screening-40-form");
+        scrollToSelectorWithOffset("#screening-40-form", { offset: 60 });
     };
 
     const activePanelMeta =
