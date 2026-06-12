@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
+import { SOCIAL_LINKS } from "../../constants/socialLinks";
+import { BRANCHES_CATALOG } from "../../data/branchesCatalog";
 import {
     SEO_DEFAULT_DESCRIPTION,
     SEO_DEFAULT_LANGUAGE,
@@ -86,42 +88,65 @@ function normalizePreloadImages(images) {
         .filter(Boolean);
 }
 
-function buildLocalBusinessSchema() {
+function buildClinicSchema() {
     const origin = getCurrentOrigin();
     const siteUrl = firstSeoText(origin);
-    const logoUrl = toAbsoluteUrl(SEO_DEFAULT_OG_IMAGE);
-
-    return {
-        "@context": "https://schema.org",
+    const logoUrl = toAbsoluteUrl("/apple-touch-icon.png");
+    const organizationId = siteUrl ? `${siteUrl}/#organization` : undefined;
+    const openingHoursSpecification = [
+        {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+            ],
+            opens: "09:00",
+            closes: "18:00",
+        },
+    ];
+    const departments = BRANCHES_CATALOG.map((branch) => ({
         "@type": "MedicalClinic",
-        name: 'Медичний центр "Для Людей"',
-        url: siteUrl || undefined,
+        "@id": siteUrl ? `${siteUrl}/branches#${branch.id}` : undefined,
+        name: `Медичний центр "Для людей" — ${branch.address}`,
+        url: siteUrl ? `${siteUrl}/branches` : undefined,
+        logo: logoUrl || undefined,
         image: logoUrl || undefined,
-        telephone: "+380500671388",
-        openingHoursSpecification: [
-            {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: [
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                ],
-                opens: "09:00",
-                closes: "18:00",
-            },
-        ],
+        telephone: branch.phoneHref,
+        hasMap: branch.mapLink,
+        openingHoursSpecification,
         address: {
             "@type": "PostalAddress",
-            streetAddress: "вул. Данила Галицького, 34",
+            streetAddress: branch.address.replace(/^Дніпро,\s*/i, ""),
             addressLocality: "Дніпро",
             addressCountry: "UA",
         },
+        geo: {
+            "@type": "GeoCoordinates",
+            latitude: branch.lat,
+            longitude: branch.lng,
+        },
+        parentOrganization: organizationId
+            ? { "@id": organizationId }
+            : undefined,
+    }));
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": organizationId,
+        name: 'Медичний центр "Для людей"',
+        url: siteUrl || undefined,
+        logo: logoUrl || undefined,
+        image: logoUrl || undefined,
+        sameAs: [SOCIAL_LINKS.instagram, SOCIAL_LINKS.facebook],
         areaServed: {
             "@type": "Place",
             name: "Дніпро, Україна",
         },
+        department: departments,
     };
 }
 
@@ -175,7 +200,7 @@ export default function SeoHead({
     const resolvedRobots = firstSeoText(robots, SEO_DEFAULT_ROBOTS);
     const safeType = firstSeoText(ogType, "website");
     const combinedJsonLd = [
-        buildLocalBusinessSchema(),
+        location.pathname === "/" ? buildClinicSchema() : null,
         ...normalizeJsonLd(jsonLd),
     ].filter(Boolean);
     const resolvedPreloadImages = normalizePreloadImages(preloadImages);

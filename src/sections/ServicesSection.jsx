@@ -110,9 +110,12 @@ export default function ServicesSection() {
                         <h3>Все для турботи про ваше здоров’я</h3>
                     </div>{" "}
                     <h1 className="visually-hidden">
-                        Приватний медичний центр "Для Людей" у місті Дніпро,
-                        Україна.
+                        Медичний центр «Для людей» у Дніпрі
                     </h1>
+                    <p className="visually-hidden">
+                        Медичний центр «Для людей» у Дніпрі допомагає отримувати
+                        якісну медичну допомогу для всієї родини.
+                    </p>
                     <div className="services-search-wrapper">
                         <input
                             type="text"

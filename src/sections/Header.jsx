@@ -64,7 +64,7 @@ export default function Header() {
                         >
                             <img
                                 src={logo}
-                                alt="Логотип медичного центру Для Людей"
+                                alt="Медичний центр Для людей у Дніпрі"
                                 width="142"
                                 height="104"
                                 decoding="async"

@@ -100,7 +100,7 @@ export default function Footer() {
                     <div className="footer-logo">
                         <img
                             src={logofooter}
-                            alt="Для людей"
+                            alt="Медичний центр Для людей у Дніпрі"
                             width="255"
                             height="51"
                             loading="lazy"
