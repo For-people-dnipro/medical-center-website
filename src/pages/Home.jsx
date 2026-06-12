@@ -283,7 +283,11 @@ export default function Home() {
             />
             <div className="page-home">
                 <Banner />
-                <RevealOnScroll>
+                <RevealOnScroll
+                    threshold={0.02}
+                    rootMargin="0px"
+                    waitForScroll
+                >
                     <DeclarationSection />
                 </RevealOnScroll>
                 <Ticket text="САМОЛІКУВАННЯ МОЖЕ БУТИ ШКІДЛИВИМ ДЛЯ ВАШОГО ЗДОРОВ’Я" />

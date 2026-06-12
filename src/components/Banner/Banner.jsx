@@ -497,7 +497,7 @@ export default function Banner() {
                             aria-hidden={!isActive}
                             inert={!isActive ? "" : undefined}
                         >
-                            <picture>
+                            {isActive || isPrev ? <picture>
                                 {slide.photomobileAvifSrcSet ? (
                                     <source
                                         type="image/avif"
@@ -536,13 +536,13 @@ export default function Banner() {
                                     height={DESKTOP_HERO_HEIGHT}
                                     alt={`Головний банер ${index + 1} медичного центру Для Людей у Дніпрі, Україна`}
                                     className="banner-image"
-                                    loading={index === 0 ? "eager" : "lazy"}
+                                    loading={isActive ? "eager" : "lazy"}
                                     fetchpriority={
-                                        index === 0 ? "high" : "auto"
+                                        isActive ? "high" : "auto"
                                     }
-                                    decoding={index === 0 ? "sync" : "async"}
+                                    decoding={isActive ? "sync" : "async"}
                                 />
-                            </picture>
+                            </picture> : null}
 
                             {hasButton ? (
                                 <a

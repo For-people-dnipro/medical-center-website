@@ -6,6 +6,7 @@ export default function RevealOnScroll({
     className = "",
     threshold = 0.15,
     rootMargin = "0px 0px -10% 0px",
+    waitForScroll = false,
     as: Tag = "div",
 }) {
     const ref = useRef(null);
@@ -15,26 +16,47 @@ export default function RevealOnScroll({
         const node = ref.current;
         if (!node) return undefined;
 
+        let hasScrolled = !waitForScroll || window.scrollY > 0;
+        let isIntersecting = false;
+
         if (typeof IntersectionObserver === "undefined") {
             setVisible(true);
             return undefined;
         }
 
+        const revealIfReady = () => {
+            if (hasScrolled && isIntersecting) {
+                setVisible(true);
+                observer.disconnect();
+                window.removeEventListener("scroll", handleScroll);
+            }
+        };
+
+        const handleScroll = () => {
+            hasScrolled = true;
+            revealIfReady();
+        };
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setVisible(true);
-                        observer.disconnect();
-                    }
+                    isIntersecting = entry.isIntersecting;
+                    revealIfReady();
                 });
             },
             { threshold, rootMargin },
         );
 
         observer.observe(node);
-        return () => observer.disconnect();
-    }, [threshold, rootMargin]);
+        if (waitForScroll) {
+            window.addEventListener("scroll", handleScroll, { passive: true });
+        }
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [threshold, rootMargin, waitForScroll]);
 
     return (
         <Tag
